@@ -1,0 +1,74 @@
+.farmers {
+  --farmerCount: 0;
+
+  display: grid;
+  gap: 50px;
+  grid-template-columns: repeat(var(--farmerCount), 1fr);
+}
+
+.farmer {
+  margin-bottom: 20px;
+
+  .name {
+    margin: 0 0 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 18px;
+
+    & > a {
+      color: unset;
+      font-weight: 300;
+    }
+  }
+
+  .skill {
+    height: 34px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    & > :first-child {
+      width: 8ch;
+      text-align: end;
+    }
+
+    & > h2 {
+      margin: 0;
+      width: 2ch;
+      text-align: center;
+    }
+
+    .level {
+      display: flex;
+      gap: 5px;
+
+      .pip {
+        width: 18px;
+        height: 25px;
+        background: #dd003b;
+        border: 2px solid #63003e;
+        border-radius: 5px;
+        box-shadow: inset -2px 2px 0px 0px rgba(#fff, 0.25),
+          inset 2px -2px 0px 0px rgba(#000, 0.25);
+      }
+
+      .largePip {
+        width: 35px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #ffa600;
+        border: 2px solid #ca6551;
+        border-radius: 5px;
+        box-shadow: inset -2px 2px 0px 0px rgba(#fff, 0.25),
+          inset 1px -1px 0px 0px rgba(#000, 0.25);
+
+        & > a {
+          display: flex;
+        }
+      }
+    }
+  }
+}

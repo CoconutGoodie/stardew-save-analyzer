@@ -3,11 +3,22 @@
   color: #d4ccbc;
 
   main {
-    max-width: 850px;
+    max-width: 1000px;
     margin: 0 auto;
     padding: 2rem;
     display: flex;
     flex-direction: column;
     gap: 30px;
+
+    hr {
+      width: 20vw;
+      margin: 0;
+      border: none;
+      border-bottom: 1px solid #2c1d0c;
+    }
   }
+}
+
+img {
+  image-rendering: pixelated;
 }

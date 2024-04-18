@@ -3,6 +3,13 @@ import { entries, find, groupBy, intersection, keys, lowerCase } from "lodash";
 import { Currency } from "../component/Currency";
 import { FishCategory, STARDEW_FISHES } from "../const/StardewFishes";
 
+import farmingPng from "../assets/skill/farming.png";
+import miningPng from "../assets/skill/mining.png";
+import foragingPng from "../assets/skill/foraging.png";
+import fishingPng from "../assets/skill/fishing.png";
+import combatPng from "../assets/skill/combat.png";
+import { STARDEW_PROFESSIONS } from "../const/StardewProfessions";
+
 type StringNumber = `${number}`;
 
 type Gender = "Female" | "Male";
@@ -59,49 +66,6 @@ export class GameSave {
     "5": "Four Corners",
     "6": "Beach",
     MeadowlandsFarm: "Meadowlands",
-  };
-
-  static PROFESSIONS = {
-    farming: {
-      0: "Rancher",
-      1: "Tiller",
-      2: "Coopmaster",
-      3: "Shepherd",
-      4: "Artisan",
-      5: "Agriculturist",
-    },
-    fishing: {
-      6: "Fisher",
-      7: "Trapper",
-      8: "Angler",
-      9: "Pirate",
-      10: "Mariner",
-      11: "Luremaster",
-    },
-    foraging: {
-      12: "Forester",
-      13: "Gatherer",
-      14: "Lumberjack",
-      15: "Tapper",
-      16: "Botanist",
-      17: "Tracker",
-    },
-    mining: {
-      18: "Miner",
-      19: "Geologist",
-      20: "Blacksmith",
-      21: "Prospector",
-      22: "Excavator",
-      23: "Gemologist",
-    },
-    combat: {
-      24: "Fighter",
-      25: "Scout",
-      26: "Brute",
-      27: "Defender",
-      28: "Acrobat",
-      29: "Desperado",
-    },
   };
 
   static SPECIAL_ORDERS = {
@@ -225,15 +189,13 @@ export class GameSave {
 
   public getProfessions(
     farmerProfessions: StringNumber[],
-    skillName: keyof typeof GameSave.PROFESSIONS
+    skillName: keyof typeof STARDEW_PROFESSIONS
   ) {
-    return intersection(
-      farmerProfessions,
-      keys(GameSave.PROFESSIONS[skillName])
-    )
+    return intersection(farmerProfessions, keys(STARDEW_PROFESSIONS[skillName]))
+      .map((id) => parseInt(id))
       .sort() // Ensure, lower level professions come first
       .map((professionId) => {
-        const professions = GameSave.PROFESSIONS[skillName];
+        const professions = STARDEW_PROFESSIONS[skillName];
         return professions[professionId as keyof typeof professions];
       });
   }
@@ -267,31 +229,38 @@ export class GameSave {
         title: "Farming",
         level: parseInt(farmer.farmingLevel[0]),
         professions: this.getProfessions(farmer.professions[0].int, "farming"),
+        iconSrc: farmingPng,
       },
       {
         title: "Fishing",
         level: parseInt(farmer.fishingLevel[0]),
         professions: this.getProfessions(farmer.professions[0].int, "fishing"),
+        iconSrc: fishingPng,
       },
       {
         title: "Mining",
         level: parseInt(farmer.miningLevel[0]),
         professions: this.getProfessions(farmer.professions[0].int, "mining"),
+        iconSrc: miningPng,
       },
       {
         title: "Foraging",
         level: parseInt(farmer.foragingLevel[0]),
         professions: this.getProfessions(farmer.professions[0].int, "foraging"),
+        iconSrc: foragingPng,
       },
       {
         title: "Combat",
         level: parseInt(farmer.combatLevel[0]),
         professions: this.getProfessions(farmer.professions[0].int, "combat"),
+        iconSrc: combatPng,
       },
+      // This exists, yet as an unused feature for now (?)
       // {
       //   title: "Luck",
       //   level: parseInt(farmer.luckLevel[0]),
       //   professions: this.getProfessions(farmer.professions[0].int, "combat"),
+      //   iconSrc: luckPng,
       // },
     ];
 

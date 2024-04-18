@@ -1,35 +1,22 @@
-import { ReactNode } from "react";
+import { lowerCase } from "case-anything";
+import { entries } from "lodash";
 import "./App.css";
 import xml from "./assets/Kaktus_372348215.xml";
-import { Currency } from "./component/Currency";
-import { GameSave } from "./util/GameSave";
-import { lowerCase } from "case-anything";
-import stardropPng from "./assets/stardrop.png";
-import stardropGif from "./assets/stardrop.gif";
 import femalePng from "./assets/icon/female.png";
 import malePng from "./assets/icon/male.png";
+import stardropGif from "./assets/stardrop.gif";
+import stardropPng from "./assets/stardrop.png";
+import { Achievement } from "./component/Achievement";
 import {
   FishCategory,
-  STARDEW_FISHES,
-  STARDEW_FISH_CATEGORIES,
+  STARDEW_FISH_CATEGORIES
 } from "./const/StardewFishes";
-import { entries, keys } from "lodash";
-import "./style/style.scss";
-import { AssetRepository } from "./util/AssetRepository";
-import { Achievement } from "./component/Achievement";
 import { MoneySummarySection } from "./section/MoneySummarySection";
-
-const achievementSprites = new AssetRepository<{ default: string }>(
-  import.meta.glob("./assets/achievement/ingame/*.png", { eager: true }),
-  "./assets/achievement/ingame/",
-  ".png"
-);
+import { SkillsSection } from "./section/SkillsSection";
+import "./style/style.scss";
+import { GameSave } from "./util/GameSave";
 
 const farmTypes = import.meta.glob("./assets/farm/*.png", {
-  eager: true,
-});
-
-const professions = import.meta.glob("./assets/profession/*.png", {
   eager: true,
 });
 
@@ -104,86 +91,15 @@ function App() {
         </ul>
       </section>
 
+      <hr />
+
       <MoneySummarySection gameSave={gameSave} />
 
-      <section id="skills">
-        <h1 style={{ fontSize: 24 }}>Skills</h1>
+      <hr />
 
-        <div
-          style={{
-            display: "grid",
-            gap: 50,
-            gridTemplateColumns: `repeat(${farmerNames.length}, 1fr)`,
-          }}
-        >
-          {farmerNames.map((farmerName) => {
-            const skillAttribs = gameSave.getSkillAttributes(farmerName)!;
+      <SkillsSection gameSave={gameSave} />
 
-            return (
-              <div style={{ marginLeft: 15 }}>
-                <h2 style={{ fontSize: 12 }}>
-                  {farmerName}{" "}
-                  <a
-                    href="https://stardewvalleywiki.com/Skills#Skill-Based_Title"
-                    target="_blank"
-                  >
-                    <span>({skillAttribs.title})</span>
-                  </a>
-                </h2>
-
-                {skillAttribs.skills.map((skill) => (
-                  <div
-                    key={skill.title}
-                    style={{ display: "flex", gap: 10, alignItems: "center" }}
-                  >
-                    <span>{skill.title}</span>
-                    <progress max={10} value={skill.level} />
-                    <span>{skill.level} / 10</span>
-
-                    {skill.professions.map((profession) => (
-                      <div>
-                        <a
-                          href={`https://stardewvalleywiki.com/Skills#${skill.title}`}
-                          target="_blank"
-                        >
-                          <img
-                            width={24}
-                            title={profession}
-                            src={
-                              // @ts-ignore
-                              professions[
-                                `./assets/profession/${lowerCase(
-                                  profession
-                                )}.png`
-                              ].default
-                            }
-                          />
-                        </a>
-                      </div>
-                    ))}
-                  </div>
-                ))}
-
-                <Achievement
-                  title={"Singular Talent"}
-                  achieved={skillAttribs.skills.some(
-                    (skill) => skill.level === 10
-                  )}
-                  description={<>Level 10 in a skill</>}
-                />
-
-                <Achievement
-                  title={"Master of the Five Ways"}
-                  achieved={skillAttribs.skills.every(
-                    (skill) => skill.level === 10
-                  )}
-                  description={<>Level 10 in every skill</>}
-                />
-              </div>
-            );
-          })}
-        </div>
-      </section>
+      <hr />
 
       <section id="special-orders">
         <h1 style={{ fontSize: 24 }}>Special Orders</h1>
@@ -219,6 +135,8 @@ function App() {
           {specialOrders.length} Done)
         </Achievement>
       </section>
+
+      <hr />
 
       <section id="stardrops">
         <h1 style={{ fontSize: 24 }}>Stardrops</h1>
@@ -282,6 +200,8 @@ function App() {
         </div>
       </section>
 
+      <hr />
+
       <section id="fishing">
         <h1 style={{ fontSize: 24 }}>Fishing</h1>
 
@@ -309,7 +229,7 @@ function App() {
                   return (
                     <div
                       style={{
-                        background: "#303030",
+                        background: "#604620",
                         borderRadius: 5,
                         padding: "0 10px",
                         display: "grid",

@@ -12,12 +12,17 @@ const farmTypes = import.meta.glob("./assets/farm/*.png", {
   eager: true,
 });
 
+const professions = import.meta.glob("./assets/profession/*.png", {
+  eager: true,
+});
+
 function App() {
   console.log(xml.SaveGame);
 
   const gameSave = new GameSave(xml.SaveGame);
   const saveSummary = gameSave.getSaveSummary();
   const moneySummary = gameSave.getMoneySummary();
+  const skillLevels = gameSave.getSkillLevels();
 
   return (
     <main>
@@ -102,14 +107,46 @@ function App() {
         </ul>
       </section>
 
-      {/* <section id="">
-        <h1 style={{ fontSize: 18 }}>Money</h1>
-        <ul>
-          <li>
-            {saveSummary.farmName} Farm has earned {moneySummary.earnedTotal}g.
-          </li>
-        </ul>
-      </section> */}
+      <section id="skills">
+        <h1 style={{ fontSize: 18 }}>Skills</h1>
+
+        {skillLevels.map(({ farmerName, skills }) => (
+          <div style={{ marginLeft: 15 }}>
+            <h2 style={{ fontSize: 12 }}>{farmerName}</h2>
+
+            {skills.map((skill) => (
+              <div
+                key={farmerName}
+                style={{ display: "flex", gap: 10, alignItems: "center" }}
+              >
+                <span>{skill.title}</span>
+                <progress max={10} value={skill.level} />
+                <span>{skill.level} / 10</span>
+
+                {skill.professions.map((profession) => (
+                  <div>
+                    <a
+                      href={`https://stardewvalleywiki.com/Skills#${skill.title}`}
+                      target="_blank"
+                    >
+                      <img
+                        width={24}
+                        title={profession}
+                        src={
+                          // @ts-ignore
+                          professions[
+                            `./assets/profession/${lowerCase(profession)}.png`
+                          ]?.default ?? ""
+                        }
+                      />
+                    </a>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        ))}
+      </section>
     </main>
   );
 }

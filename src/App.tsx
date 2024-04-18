@@ -8,6 +8,12 @@ import stardropPng from "./assets/stardrop.png";
 import stardropGif from "./assets/stardrop.gif";
 import femalePng from "./assets/icon/female.png";
 import malePng from "./assets/icon/male.png";
+import {
+  FishCategory,
+  STARDEW_FISHES,
+  STARDEW_FISH_CATEGORIES,
+} from "./const/StardewFishes";
+import { entries, keys } from "lodash";
 
 const achievements = import.meta.glob("./assets/achievement/ingame/*.png", {
   eager: true,
@@ -22,6 +28,10 @@ const professions = import.meta.glob("./assets/profession/*.png", {
 });
 
 const specialOrderNpcs = import.meta.glob("./assets/special-order/*.png", {
+  eager: true,
+});
+
+const fishSprites = import.meta.glob("./assets/fish/*.png", {
   eager: true,
 });
 
@@ -128,7 +138,7 @@ function App() {
             {farmSummary.currentDate.year}
           </li>
           <li>Played for {farmSummary.playtime}ms</li>
-          <li>Save is from version {farmSummary.gameVersion}</li>
+          <li>Game Version {farmSummary.gameVersion}</li>
         </ul>
       </section>
 
@@ -340,6 +350,90 @@ function App() {
           })}
         </div>
       </section>
+
+      <section id="fishing">
+        <h1 style={{ fontSize: 24 }}>Fishing</h1>
+
+        <div
+          style={{
+            display: "grid",
+            gap: 50,
+            gridTemplateColumns: `repeat(${farmerNames.length}, 1fr)`,
+          }}
+        >
+          {farmerNames.map((farmerName) => {
+            const caughtFishes = gameSave.getCaughtFishes(farmerName)!;
+
+            return (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 4,
+                }}
+              >
+                <h2 style={{ fontSize: 12 }}>{farmerName}</h2>
+
+                {entries(caughtFishes).map(([categoryName, fishes]) => {
+                  return (
+                    <div
+                      style={{
+                        background: "#303030",
+                        borderRadius: 5,
+                        padding: "0 10px",
+                        display: "grid",
+                        gap: 10,
+                        gridTemplateColumns: "50px 1fr",
+                      }}
+                    >
+                      <h1
+                        style={{
+                          fontSize: 11,
+                          color:
+                            STARDEW_FISH_CATEGORIES[
+                              categoryName as FishCategory
+                            ].accentColor,
+                        }}
+                      >
+                        {categoryName}
+                      </h1>
+
+                      <div style={{ display: "flex", flexWrap: "wrap" }}>
+                        {fishes.map((fish) => (
+                          <div>
+                            <img
+                              width={34}
+                              alt="Fish"
+                              title={fish.name}
+                              src={
+                                // @ts-ignore
+                                fishSprites[
+                                  `./assets/fish/${lowerCase(fish.name).replace(
+                                    /\s+/g,
+                                    "_"
+                                  )}.png`
+                                  // @ts-ignore
+                                ]?.default ?? ""
+                              }
+                              style={{
+                                filter:
+                                  fish.caught !== 0 ? "" : "brightness(0)",
+                                opacity: fish.caught !== 0 ? 1 : 0.2,
+                              }}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      <footer style={{ height: 100 }}></footer>
     </main>
   );
 }

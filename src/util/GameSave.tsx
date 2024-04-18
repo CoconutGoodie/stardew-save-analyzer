@@ -1,6 +1,7 @@
 import { capitalCase } from "case-anything";
-import { entries, intersection, keys, lowerCase } from "lodash";
+import { entries, find, groupBy, intersection, keys, lowerCase } from "lodash";
 import { Currency } from "../component/Currency";
+import { FishCategory, STARDEW_FISHES } from "../const/StardewFishes";
 
 type StringNumber = `${number}`;
 
@@ -17,6 +18,8 @@ export namespace StardewSave {
     weatherForTomorrow: [string];
     completedSpecialOrders: [{ string: string[] }];
   }
+
+  export type KeyValueMap<K, V> = { key: K; value: V }[];
 
   export interface PlayerXml extends FarmerXml {
     totalMoneyEarned: [`${string}`];
@@ -35,6 +38,14 @@ export namespace StardewSave {
     combatLevel: [StringNumber];
     professions: [{ int: StringNumber[] }];
     mailReceived: [{ string: string[] }];
+    fishCaught: [
+      {
+        item: KeyValueMap<
+          [{ string: [string] }],
+          [{ ArrayOfInt: [{ int: [StringNumber, StringNumber] }] }]
+        >;
+      }
+    ];
   }
 }
 
@@ -318,5 +329,28 @@ export class GameSave {
       description,
       gathered: farmer.mailReceived[0].string.includes(mailId),
     }));
+  }
+
+  public getCaughtFishes(farmerName: string) {
+    const farmer = this.getFarmer(farmerName);
+    if (!farmer) return;
+
+    const fishEntries = entries(STARDEW_FISHES);
+
+    // return groupBy(fishEntries, ([_, fish]) => {
+    //   return fish.category;
+    // });
+
+    const caughtFishes = fishEntries.map(([itemId, fishDefinition]) => ({
+      itemId,
+      ...fishDefinition,
+      caught: parseInt(
+        farmer.fishCaught[0].item.find(
+          (item) => item.key[0].string[0].replace(/\(.*?\)/, "") === itemId
+        )?.value[0].ArrayOfInt[0].int[0] ?? "0"
+      ),
+    }));
+
+    return groupBy(caughtFishes, (fish) => fish.category);
   }
 }

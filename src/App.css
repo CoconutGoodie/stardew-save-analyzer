@@ -1,5 +1,5 @@
 #root {
-  /* max-width: 1280px; */
+  max-width: 850px;
   margin: 0 auto;
   padding: 2rem;
 }
@@ -11,6 +11,26 @@ ul {
 
 img {
   image-rendering: pixelated;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+  & > :not(:first-child) {
+    position: relative;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: -15px;
+      background: #fff;
+      opacity: 0.125;
+      width: 100px;
+      height: 1px;
+    }
+  }
 }
 
 .logo {

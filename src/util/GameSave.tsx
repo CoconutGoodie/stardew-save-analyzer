@@ -1,5 +1,6 @@
 import { capitalCase } from "case-anything";
 import { entries, intersection, keys, lowerCase } from "lodash";
+import { Currency } from "../component/Currency";
 
 type stringNumber = `${number}`;
 
@@ -33,6 +34,7 @@ export namespace StardewSave {
     foragingLevel: [stringNumber];
     combatLevel: [stringNumber];
     professions: [{ int: stringNumber[] }];
+    mailReceived: [{ string: string[] }];
   }
 }
 
@@ -127,6 +129,39 @@ export class GameSave {
     },
   };
 
+  static STARDROP_MAILS = {
+    CF_Fair: (
+      <>
+        Sold for <Currency amount={2000} /> at the Stardew Valley Fair.
+      </>
+    ),
+    CF_Mines: <>Obtained from the treasure chest on floor 100 in the Mines.</>,
+    CF_Spouse: (
+      <>
+        From the player's spouse or roommate when friendship level reaches 12.5
+        hearts
+      </>
+    ),
+    CF_Sewer: (
+      <>
+        Sold by Krobus for <Currency amount={20000} /> in the Sewers.
+      </>
+    ),
+    CF_Statue: (
+      <>
+        Obtained from Old Master Cannoli in the Secret Woods after giving him a
+        Sweet Gem Berry.
+      </>
+    ),
+    CF_Fish: (
+      <>
+        Received in a letter from Willy the day after attaining the Master
+        Angler Achievement.
+      </>
+    ),
+    museumComplete: <>Reward for donating all 95 items to the Museum.</>,
+  };
+
   constructor(private saveXml: StardewSave.SaveXml) {}
 
   public getSaveSummary() {
@@ -161,10 +196,9 @@ export class GameSave {
   }
 
   public getAllFarmerNames() {
-    return this.saveXml.farmhands
-      .map((farmand) => farmand.Farmer[0])
-      .concat(this.saveXml.player)
-      .map((farmer) => farmer.name[0]);
+    return [this.saveXml.player[0].name[0]].concat(
+      this.saveXml.farmhands.map((farmhand) => farmhand.Farmer[0].name[0])
+    );
   }
 
   public getFarmer(name: string) {
@@ -267,6 +301,18 @@ export class GameSave {
         /\s+/g,
         "_"
       )}`,
+    }));
+  }
+
+  public getStardrops(farmerName: string) {
+    const farmer = this.getFarmer(farmerName);
+    if (!farmer) return;
+
+    const mails = entries(GameSave.STARDROP_MAILS);
+
+    return mails.map(([mailId, description]) => ({
+      description,
+      gathered: farmer.mailReceived[0].string.includes(mailId),
     }));
   }
 }

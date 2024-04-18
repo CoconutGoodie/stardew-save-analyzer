@@ -6,7 +6,7 @@ interface Props {
 
 const FORMAT = new Intl.NumberFormat("en-US");
 
-export const Gold = (props: Props) => {
+export const Currency = (props: Props) => {
   return (
     <span
       style={{

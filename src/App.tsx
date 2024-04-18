@@ -22,7 +22,7 @@ function App() {
   const gameSave = new GameSave(xml.SaveGame);
   const saveSummary = gameSave.getSaveSummary();
   const moneySummary = gameSave.getMoneySummary();
-  const skillLevels = gameSave.getSkillLevels();
+  const farmers = gameSave.getAllFarmers();
 
   return (
     <main>
@@ -110,42 +110,54 @@ function App() {
       <section id="skills">
         <h1 style={{ fontSize: 18 }}>Skills</h1>
 
-        {skillLevels.map(({ farmerName, skills }) => (
-          <div style={{ marginLeft: 15 }}>
-            <h2 style={{ fontSize: 12 }}>{farmerName}</h2>
+        {farmers.map((farmer) => {
+          const skillAttribs = gameSave.getSkillAttributes(farmer)!;
 
-            {skills.map((skill) => (
-              <div
-                key={farmerName}
-                style={{ display: "flex", gap: 10, alignItems: "center" }}
-              >
-                <span>{skill.title}</span>
-                <progress max={10} value={skill.level} />
-                <span>{skill.level} / 10</span>
+          return (
+            <div style={{ marginLeft: 15 }}>
+              <h2 style={{ fontSize: 12 }}>
+                {farmer}{" "}
+                <a
+                  href="https://stardewvalleywiki.com/Skills#Skill-Based_Title"
+                  target="_blank"
+                >
+                  <span>({skillAttribs.title})</span>
+                </a>
+              </h2>
 
-                {skill.professions.map((profession) => (
-                  <div>
-                    <a
-                      href={`https://stardewvalleywiki.com/Skills#${skill.title}`}
-                      target="_blank"
-                    >
-                      <img
-                        width={24}
-                        title={profession}
-                        src={
-                          // @ts-ignore
-                          professions[
-                            `./assets/profession/${lowerCase(profession)}.png`
-                          ]?.default ?? ""
-                        }
-                      />
-                    </a>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        ))}
+              {skillAttribs.skills.map((skill) => (
+                <div
+                  key={skill.title}
+                  style={{ display: "flex", gap: 10, alignItems: "center" }}
+                >
+                  <span>{skill.title}</span>
+                  <progress max={10} value={skill.level} />
+                  <span>{skill.level} / 10</span>
+
+                  {skill.professions.map((profession) => (
+                    <div>
+                      <a
+                        href={`https://stardewvalleywiki.com/Skills#${skill.title}`}
+                        target="_blank"
+                      >
+                        <img
+                          width={24}
+                          title={profession}
+                          src={
+                            // @ts-ignore
+                            professions[
+                              `./assets/profession/${lowerCase(profession)}.png`
+                            ].default
+                          }
+                        />
+                      </a>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          );
+        })}
       </section>
     </main>
   );

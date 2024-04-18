@@ -3,6 +3,8 @@ import { intersection } from "lodash";
 
 type stringNumber = `${number}`;
 
+type gender = "Female" | "Male";
+
 export namespace StardewSave {
   export interface SaveXml {
     player: [PlayerXml];
@@ -22,7 +24,7 @@ export namespace StardewSave {
     name: [string];
     farmName: [string];
     gameVersion: [string];
-    gender: [string];
+    gender: [gender];
     millisecondsPlayed: [stringNumber];
     farmingLevel: [stringNumber];
     fishingLevel: [stringNumber];
@@ -124,14 +126,15 @@ export class GameSave {
   public getAllFarmers() {
     return this.saveXml.farmhands
       .map((farmand) => farmand.Farmer[0])
-      .concat(this.saveXml.player);
+      .concat(this.saveXml.player)
+      .map((farmer) => farmer.name[0]);
   }
 
   public getFarmer(name: string) {
     if (this.saveXml.player[0].name[0] === name) return this.saveXml.player[0];
     return this.saveXml.farmhands.find(
       (farmhand) => farmhand.Farmer[0].name[0] === name
-    );
+    )?.Farmer[0];
   }
 
   public getProfessions(
@@ -149,45 +152,69 @@ export class GameSave {
       });
   }
 
-  public getSkillLevels() {
-    return this.getAllFarmers().map((farmer) => ({
-      farmerName: farmer.name[0],
-      skills: [
-        {
-          title: "Farming",
-          level: parseInt(farmer.farmingLevel[0]),
-          professions: this.getProfessions(
-            farmer.professions[0].int,
-            "farming"
-          ),
-        },
-        {
-          title: "Fishing",
-          level: parseInt(farmer.fishingLevel[0]),
-          professions: this.getProfessions(
-            farmer.professions[0].int,
-            "fishing"
-          ),
-        },
-        {
-          title: "Mining",
-          level: parseInt(farmer.miningLevel[0]),
-          professions: this.getProfessions(farmer.professions[0].int, "mining"),
-        },
-        {
-          title: "Foraging",
-          level: parseInt(farmer.foragingLevel[0]),
-          professions: this.getProfessions(
-            farmer.professions[0].int,
-            "foraging"
-          ),
-        },
-        {
-          title: "Combat",
-          level: parseInt(farmer.combatLevel[0]),
-          professions: this.getProfessions(farmer.professions[0].int, "combat"),
-        },
-      ],
-    }));
+  public getSkillBasedTitle(skillLevelsTotal: number, gender: gender) {
+    const v = skillLevelsTotal / 2;
+    if (v >= 30) return "Farm King";
+    if (v >= 28) return "Cropmaster";
+    if (v >= 25) return "Agriculturist";
+    if (v >= 24) return "Farmer";
+    if (v >= 22) return "Rancher";
+    if (v >= 20) return "Planter";
+    if (v >= 18) return "Granger";
+    if (v >= 16) return gender === "Female" ? "Farmgirl" : "Farmboy";
+    if (v >= 14) return "Sodbuster";
+    if (v >= 12) return "Smallholder";
+    if (v >= 10) return "Tiller";
+    if (v >= 8) return "Farmhand";
+    if (v >= 6) return "Cowpoke";
+    if (v >= 4) return "Bumpkin";
+    if (v >= 2) return "Greenhorn";
+    return "Newcomer";
+  }
+
+  public getSkillAttributes(farmerName: string) {
+    const farmer = this.getFarmer(farmerName);
+    if (!farmer) return;
+
+    const skills = [
+      {
+        title: "Farming",
+        level: parseInt(farmer.farmingLevel[0]),
+        professions: this.getProfessions(farmer.professions[0].int, "farming"),
+      },
+      {
+        title: "Fishing",
+        level: parseInt(farmer.fishingLevel[0]),
+        professions: this.getProfessions(farmer.professions[0].int, "fishing"),
+      },
+      {
+        title: "Mining",
+        level: parseInt(farmer.miningLevel[0]),
+        professions: this.getProfessions(farmer.professions[0].int, "mining"),
+      },
+      {
+        title: "Foraging",
+        level: parseInt(farmer.foragingLevel[0]),
+        professions: this.getProfessions(farmer.professions[0].int, "foraging"),
+      },
+      {
+        title: "Combat",
+        level: parseInt(farmer.combatLevel[0]),
+        professions: this.getProfessions(farmer.professions[0].int, "combat"),
+      },
+      // {
+      //   title: "Luck",
+      //   level: parseInt(farmer.luckLevel[0]),
+      //   professions: this.getProfessions(farmer.professions[0].int, "combat"),
+      // },
+    ];
+
+    return {
+      title: this.getSkillBasedTitle(
+        skills.reduce((total, skill) => total + skill.level, 0),
+        farmer.gender[0]
+      ),
+      skills,
+    };
   }
 }

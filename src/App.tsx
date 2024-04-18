@@ -6,6 +6,8 @@ import { GameSave } from "./util/GameSave";
 import { lowerCase } from "case-anything";
 import stardropPng from "./assets/stardrop.png";
 import stardropGif from "./assets/stardrop.gif";
+import femalePng from "./assets/icon/female.png";
+import malePng from "./assets/icon/male.png";
 
 const achievements = import.meta.glob("./assets/achievement/ingame/*.png", {
   eager: true,
@@ -35,7 +37,7 @@ function Achievement(props: {
         {achieved ? "\u2714" : "\u2718"}
       </span> */}
       <img
-        width={20}
+        width={25}
         style={{
           marginRight: 8,
           filter: props.achieved ? "" : "brightness(0)",
@@ -70,49 +72,70 @@ function App() {
   console.log(xml.SaveGame);
 
   const gameSave = new GameSave(xml.SaveGame);
-  const saveSummary = gameSave.getSaveSummary();
+  const farmSummary = gameSave.getFarmSummary();
   const moneySummary = gameSave.getMoneySummary();
   const specialOrders = gameSave.getSpecialOrders();
   const farmerNames = gameSave.getAllFarmerNames();
 
   return (
     <main>
-      <section id="summary">
+      <section id="farm-summary">
         <h1 style={{ fontSize: 24 }}>Summary</h1>
         <ul>
           <li>
-            {saveSummary.farmName} Farm (
+            {farmSummary.farmName} Farm (
             <img
               width={20}
               style={{}}
               src={
                 // @ts-ignore
                 farmTypes[
-                  `./assets/farm/${lowerCase(saveSummary.farmType).replace(
+                  `./assets/farm/${lowerCase(farmSummary.farmType).replace(
                     /\s+/g,
                     "-"
                   )}.png`
                 ].default
               }
             />{" "}
-            {saveSummary.farmType})
+            {farmSummary.farmType})
           </li>
-          <li>Farmer: {saveSummary.playerName}</li>
-          <li>Farmhand(s): {saveSummary.farmhandNames.join(",")}</li>
           <li>
-            Day {saveSummary.currentDate.day} of{" "}
-            {saveSummary.currentDate.season}, Year{" "}
-            {saveSummary.currentDate.year}
+            Farmer:
+            <img
+              alt="Farmer Gender"
+              title={farmSummary.player.gender}
+              src={farmSummary.player.gender === "Male" ? malePng : femalePng}
+            />{" "}
+            {farmSummary.player.name}
           </li>
-          <li>Played for {saveSummary.playtime}ms</li>
-          <li>Save is from version {saveSummary.gameVersion}</li>
+          <li>
+            Farmhand(s):{" "}
+            {farmSummary.farmhands.map((farmer, index) => (
+              <>
+                <img
+                  alt="Farmer Gender"
+                  title={farmer.gender}
+                  src={farmer.gender === "Male" ? malePng : femalePng}
+                />{" "}
+                {farmer.name}
+                {index !== farmSummary.farmhands.length - 1 && <>, </>}
+              </>
+            ))}
+          </li>
+          <li>
+            Day {farmSummary.currentDate.day} of{" "}
+            {farmSummary.currentDate.season}, Year{" "}
+            {farmSummary.currentDate.year}
+          </li>
+          <li>Played for {farmSummary.playtime}ms</li>
+          <li>Save is from version {farmSummary.gameVersion}</li>
         </ul>
       </section>
 
       <section id="money">
         <h1 style={{ fontSize: 24 }}>Money </h1>
         <div style={{ marginLeft: 15, marginBottom: 10 }}>
-          {saveSummary.farmName} Farm has earned{" "}
+          {farmSummary.farmName} Farm has earned{" "}
           <Currency amount={moneySummary.earnedTotal} />.
         </div>
 

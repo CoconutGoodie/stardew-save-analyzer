@@ -2,18 +2,18 @@ import { capitalCase } from "case-anything";
 import { entries, intersection, keys, lowerCase } from "lodash";
 import { Currency } from "../component/Currency";
 
-type stringNumber = `${number}`;
+type StringNumber = `${number}`;
 
-type gender = "Female" | "Male";
+type Gender = "Female" | "Male";
 
 export namespace StardewSave {
   export interface SaveXml {
     player: [PlayerXml];
     farmhands: { Farmer: [FarmerXml] }[];
     whichFarm: [keyof typeof GameSave.FARM_TYPES];
-    year: [stringNumber];
+    year: [StringNumber];
     currentSeason: [string];
-    dayOfMonth: [stringNumber];
+    dayOfMonth: [StringNumber];
     weatherForTomorrow: [string];
     completedSpecialOrders: [{ string: string[] }];
   }
@@ -26,14 +26,14 @@ export namespace StardewSave {
     name: [string];
     farmName: [string];
     gameVersion: [string];
-    gender: [gender];
-    millisecondsPlayed: [stringNumber];
-    farmingLevel: [stringNumber];
-    fishingLevel: [stringNumber];
-    miningLevel: [stringNumber];
-    foragingLevel: [stringNumber];
-    combatLevel: [stringNumber];
-    professions: [{ int: stringNumber[] }];
+    gender: [Gender];
+    millisecondsPlayed: [StringNumber];
+    farmingLevel: [StringNumber];
+    fishingLevel: [StringNumber];
+    miningLevel: [StringNumber];
+    foragingLevel: [StringNumber];
+    combatLevel: [StringNumber];
+    professions: [{ int: StringNumber[] }];
     mailReceived: [{ string: string[] }];
   }
 }
@@ -164,14 +164,18 @@ export class GameSave {
 
   constructor(private saveXml: StardewSave.SaveXml) {}
 
-  public getSaveSummary() {
+  public getFarmSummary() {
     return {
       farmName: this.saveXml.player[0].farmName[0],
       farmType: GameSave.FARM_TYPES[this.saveXml.whichFarm[0]],
-      playerName: this.saveXml.player[0].name,
-      farmhandNames: this.saveXml.farmhands.map(
-        (farmhand) => farmhand.Farmer[0].name
-      ),
+      player: {
+        name: this.saveXml.player[0].name[0],
+        gender: this.saveXml.player[0].gender[0],
+      },
+      farmhands: this.saveXml.farmhands.map((farmhand) => ({
+        name: farmhand.Farmer[0].name[0],
+        gender: farmhand.Farmer[0].gender[0],
+      })),
       gameVersion: this.saveXml.player[0].gameVersion[0],
       playtime: parseInt(this.saveXml.player[0].millisecondsPlayed[0]),
       currentDate: {
@@ -209,7 +213,7 @@ export class GameSave {
   }
 
   public getProfessions(
-    farmerProfessions: stringNumber[],
+    farmerProfessions: StringNumber[],
     skillName: keyof typeof GameSave.PROFESSIONS
   ) {
     return intersection(
@@ -223,7 +227,7 @@ export class GameSave {
       });
   }
 
-  public getSkillBasedTitle(skillLevelsTotal: number, gender: gender) {
+  public getSkillBasedTitle(skillLevelsTotal: number, gender: Gender) {
     const v = skillLevelsTotal / 2;
     if (v >= 30) return "Farm King";
     if (v >= 28) return "Cropmaster";

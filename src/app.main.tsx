@@ -14,10 +14,16 @@ import {
   STARDEW_FISH_CATEGORIES,
 } from "./const/StardewFishes";
 import { entries, keys } from "lodash";
+import "./style/style.scss";
+import { AssetRepository } from "./util/AssetRepository";
+import { Achievement } from "./component/Achievement";
+import { MoneySummarySection } from "./section/MoneySummarySection";
 
-const achievements = import.meta.glob("./assets/achievement/ingame/*.png", {
-  eager: true,
-});
+const achievementSprites = new AssetRepository<{ default: string }>(
+  import.meta.glob("./assets/achievement/ingame/*.png", { eager: true }),
+  "./assets/achievement/ingame/",
+  ".png"
+);
 
 const farmTypes = import.meta.glob("./assets/farm/*.png", {
   eager: true,
@@ -35,7 +41,7 @@ const fishSprites = import.meta.glob("./assets/fish/*.png", {
   eager: true,
 });
 
-function Achievement(props: {
+function AchievementEx(props: {
   title: string;
   description?: ReactNode;
   achieved?: boolean;
@@ -50,20 +56,15 @@ function Achievement(props: {
         width={25}
         style={{
           marginRight: 8,
-          filter: props.achieved ? "" : "brightness(0)",
+          filter: props.achieved ? "" : "brightness(0.5)",
           opacity: props.achieved ? 1 : 0.2,
         }}
         src={
-          // @ts-ignore
-          achievements[
-            `./assets/achievement/ingame/${lowerCase(props.title).replace(
-              /\s+/g,
-              "_"
-            )}.png`
-            // @ts-ignore
-          ]?.default ??
-          // @ts-ignore
-          achievements[`./assets/achievement/ingame/cowpoke.png`].default
+          (
+            achievementSprites.resolve(
+              lowerCase(props.title).replace(/\s+/g, "_")
+            ) ?? achievementSprites.resolve("cowpoke")
+          ).default
         }
       />
       <a
@@ -83,7 +84,6 @@ function App() {
 
   const gameSave = new GameSave(xml.SaveGame);
   const farmSummary = gameSave.getFarmSummary();
-  const moneySummary = gameSave.getMoneySummary();
   const specialOrders = gameSave.getSpecialOrders();
   const farmerNames = gameSave.getAllFarmerNames();
 
@@ -142,38 +142,7 @@ function App() {
         </ul>
       </section>
 
-      <section id="money">
-        <h1 style={{ fontSize: 24 }}>Money </h1>
-        <div style={{ marginLeft: 15, marginBottom: 10 }}>
-          {farmSummary.farmName} Farm has earned{" "}
-          <Currency amount={moneySummary.earnedTotal} />.
-        </div>
-
-        {moneySummary.achievements.map((achi) => {
-          const achieved = achi.goal <= moneySummary.earnedTotal;
-          return (
-            <Achievement
-              key={achi.title}
-              title={achi.title}
-              achieved={achieved}
-              description={
-                <>
-                  earn <Currency amount={achi.goal} />
-                </>
-              }
-            >
-              {!achieved && (
-                <span style={{ opacity: 0.6 }}>
-                  {" "}
-                  -- need{" "}
-                  <Currency amount={achi.goal - moneySummary.earnedTotal} />
-                  more
-                </span>
-              )}
-            </Achievement>
-          );
-        })}
-      </section>
+      <MoneySummarySection gameSave={gameSave} />
 
       <section id="skills">
         <h1 style={{ fontSize: 24 }}>Skills</h1>
@@ -233,7 +202,7 @@ function App() {
                   </div>
                 ))}
 
-                <Achievement
+                <AchievementEx
                   title={"Singular Talent"}
                   achieved={skillAttribs.skills.some(
                     (skill) => skill.level === 10
@@ -241,7 +210,7 @@ function App() {
                   description={<>Level 10 in a skill</>}
                 />
 
-                <Achievement
+                <AchievementEx
                   title={"Master of the Five Ways"}
                   achieved={skillAttribs.skills.every(
                     (skill) => skill.level === 10
@@ -266,7 +235,7 @@ function App() {
                 width={50}
                 title={order.title}
                 style={{
-                  filter: order.completed ? "" : "brightness(0)",
+                  filter: order.completed ? "" : "brightness(0.5)",
                   opacity: order.completed ? 1 : 0.2,
                 }}
                 src={
@@ -279,14 +248,14 @@ function App() {
           ))}
         </div>
 
-        <Achievement
+        <AchievementEx
           title={"Complete all Special Orders"}
           achieved={specialOrders.every((order) => order.completed)}
         >
           {" "}
           - ({specialOrders.filter((order) => order.completed).length}/
           {specialOrders.length} Done)
-        </Achievement>
+        </AchievementEx>
       </section>
 
       <section id="stardrops">
@@ -339,7 +308,7 @@ function App() {
                 ))}
 
                 <div style={{ marginTop: 10 }}>
-                  <Achievement
+                  <AchievementEx
                     title="Mystery Of The Stardrops"
                     description="Gather every Stardrop"
                     achieved={stardrops.every((stardrop) => stardrop.gathered)}

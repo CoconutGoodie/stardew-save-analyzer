@@ -1,0 +1,23 @@
+.container {
+  padding: 2px 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+
+  & a {
+    color: unset;
+    font-style: italic;
+  }
+}
+
+.icon {
+}
+
+.text {
+  display: inline-block;
+  line-height: 20px;
+
+  & > * {
+    vertical-align: middle;
+  }
+}

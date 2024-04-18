@@ -11,6 +11,10 @@
 }
 
 .icon {
+  &.unchieved {
+    filter: brightness(0.5);
+    opacity: 0.2;
+  }
 }
 
 .text {

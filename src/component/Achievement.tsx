@@ -23,7 +23,7 @@ export const Achievement = (props: Props) => {
     <div className={styles.container}>
       <img
         width={25}
-        className={clsx(styles.icon)}
+        className={clsx(!props.achieved && styles.unchieved, styles.icon)}
         src={
           (
             achievementSprites.resolve(achievementId) ??

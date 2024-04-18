@@ -41,44 +41,6 @@ const fishSprites = import.meta.glob("./assets/fish/*.png", {
   eager: true,
 });
 
-function AchievementEx(props: {
-  title: string;
-  description?: ReactNode;
-  achieved?: boolean;
-  children?: ReactNode;
-}) {
-  return (
-    <div key={props.title}>
-      {/* <span style={{ marginRight: 10 }}>
-        {achieved ? "\u2714" : "\u2718"}
-      </span> */}
-      <img
-        width={25}
-        style={{
-          marginRight: 8,
-          filter: props.achieved ? "" : "brightness(0.5)",
-          opacity: props.achieved ? 1 : 0.2,
-        }}
-        src={
-          (
-            achievementSprites.resolve(
-              lowerCase(props.title).replace(/\s+/g, "_")
-            ) ?? achievementSprites.resolve("cowpoke")
-          ).default
-        }
-      />
-      <a
-        href="https://stardewvalleywiki.com/Achievements#Achievements_List"
-        target="_blank"
-        style={{ color: "unset", fontWeight: 400 }}
-      >
-        <em>{props.title}</em>
-      </a>
-      {props.description && <> ({props.description})</>} {props.children}
-    </div>
-  );
-}
-
 function App() {
   console.log(xml.SaveGame);
 
@@ -202,7 +164,7 @@ function App() {
                   </div>
                 ))}
 
-                <AchievementEx
+                <Achievement
                   title={"Singular Talent"}
                   achieved={skillAttribs.skills.some(
                     (skill) => skill.level === 10
@@ -210,7 +172,7 @@ function App() {
                   description={<>Level 10 in a skill</>}
                 />
 
-                <AchievementEx
+                <Achievement
                   title={"Master of the Five Ways"}
                   achieved={skillAttribs.skills.every(
                     (skill) => skill.level === 10
@@ -248,14 +210,14 @@ function App() {
           ))}
         </div>
 
-        <AchievementEx
+        <Achievement
           title={"Complete all Special Orders"}
           achieved={specialOrders.every((order) => order.completed)}
         >
           {" "}
           - ({specialOrders.filter((order) => order.completed).length}/
           {specialOrders.length} Done)
-        </AchievementEx>
+        </Achievement>
       </section>
 
       <section id="stardrops">
@@ -308,7 +270,7 @@ function App() {
                 ))}
 
                 <div style={{ marginTop: 10 }}>
-                  <AchievementEx
+                  <Achievement
                     title="Mystery Of The Stardrops"
                     description="Gather every Stardrop"
                     achieved={stardrops.every((stardrop) => stardrop.gathered)}

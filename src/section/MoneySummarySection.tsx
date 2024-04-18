@@ -21,7 +21,7 @@ export const MoneySummarySection = (props: Props) => {
     <SummarySection id="money" className={styles.section}>
       <h1>Money </h1>
 
-      <div>{farmSummary.farmName} Farm has earned:</div>
+      <div>In total, {farmSummary.farmName} Farm has earned:</div>
 
       <div className={styles.money}>
         {totalDigits.map((digit, index) => (

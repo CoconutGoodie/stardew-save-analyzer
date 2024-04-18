@@ -193,7 +193,7 @@ export class GameSave {
   ) {
     return intersection(farmerProfessions, keys(STARDEW_PROFESSIONS[skillName]))
       .map((id) => parseInt(id))
-      .sort() // Ensure, lower level professions come first
+      .sort((a, b) => a - b) // Ensure, 5 level professions come first
       .map((professionId) => {
         const professions = STARDEW_PROFESSIONS[skillName];
         return professions[professionId as keyof typeof professions];

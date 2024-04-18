@@ -5,6 +5,7 @@ import { Currency } from "./component/Currency";
 import { GameSave } from "./util/GameSave";
 import { lowerCase } from "case-anything";
 import stardropPng from "./assets/stardrop.png";
+import stardropGif from "./assets/stardrop.gif";
 
 const achievements = import.meta.glob("./assets/achievement/ingame/*.png", {
   eager: true,
@@ -77,7 +78,7 @@ function App() {
   return (
     <main>
       <section id="summary">
-        <h1 style={{ fontSize: 18 }}>Summary</h1>
+        <h1 style={{ fontSize: 24 }}>Summary</h1>
         <ul>
           <li>
             {saveSummary.farmName} Farm (
@@ -109,7 +110,7 @@ function App() {
       </section>
 
       <section id="money">
-        <h1 style={{ fontSize: 18 }}>Money </h1>
+        <h1 style={{ fontSize: 24 }}>Money </h1>
         <div style={{ marginLeft: 15, marginBottom: 10 }}>
           {saveSummary.farmName} Farm has earned{" "}
           <Currency amount={moneySummary.earnedTotal} />.
@@ -142,7 +143,7 @@ function App() {
       </section>
 
       <section id="skills">
-        <h1 style={{ fontSize: 18 }}>Skills</h1>
+        <h1 style={{ fontSize: 24 }}>Skills</h1>
 
         <div
           style={{
@@ -221,7 +222,7 @@ function App() {
       </section>
 
       <section id="special-orders">
-        <h1 style={{ fontSize: 18 }}>Special Orders</h1>
+        <h1 style={{ fontSize: 24 }}>Special Orders</h1>
 
         <div
           style={{ display: "grid", gridTemplateColumns: "repeat(10, 1fr)" }}
@@ -256,7 +257,7 @@ function App() {
       </section>
 
       <section id="stardrops">
-        <h1 style={{ fontSize: 18 }}>Stardrops</h1>
+        <h1 style={{ fontSize: 24 }}>Stardrops</h1>
 
         <div
           style={{
@@ -286,15 +287,20 @@ function App() {
                   <div
                     style={{ display: "flex", gap: 5, alignItems: "center" }}
                   >
-                    <img
-                      width={35}
-                      src={stardropPng}
-                      title={`Stardrop #${index + 1}`}
-                      style={{
-                        filter: stardrop.gathered ? "" : "brightness(0)",
-                        opacity: stardrop.gathered ? 1 : 0.2,
-                      }}
-                    />
+                    <a
+                      href="https://stardewvalleywiki.com/Stardrop#Locations"
+                      target="_blank"
+                    >
+                      <img
+                        width={35}
+                        src={stardrop.gathered ? stardropGif : stardropPng}
+                        title={`Stardrop #${index + 1}`}
+                        style={{
+                          filter: stardrop.gathered ? "" : "brightness(0.5)",
+                          opacity: stardrop.gathered ? 1 : 0.2,
+                        }}
+                      />
+                    </a>
                     {stardrop.description}
                   </div>
                 ))}

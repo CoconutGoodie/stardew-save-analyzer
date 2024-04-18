@@ -16,13 +16,18 @@ const professions = import.meta.glob("./assets/profession/*.png", {
   eager: true,
 });
 
+const specialOrderNpcs = import.meta.glob("./assets/special-order/*.png", {
+  eager: true,
+});
+
 function App() {
   console.log(xml.SaveGame);
 
   const gameSave = new GameSave(xml.SaveGame);
   const saveSummary = gameSave.getSaveSummary();
   const moneySummary = gameSave.getMoneySummary();
-  const farmers = gameSave.getAllFarmers();
+  const specialOrders = gameSave.getSpecialOrders();
+  const farmerNames = gameSave.getAllFarmerNames();
 
   return (
     <main>
@@ -110,13 +115,13 @@ function App() {
       <section id="skills">
         <h1 style={{ fontSize: 18 }}>Skills</h1>
 
-        {farmers.map((farmer) => {
-          const skillAttribs = gameSave.getSkillAttributes(farmer)!;
+        {farmerNames.map((farmerName) => {
+          const skillAttribs = gameSave.getSkillAttributes(farmerName)!;
 
           return (
             <div style={{ marginLeft: 15 }}>
               <h2 style={{ fontSize: 12 }}>
-                {farmer}{" "}
+                {farmerName}{" "}
                 <a
                   href="https://stardewvalleywiki.com/Skills#Skill-Based_Title"
                   target="_blank"
@@ -158,6 +163,36 @@ function App() {
             </div>
           );
         })}
+      </section>
+
+      <section id="special-orders">
+        <h1 style={{ fontSize: 18 }}>
+          Special Orders - (
+          {specialOrders.filter((order) => order.completed).length}/
+          {specialOrders.length} Done)
+        </h1>
+
+        <div
+          style={{ display: "grid", gridTemplateColumns: "repeat(10, 1fr)" }}
+        >
+          {specialOrders.map((order) => (
+            <a href={order.wiki} target="_blank">
+              <img
+                width={50}
+                title={order.title}
+                style={{
+                  filter: order.completed ? "" : "brightness(0)",
+                  opacity: order.completed ? 1 : 0.2,
+                }}
+                src={
+                  // @ts-ignore
+                  specialOrderNpcs[`./assets/special-order/${order.npc}.png`]
+                    .default
+                }
+              />
+            </a>
+          ))}
+        </div>
       </section>
     </main>
   );

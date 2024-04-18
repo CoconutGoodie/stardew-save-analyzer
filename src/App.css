@@ -9,6 +9,10 @@ ul {
   }
 }
 
+img {
+  image-rendering: pixelated;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

@@ -1,5 +1,5 @@
 import { capitalCase } from "case-anything";
-import { intersection } from "lodash";
+import { entries, intersection, keys, lowerCase } from "lodash";
 
 type stringNumber = `${number}`;
 
@@ -14,6 +14,7 @@ export namespace StardewSave {
     currentSeason: [string];
     dayOfMonth: [stringNumber];
     weatherForTomorrow: [string];
+    completedSpecialOrders: [{ string: string[] }];
   }
 
   export interface PlayerXml extends FarmerXml {
@@ -90,6 +91,42 @@ export class GameSave {
     },
   };
 
+  static SPECIAL_ORDERS = {
+    town: {
+      Caroline: "Island Ingredients",
+      Clint: "Cave Patrol",
+      Demetrius: "Aquatic Overpopulation",
+      Demetrius2: "Biome Balance",
+      Emily: "Rock Rejuvenation",
+      Evelyn: "Gifts for George",
+      Gunther: "Fragments of the past",
+      Gus: "Gus' Famous Omelet",
+      Lewis: "Crop Order",
+      Linus: "Community Cleanup",
+      Pam: "The Strong Stuff",
+      Pierre: "Pierre's Prime Produce",
+      Robin: "Robin's Project",
+      Robin2: "Robin's Resource Rush",
+      Willy: "Juicy Bugs Wanted!",
+      Willy2: "Tropical Fish",
+      Wizard: "A Curious Substance",
+      Wizard2: "Prismatic Jelly",
+    },
+
+    qi: {
+      QiChallenge2: "Qi's Crop",
+      QiChallenge3: "Let's Play A Game",
+      QiChallenge4: "Four Precious Stones",
+      QiChallenge5: "Qi's Hungry Challenge",
+      QiChallenge6: "Qi's Cuisine",
+      QiChallenge7: "Qi's Kindness",
+      QiChallenge8: "Extended Family",
+      QiChallenge9: "Danger In The Deep",
+      QiChallenge10: "Skull Cavern Invasion",
+      QiChallenge12: "Qi's Prismatic Grange",
+    },
+  };
+
   constructor(private saveXml: StardewSave.SaveXml) {}
 
   public getSaveSummary() {
@@ -123,7 +160,7 @@ export class GameSave {
     };
   }
 
-  public getAllFarmers() {
+  public getAllFarmerNames() {
     return this.saveXml.farmhands
       .map((farmand) => farmand.Farmer[0])
       .concat(this.saveXml.player)
@@ -143,7 +180,7 @@ export class GameSave {
   ) {
     return intersection(
       farmerProfessions,
-      Object.keys(GameSave.PROFESSIONS[skillName])
+      keys(GameSave.PROFESSIONS[skillName])
     )
       .sort() // Ensure, lower level professions come first
       .map((professionId) => {
@@ -216,5 +253,20 @@ export class GameSave {
       ),
       skills,
     };
+  }
+
+  public getSpecialOrders() {
+    const orders = entries(GameSave.SPECIAL_ORDERS.town);
+
+    return orders.map(([orderId, title]) => ({
+      title,
+      npc: lowerCase(orderId.replace(/\d+/g, "")),
+      completed:
+        this.saveXml.completedSpecialOrders[0].string.includes(orderId),
+      wiki: `https://stardewvalleywiki.com/Quests#${title.replace(
+        /\s+/g,
+        "_"
+      )}`,
+    }));
   }
 }

@@ -13,7 +13,13 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    font-size: 18px;
+    font-family: "Stardew Valley";
+    font-size: 28px;
+    color: #f9b446;
+
+    & > img {
+      width: 32px;
+    }
 
     .progress {
       opacity: 0.5;
@@ -23,7 +29,7 @@
 }
 
 .starfruitList {
-  margin: 20px -5px;
+  margin: 20px -4px;
   display: flex;
   flex-direction: column;
   gap: 8px;

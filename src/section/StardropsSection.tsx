@@ -6,6 +6,7 @@ import { SummarySection } from "../component/SummarySection";
 
 import femalePng from "../assets/icon/female.png";
 import malePng from "../assets/icon/male.png";
+import checkmarkPng from "../assets/icon/checkmark.png";
 
 import styles from "./StardropsSection.module.scss";
 import clsx from "clsx";
@@ -64,7 +65,10 @@ export const StardropsSection = (props: Props) => {
                     }
                   >
                     <div className={styles.description}>
-                      {stardrop.description}
+                      {stardrop.description}{" "}
+                      {stardrop.gathered && (
+                        <img width={14} src={checkmarkPng} />
+                      )}
                     </div>
                   </Objective>
                 ))}

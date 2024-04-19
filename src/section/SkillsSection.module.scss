@@ -14,11 +14,21 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    font-size: 18px;
+
+    & > img {
+      width: 32px;
+    }
+
+    & > :nth-child(2) {
+      font-family: "Stardew Valley";
+      font-size: 28px;
+      color: #f9b446;
+    }
 
     & > a {
       color: unset;
       font-weight: 300;
+      font-size: 18px;
     }
   }
 

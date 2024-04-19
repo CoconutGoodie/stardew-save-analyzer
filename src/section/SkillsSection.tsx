@@ -45,10 +45,8 @@ export const SkillsSection = (props: Props) => {
                   href={StardewWiki.getLink("Skills", "Skill-Based_Title")}
                   target="_blank"
                 >
-                  <span>
-                    ({skillAttributes.title} - Skill Lv.{" "}
-                    {skillAttributes.skillLevel})
-                  </span>
+                  ({skillAttributes.title}{" "}
+                  <span>- Skill Lv. {skillAttributes.skillLevel})</span>
                 </a>
               </h1>
 

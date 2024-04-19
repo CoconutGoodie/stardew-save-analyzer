@@ -47,7 +47,11 @@ export const SpecialOrdersSection = (props: Props) => {
           href={StardewWiki.getLink("Quests", "List_of_Special_Orders")}
           target="_blank"
         >
-          <img height={108} src={boardPng} />
+          <img
+            height={108}
+            className={clsx(!boardBuilt && styles.incomplete)}
+            src={boardPng}
+          />
         </a>
 
         <div className={styles.orders}>

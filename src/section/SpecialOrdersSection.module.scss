@@ -9,6 +9,16 @@
   align-items: center;
   gap: 20px;
 
+  .incomplete {
+    filter: saturate(0) brightness(0.8);
+    opacity: 0.25;
+
+    &:hover {
+      opacity: 0.5;
+      filter: none;
+    }
+  }
+
   .orders {
     width: fit-content;
     display: grid;
@@ -22,13 +32,7 @@
         drop-shadow(2px 0px 0px $color) drop-shadow(-2px 0px 0px $color);
 
       &.incomplete {
-        filter: saturate(0) brightness(0.8);
-        opacity: 0.25;
-
-        &:hover {
-          opacity: 1;
-          filter: none;
-        }
+        filter: unset;
       }
     }
   }

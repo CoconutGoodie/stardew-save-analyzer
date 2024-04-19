@@ -1,7 +1,8 @@
 .container {
   padding: 2px 0;
   display: grid;
-  grid-template-columns: auto 1fr;
+  align-items: center;
+  grid-template-columns: auto auto 1fr;
   gap: 8px;
 
   & a {
@@ -11,7 +12,7 @@
 }
 
 .icon {
-  &.unchieved {
+  &.unachieved {
     filter: brightness(0.5);
     opacity: 0.2;
   }
@@ -21,6 +22,11 @@
   display: inline-flex;
   gap: 4px;
   line-height: 20px;
+
+  &.unachieved {
+    filter: brightness(0.5);
+    opacity: 0.75;
+  }
 
   & > * {
     vertical-align: middle;

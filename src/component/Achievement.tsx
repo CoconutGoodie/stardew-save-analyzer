@@ -1,9 +1,12 @@
 import { PropsWithChildren, ReactNode } from "react";
-import styles from "./Achievement.module.scss";
 import { AssetRepository } from "../util/AssetRepository";
 import { lowerCase } from "case-anything";
 import { clsx } from "clsx";
 import { StardewWiki } from "../util/StardewWiki";
+
+import checkmarkPng from "../assets/icon/checkmark.png";
+
+import styles from "./Achievement.module.scss";
 
 interface Props extends PropsWithChildren {
   title: string;
@@ -11,8 +14,18 @@ interface Props extends PropsWithChildren {
   achieved?: boolean;
 }
 
-const achievementSprites = new AssetRepository<{ default: string }>(
-  import.meta.glob("../assets/sprite/achievement/ingame/*.png", { eager: true }),
+const platformSprites = new AssetRepository<{ default: string }>(
+  import.meta.glob("../assets/sprite/achievement/platform/*.png", {
+    eager: true,
+  }),
+  "../assets/sprite/achievement/platform/",
+  ".png"
+);
+
+const ingameSprites = new AssetRepository<{ default: string }>(
+  import.meta.glob("../assets/sprite/achievement/ingame/*.png", {
+    eager: true,
+  }),
   "../assets/sprite/achievement/ingame/",
   ".png"
 );
@@ -22,18 +35,32 @@ export const Achievement = (props: Props) => {
 
   return (
     <div className={styles.container}>
-      <img
+      {/* <img
         width={25}
+        alt="In-game Icon"
+        title="In-game Icon"
         className={clsx(!props.achieved && styles.unchieved, styles.icon)}
         src={
           (
-            achievementSprites.resolve(achievementId) ??
-            achievementSprites.resolve("cowpoke")
+            ingameSprites.resolve(achievementId) ??
+            ingameSprites.resolve("cowpoke")
+          )?.default
+        }
+      /> */}
+      <img
+        width={25}
+        alt="Platform Icon"
+        title="Platform Icon"
+        className={clsx(!props.achieved && styles.unachieved, styles.icon)}
+        src={
+          (
+            platformSprites.resolve(achievementId) ??
+            platformSprites.resolve("unknown")
           )?.default
         }
       />
 
-      <div className={styles.text}>
+      <div className={clsx(!props.achieved && styles.unachieved, styles.text)}>
         <a
           href={StardewWiki.getLink("Achievements", "Achievements_List")}
           target="_blank"
@@ -45,6 +72,8 @@ export const Achievement = (props: Props) => {
 
         {props.children}
       </div>
+
+      {props.achieved && <img src={checkmarkPng} />}
     </div>
   );
 };

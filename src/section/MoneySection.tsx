@@ -51,7 +51,7 @@ export const MoneySection = (props: Props) => {
               }
             >
               {!achieved && (
-                <span className={styles.amountLeft}>
+                <span>
                   —{" "}
                   <Currency
                     amount={achievement.goal - moneySummary.earnedTotal}

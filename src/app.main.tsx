@@ -9,9 +9,11 @@ import { MoneySection } from "./section/MoneySection";
 import { SkillsSection } from "./section/SkillsSection";
 import { SpecialOrdersSection } from "./section/SpecialOrdersSection";
 import { StardropsSection } from "./section/StardropsSection";
-import "./style/style.scss";
 import { GameSave } from "./util/GameSave";
 import { SummarySection } from "./component/SummarySection";
+import logoPng from "./assets/logo.png";
+
+import "./style/style.scss";
 
 const farmTypes = import.meta.glob("./assets/sprite/farm/*.png", {
   eager: true,
@@ -22,14 +24,21 @@ const fishSprites = import.meta.glob("./assets/sprite/fish/*.png", {
 });
 
 function App() {
-  console.log(xml.SaveGame);
-
   const gameSave = new GameSave(xml.SaveGame);
   const farmSummary = gameSave.getFarmSummary();
   const farmerNames = gameSave.getAllFarmerNames();
 
   return (
     <main>
+      <header>
+        <img
+          width={350}
+          src={logoPng}
+          // For debug purposes
+          onClick={() => console.log(xml.SaveGame)}
+        />
+      </header>
+
       <section id="farm-summary">
         <h1 style={{ fontSize: 24 }}>Summary</h1>
         <ul>
@@ -41,10 +50,9 @@ function App() {
               src={
                 // @ts-ignore
                 farmTypes[
-                  `./assets/sprite/farm/${lowerCase(farmSummary.farmType).replace(
-                    /\s+/g,
-                    "-"
-                  )}.png`
+                  `./assets/sprite/farm/${lowerCase(
+                    farmSummary.farmType
+                  ).replace(/\s+/g, "-")}.png`
                 ].default
               }
             />{" "}
@@ -158,10 +166,9 @@ function App() {
                               src={
                                 // @ts-ignore
                                 fishSprites[
-                                  `./assets/sprite/fish/${lowerCase(fish.name).replace(
-                                    /\s+/g,
-                                    "_"
-                                  )}.png`
+                                  `./assets/sprite/fish/${lowerCase(
+                                    fish.name
+                                  ).replace(/\s+/g, "_")}.png`
                                   // @ts-ignore
                                 ]?.default ?? ""
                               }

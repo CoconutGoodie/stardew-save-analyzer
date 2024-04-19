@@ -2,13 +2,13 @@ import { Achievement } from "../component/Achievement";
 import { Currency } from "../component/Currency";
 import { SummarySection } from "../component/SummarySection";
 import { GameSave } from "../util/GameSave";
-import styles from "./MoneySummarySection.module.scss";
+import styles from "./MoneySection.module.scss";
 
 interface Props {
   gameSave: GameSave;
 }
 
-export const MoneySummarySection = (props: Props) => {
+export const MoneySection = (props: Props) => {
   const farmSummary = props.gameSave.getFarmSummary();
   const moneySummary = props.gameSave.getMoneySummary();
 

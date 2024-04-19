@@ -107,7 +107,8 @@ export class GameSave {
   static STARDROP_MAILS = {
     CF_Fair: (
       <>
-        Sold for <Currency amount={2000} /> at the Stardew Valley Fair.
+        Sold for <Currency amount={2000} unit="starToken" /> at the Stardew
+        Valley Fair.
       </>
     ),
     CF_Mines: <>Obtained from the treasure chest on floor 100 in the Mines.</>,

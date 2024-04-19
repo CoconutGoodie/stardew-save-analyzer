@@ -7,20 +7,14 @@ import malePng from "./assets/icon/male.png";
 import stardropGif from "./assets/stardrop.gif";
 import stardropPng from "./assets/stardrop.png";
 import { Achievement } from "./component/Achievement";
-import {
-  FishCategory,
-  STARDEW_FISH_CATEGORIES
-} from "./const/StardewFishes";
-import { MoneySummarySection } from "./section/MoneySummarySection";
+import { FishCategory, STARDEW_FISH_CATEGORIES } from "./const/StardewFishes";
+import { MoneySection } from "./section/MoneySection";
 import { SkillsSection } from "./section/SkillsSection";
 import "./style/style.scss";
 import { GameSave } from "./util/GameSave";
+import { SpecialOrdersSection } from "./section/SpecialOrdersSection";
 
 const farmTypes = import.meta.glob("./assets/farm/*.png", {
-  eager: true,
-});
-
-const specialOrderNpcs = import.meta.glob("./assets/special-order/*.png", {
   eager: true,
 });
 
@@ -33,7 +27,6 @@ function App() {
 
   const gameSave = new GameSave(xml.SaveGame);
   const farmSummary = gameSave.getFarmSummary();
-  const specialOrders = gameSave.getSpecialOrders();
   const farmerNames = gameSave.getAllFarmerNames();
 
   return (
@@ -93,7 +86,7 @@ function App() {
 
       <hr />
 
-      <MoneySummarySection gameSave={gameSave} />
+      <MoneySection gameSave={gameSave} />
 
       <hr />
 
@@ -101,40 +94,7 @@ function App() {
 
       <hr />
 
-      <section id="special-orders">
-        <h1 style={{ fontSize: 24 }}>Special Orders</h1>
-
-        <div
-          style={{ display: "grid", gridTemplateColumns: "repeat(10, 1fr)" }}
-        >
-          {specialOrders.map((order) => (
-            <a href={order.wiki} target="_blank">
-              <img
-                width={50}
-                title={order.title}
-                style={{
-                  filter: order.completed ? "" : "brightness(0.5)",
-                  opacity: order.completed ? 1 : 0.2,
-                }}
-                src={
-                  // @ts-ignore
-                  specialOrderNpcs[`./assets/special-order/${order.npc}.png`]
-                    .default
-                }
-              />
-            </a>
-          ))}
-        </div>
-
-        <Achievement
-          title={"Complete all Special Orders"}
-          achieved={specialOrders.every((order) => order.completed)}
-        >
-          {" "}
-          - ({specialOrders.filter((order) => order.completed).length}/
-          {specialOrders.length} Done)
-        </Achievement>
-      </section>
+      <SpecialOrdersSection gameSave={gameSave} />
 
       <hr />
 

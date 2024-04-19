@@ -1,0 +1,24 @@
+.orders {
+  margin-bottom: 10px;
+  padding: 16px 20px;
+  width: 500px;
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+  grid-template-columns: repeat(6, 1fr);
+  background: rgba(#c7b07f, 0.5);
+  border: 2px solid #ad8f4d;
+  border-radius: 10px;
+  box-shadow: inset -4px 4px 0px 0px rgba(#000, 0.125),
+    inset 2px -2px 0px 0px rgba(#000, 0.25);
+
+  & > a {
+    width: fit-content;
+    display: flex;
+    border: 2px solid rgba(#000, 0.1);
+  }
+
+  img {
+    filter: drop-shadow(0 0 2px #fadea2);
+  }
+}

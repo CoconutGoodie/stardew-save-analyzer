@@ -4,15 +4,13 @@ import "./App.css";
 import xml from "./assets/Kaktus_372348215.xml";
 import femalePng from "./assets/icon/female.png";
 import malePng from "./assets/icon/male.png";
-import stardropGif from "./assets/stardrop.gif";
-import stardropPng from "./assets/stardrop.png";
-import { Achievement } from "./component/Achievement";
 import { FishCategory, STARDEW_FISH_CATEGORIES } from "./const/StardewFishes";
 import { MoneySection } from "./section/MoneySection";
 import { SkillsSection } from "./section/SkillsSection";
+import { SpecialOrdersSection } from "./section/SpecialOrdersSection";
+import { StardropsSection } from "./section/StardropsSection";
 import "./style/style.scss";
 import { GameSave } from "./util/GameSave";
-import { SpecialOrdersSection } from "./section/SpecialOrdersSection";
 
 const farmTypes = import.meta.glob("./assets/farm/*.png", {
   eager: true,
@@ -98,67 +96,7 @@ function App() {
 
       <hr />
 
-      <section id="stardrops">
-        <h1 style={{ fontSize: 24 }}>Stardrops</h1>
-
-        <div
-          style={{
-            display: "grid",
-            gap: 50,
-            gridTemplateColumns: `repeat(${farmerNames.length}, 1fr)`,
-          }}
-        >
-          {farmerNames.map((farmerName) => {
-            const stardrops = gameSave.getStardrops(farmerName)!;
-
-            return (
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 8,
-                }}
-              >
-                <h2 style={{ fontSize: 12 }}>
-                  {farmerName} - (
-                  {stardrops.filter((stardrop) => stardrop.gathered).length}/
-                  {stardrops.length})
-                </h2>
-
-                {stardrops.map((stardrop, index) => (
-                  <div
-                    style={{ display: "flex", gap: 5, alignItems: "center" }}
-                  >
-                    <a
-                      href="https://stardewvalleywiki.com/Stardrop#Locations"
-                      target="_blank"
-                    >
-                      <img
-                        width={35}
-                        src={stardrop.gathered ? stardropGif : stardropPng}
-                        title={`Stardrop #${index + 1}`}
-                        style={{
-                          filter: stardrop.gathered ? "" : "brightness(0.5)",
-                          opacity: stardrop.gathered ? 1 : 0.2,
-                        }}
-                      />
-                    </a>
-                    {stardrop.description}
-                  </div>
-                ))}
-
-                <div style={{ marginTop: 10 }}>
-                  <Achievement
-                    title="Mystery Of The Stardrops"
-                    description="Gather every Stardrop"
-                    achieved={stardrops.every((stardrop) => stardrop.gathered)}
-                  />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
+      <StardropsSection gameSave={gameSave} />
 
       <hr />
 

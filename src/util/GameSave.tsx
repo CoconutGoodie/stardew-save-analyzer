@@ -265,11 +265,11 @@ export class GameSave {
       // },
     ];
 
+    const totalLevel = skills.reduce((total, skill) => total + skill.level, 0);
+
     return {
-      title: this.getSkillBasedTitle(
-        skills.reduce((total, skill) => total + skill.level, 0),
-        farmer.gender[0]
-      ),
+      skillLevel: Math.floor(totalLevel / 2),
+      title: this.getSkillBasedTitle(totalLevel, farmer.gender[0]),
       skills,
     };
   }

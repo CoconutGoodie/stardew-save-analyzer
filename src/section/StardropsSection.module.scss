@@ -1,0 +1,34 @@
+.farmer {
+  margin-bottom: 20px;
+
+  .name {
+    margin: 0 0 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 18px;
+
+    .progress {
+      opacity: 0.5;
+      font-weight: 300;
+    }
+  }
+}
+
+.starfruitList {
+  margin: 20px -5px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .starfruit {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+
+    &.gathered {
+      // text-decoration: line-through;
+      // opacity: 0.5;
+    }
+  }
+}

@@ -32,7 +32,8 @@ export const SkillsSection = (props: Props) => {
       >
         {farmerNames.map((farmerName) => {
           const farmer = props.gameSave.getFarmer(farmerName);
-          const skillAttribs = props.gameSave.getSkillAttributes(farmerName)!;
+          const skillAttributes =
+            props.gameSave.getSkillAttributes(farmerName)!;
 
           return (
             <div className={styles.farmer}>
@@ -43,11 +44,14 @@ export const SkillsSection = (props: Props) => {
                   href="https://stardewvalleywiki.com/Skills#Skill-Based_Title"
                   target="_blank"
                 >
-                  <span>({skillAttribs.title})</span>
+                  <span>
+                    ({skillAttributes.title} - Skill Lv.{" "}
+                    {skillAttributes.skillLevel})
+                  </span>
                 </a>
               </h1>
 
-              {skillAttribs.skills.map((skill) => (
+              {skillAttributes.skills.map((skill) => (
                 <div key={skill.title} className={styles.skill}>
                   <span>{skill.title}</span>
                   <img width={20} src={skill.iconSrc} />
@@ -98,7 +102,7 @@ export const SkillsSection = (props: Props) => {
 
               <Achievement
                 title={"Singular Talent"}
-                achieved={skillAttribs.skills.some(
+                achieved={skillAttributes.skills.some(
                   (skill) => skill.level === 10
                 )}
                 description={<>Reach Level 10 in a skill</>}
@@ -106,7 +110,7 @@ export const SkillsSection = (props: Props) => {
 
               <Achievement
                 title={"Master of the Five Ways"}
-                achieved={skillAttribs.skills.every(
+                achieved={skillAttributes.skills.every(
                   (skill) => skill.level === 10
                 )}
                 description={<>Reach Level 10 in every skill</>}

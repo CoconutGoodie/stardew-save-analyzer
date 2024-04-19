@@ -10,6 +10,7 @@ import miningPng from "../assets/sprite/skill/mining.png";
 import { STARDEW_PROFESSIONS } from "../const/StardewProfessions";
 import { STARDROP_MAIL_FLAGS } from "../const/StardewStardrops";
 import { StardewWiki } from "./StardewWiki";
+import { GameDate, GameSeason } from "./GameDate";
 
 type StringNumber = `${number}`;
 
@@ -121,11 +122,11 @@ export class GameSave {
       })),
       gameVersion: this.saveXml.player[0].gameVersion[0],
       playtime: parseInt(this.saveXml.player[0].millisecondsPlayed[0]),
-      currentDate: {
-        year: parseInt(this.saveXml.year[0]),
-        season: capitalCase(this.saveXml.currentSeason[0]),
-        day: parseInt(this.saveXml.dayOfMonth[0]),
-      },
+      currentDate: new GameDate(
+        parseInt(this.saveXml.dayOfMonth[0]),
+        capitalCase(this.saveXml.currentSeason[0]) as GameSeason,
+        parseInt(this.saveXml.year[0])
+      ),
     };
   }
 

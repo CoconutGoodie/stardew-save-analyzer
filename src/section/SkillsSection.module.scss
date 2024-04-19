@@ -70,6 +70,10 @@
           display: flex;
           justify-content: center;
         }
+
+        &:not(:empty):hover {
+          border-color: #fff;
+        }
       }
     }
   }

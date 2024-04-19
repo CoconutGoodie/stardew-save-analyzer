@@ -9,10 +9,15 @@ import boardPng from "../assets/sprite/special-order/special_order_board.png";
 
 import styles from "./SpecialOrdersSection.module.scss";
 import clsx from "clsx";
+import { GameDateDisplay } from "../component/GameDateDisplay";
+import { GameDate, GameSeason } from "../util/GameDate";
+import { Objective } from "../component/Objective";
 
 interface Props {
   gameSave: GameSave;
 }
+
+const BOARD_BUILD_DATE = new GameDate(2, GameSeason.Fall, 1);
 
 const specialOrderNpcs = new AssetRepository<{ default: string }>(
   import.meta.glob("../assets/sprite/special-order/*.png", {
@@ -23,9 +28,17 @@ const specialOrderNpcs = new AssetRepository<{ default: string }>(
 );
 
 export const SpecialOrdersSection = (props: Props) => {
+  const farmSummary = props.gameSave.getFarmSummary();
   const specialOrders = props.gameSave.getSpecialOrders();
 
-  const completed = specialOrders.filter((order) => order.completed).length;
+  const completedCount = specialOrders.filter(
+    (order) => order.completed
+  ).length;
+
+  const boardBuilt =
+    BOARD_BUILD_DATE.canonicalDay <= farmSummary.currentDate.canonicalDay;
+
+  const everyOrderCompleted = completedCount === specialOrders.length;
 
   return (
     <SummarySection id="special-orders">
@@ -56,17 +69,20 @@ export const SpecialOrdersSection = (props: Props) => {
         </div>
       </div>
 
-      <div className={styles.info}>
-        <img width={14} src={checkmarkPng} />
-        <span>Special Orders Board has been built (Day 2 of Fall, Year 1)</span>
-      </div>
+      <Objective done={boardBuilt} className={styles.objective}>
+        "Special Orders Board" has been built. (On{" "}
+        <GameDateDisplay date={BOARD_BUILD_DATE} /> )
+      </Objective>
 
-      <div className={styles.info}>
-        <img width={14} src={questPng} />
-        <span>
-          Completed {completed} out of {specialOrders.length}
-        </span>
-      </div>
+      <Objective done={everyOrderCompleted} className={styles.objective}>
+        Every Special Order is completed.
+        {!everyOrderCompleted && (
+          <span>
+            {" "}
+            — Completed {completedCount} out of {specialOrders.length}
+          </span>
+        )}
+      </Objective>
     </SummarySection>
   );
 };

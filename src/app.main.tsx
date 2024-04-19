@@ -14,6 +14,7 @@ import { SummarySection } from "./component/SummarySection";
 import logoPng from "./assets/logo.png";
 
 import "./style/style.scss";
+import { GameDateDisplay } from "./component/GameDateDisplay";
 
 const farmTypes = import.meta.glob("./assets/sprite/farm/*.png", {
   eager: true,
@@ -82,9 +83,7 @@ function App() {
             ))}
           </li>
           <li>
-            Today is Day {farmSummary.currentDate.day} of{" "}
-            {farmSummary.currentDate.season}, Year{" "}
-            {farmSummary.currentDate.year}
+            Today is <GameDateDisplay date={farmSummary.currentDate} />
           </li>
           <li>Played for {farmSummary.playtime}ms</li>
           <li>Game Version {farmSummary.gameVersion}</li>
@@ -107,9 +106,7 @@ function App() {
 
       <SpecialOrdersSection gameSave={gameSave} />
 
-      <hr />
-
-      <section id="fishing">
+      {/* <section id="fishing">
         <h1 style={{ fontSize: 24 }}>Fish Collection</h1>
 
         <div
@@ -188,9 +185,9 @@ function App() {
             );
           })}
         </div>
-      </section>
+      </section> */}
 
-      <footer style={{ height: 100 }}></footer>
+      <footer style={{ height: 200 }}></footer>
     </main>
   );
 }

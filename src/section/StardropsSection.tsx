@@ -75,7 +75,7 @@ export const StardropsSection = (props: Props) => {
 
               <div style={{ marginTop: 10 }}>
                 <Achievement
-                  title="Mystery Of The Stardrops"
+                  title="Mystery of the Stardrops"
                   description="Gather every Stardrop"
                   achieved={stardrops.every((stardrop) => stardrop.gathered)}
                 >

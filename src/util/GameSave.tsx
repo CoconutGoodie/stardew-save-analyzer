@@ -1,14 +1,15 @@
 import { capitalCase } from "case-anything";
-import { entries, find, groupBy, intersection, keys, lowerCase } from "lodash";
-import { Currency } from "../component/Currency";
-import { FishCategory, STARDEW_FISHES } from "../const/StardewFishes";
+import { entries, groupBy, intersection, keys, lowerCase } from "lodash";
+import { STARDEW_FISHES } from "../const/StardewFishes";
 
-import farmingPng from "../assets/skill/farming.png";
-import miningPng from "../assets/skill/mining.png";
-import foragingPng from "../assets/skill/foraging.png";
-import fishingPng from "../assets/skill/fishing.png";
 import combatPng from "../assets/skill/combat.png";
+import farmingPng from "../assets/skill/farming.png";
+import fishingPng from "../assets/skill/fishing.png";
+import foragingPng from "../assets/skill/foraging.png";
+import miningPng from "../assets/skill/mining.png";
 import { STARDEW_PROFESSIONS } from "../const/StardewProfessions";
+import { STARDROP_MAIL_FLAGS } from "../const/StardewStardrops";
+import { StardewWiki } from "./StardewWiki";
 
 type StringNumber = `${number}`;
 
@@ -102,40 +103,6 @@ export class GameSave {
       QiChallenge10: "Skull Cavern Invasion",
       QiChallenge12: "Qi's Prismatic Grange",
     },
-  };
-
-  static STARDROP_MAILS = {
-    CF_Fair: (
-      <>
-        Sold for <Currency amount={2000} unit="starToken" /> at the Stardew
-        Valley Fair.
-      </>
-    ),
-    CF_Mines: <>Obtained from the treasure chest on floor 100 in the Mines.</>,
-    CF_Spouse: (
-      <>
-        From the player's spouse or roommate when friendship level reaches 12.5
-        hearts
-      </>
-    ),
-    CF_Sewer: (
-      <>
-        Sold by Krobus for <Currency amount={20000} /> in the Sewers.
-      </>
-    ),
-    CF_Statue: (
-      <>
-        Obtained from Old Master Cannoli in the Secret Woods after giving him a
-        Sweet Gem Berry.
-      </>
-    ),
-    CF_Fish: (
-      <>
-        Received in a letter from Willy the day after attaining the Master
-        Angler Achievement.
-      </>
-    ),
-    museumComplete: <>Reward for donating all 95 items to the Museum.</>,
   };
 
   constructor(private saveXml: StardewSave.SaveXml) {}
@@ -282,10 +249,7 @@ export class GameSave {
       npc: lowerCase(orderId.replace(/\d+/g, "")),
       completed:
         this.saveXml.completedSpecialOrders[0].string.includes(orderId),
-      wiki: `https://stardewvalleywiki.com/Quests#${title.replace(
-        /\s+/g,
-        "_"
-      )}`,
+      wiki: StardewWiki.getLink("Quests", title.replace(/\s+/g, "_")),
     }));
   }
 
@@ -293,7 +257,7 @@ export class GameSave {
     const farmer = this.getFarmer(farmerName);
     if (!farmer) return;
 
-    const mails = entries(GameSave.STARDROP_MAILS);
+    const mails = entries(STARDROP_MAIL_FLAGS);
 
     return mails.map(([mailId, description]) => ({
       description,

@@ -1,5 +1,6 @@
 import goldSrc from "../assets/icon/gold.png";
 import starTokenSrc from "../assets/icon/star-token.png";
+import heartSrc from "../assets/icon/heart_filled.png";
 
 interface Props {
   amount: number;
@@ -10,12 +11,17 @@ const UNITS = {
   gold: {
     iconSrc: goldSrc,
     color: "#ffc400",
-    suffix: "g",
+    suffix: () => "g",
   },
   starToken: {
     iconSrc: starTokenSrc,
     color: "#DBE0E6",
     suffix: undefined,
+  },
+  heart: {
+    iconSrc: heartSrc,
+    color: "#D83700",
+    suffix: (amount: number) => " " + (amount === 1 ? "heart" : "hearts"),
   },
 };
 
@@ -27,12 +33,14 @@ export const Currency = (props: Props) => {
   return (
     <span
       style={{
+        verticalAlign: "middle",
         height: "18px",
         display: "inline-flex",
         alignItems: "center",
+        gap: 3,
       }}
     >
-      <img src={UNITS[unit].iconSrc} />
+      <img height={16} src={UNITS[unit].iconSrc} />
       <span
         style={{
           color: UNITS[unit].color,
@@ -42,7 +50,7 @@ export const Currency = (props: Props) => {
         }}
       >
         {FORMAT.format(props.amount)}
-        {UNITS[unit].suffix}
+        {UNITS[unit].suffix?.(props.amount)}
       </span>
     </span>
   );

@@ -11,6 +11,7 @@ import { SpecialOrdersSection } from "./section/SpecialOrdersSection";
 import { StardropsSection } from "./section/StardropsSection";
 import "./style/style.scss";
 import { GameSave } from "./util/GameSave";
+import { SummarySection } from "./component/SummarySection";
 
 const farmTypes = import.meta.glob("./assets/farm/*.png", {
   eager: true,
@@ -92,11 +93,11 @@ function App() {
 
       <hr />
 
-      <SpecialOrdersSection gameSave={gameSave} />
+      <StardropsSection gameSave={gameSave} />
 
       <hr />
 
-      <StardropsSection gameSave={gameSave} />
+      <SpecialOrdersSection gameSave={gameSave} />
 
       <hr />
 
@@ -181,6 +182,16 @@ function App() {
           })}
         </div>
       </section>
+
+      <hr />
+
+      <SummarySection>
+        <h1>Skill Masteries - TODO</h1>
+      </SummarySection>
+
+      <SummarySection>
+        <h1>Skill Masteries - TODO</h1>
+      </SummarySection>
 
       <footer style={{ height: 100 }}></footer>
     </main>

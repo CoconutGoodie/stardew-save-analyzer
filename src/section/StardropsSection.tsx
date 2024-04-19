@@ -9,6 +9,7 @@ import malePng from "../assets/icon/male.png";
 
 import styles from "./StardropsSection.module.scss";
 import clsx from "clsx";
+import { StardewWiki } from "../util/StardewWiki";
 
 interface Props {
   gameSave: GameSave;
@@ -52,7 +53,7 @@ export const StardropsSection = (props: Props) => {
                     )}
                   >
                     <a
-                      href="https://stardewvalleywiki.com/Stardrop#Locations"
+                      href={StardewWiki.getLink("Stardrop", "Locations")}
                       target="_blank"
                     >
                       <img
@@ -61,11 +62,13 @@ export const StardropsSection = (props: Props) => {
                         title={`Stardrop #${index + 1}`}
                         style={{
                           filter: stardrop.gathered ? "" : "brightness(0.5)",
-                          opacity: stardrop.gathered ? 1 : 0.2,
+                          opacity: stardrop.gathered ? 1 : 0.65,
                         }}
                       />
                     </a>
-                    {stardrop.description}
+                    <div className={styles.description}>
+                      {stardrop.description}
+                    </div>
                   </div>
                 ))}
               </div>

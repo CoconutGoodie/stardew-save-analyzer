@@ -3,6 +3,7 @@ import styles from "./Achievement.module.scss";
 import { AssetRepository } from "../util/AssetRepository";
 import { lowerCase } from "case-anything";
 import { clsx } from "clsx";
+import { StardewWiki } from "../util/StardewWiki";
 
 interface Props extends PropsWithChildren {
   title: string;
@@ -34,7 +35,7 @@ export const Achievement = (props: Props) => {
 
       <div className={styles.text}>
         <a
-          href="https://stardewvalleywiki.com/Achievements#Achievements_List"
+          href={StardewWiki.getLink("Achievements", "Achievements_List")}
           target="_blank"
         >
           {props.title}

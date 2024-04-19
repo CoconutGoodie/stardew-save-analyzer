@@ -8,6 +8,7 @@ import femalePng from "../assets/icon/female.png";
 import malePng from "../assets/icon/male.png";
 
 import styles from "./SkillsSection.module.scss";
+import { StardewWiki } from "../util/StardewWiki";
 
 interface Props {
   gameSave: GameSave;
@@ -41,7 +42,7 @@ export const SkillsSection = (props: Props) => {
                 <img src={farmer?.gender[0] === "Male" ? malePng : femalePng} />
                 <span>{farmerName}</span>
                 <a
-                  href="https://stardewvalleywiki.com/Skills#Skill-Based_Title"
+                  href={StardewWiki.getLink("Skills", "Skill-Based_Title")}
                   target="_blank"
                 >
                   <span>
@@ -74,7 +75,7 @@ export const SkillsSection = (props: Props) => {
                         >
                           {isProfessionPip && reached && (
                             <a
-                              href={`https://stardewvalleywiki.com/Skills#${skill.title}`}
+                              href={StardewWiki.getLink("Skills", skill.title)}
                               target="_blank"
                             >
                               <img

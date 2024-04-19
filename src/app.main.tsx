@@ -1,27 +1,18 @@
-import { lowerCase } from "case-anything";
-import "./App.css";
-import xml from "./assets/Kaktus_372348215.xml";
-import femalePng from "./assets/icon/female.png";
-import malePng from "./assets/icon/male.png";
-import logoPng from "./assets/logo.png";
 import { MoneySection } from "./section/MoneySection";
+import { OverviewSection } from "./section/OverviewSection";
 import { SkillsSection } from "./section/SkillsSection";
 import { SpecialOrdersSection } from "./section/SpecialOrdersSection";
 import { StardropsSection } from "./section/StardropsSection";
 import { GameSave } from "./util/GameSave";
 
-import { GameDateDisplay } from "./component/GameDateDisplay";
-import "./style/style.scss";
-import { OverviewSection } from "./section/OverviewSection";
+import saveXml from "./assets/Kaktus_372348215.xml";
 
-const fishSprites = import.meta.glob("./assets/sprite/fish/*.png", {
-  eager: true,
-});
+import logoPng from "./assets/logo.png";
+
+import "./style/style.scss";
 
 function App() {
-  const gameSave = new GameSave(xml.SaveGame);
-  const farmSummary = gameSave.getFarmOverview();
-  const farmerNames = gameSave.getAllFarmerNames();
+  const gameSave = new GameSave(saveXml.SaveGame);
 
   return (
     <main>
@@ -30,7 +21,7 @@ function App() {
           width={350}
           src={logoPng}
           // For debug purposes
-          onClick={() => console.log(xml.SaveGame)}
+          onClick={() => console.log(saveXml.SaveGame)}
         />
       </header>
 

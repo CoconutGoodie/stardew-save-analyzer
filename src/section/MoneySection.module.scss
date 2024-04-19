@@ -32,9 +32,13 @@
     outline: 4px solid $accent;
     outline-offset: -2px;
     border-radius: 8px;
-    font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-size: $fontSize;
     box-shadow: inset -4px 4px 0px 0px rgba(#000, 0.125),
       inset 2px -2px 0px 0px rgba(#000, 0.25);
   }
+}
+
+.amountLeft {
+  opacity: 0.5;
 }

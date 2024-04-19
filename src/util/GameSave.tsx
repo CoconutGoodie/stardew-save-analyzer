@@ -2,11 +2,11 @@ import { capitalCase } from "case-anything";
 import { entries, groupBy, intersection, keys, lowerCase } from "lodash";
 import { STARDEW_FISHES } from "../const/StardewFishes";
 
-import combatPng from "../assets/skill/combat.png";
-import farmingPng from "../assets/skill/farming.png";
-import fishingPng from "../assets/skill/fishing.png";
-import foragingPng from "../assets/skill/foraging.png";
-import miningPng from "../assets/skill/mining.png";
+import combatPng from "../assets/sprite/skill/combat.png";
+import farmingPng from "../assets/sprite/skill/farming.png";
+import fishingPng from "../assets/sprite/skill/fishing.png";
+import foragingPng from "../assets/sprite/skill/foraging.png";
+import miningPng from "../assets/sprite/skill/mining.png";
 import { STARDEW_PROFESSIONS } from "../const/StardewProfessions";
 import { STARDROP_MAIL_FLAGS } from "../const/StardewStardrops";
 import { StardewWiki } from "./StardewWiki";

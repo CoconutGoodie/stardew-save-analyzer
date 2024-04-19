@@ -12,8 +12,8 @@ interface Props extends PropsWithChildren {
 }
 
 const achievementSprites = new AssetRepository<{ default: string }>(
-  import.meta.glob("../assets/achievement/ingame/*.png", { eager: true }),
-  "../assets/achievement/ingame/",
+  import.meta.glob("../assets/sprite/achievement/ingame/*.png", { eager: true }),
+  "../assets/sprite/achievement/ingame/",
   ".png"
 );
 
@@ -41,7 +41,7 @@ export const Achievement = (props: Props) => {
           {props.title}
         </a>
 
-        {props.description && <> ({props.description})</>}
+        {props.description && <span>({props.description})</span>}
 
         {props.children}
       </div>

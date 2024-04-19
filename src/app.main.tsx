@@ -13,11 +13,11 @@ import "./style/style.scss";
 import { GameSave } from "./util/GameSave";
 import { SummarySection } from "./component/SummarySection";
 
-const farmTypes = import.meta.glob("./assets/farm/*.png", {
+const farmTypes = import.meta.glob("./assets/sprite/farm/*.png", {
   eager: true,
 });
 
-const fishSprites = import.meta.glob("./assets/fish/*.png", {
+const fishSprites = import.meta.glob("./assets/sprite/fish/*.png", {
   eager: true,
 });
 
@@ -41,7 +41,7 @@ function App() {
               src={
                 // @ts-ignore
                 farmTypes[
-                  `./assets/farm/${lowerCase(farmSummary.farmType).replace(
+                  `./assets/sprite/farm/${lowerCase(farmSummary.farmType).replace(
                     /\s+/g,
                     "-"
                   )}.png`
@@ -158,7 +158,7 @@ function App() {
                               src={
                                 // @ts-ignore
                                 fishSprites[
-                                  `./assets/fish/${lowerCase(fish.name).replace(
+                                  `./assets/sprite/fish/${lowerCase(fish.name).replace(
                                     /\s+/g,
                                     "_"
                                   )}.png`

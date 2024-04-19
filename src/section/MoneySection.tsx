@@ -21,7 +21,10 @@ export const MoneySection = (props: Props) => {
     <SummarySection id="money" className={styles.section}>
       <h1>Money </h1>
 
-      <div>In total, {farmSummary.farmName} Farm has earned:</div>
+      <div>
+        In total, {farmSummary.farmName} Farm has earned{" "}
+        <Currency amount={moneySummary.earnedTotal} />
+      </div>
 
       <div className={styles.money}>
         {totalDigits.map((digit, index) => (
@@ -46,7 +49,18 @@ export const MoneySection = (props: Props) => {
                   earn <Currency amount={achievement.goal} />
                 </>
               }
-            />
+            >
+              {!achieved && (
+                <span className={styles.amountLeft}>
+                  —{" "}
+                  <Currency
+                    amount={achievement.goal - moneySummary.earnedTotal}
+                    unit="gold"
+                  />{" "}
+                  more to go
+                </span>
+              )}
+            </Achievement>
           );
         })}
       </div>

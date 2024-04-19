@@ -18,7 +18,8 @@
 }
 
 .text {
-  display: inline-block;
+  display: inline-flex;
+  gap: 4px;
   line-height: 20px;
 
   & > * {

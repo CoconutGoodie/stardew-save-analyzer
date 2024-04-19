@@ -15,8 +15,8 @@ interface Props {
 }
 
 const professionSprites = new AssetRepository<{ default: string }>(
-  import.meta.glob("../assets/profession/*.png", { eager: true }),
-  "../assets/profession/",
+  import.meta.glob("../assets/sprite/profession/*.png", { eager: true }),
+  "../assets/sprite/profession/",
   ".png"
 );
 

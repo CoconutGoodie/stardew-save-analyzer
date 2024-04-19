@@ -8,6 +8,7 @@ import checkmarkPng from "../assets/icon/checkmark.png";
 import boardPng from "../assets/sprite/special-order/special_order_board.png";
 
 import styles from "./SpecialOrdersSection.module.scss";
+import clsx from "clsx";
 
 interface Props {
   gameSave: GameSave;
@@ -47,10 +48,7 @@ export const SpecialOrdersSection = (props: Props) => {
               <img
                 width={45}
                 title={order.title}
-                style={{
-                  filter: order.completed ? "" : "brightness(0.2)",
-                  opacity: order.completed ? 1 : 0.8,
-                }}
+                className={clsx(!order.completed && styles.incomplete)}
                 src={specialOrderNpcs.resolve(order.npc).default}
               />
             </a>
@@ -60,7 +58,7 @@ export const SpecialOrdersSection = (props: Props) => {
 
       <div className={styles.info}>
         <img width={14} src={checkmarkPng} />
-        <span>Special Orders Board has been built (Fall 2, Year 1)</span>
+        <span>Special Orders Board has been built (Day 2 of Fall, Year 1)</span>
       </div>
 
       <div className={styles.info}>

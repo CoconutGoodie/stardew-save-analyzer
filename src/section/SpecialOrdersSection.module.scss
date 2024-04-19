@@ -6,6 +6,7 @@
 }
 
 .board {
+  margin-bottom: 15px;
   display: grid;
   grid-template-columns: auto auto 1fr;
   align-items: center;
@@ -16,6 +17,18 @@
     display: grid;
     grid-template-columns: repeat(9, 1fr);
     gap: 10px;
+
+    img {
+      &.incomplete {
+        filter: saturate(0) brightness(0.8);
+        opacity: 0.25;
+
+        &:hover {
+          opacity: 0.5;
+          filter: none;
+        }
+      }
+    }
 
     // img {
     //   $color: #a8a856;

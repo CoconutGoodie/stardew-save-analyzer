@@ -38,10 +38,10 @@ export const StardropsSection = (props: Props) => {
               <h1 className={styles.name}>
                 <img src={farmer?.gender[0] === "Male" ? malePng : femalePng} />
                 <span>{farmerName}</span>
-                <span className={styles.progress}>
+                {/* <span className={styles.progress}>
                   - ({stardrops.filter((stardrop) => stardrop.gathered).length}{" "}
                   out of {stardrops.length} gathered)
-                </span>
+                </span> */}
               </h1>
 
               <div className={styles.starfruitList}>
@@ -78,7 +78,15 @@ export const StardropsSection = (props: Props) => {
                   title="Mystery Of The Stardrops"
                   description="Gather every Stardrop"
                   achieved={stardrops.every((stardrop) => stardrop.gathered)}
-                />
+                >
+                  {/* <span>
+                    —{" "}
+                    {stardrops.length -
+                      stardrops.filter((stardrop) => stardrop.gathered)
+                        .length}{" "}
+                    more to go
+                  </span> */}
+                </Achievement>
               </div>
             </div>
           );

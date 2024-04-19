@@ -14,7 +14,7 @@ export const MoneySection = (props: Props) => {
 
   const totalDigits = moneySummary.earnedTotal
     .toString()
-    .padStart(8, " ")
+    .padStart(9, " ")
     .split("");
 
   return (

@@ -48,7 +48,7 @@ export const Achievement = (props: Props) => {
         }
       /> */}
       <img
-        width={25}
+        width={30}
         alt="Platform Icon"
         title="Platform Icon"
         className={clsx(!props.achieved && styles.unachieved, styles.icon)}

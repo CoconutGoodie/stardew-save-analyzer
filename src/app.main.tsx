@@ -82,7 +82,7 @@ function App() {
             ))}
           </li>
           <li>
-            Day {farmSummary.currentDate.day} of{" "}
+            Today is Day {farmSummary.currentDate.day} of{" "}
             {farmSummary.currentDate.season}, Year{" "}
             {farmSummary.currentDate.year}
           </li>
@@ -110,7 +110,7 @@ function App() {
       <hr />
 
       <section id="fishing">
-        <h1 style={{ fontSize: 24 }}>Fishing</h1>
+        <h1 style={{ fontSize: 24 }}>Fish Collection</h1>
 
         <div
           style={{
@@ -189,16 +189,6 @@ function App() {
           })}
         </div>
       </section>
-
-      <hr />
-
-      <SummarySection>
-        <h1>Skill Masteries - TODO</h1>
-      </SummarySection>
-
-      <SummarySection>
-        <h1>Skill Masteries - TODO</h1>
-      </SummarySection>
 
       <footer style={{ height: 100 }}></footer>
     </main>

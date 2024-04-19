@@ -12,10 +12,7 @@ import { GameSave } from "./util/GameSave";
 
 import { GameDateDisplay } from "./component/GameDateDisplay";
 import "./style/style.scss";
-
-const farmTypes = import.meta.glob("./assets/sprite/farm/*.png", {
-  eager: true,
-});
+import { OverviewSection } from "./section/OverviewSection";
 
 const fishSprites = import.meta.glob("./assets/sprite/fish/*.png", {
   eager: true,
@@ -23,7 +20,7 @@ const fishSprites = import.meta.glob("./assets/sprite/fish/*.png", {
 
 function App() {
   const gameSave = new GameSave(xml.SaveGame);
-  const farmSummary = gameSave.getFarmSummary();
+  const farmSummary = gameSave.getFarmOverview();
   const farmerNames = gameSave.getAllFarmerNames();
 
   return (
@@ -37,69 +34,13 @@ function App() {
         />
       </header>
 
-      <section id="farm-summary">
-        <h1 style={{ fontSize: 24 }}>Summary</h1>
-        <ul>
-          <li>
-            {farmSummary.farmName} Farm (
-            <img
-              width={20}
-              style={{}}
-              src={
-                // @ts-ignore
-                farmTypes[
-                  `./assets/sprite/farm/${lowerCase(
-                    farmSummary.farmType
-                  ).replace(/\s+/g, "-")}.png`
-                ].default
-              }
-            />{" "}
-            {farmSummary.farmType})
-          </li>
-          <li>
-            Farmer:
-            <img
-              alt="Farmer Gender"
-              title={farmSummary.player.gender}
-              src={farmSummary.player.gender === "Male" ? malePng : femalePng}
-            />{" "}
-            {farmSummary.player.name}
-          </li>
-          <li>
-            Farmhand(s):{" "}
-            {farmSummary.farmhands.map((farmer, index) => (
-              <>
-                <img
-                  alt="Farmer Gender"
-                  title={farmer.gender}
-                  src={farmer.gender === "Male" ? malePng : femalePng}
-                />{" "}
-                {farmer.name}
-                {index !== farmSummary.farmhands.length - 1 && <>, </>}
-              </>
-            ))}
-          </li>
-          <li>
-            Today is <GameDateDisplay date={farmSummary.currentDate} />
-          </li>
-          <li>Played for {farmSummary.playtime}ms</li>
-          <li>Game Version {farmSummary.gameVersion}</li>
-        </ul>
-      </section>
-
-      <hr />
+      <OverviewSection gameSave={gameSave} />
 
       <MoneySection gameSave={gameSave} />
 
-      <hr />
-
       <SkillsSection gameSave={gameSave} />
 
-      <hr />
-
       <StardropsSection gameSave={gameSave} />
-
-      <hr />
 
       <SpecialOrdersSection gameSave={gameSave} />
 

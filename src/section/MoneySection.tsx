@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const MoneySection = (props: Props) => {
-  const farmSummary = props.gameSave.getFarmSummary();
+  const farmOverview = props.gameSave.getFarmOverview();
   const moneySummary = props.gameSave.getMoneySummary();
 
   const totalDigits = moneySummary.earnedTotal
@@ -22,7 +22,7 @@ export const MoneySection = (props: Props) => {
       <h1>Money </h1>
 
       <div>
-        In total, {farmSummary.farmName} Farm has earned{" "}
+        In total, {farmOverview.farmName} Farm has earned{" "}
         <Currency amount={moneySummary.earnedTotal} />
       </div>
 

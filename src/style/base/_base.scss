@@ -8,7 +8,7 @@
     padding: 2rem;
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 80px;
 
     hr {
       width: 20vw;
@@ -21,4 +21,29 @@
 
 img {
   image-rendering: pixelated;
+}
+
+a {
+  color: unset;
+  text-decoration: unset;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+ul,
+li {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 25px;
+  list-style-image: url(./src/assets/icon/list-bullet.png);
+
+  & li {
+    padding: 0;
+
+    &::marker {
+      font-size: 18px;
+    }
+  }
 }

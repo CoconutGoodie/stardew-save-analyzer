@@ -39,6 +39,7 @@ export namespace StardewSave {
     farmName: [string];
     gameVersion: [string];
     gender: [Gender];
+    favoriteThing: [string];
     millisecondsPlayed: [StringNumber];
     farmingLevel: [StringNumber];
     fishingLevel: [StringNumber];
@@ -108,17 +109,21 @@ export class GameSave {
 
   constructor(private saveXml: StardewSave.SaveXml) {}
 
-  public getFarmSummary() {
+  public getFarmOverview() {
     return {
       farmName: this.saveXml.player[0].farmName[0],
       farmType: GameSave.FARM_TYPES[this.saveXml.whichFarm[0]],
       player: {
         name: this.saveXml.player[0].name[0],
         gender: this.saveXml.player[0].gender[0],
+        favoriteThing: this.saveXml.player[0].favoriteThing[0],
+        playtime: parseInt(this.saveXml.player[0].millisecondsPlayed[0]),
       },
       farmhands: this.saveXml.farmhands.map((farmhand) => ({
         name: farmhand.Farmer[0].name[0],
         gender: farmhand.Farmer[0].gender[0],
+        favoriteThing: farmhand.Farmer[0].favoriteThing[0],
+        playtime: parseInt(farmhand.Farmer[0].millisecondsPlayed[0]),
       })),
       gameVersion: this.saveXml.player[0].gameVersion[0],
       playtime: parseInt(this.saveXml.player[0].millisecondsPlayed[0]),

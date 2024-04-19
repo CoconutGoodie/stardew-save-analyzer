@@ -26,7 +26,7 @@ const specialOrderNpcs = new AssetRepository<{ default: string }>(
 );
 
 export const SpecialOrdersSection = (props: Props) => {
-  const farmSummary = props.gameSave.getFarmSummary();
+  const farmOverview = props.gameSave.getFarmOverview();
   const specialOrders = props.gameSave.getSpecialOrders();
 
   const completedCount = specialOrders.filter(
@@ -34,7 +34,7 @@ export const SpecialOrdersSection = (props: Props) => {
   ).length;
 
   const boardBuilt =
-    BOARD_BUILD_DATE.canonicalDay <= farmSummary.currentDate.canonicalDay;
+    BOARD_BUILD_DATE.canonicalDay <= farmOverview.currentDate.canonicalDay;
 
   const everyOrderCompleted = completedCount === specialOrders.length;
 

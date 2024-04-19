@@ -14,7 +14,7 @@ interface Props {
 const SEASON_META = {
   [GameSeason.Spring]: {
     iconSrc: springPng,
-    color: "#e9ec24",
+    color: "#FF8FE3",
   },
   [GameSeason.Summer]: {
     iconSrc: summerPng,
@@ -26,7 +26,7 @@ const SEASON_META = {
   },
   [GameSeason.Winter]: {
     iconSrc: winterPng,
-    color: "#e9ec24",
+    color: "#B2F0FC",
   },
 };
 

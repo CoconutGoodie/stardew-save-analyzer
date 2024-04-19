@@ -10,6 +10,7 @@ import malePng from "../assets/icon/male.png";
 import styles from "./StardropsSection.module.scss";
 import clsx from "clsx";
 import { StardewWiki } from "../util/StardewWiki";
+import { Objective } from "../component/Objective";
 
 interface Props {
   gameSave: GameSave;
@@ -23,11 +24,8 @@ export const StardropsSection = (props: Props) => {
       <h1>Stardrops</h1>
 
       <div
-        style={{
-          display: "grid",
-          gap: 50,
-          gridTemplateColumns: `repeat(${farmerNames.length}, 1fr)`,
-        }}
+        className={styles.farmers}
+        style={{ ["--farmerCount" as string]: farmerNames.length }}
       >
         {farmerNames.map((farmerName) => {
           const farmer = props.gameSave.getFarmer(farmerName);
@@ -46,30 +44,29 @@ export const StardropsSection = (props: Props) => {
 
               <div className={styles.starfruitList}>
                 {stardrops.map((stardrop, index) => (
-                  <div
+                  <Objective
+                    done={stardrop.gathered}
                     className={clsx(
                       styles.starfruit,
                       stardrop.gathered && styles.gathered
                     )}
+                    icon={
+                      <a
+                        href={StardewWiki.getLink("Stardrop", "Locations")}
+                        target="_blank"
+                      >
+                        <img
+                          width={35}
+                          src={stardrop.gathered ? stardropGif : stardropPng}
+                          title={`Stardrop #${index + 1}`}
+                        />
+                      </a>
+                    }
                   >
-                    <a
-                      href={StardewWiki.getLink("Stardrop", "Locations")}
-                      target="_blank"
-                    >
-                      <img
-                        width={35}
-                        src={stardrop.gathered ? stardropGif : stardropPng}
-                        title={`Stardrop #${index + 1}`}
-                        style={{
-                          filter: stardrop.gathered ? "" : "brightness(0.5)",
-                          opacity: stardrop.gathered ? 1 : 0.65,
-                        }}
-                      />
-                    </a>
                     <div className={styles.description}>
                       {stardrop.description}
                     </div>
-                  </div>
+                  </Objective>
                 ))}
               </div>
 

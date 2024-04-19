@@ -1,20 +1,17 @@
 import { lowerCase } from "case-anything";
-import { entries } from "lodash";
 import "./App.css";
 import xml from "./assets/Kaktus_372348215.xml";
 import femalePng from "./assets/icon/female.png";
 import malePng from "./assets/icon/male.png";
-import { FishCategory, STARDEW_FISH_CATEGORIES } from "./const/StardewFishes";
+import logoPng from "./assets/logo.png";
 import { MoneySection } from "./section/MoneySection";
 import { SkillsSection } from "./section/SkillsSection";
 import { SpecialOrdersSection } from "./section/SpecialOrdersSection";
 import { StardropsSection } from "./section/StardropsSection";
 import { GameSave } from "./util/GameSave";
-import { SummarySection } from "./component/SummarySection";
-import logoPng from "./assets/logo.png";
 
-import "./style/style.scss";
 import { GameDateDisplay } from "./component/GameDateDisplay";
+import "./style/style.scss";
 
 const farmTypes = import.meta.glob("./assets/sprite/farm/*.png", {
   eager: true,

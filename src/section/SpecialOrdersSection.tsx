@@ -1,17 +1,15 @@
 import { SummarySection } from "../component/SummarySection";
+import { AssetRepository } from "../util/AssetRepository";
 import { GameSave } from "../util/GameSave";
 import { StardewWiki } from "../util/StardewWiki";
-import { AssetRepository } from "../util/AssetRepository";
 
-import questPng from "../assets/icon/quest.png";
-import checkmarkPng from "../assets/icon/checkmark.png";
 import boardPng from "../assets/sprite/special-order/special_order_board.png";
 
-import styles from "./SpecialOrdersSection.module.scss";
 import clsx from "clsx";
 import { GameDateDisplay } from "../component/GameDateDisplay";
-import { GameDate, GameSeason } from "../util/GameDate";
 import { Objective } from "../component/Objective";
+import { GameDate, GameSeason } from "../util/GameDate";
+import styles from "./SpecialOrdersSection.module.scss";
 
 interface Props {
   gameSave: GameSave;

@@ -17,8 +17,8 @@ export const Objective = (props: Props) => {
     <div
       className={clsx(styles.container, props.className)}
       style={{
-        filter: props.done ? "" : "brightness(0.5)",
-        opacity: props.done ? 1 : 0.65,
+        filter: props.done ? "" : "brightness(0.4)",
+        opacity: props.done ? 1 : 0.8,
       }}
     >
       {props.icon ?? (

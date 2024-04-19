@@ -1,7 +1,7 @@
-import { PropsWithChildren, ReactNode } from "react";
-import { AssetRepository } from "../util/AssetRepository";
 import { lowerCase } from "case-anything";
 import { clsx } from "clsx";
+import { PropsWithChildren, ReactNode } from "react";
+import { AssetRepository } from "../util/AssetRepository";
 import { StardewWiki } from "../util/StardewWiki";
 
 import checkmarkPng from "../assets/icon/checkmark.png";

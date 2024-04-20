@@ -84,7 +84,7 @@ export class GameSave {
   };
 
   constructor(private saveXml: GameSave.SaveXml) {
-    console.log(saveXml);
+    // console.log(saveXml);
   }
 
   public getFarmOverview() {
@@ -175,7 +175,7 @@ export class GameSave {
       completed:
         this.saveXml.completedSpecialOrders == null
           ? false
-          : "string" in this.saveXml.completedSpecialOrders
+          : "string" in this.saveXml.completedSpecialOrders[0]
           ? this.saveXml.completedSpecialOrders[0].string.includes(orderId)
           : false,
       wiki: StardewWiki.getLink("Quests", title.replace(/\s+/g, "_")),

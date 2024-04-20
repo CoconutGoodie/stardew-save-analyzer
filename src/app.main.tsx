@@ -1,19 +1,22 @@
+import { GameSave } from "./gamesave/GameSave";
 import { MoneySection } from "./section/MoneySection";
 import { OverviewSection } from "./section/OverviewSection";
 import { SkillsSection } from "./section/SkillsSection";
 import { SpecialOrdersSection } from "./section/SpecialOrdersSection";
 import { StardropsSection } from "./section/StardropsSection";
-import { GameSave } from "./gamesave/GameSave";
 
 import logoPng from "./assets/logo.png";
 
-import saveXml from "./assets/Save_1.6.xml";
+// import saveXml from "./assets/Save_1.6.xml";
+
+import { useEffect, useState } from "react";
+import { SummarySection } from "./component/SummarySection";
+import { LoadSaveSection } from "./section/LoadSaveSection";
 
 import "./style/style.scss";
-import { SummarySection } from "./component/SummarySection";
 
 function App() {
-  const gameSave = new GameSave(saveXml.SaveGame);
+  const [gameSave, setGameSave] = useState<GameSave>();
 
   return (
     <main>
@@ -22,39 +25,47 @@ function App() {
           width={350}
           src={logoPng}
           // For debug purposes
-          onClick={() => console.log(saveXml.SaveGame)}
+          // onClick={() => console.log(saveXml.SaveGame)}
         />
       </header>
 
-      <OverviewSection gameSave={gameSave} />
+      {gameSave == null ? (
+        <>
+          <LoadSaveSection onSelected={setGameSave} />
+        </>
+      ) : (
+        <>
+          <OverviewSection gameSave={gameSave} />
 
-      <MoneySection gameSave={gameSave} />
+          <MoneySection gameSave={gameSave} />
 
-      <SkillsSection gameSave={gameSave} />
+          <SkillsSection gameSave={gameSave} />
 
-      <StardropsSection gameSave={gameSave} />
+          <StardropsSection gameSave={gameSave} />
 
-      <SpecialOrdersSection gameSave={gameSave} />
+          <SpecialOrdersSection gameSave={gameSave} />
 
-      <SummarySection>
-        <h1>Craftables [WIP]</h1>
-      </SummarySection>
+          <SummarySection>
+            <h1>Craftables [WIP]</h1>
+          </SummarySection>
 
-      <SummarySection>
-        <h1>Fishing [WIP]</h1>
-      </SummarySection>
+          <SummarySection>
+            <h1>Fishing [WIP]</h1>
+          </SummarySection>
 
-      <SummarySection>
-        <h1>Socials [WIP]</h1>
-      </SummarySection>
+          <SummarySection>
+            <h1>Socials [WIP]</h1>
+          </SummarySection>
 
-      <SummarySection>
-        <h1>Community Center [WIP]</h1>
-      </SummarySection>
+          <SummarySection>
+            <h1>Community Center [WIP]</h1>
+          </SummarySection>
 
-      <SummarySection>
-        <h1>Many More... [WIP]</h1>
-      </SummarySection>
+          <SummarySection>
+            <h1>Many More... [WIP]</h1>
+          </SummarySection>
+        </>
+      )}
 
       {/* <section id="fishing">
         <h1 style={{ fontSize: 24 }}>Fish Collection</h1>

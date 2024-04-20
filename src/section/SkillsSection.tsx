@@ -44,7 +44,7 @@ export const SkillsSection = (props: Props) => {
           if (!farmer) return;
 
           return (
-            <div className={styles.farmer}>
+            <div key={farmer.name} className={styles.farmer}>
               <h1 className={styles.name}>
                 <img src={farmer.gender === "Male" ? malePng : femalePng} />
                 <span>{farmer.name}</span>
@@ -82,6 +82,7 @@ export const SkillsSection = (props: Props) => {
                       const reached = pipLevel <= skill.level;
                       return (
                         <div
+                          key={index}
                           className={pipClass}
                           style={{
                             opacity: reached ? 1 : 0.2,

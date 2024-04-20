@@ -33,7 +33,7 @@ export const StardropsSection = (props: Props) => {
           const stardrops = props.gameSave.getStardrops(farmerName)!;
 
           return (
-            <div className={styles.farmer}>
+            <div key={farmer?.name} className={styles.farmer}>
               <h1 className={styles.name}>
                 <img src={farmer?.gender[0] === "Male" ? malePng : femalePng} />
                 <span>{farmerName}</span>

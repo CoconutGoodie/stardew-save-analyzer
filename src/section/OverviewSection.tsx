@@ -1,7 +1,7 @@
 import { lowerCase } from "case-anything";
 import { SummarySection } from "../component/SummarySection";
 import { AssetRepository } from "../util/AssetRepository";
-import { GameSave } from "../util/GameSave";
+import { GameSave } from "../gamesave/GameSave";
 import { StardewWiki } from "../util/StardewWiki";
 
 import femalePng from "../assets/icon/female.png";

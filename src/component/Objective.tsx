@@ -15,11 +15,11 @@ interface Props extends PropsWithChildren {
 export const Objective = (props: Props) => {
   return (
     <div
-      className={clsx(styles.container, props.className)}
-      style={{
-        filter: props.done ? "" : "brightness(0.4)",
-        opacity: props.done ? 1 : 0.8,
-      }}
+      className={clsx(
+        styles.container,
+        props.className,
+        !props.done && styles.incomplete
+      )}
     >
       {props.icon ?? (
         <img width={14} src={props.done ? checkmarkPng : questPng} />

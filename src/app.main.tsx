@@ -3,9 +3,9 @@ import { OverviewSection } from "./section/OverviewSection";
 import { SkillsSection } from "./section/SkillsSection";
 import { SpecialOrdersSection } from "./section/SpecialOrdersSection";
 import { StardropsSection } from "./section/StardropsSection";
-import { GameSave } from "./util/GameSave";
+import { GameSave } from "./gamesave/GameSave";
 
-import saveXml from "./assets/Kaktus_372348215.xml";
+import saveXml from "./assets/Save_1.5.xml";
 
 import logoPng from "./assets/logo.png";
 
@@ -29,11 +29,11 @@ function App() {
 
       <MoneySection gameSave={gameSave} />
 
-      <SkillsSection gameSave={gameSave} />
+      {/* <SkillsSection gameSave={gameSave} /> */}
 
-      <StardropsSection gameSave={gameSave} />
+      {/* <StardropsSection gameSave={gameSave} /> */}
 
-      <SpecialOrdersSection gameSave={gameSave} />
+      {/* <SpecialOrdersSection gameSave={gameSave} /> */}
 
       {/* <section id="fishing">
         <h1 style={{ fontSize: 24 }}>Fish Collection</h1>

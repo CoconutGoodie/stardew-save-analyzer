@@ -3,6 +3,11 @@
   align-items: center;
   gap: 5px;
 
+  &.incomplete {
+    filter: brightness(0.4);
+    opacity: 0.8;
+  }
+
   & > * {
     vertical-align: middle;
   }

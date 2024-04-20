@@ -1,6 +1,6 @@
 import { SummarySection } from "../component/SummarySection";
 import { AssetRepository } from "../util/AssetRepository";
-import { GameSave } from "../util/GameSave";
+import { GameSave } from "../gamesave/GameSave";
 import { StardewWiki } from "../util/StardewWiki";
 
 import boardPng from "../assets/sprite/special-order/special_order_board.png";

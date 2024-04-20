@@ -1,7 +1,7 @@
 import { Achievement } from "../component/Achievement";
 import { Currency } from "../component/Currency";
 import { SummarySection } from "../component/SummarySection";
-import { GameSave } from "../util/GameSave";
+import { GameSave } from "../gamesave/GameSave";
 import styles from "./MoneySection.module.scss";
 
 interface Props {

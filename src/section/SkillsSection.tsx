@@ -2,7 +2,7 @@ import { lowerCase } from "case-anything";
 import { Achievement } from "../component/Achievement";
 import { SummarySection } from "../component/SummarySection";
 import { AssetRepository } from "../util/AssetRepository";
-import { GameSave } from "../util/GameSave";
+import { GameSave } from "../gamesave/GameSave";
 
 import femalePng from "../assets/icon/female.png";
 import malePng from "../assets/icon/male.png";
@@ -39,7 +39,7 @@ export const SkillsSection = (props: Props) => {
           return (
             <div className={styles.farmer}>
               <h1 className={styles.name}>
-                <img src={farmer?.gender[0] === "Male" ? malePng : femalePng} />
+                <img src={farmer?.gender === "Male" ? malePng : femalePng} />
                 <span>{farmerName}</span>
                 <a
                   href={StardewWiki.getLink("Skills", "Skill-Based_Title")}

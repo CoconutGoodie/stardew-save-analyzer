@@ -1,5 +1,5 @@
 import { Achievement } from "../component/Achievement";
-import { GameSave } from "../util/GameSave";
+import { GameSave } from "../gamesave/GameSave";
 import stardropGif from "../assets/stardrop.gif";
 import stardropPng from "../assets/stardrop.png";
 import { SummarySection } from "../component/SummarySection";

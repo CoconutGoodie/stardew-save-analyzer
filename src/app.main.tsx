@@ -5,9 +5,9 @@ import { SpecialOrdersSection } from "./section/SpecialOrdersSection";
 import { StardropsSection } from "./section/StardropsSection";
 import { GameSave } from "./gamesave/GameSave";
 
-import saveXml from "./assets/Save_1.5.xml";
-
 import logoPng from "./assets/logo.png";
+
+import saveXml from "./assets/Save_1.3.xml";
 
 import "./style/style.scss";
 
@@ -29,11 +29,11 @@ function App() {
 
       <MoneySection gameSave={gameSave} />
 
-      {/* <SkillsSection gameSave={gameSave} /> */}
+      <SkillsSection gameSave={gameSave} />
 
-      {/* <StardropsSection gameSave={gameSave} /> */}
+      <StardropsSection gameSave={gameSave} />
 
-      {/* <SpecialOrdersSection gameSave={gameSave} /> */}
+      <SpecialOrdersSection gameSave={gameSave} />
 
       {/* <section id="fishing">
         <h1 style={{ fontSize: 24 }}>Fish Collection</h1>

@@ -2,11 +2,6 @@ import { capitalCase } from "case-anything";
 import { entries, find, groupBy, intersection, keys, lowerCase } from "lodash";
 import { STARDEW_FISHES } from "../const/StardewFishes";
 
-import combatPng from "../assets/sprite/skill/combat.png";
-import farmingPng from "../assets/sprite/skill/farming.png";
-import fishingPng from "../assets/sprite/skill/fishing.png";
-import foragingPng from "../assets/sprite/skill/foraging.png";
-import miningPng from "../assets/sprite/skill/mining.png";
 import { STARDEW_PROFESSIONS } from "../const/StardewProfessions";
 import { STARDROP_MAIL_FLAGS } from "../const/StardewStardrops";
 import { StardewWiki } from "../util/StardewWiki";
@@ -21,12 +16,30 @@ export namespace GameSave {
   export interface SaveXml {
     player: [FarmerXml];
     farmhands?: { Farmer: [FarmerXml] }[];
-    whichFarm: [keyof typeof GameSave.FARM_TYPES];
+    // locations[0].GameLocation[1].buildings[0].Building[0].indoors[0].farmhand
+    locations?: [
+      {
+        GameLocation: {
+          $: { "xsi:type": string };
+          buildings: [
+            {
+              Building: {
+                indoors?: [{ farmhand?: [FarmerXml] }];
+              }[];
+            }
+          ];
+        }[];
+      }
+    ];
+    whichFarm?: [keyof typeof GameSave.FARM_TYPES];
     year: [StringNumber];
     currentSeason: [string];
     dayOfMonth: [StringNumber];
     weatherForTomorrow: [string];
-    completedSpecialOrders: [{ string: string[] }];
+    completedSpecialOrders?: [{ string: string[] }];
+    hasApplied1_3_UpdateChanges?: [StringBoolean];
+    hasApplied1_4_UpdateChanges?: [StringBoolean];
+    gameVersion?: [string];
   }
 
   export type KeyValueMap<K, V> = { key: K; value: V }[];
@@ -77,13 +90,19 @@ export class GameSave {
   public getFarmOverview() {
     return {
       farmName: this.saveXml.player[0].farmName[0],
-      farmType: GameSave.FARM_TYPES[this.saveXml.whichFarm[0]],
+      farmType:
+        this.saveXml.whichFarm?.[0] != null
+          ? GameSave.FARM_TYPES[this.saveXml.whichFarm[0]]
+          : GameSave.FARM_TYPES[0],
       player: new Farmer(this.saveXml.player[0]),
-      farmhands:
-        this.saveXml.farmhands?.map(
-          (farmhand) => new Farmer(farmhand.Farmer[0])
-        ) ?? [],
-      gameVersion: this.saveXml.player[0].gameVersion[0],
+      farmhands: this.calcFarmhands(),
+      gameVersion:
+        this.saveXml.player[0].gameVersion?.[0] ??
+        this.saveXml.hasApplied1_4_UpdateChanges?.[0] === "true"
+          ? "1.4"
+          : this.saveXml.hasApplied1_3_UpdateChanges?.[0] === "true"
+          ? "1.3"
+          : "1.2",
       playtime: parseInt(this.saveXml.player[0].millisecondsPlayed[0]),
       currentDate: new GameDate(
         parseInt(this.saveXml.dayOfMonth[0]),
@@ -91,6 +110,28 @@ export class GameSave {
         parseInt(this.saveXml.year[0])
       ),
     };
+    // locations[0].GameLocation[1].buildings[0].Building[0].indoors[0].farmhand
+  }
+
+  private calcFarmhands() {
+    let farmhands = this.saveXml.farmhands?.map(
+      (farmhand) => new Farmer(farmhand.Farmer[0])
+    );
+
+    // This is how it was stored before 1.6
+    if (!farmhands) {
+      const farmLocation = this.saveXml.locations?.[0].GameLocation.find(
+        (x) => x.$["xsi:type"] === "Farm"
+      );
+
+      farmhands = farmLocation?.buildings[0]?.Building?.map(
+        (buildingEntry) => buildingEntry?.indoors?.[0]?.farmhand?.[0]
+      )
+        .filter((farmhandXml) => !!farmhandXml)
+        .map((farmhandXml) => new Farmer(farmhandXml!));
+    }
+
+    return farmhands ?? [];
   }
 
   public getMoneySummary() {
@@ -131,7 +172,11 @@ export class GameSave {
       title,
       npc: lowerCase(orderId.replace(/\d+/g, "")),
       completed:
-        this.saveXml.completedSpecialOrders[0].string.includes(orderId),
+        this.saveXml.completedSpecialOrders == null
+          ? false
+          : "string" in this.saveXml.completedSpecialOrders
+          ? this.saveXml.completedSpecialOrders[0].string.includes(orderId)
+          : false,
       wiki: StardewWiki.getLink("Quests", title.replace(/\s+/g, "_")),
     }));
   }

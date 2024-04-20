@@ -9,6 +9,7 @@ export class Farmer {
   public readonly playtime;
 
   public readonly skills;
+  public readonly skillLevelTotal;
   public readonly skillBasedTitle;
 
   public readonly receivedMailFlags;
@@ -45,6 +46,7 @@ export class Farmer {
         professions: this.calcProfessions("combat"),
       },
     };
+    this.skillLevelTotal = values(this.skills).reduce((s, c) => s + c.level, 0);
     this.skillBasedTitle = this.calcSkillBasedTitle();
 
     this.receivedMailFlags = playerXml.mailReceived.flatMap(
@@ -76,12 +78,7 @@ export class Farmer {
   }
 
   private calcSkillBasedTitle() {
-    const skillLevelsTotal = values(this.skills).reduce(
-      (s, c) => s + c.level,
-      0
-    );
-
-    const v = skillLevelsTotal / 2;
+    const v = this.skillLevelTotal / 2;
     if (v >= 30) return "Farm King";
     if (v >= 28) return "Cropmaster";
     if (v >= 25) return "Agriculturist";

@@ -18,9 +18,10 @@ export class Farmer {
   constructor(private playerXml: GameSave.FarmerXml) {
     this.name = playerXml.name[0];
     this.gender =
-      playerXml.gender?.[0] ?? playerXml.isMale?.[0] === "true"
+      playerXml.gender?.[0] ??
+      (playerXml.isMale?.[0] === "true"
         ? ("Male" as const)
-        : ("Female" as const);
+        : ("Female" as const));
     this.favoriteThing = playerXml.favoriteThing[0];
     this.playtime = parseInt(playerXml.millisecondsPlayed[0]);
 

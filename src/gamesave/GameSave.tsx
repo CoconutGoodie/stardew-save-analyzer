@@ -97,12 +97,13 @@ export class GameSave {
       player: new Farmer(this.saveXml.player[0]),
       farmhands: this.calcFarmhands(),
       gameVersion:
+        this.saveXml.gameVersion?.[0] ??
         this.saveXml.player[0].gameVersion?.[0] ??
-        this.saveXml.hasApplied1_4_UpdateChanges?.[0] === "true"
+        (this.saveXml.hasApplied1_4_UpdateChanges?.[0] === "true"
           ? "1.4"
           : this.saveXml.hasApplied1_3_UpdateChanges?.[0] === "true"
           ? "1.3"
-          : "1.2",
+          : "1.2"),
       playtime: parseInt(this.saveXml.player[0].millisecondsPlayed[0]),
       currentDate: new GameDate(
         parseInt(this.saveXml.dayOfMonth[0]),

@@ -7,9 +7,10 @@ import { GameSave } from "./gamesave/GameSave";
 
 import logoPng from "./assets/logo.png";
 
-import saveXml from "./assets/Save_1.3.xml";
+import saveXml from "./assets/Save_1.6.xml";
 
 import "./style/style.scss";
+import { SummarySection } from "./component/SummarySection";
 
 function App() {
   const gameSave = new GameSave(saveXml.SaveGame);
@@ -34,6 +35,26 @@ function App() {
       <StardropsSection gameSave={gameSave} />
 
       <SpecialOrdersSection gameSave={gameSave} />
+
+      <SummarySection>
+        <h1>Craftables [WIP]</h1>
+      </SummarySection>
+
+      <SummarySection>
+        <h1>Fishing [WIP]</h1>
+      </SummarySection>
+
+      <SummarySection>
+        <h1>Socials [WIP]</h1>
+      </SummarySection>
+
+      <SummarySection>
+        <h1>Community Center [WIP]</h1>
+      </SummarySection>
+
+      <SummarySection>
+        <h1>Many More... [WIP]</h1>
+      </SummarySection>
 
       {/* <section id="fishing">
         <h1 style={{ fontSize: 24 }}>Fish Collection</h1>

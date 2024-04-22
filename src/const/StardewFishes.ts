@@ -8,6 +8,8 @@ export enum FishCategory {
   Summer = "Summer",
   Fall = "Fall",
   Winter = "Winter",
+  NightMarket = "Night Market",
+  GingerIsland = "Ginger Island",
   CrabPot = "Crab Pot",
   Other = "Other",
   Legendary = "Legendary",
@@ -46,35 +48,39 @@ export const STARDEW_FISHES = {
   152: {
     name: "Seaweed",
     masterAngler: true,
-    category: FishCategory.Other,
+    categories: [FishCategory.Other],
   },
   153: {
     name: "Green Algae",
     masterAngler: true,
-    category: FishCategory.Other,
+    categories: [FishCategory.Other],
   },
   157: {
     name: "White Algae",
     masterAngler: true,
-    category: FishCategory.Other,
+    categories: [FishCategory.Other],
   },
 
   // "Fish -4" category
   128: {
     name: "Pufferfish",
     masterAngler: true,
-    category: FishCategory.Summer,
+    categories: [FishCategory.Summer, FishCategory.GingerIsland],
     weather: Weather.Sun,
   },
   129: {
     name: "Anchovy",
     masterAngler: true,
-    category: FishCategory.Spring,
+    categories: [FishCategory.Spring, FishCategory.Fall],
   },
   130: {
     name: "Tuna",
     masterAngler: true,
-    category: FishCategory.Summer,
+    categories: [
+      FishCategory.Summer,
+      FishCategory.Winter,
+      FishCategory.GingerIsland,
+    ],
   },
   // 131: {
   //   name: "Sardine",

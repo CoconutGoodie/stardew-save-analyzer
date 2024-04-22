@@ -1,13 +1,12 @@
 import { capitalCase } from "case-anything";
-import { entries, find, groupBy, intersection, keys, lowerCase } from "lodash";
-import { STARDEW_FISHES } from "../const/StardewFishes";
+import { entries, lowerCase } from "lodash";
 
-import { STARDEW_PROFESSIONS } from "../const/StardewProfessions";
-import { STARDROP_MAIL_FLAGS } from "../const/StardewStardrops";
-import { StardewWiki } from "../util/StardewWiki";
-import { GameDate, GameSeason } from "../util/GameDate";
-import { Farmer } from "./Farmer";
+import { STARDEW_FARM_TYPES } from "../const/StardewFarmTypes";
 import { STARDEW_SPECIAL_ORDERS } from "../const/StardewSpecialOrders";
+import { STARDROP_MAIL_FLAGS } from "../const/StardewStardrops";
+import { GameDate, GameSeason } from "../util/GameDate";
+import { StardewWiki } from "../util/StardewWiki";
+import { Farmer } from "./Farmer";
 
 type StringNumber = `${number}`;
 type StringBoolean = `${boolean}`;
@@ -16,7 +15,6 @@ export namespace GameSave {
   export interface SaveXml {
     player: [FarmerXml];
     farmhands?: { Farmer: [FarmerXml] }[];
-    // locations[0].GameLocation[1].buildings[0].Building[0].indoors[0].farmhand
     locations?: [
       {
         GameLocation: {
@@ -31,7 +29,7 @@ export namespace GameSave {
         }[];
       }
     ];
-    whichFarm?: [keyof typeof GameSave.FARM_TYPES];
+    whichFarm?: [keyof typeof STARDEW_FARM_TYPES];
     year: [StringNumber];
     currentSeason: [string];
     dayOfMonth: [StringNumber];
@@ -52,6 +50,7 @@ export namespace GameSave {
     isMale?: [StringBoolean];
     favoriteThing: [string];
     totalMoneyEarned: [`${string}`];
+    qiGems?: [StringNumber];
     millisecondsPlayed: [StringNumber];
     farmingLevel: [StringNumber];
     fishingLevel: [StringNumber];
@@ -72,38 +71,17 @@ export namespace GameSave {
 }
 
 export class GameSave {
-  static FARM_TYPES = {
-    "0": "Standard",
-    "1": "Riverland",
-    "2": "Forest",
-    "3": "Hill-top",
-    "4": "Wilderness",
-    "5": "Four Corners",
-    "6": "Beach",
-    MeadowlandsFarm: "Meadowlands",
-  };
-
   constructor(private saveXml: GameSave.SaveXml) {
-    // console.log(saveXml);
+    console.log(saveXml);
   }
 
   public getFarmOverview() {
     return {
+      gameVersion: this.calcGameVersion(),
       farmName: this.saveXml.player[0].farmName[0],
-      farmType:
-        this.saveXml.whichFarm?.[0] != null
-          ? GameSave.FARM_TYPES[this.saveXml.whichFarm[0]]
-          : GameSave.FARM_TYPES[0],
+      farmType: this.calcFarmType(),
       player: new Farmer(this.saveXml.player[0]),
       farmhands: this.calcFarmhands(),
-      gameVersion:
-        this.saveXml.gameVersion?.[0] ??
-        this.saveXml.player[0].gameVersion?.[0] ??
-        (this.saveXml.hasApplied1_4_UpdateChanges?.[0] === "true"
-          ? "1.4"
-          : this.saveXml.hasApplied1_3_UpdateChanges?.[0] === "true"
-          ? "1.3"
-          : "1.2"),
       playtime: parseInt(this.saveXml.player[0].millisecondsPlayed[0]),
       currentDate: new GameDate(
         parseInt(this.saveXml.dayOfMonth[0]),
@@ -111,7 +89,24 @@ export class GameSave {
         parseInt(this.saveXml.year[0])
       ),
     };
-    // locations[0].GameLocation[1].buildings[0].Building[0].indoors[0].farmhand
+  }
+
+  private calcGameVersion() {
+    return (
+      this.saveXml.gameVersion?.[0] ??
+      this.saveXml.player[0].gameVersion?.[0] ??
+      (this.saveXml.hasApplied1_4_UpdateChanges?.[0] === "true"
+        ? "1.4"
+        : this.saveXml.hasApplied1_3_UpdateChanges?.[0] === "true"
+        ? "1.3"
+        : "1.2")
+    );
+  }
+
+  private calcFarmType() {
+    return this.saveXml.whichFarm?.[0] != null
+      ? STARDEW_FARM_TYPES[this.saveXml.whichFarm[0]]
+      : STARDEW_FARM_TYPES[0];
   }
 
   private calcFarmhands() {
@@ -173,7 +168,7 @@ export class GameSave {
       title,
       npc: lowerCase(orderId.replace(/\d+/g, "")),
       completed:
-        this.saveXml.completedSpecialOrders == null
+        this.saveXml.completedSpecialOrders?.[0] == null
           ? false
           : "string" in this.saveXml.completedSpecialOrders[0]
           ? this.saveXml.completedSpecialOrders[0].string.includes(orderId)
@@ -192,5 +187,10 @@ export class GameSave {
       description,
       gathered: farmer.receivedMailFlags.includes(mailId),
     }));
+  }
+
+  public getCaughtFishes(farmerName: string) {
+    const farmer = this.getFarmer(farmerName);
+    if (!farmer) return;
   }
 }

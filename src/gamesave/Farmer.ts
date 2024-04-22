@@ -8,6 +8,8 @@ export class Farmer {
   public readonly favoriteThing;
   public readonly playtime;
 
+  public readonly qiGems;
+
   public readonly skills;
   public readonly skillLevelTotal;
   public readonly skillBasedTitle;
@@ -24,6 +26,8 @@ export class Farmer {
         : ("Female" as const));
     this.favoriteThing = playerXml.favoriteThing[0];
     this.playtime = parseInt(playerXml.millisecondsPlayed[0]);
+
+    this.qiGems = parseInt(playerXml.qiGems?.[0] ?? "0");
 
     this.skills = {
       farming: {

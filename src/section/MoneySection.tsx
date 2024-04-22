@@ -27,12 +27,12 @@ export const MoneySection = (props: Props) => {
       </div>
 
       <div className={styles.money}>
+        <span className={styles.currency}>G</span>
         {totalDigits.map((digit, index) => (
           <span key={index} className={styles.digit}>
             {digit}
           </span>
         ))}
-        <span className={styles.currency}>G</span>
       </div>
 
       <div>

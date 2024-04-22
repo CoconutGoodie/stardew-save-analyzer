@@ -13,6 +13,7 @@ import gamepadPng from "../assets/icon/gamepad.png";
 import styles from "./OverviewSection.module.scss";
 import { GameDateDisplay } from "../component/GameDateDisplay";
 import clsx from "clsx";
+import { Currency } from "../component/Currency";
 
 interface Props {
   gameSave: GameSave;
@@ -94,62 +95,49 @@ export const OverviewSection = (props: Props) => {
         <div className={styles.divider} />
 
         <div className={styles.farmers}>
-          <div className={clsx(styles.column, styles.farmer)}>
-            <h1>
-              <img
-                height={20}
-                src={
-                  farmOverview.player.gender === "Female" ? femalePng : malePng
-                }
-              />{" "}
-              {farmOverview.player.name}
-            </h1>
-            <ul>
-              <li>Owner of the Farm</li>
-              <li>
-                <div>
-                  Favorite thing is "<img width={14} src={favoritePng} />{" "}
-                  <em>{farmOverview.player.favoriteThing}</em>"
-                </div>
-              </li>
-              <li>
-                <div>
-                  Played for <img width={14} src={clockPng} />{" "}
-                  <em>{formatDuration(farmOverview.player.playtime)}</em>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          {farmOverview.farmhands.map((farmhand) => (
-            <div
-              key={farmhand.name}
-              className={clsx(styles.column, styles.farmer)}
-            >
-              <h1>
-                <img
-                  height={20}
-                  src={farmhand.gender === "Female" ? femalePng : malePng}
-                />{" "}
-                {farmhand.name}
-              </h1>
-              <ul>
-                <li>Farmhand</li>
-                <li>
-                  <div>
-                    Favorite thing is "<img width={14} src={favoritePng} />{" "}
-                    <em>{farmhand.favoriteThing}</em>"
-                  </div>
-                </li>
-                <li>
-                  <div>
-                    Played for <img width={14} src={clockPng} />{" "}
-                    <em>{formatDuration(farmhand.playtime)}</em>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          ))}
+          {[farmOverview.player]
+            .concat(farmOverview.farmhands)
+            .map((farmer) => (
+              <div
+                key={farmer.name}
+                className={clsx(styles.column, styles.farmer)}
+              >
+                <h1>
+                  <img
+                    height={20}
+                    src={farmer.gender === "Female" ? femalePng : malePng}
+                  />{" "}
+                  {farmer.name}
+                </h1>
+                <ul>
+                  <li>
+                    {farmer === farmOverview.player
+                      ? "Owner of the Farm"
+                      : "Farmhand"}
+                  </li>
+                  <li>
+                    <div>
+                      Favorite thing is "<img width={14} src={favoritePng} />{" "}
+                      <em>{farmer.favoriteThing}</em>"
+                    </div>
+                  </li>
+                  <li>
+                    <div>
+                      Played for <img width={14} src={clockPng} />{" "}
+                      <em>{formatDuration(farmer.playtime)}</em>
+                    </div>
+                  </li>
+                  {farmer.qiGems > 0 && (
+                    <li>
+                      <div>
+                        Qi Gems:{" "}
+                        <Currency amount={farmer.qiGems} unit="qiGems" />
+                      </div>
+                    </li>
+                  )}
+                </ul>
+              </div>
+            ))}
         </div>
       </div>
     </SummarySection>

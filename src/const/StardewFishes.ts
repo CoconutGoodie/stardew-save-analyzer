@@ -1,14 +1,18 @@
-export enum Weather {
+export enum WeatherCondition {
   Sun = "Sun",
   Rain = "Rain",
+  Wind = "Wind",
 }
 
 export enum FishCategory {
+  Any_Season = "Any_Season",
   Spring = "Spring",
   Summer = "Summer",
   Fall = "Fall",
   Winter = "Winter",
   Night_Market = "Night_Market",
+  The_Mines = "The_Mines",
+  The_Desert = "The_Desert",
   Ginger_Island = "Ginger_Island",
   Crab_Pot = "Crab_Pot",
   Other = "Other",
@@ -19,7 +23,7 @@ export enum FishCategory {
 export interface Fish {
   name: string;
   categories: ValueOf<typeof FishCategory>[];
-  weather?: Weather;
+  weatherCondition?: WeatherCondition[];
 }
 
 export const STARDEW_FISH_CATEGORIES = {
@@ -50,25 +54,10 @@ export const STARDEW_FISH_CATEGORIES = {
 };
 
 export const STARDEW_FISHES: Record<number, Fish> = {
-  // "Fish" category
-  152: {
-    name: "Seaweed",
-    categories: [FishCategory.Other],
-  },
-  153: {
-    name: "Green Algae",
-    categories: [FishCategory.Other],
-  },
-  157: {
-    name: "White Algae",
-    categories: [FishCategory.Other],
-  },
-
-  // "Fish -4" category
   128: {
     name: "Pufferfish",
     categories: [FishCategory.Summer, FishCategory.Ginger_Island],
-    weather: Weather.Sun,
+    weatherCondition: [WeatherCondition.Sun],
   },
   129: {
     name: "Anchovy",
@@ -82,158 +71,197 @@ export const STARDEW_FISHES: Record<number, Fish> = {
       FishCategory.Ginger_Island,
     ],
   },
-  // 131: {
-  //   name: "Sardine",
-  //   masterAngler: true,
-  // },
-  // 132: {
-  //   name: "Bream",
-  //   masterAngler: true,
-  // },
-  // 136: {
-  //   name: "Largemouth Bass",
-  //   masterAngler: true,
-  // },
-  // 137: {
-  //   name: "Smallmouth Bass",
-  //   masterAngler: true,
-  // },
-  // 138: {
-  //   name: "Rainbow Trout",
-  //   masterAngler: true,
-  // },
-  // 139: {
-  //   name: "Salmon",
-  //   masterAngler: true,
-  // },
-  // 140: {
-  //   name: "Walleye",
-  //   masterAngler: true,
-  // },
-  // 141: {
-  //   name: "Perch",
-  //   masterAngler: true,
-  // },
-  // 142: {
-  //   name: "Carp",
-  //   masterAngler: true,
-  // },
-  // 143: {
-  //   name: "Catfish",
-  //   masterAngler: true,
-  // },
-  // 144: {
-  //   name: "Pike",
-  //   masterAngler: true,
-  // },
-  // 145: {
-  //   name: "Sunfish",
-  //   masterAngler: true,
-  // },
-  // 146: {
-  //   name: "Red Mullet",
-  //   masterAngler: true,
-  // },
-  // 147: {
-  //   name: "Herring",
-  //   masterAngler: true,
-  // },
-  // 148: {
-  //   name: "Eel",
-  //   masterAngler: true,
-  // },
-  // 149: {
-  //   name: "Octopus",
-  //   masterAngler: true,
-  // },
-  // 150: {
-  //   name: "Red Snapper",
-  //   masterAngler: true,
-  // },
-  // 151: {
-  //   name: "Squid",
-  //   masterAngler: true,
-  // },
-  // 154: {
-  //   name: "Sea Cucumber",
-  //   masterAngler: true,
-  // },
-  // 155: {
-  //   name: "Super Cucumber",
-  //   masterAngler: true,
-  // },
-  // 156: {
-  //   name: "Ghostfish",
-  //   masterAngler: true,
-  // },
-  // 158: {
-  //   name: "Stonefish",
-  //   masterAngler: true,
-  // },
-  // 159: {
-  //   name: "Crimsonfish",
-  //   masterAngler: true,
-  // },
+  131: {
+    name: "Sardine",
+    categories: [FishCategory.Spring, FishCategory.Fall, FishCategory.Winter],
+  },
+  132: {
+    name: "Bream",
+    categories: [FishCategory.Any_Season],
+  },
+  136: {
+    name: "Largemouth Bass",
+    categories: [FishCategory.Any_Season],
+  },
+  137: {
+    name: "Smallmouth Bass",
+    categories: [FishCategory.Spring, FishCategory.Fall],
+  },
+  138: {
+    name: "Rainbow Trout",
+    categories: [FishCategory.Summer],
+    weatherCondition: [WeatherCondition.Sun],
+  },
+  139: {
+    name: "Salmon",
+    categories: [FishCategory.Fall],
+  },
+  140: {
+    name: "Walleye",
+    categories: [FishCategory.Fall, FishCategory.Winter],
+    weatherCondition: [WeatherCondition.Rain],
+  },
+  141: {
+    name: "Perch",
+    categories: [FishCategory.Winter],
+  },
+  142: {
+    name: "Carp",
+    categories: [FishCategory.Any_Season],
+  },
+  143: {
+    name: "Catfish",
+    categories: [FishCategory.Spring, FishCategory.Fall, FishCategory.Summer],
+    weatherCondition: [WeatherCondition.Rain],
+  },
+  144: {
+    name: "Pike",
+    categories: [FishCategory.Summer, FishCategory.Winter],
+  },
+  145: {
+    name: "Sunfish",
+    categories: [FishCategory.Spring, FishCategory.Summer],
+    weatherCondition: [WeatherCondition.Sun, WeatherCondition.Wind],
+  },
+  146: {
+    name: "Red Mullet",
+    categories: [FishCategory.Summer, FishCategory.Winter],
+  },
+  147: {
+    name: "Herring",
+    categories: [FishCategory.Spring, FishCategory.Winter],
+  },
+  148: {
+    name: "Eel",
+    categories: [FishCategory.Spring, FishCategory.Fall],
+    weatherCondition: [WeatherCondition.Rain],
+  },
+  149: {
+    name: "Octopus",
+    categories: [FishCategory.Summer],
+  },
+  150: {
+    name: "Red Snapper",
+    categories: [FishCategory.Summer, FishCategory.Fall, FishCategory.Winter],
+    weatherCondition: [WeatherCondition.Rain],
+  },
+  151: {
+    name: "Squid",
+    categories: [FishCategory.Winter],
+  },
+  152: {
+    name: "Seaweed",
+    categories: [FishCategory.Other],
+  },
+  153: {
+    name: "Green Algae",
+    categories: [FishCategory.Other],
+  },
+  154: {
+    name: "Sea Cucumber",
+    categories: [FishCategory.Fall, FishCategory.Winter],
+  },
+  155: {
+    name: "Super Cucumber",
+    categories: [FishCategory.Summer, FishCategory.Fall],
+  },
+  156: {
+    name: "Ghostfish",
+    categories: [FishCategory.The_Mines],
+  },
+  157: {
+    name: "White Algae",
+    categories: [FishCategory.Other],
+  },
+  158: {
+    name: "Stonefish",
+    categories: [FishCategory.The_Mines],
+  },
+  159: {
+    name: "Crimsonfish",
+    categories: [FishCategory.Legendary, FishCategory.Summer],
+  },
   // 160: {
   //   name: "Angler",
   //   masterAngler: true,
   // },
-  // 161: {
-  //   name: "Ice Pip",
-  //   masterAngler: true,
-  // },
-  // 162: {
-  //   name: "Lava Eel",
-  //   masterAngler: true,
-  // },
+  161: {
+    name: "Ice Pip",
+    categories: [FishCategory.The_Mines],
+  },
+  162: {
+    name: "Lava Eel",
+    categories: [FishCategory.The_Mines],
+  },
   163: {
     name: "Legend",
     categories: [FishCategory.Legendary],
   },
-  // 164: {
-  //   name: "Sandfish",
-  //   masterAngler: true,
-  // },
-  // 165: {
-  //   name: "Scorpion Carp",
-  //   masterAngler: true,
-  // },
+  164: {
+    name: "Sandfish",
+    categories: [FishCategory.The_Desert],
+  },
+  165: {
+    name: "Scorpion Carp",
+    categories: [FishCategory.The_Desert],
+  },
+  269: {
+    name: "Midnight Carp",
+    categories: [
+      FishCategory.Fall,
+      FishCategory.Winter,
+      FishCategory.Ginger_Island,
+    ],
+  },
+  267: {
+    name: "Flounder",
+    categories: [
+      FishCategory.Spring,
+      FishCategory.Summer,
+      FishCategory.Ginger_Island,
+    ],
+  },
   // 682: {
   //   name: "Mutant Carp",
   //   masterAngler: true,
   // },
-  // 698: {
-  //   name: "Sturgeon",
-  //   masterAngler: true,
-  // },
-  // 699: {
-  //   name: "Tiger Trout",
-  //   masterAngler: true,
-  // },
-  // 700: {
-  //   name: "Bullhead",
-  //   masterAngler: true,
-  // },
-  // 701: {
-  //   name: "Tilapia",
-  //   masterAngler: true,
-  // },
-  // 702: {
-  //   name: "Chub",
-  //   masterAngler: true,
-  // },
-  // 704: {
-  //   name: "Dorado",
-  //   masterAngler: true,
-  // },
-  // 705: {
-  //   name: "Albacore",
-  //   masterAngler: true,
-  // },
-  // 706: {
-  //   name: "Shad",
-  //   masterAngler: true,
-  // },
+  698: {
+    name: "Sturgeon",
+    categories: [FishCategory.Summer, FishCategory.Winter],
+  },
+  699: {
+    name: "Tiger Trout",
+    categories: [FishCategory.Fall, FishCategory.Winter],
+  },
+  700: {
+    name: "Bullhead",
+    categories: [FishCategory.Any_Season],
+  },
+  701: {
+    name: "Tilapia",
+    categories: [
+      FishCategory.Summer,
+      FishCategory.Fall,
+      FishCategory.Ginger_Island,
+    ],
+  },
+  702: {
+    name: "Chub",
+    categories: [FishCategory.Any_Season],
+  },
+  704: {
+    name: "Dorado",
+    categories: [FishCategory.Summer],
+  },
+  705: {
+    name: "Albacore",
+    categories: [FishCategory.Fall, FishCategory.Winter],
+  },
+  706: {
+    name: "Shad",
+    categories: [FishCategory.Spring, FishCategory.Summer, FishCategory.Fall],
+    weatherCondition: [WeatherCondition.Rain],
+  },
   // 707: {
   //   name: "Lingcod",
   //   masterAngler: true,
@@ -310,11 +338,6 @@ export const STARDEW_FISHES: Record<number, Fish> = {
   // },
 
   // TODO
-  // if (compareSemVer(saveInfo.version, "1.4") >= 0) {
-  //   meta.recipes[269] = 'Midnight Carp';
-  //   meta.recipes[267] = 'Flounder';
-  // }
-
   // if (compareSemVer(saveInfo.version, "1.5") >= 0) {
   //   meta.recipes[836] = 'Stingray';
   //   meta.recipes[837] = 'Lionfish';

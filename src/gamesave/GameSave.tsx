@@ -145,6 +145,7 @@ export class GameSave {
   }
 
   public getAllFarmerNames() {
+    // TODO: Suppoer < 1.6
     return [this.saveXml.player[0].name[0]].concat(
       this.saveXml.farmhands?.map((farmhand) => farmhand.Farmer[0].name[0]) ??
         []
@@ -152,13 +153,13 @@ export class GameSave {
   }
 
   public getFarmer(name: string) {
+    const farmhands = this.calcFarmhands();
+    console.log(name,farmhands)
     if (this.saveXml.player[0].name[0] === name)
       return new Farmer(this.saveXml.player[0]);
-    const farmhandXml = this.saveXml.farmhands?.find(
-      (farmhand) => farmhand.Farmer[0].name[0] === name
-    )?.Farmer[0];
-    if (!farmhandXml) return;
-    return new Farmer(farmhandXml);
+    const farmer = farmhands?.find((farmhand) => farmhand.name === name);
+    if (!farmer) return;
+    return farmer;
   }
 
   public getSpecialOrders() {

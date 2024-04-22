@@ -1,5 +1,5 @@
 import { capitalCase, snakeCase } from "case-anything";
-import { entries, find, keys } from "lodash";
+import { entries, find, keys, set, thru } from "lodash";
 import { FarmerTag } from "../component/FarmerTag";
 import { SummarySection } from "../component/SummarySection";
 import { Fish, FishCategory, STARDEW_FISHES } from "../const/StardewFishes";
@@ -13,6 +13,9 @@ import { Fragment } from "react/jsx-runtime";
 import { Achievement } from "../component/Achievement";
 import { Objective } from "../component/Objective";
 import fishPng from "../assets/sprite/skill/fishing.png";
+import checkmarkPng from "../assets/icon/checkmark.png";
+import questPng from "../assets/icon/quest.png";
+import { useState } from "react";
 
 interface Props {
   gameSave: GameSave;
@@ -43,6 +46,8 @@ const backgroundSprites = new AssetRepository<{ default: string }>(
 );
 
 export const FishingSection = (props: Props) => {
+  const [compact, setCompact] = useState(true);
+
   const farmers = props.gameSave
     .getAllFarmerNames()
     .map((farmerName) => props.gameSave.getFarmer(farmerName)!);
@@ -75,10 +80,25 @@ export const FishingSection = (props: Props) => {
                 different fish in total.
               </Objective>
 
+              <button
+                className={styles.compactBtn}
+                onClick={() => setCompact((c) => !c)}
+              >
+                Toggle Compact View
+              </button>
+
               <div className={styles.categories}>
                 {keys(FishCategory).map((categoryId) => {
                   const fishes =
                     FISHES_BY_CATEGORIES[categoryId as FishCategory] ?? [];
+
+                  const totalCaught = fishes.reduce((total, fish) => {
+                    const caughtFish = find(farmer.caughtFish, {
+                      fishId: fish.id,
+                    });
+                    if (!caughtFish) return total;
+                    return total + 1;
+                  }, 0);
 
                   return (
                     <Fragment key={categoryId}>
@@ -90,10 +110,21 @@ export const FishingSection = (props: Props) => {
                               "Quests",
                               "Extended_Family"
                             )}
+                            target="_blank"
                           >
                             <strong>Extended Fish Family</strong>
                           </a>{" "}
-                          Quest. They still get you new bobber styles though:
+                          Quest. They still get you new{" "}
+                          <a
+                            href={StardewWiki.getLink(
+                              "Fish_Shop",
+                              "Bobber_Machine"
+                            )}
+                            target="_blank"
+                          >
+                            <strong>bobber styles</strong>
+                          </a>{" "}
+                          though:
                         </em>
                       )}
 
@@ -107,10 +138,36 @@ export const FishingSection = (props: Props) => {
                         }}
                       >
                         <a href={StardewWiki.getLink("Fish")} target="_blank">
-                          <h1>{capitalCase(categoryId).replace(/_/g, " ")}</h1>
+                          <h1>
+                            {capitalCase(categoryId)
+                              .replace(/_/g, " ")
+                              .replace("2", "II")}
+                          </h1>
+
+                          {thru(totalCaught >= fishes.length, (done) => (
+                            <span
+                              className={clsx(
+                                styles.counts,
+                                done && styles.done
+                              )}
+                            >
+                              {totalCaught} / {fishes.length}{" "}
+                              {
+                                <img
+                                  height={12}
+                                  src={done ? checkmarkPng : questPng}
+                                />
+                              }
+                            </span>
+                          ))}
                         </a>
 
-                        <div className={styles.fishes}>
+                        <div
+                          className={clsx(
+                            styles.fishes,
+                            compact && styles.compact
+                          )}
+                        >
                           {fishes.map((fish) => (
                             <a
                               key={fish.id}
@@ -143,20 +200,6 @@ export const FishingSection = (props: Props) => {
                 })}
               </div>
 
-              <Objective
-                className={styles.objective}
-                done={caughtTypeCount >= Object.keys(STARDEW_FISHES).length}
-              >
-                Every "Bobber Type" is unlocked.
-                {caughtTypeCount < Object.keys(STARDEW_FISHES).length && (
-                  <>
-                    {" "}
-                    — Completed {caughtTypeCount} out of{" "}
-                    {Object.keys(STARDEW_FISHES).length}
-                  </>
-                )}
-              </Objective>
-
               <Achievement
                 title="Mother Catch"
                 achieved={totalFish >= 100}
@@ -178,6 +221,20 @@ export const FishingSection = (props: Props) => {
                 achieved={caughtTypeCount >= Object.keys(STARDEW_FISHES).length}
                 description="catch every fish"
               />
+
+              <Objective
+                className={styles.objective}
+                done={caughtTypeCount >= Object.keys(STARDEW_FISHES).length}
+              >
+                Every "Bobber Type" is unlocked.
+                {caughtTypeCount < Object.keys(STARDEW_FISHES).length && (
+                  <>
+                    {" "}
+                    — Completed {caughtTypeCount} out of{" "}
+                    {Object.keys(STARDEW_FISHES).length}
+                  </>
+                )}
+              </Objective>
             </div>
           );
         })}

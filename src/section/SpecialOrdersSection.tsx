@@ -57,6 +57,7 @@ export const SpecialOrdersSection = (props: Props) => {
         <div className={styles.orders}>
           {specialOrders.map((order) => (
             <a
+              key={order.title}
               href={StardewWiki.getLink("Quests", order.title)}
               target="_blank"
             >

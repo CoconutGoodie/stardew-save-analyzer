@@ -1,7 +1,5 @@
 .farmers {
-  --farmerCount: 0;
-  display: grid;
-  grid-template-columns: repeat(var(--farmerCount), 1fr);
+  display: flex;
   gap: 50px;
 }
 

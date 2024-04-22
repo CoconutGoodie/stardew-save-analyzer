@@ -26,17 +26,15 @@ const specialOrderNpcs = new AssetRepository<{ default: string }>(
 );
 
 export const SpecialOrdersSection = (props: Props) => {
-  const farmOverview = props.gameSave.getFarmOverview();
-  const specialOrders = props.gameSave.getSpecialOrders();
-
-  const completedCount = specialOrders.filter(
+  const completedCount = props.gameSave.specialOrders.filter(
     (order) => order.completed
   ).length;
 
-  const boardBuilt =
-    BOARD_BUILD_DATE.canonicalDay <= farmOverview.currentDate.canonicalDay;
+  const builtBoard =
+    BOARD_BUILD_DATE.canonicalDay <= props.gameSave.currentDate.canonicalDay;
 
-  const everyOrderCompleted = completedCount === specialOrders.length;
+  const completedEveryOrder =
+    completedCount === props.gameSave.specialOrders.length;
 
   return (
     <SummarySection
@@ -51,13 +49,13 @@ export const SpecialOrdersSection = (props: Props) => {
         >
           <img
             height={108}
-            className={clsx(!boardBuilt && styles.incomplete)}
+            className={clsx(!builtBoard && styles.incomplete)}
             src={boardPng}
           />
         </a>
 
         <div className={styles.orders}>
-          {specialOrders.map((order) => (
+          {props.gameSave.specialOrders.map((order) => (
             <a
               key={order.title}
               href={StardewWiki.getLink("Quests", order.title)}
@@ -74,17 +72,18 @@ export const SpecialOrdersSection = (props: Props) => {
         </div>
       </div>
 
-      <Objective done={boardBuilt} className={styles.objective}>
+      <Objective done={builtBoard} className={styles.objective}>
         "Special Orders Board" has been built. (On{" "}
         <GameDateDisplay date={BOARD_BUILD_DATE} /> )
       </Objective>
 
-      <Objective done={everyOrderCompleted} className={styles.objective}>
+      <Objective done={completedEveryOrder} className={styles.objective}>
         Every Special Order is completed.
-        {!everyOrderCompleted && (
+        {!completedEveryOrder && (
           <span>
             {" "}
-            — Completed {completedCount} out of {specialOrders.length}
+            — Completed {completedCount} out of{" "}
+            {props.gameSave.specialOrders.length}
           </span>
         )}
       </Objective>

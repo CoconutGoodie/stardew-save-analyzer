@@ -47,12 +47,10 @@ const backgroundSprites = new AssetRepository<{ default: string }>(
 export const FishingSection = (props: Props) => {
   const [compact, setCompact] = useState(false);
 
-  const farmers = props.gameSave
-    .getAllFarmerNames()
-    .map((farmerName) => props.gameSave.getFarmer(farmerName)!);
+  const farmers = props.gameSave.getAllFarmers();
 
   const anglerFishes = entries(STARDEW_FISHES).filter(
-    ([fishId, fish]) => !fish.categories.includes(FishCategory.Legendary_2)
+    ([_, fish]) => !fish.categories.includes(FishCategory.Legendary_2)
   );
 
   return (

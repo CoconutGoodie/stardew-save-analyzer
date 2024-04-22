@@ -42,9 +42,7 @@ function App() {
           <div style={{ display: "flex", gap: 50 }}>
             <MoneySection gameSave={gameSave} />
 
-            <SummarySection>
-              <h1>Animals & Pets [WIP]</h1>
-
+            <SummarySection sectionTitle="Animals & Pets [WIP]" collapsable>
               <p>...</p>
               <p>...</p>
               <p>...</p>
@@ -59,25 +57,14 @@ function App() {
 
           <SpecialOrdersSection gameSave={gameSave} />
 
-          <SummarySection>
-            <h1>Craftables [WIP]</h1>
-          </SummarySection>
+          <hr />
 
-          <SummarySection>
-            <h1>Socials [WIP]</h1>
-          </SummarySection>
+          <SummarySection sectionTitle="Craftables [WIP]" />
+          <SummarySection sectionTitle="Socials [WIP]" />
+          <SummarySection sectionTitle="Community Center [WIP]" />
+          <SummarySection sectionTitle="Many More [WIP]" />
 
-          <SummarySection>
-            <h1>Community Center [WIP]</h1>
-          </SummarySection>
-
-          <SummarySection>
-            <h1>Many More... [WIP]</h1>
-          </SummarySection>
-
-          <SummarySection>
-            <h1>Todo List</h1>
-
+          <SummarySection sectionTitle="Todo List">
             <ul>
               <li>"Quests" Section</li>
               <li>"Craftables" Section</li>

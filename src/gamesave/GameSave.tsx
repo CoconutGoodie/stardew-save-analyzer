@@ -1,5 +1,5 @@
 import { capitalCase } from "case-anything";
-import { entries, lowerCase } from "lodash";
+import { entries, find, lowerCase } from "lodash";
 
 import { STARDEW_FARM_TYPES } from "../const/StardewFarmTypes";
 import { STARDEW_SPECIAL_ORDERS } from "../const/StardewSpecialOrders";
@@ -71,24 +71,38 @@ export namespace GameSave {
 }
 
 export class GameSave {
-  constructor(private saveXml: GameSave.SaveXml) {
-    console.log(saveXml);
-  }
+  public readonly gameVersion;
+  public readonly farmName;
+  public readonly farmType;
+  public readonly playtime;
+  public readonly currentDate;
 
-  public getFarmOverview() {
-    return {
-      gameVersion: this.calcGameVersion(),
-      farmName: this.saveXml.player[0].farmName[0],
-      farmType: this.calcFarmType(),
-      player: new Farmer(this.saveXml.player[0]),
-      farmhands: this.calcFarmhands(),
-      playtime: parseInt(this.saveXml.player[0].millisecondsPlayed[0]),
-      currentDate: new GameDate(
-        parseInt(this.saveXml.dayOfMonth[0]),
-        capitalCase(this.saveXml.currentSeason[0]) as GameSeason,
-        parseInt(this.saveXml.year[0])
-      ),
-    };
+  public readonly totalGoldsEarned;
+
+  public readonly player;
+  public readonly farmhands;
+
+  public readonly specialOrders;
+
+  constructor(private saveXml: GameSave.SaveXml) {
+    this.gameVersion = this.calcGameVersion();
+    this.farmName = this.saveXml.player[0].farmName[0];
+    this.farmType = this.calcFarmType();
+    this.playtime = parseInt(this.saveXml.player[0].millisecondsPlayed[0]);
+    this.currentDate = new GameDate(
+      parseInt(this.saveXml.dayOfMonth[0]),
+      capitalCase(this.saveXml.currentSeason[0]) as GameSeason,
+      parseInt(this.saveXml.year[0])
+    );
+
+    this.totalGoldsEarned = parseInt(
+      this.saveXml.player[0].totalMoneyEarned[0]
+    );
+
+    this.player = new Farmer(this.saveXml.player[0]);
+    this.farmhands = this.calcFarmhands();
+
+    this.specialOrders = this.calcSpecialOrders();
   }
 
   private calcGameVersion() {
@@ -130,38 +144,7 @@ export class GameSave {
     return farmhands ?? [];
   }
 
-  public getMoneySummary() {
-    return {
-      earnedTotal: parseInt(this.saveXml.player[0].totalMoneyEarned[0]),
-      // TODO: Extract to new Advancement Track System (?)
-      achievements: [
-        { title: "Greenhorn", goal: 15_000 },
-        { title: "Cowpoke ", goal: 50_000 },
-        { title: "Homesteader", goal: 250_000 },
-        { title: "Millionaire", goal: 1_000_000 },
-        { title: "Legend", goal: 10_000_000 },
-      ],
-    };
-  }
-
-  public getAllFarmerNames() {
-    // TODO: Suppoer < 1.6
-    return [this.saveXml.player[0].name[0]].concat(
-      this.saveXml.farmhands?.map((farmhand) => farmhand.Farmer[0].name[0]) ??
-        []
-    );
-  }
-
-  public getFarmer(name: string) {
-    const farmhands = this.calcFarmhands();
-    if (this.saveXml.player[0].name[0] === name)
-      return new Farmer(this.saveXml.player[0]);
-    const farmer = farmhands?.find((farmhand) => farmhand.name === name);
-    if (!farmer) return;
-    return farmer;
-  }
-
-  public getSpecialOrders() {
+  private calcSpecialOrders() {
     const orders = entries(STARDEW_SPECIAL_ORDERS.town);
 
     return orders.map(([orderId, title]) => ({
@@ -177,15 +160,11 @@ export class GameSave {
     }));
   }
 
-  public getStardrops(farmerName: string) {
-    const farmer = this.getFarmer(farmerName);
-    if (!farmer) return;
+  public getAllFarmers() {
+    return [this.player].concat(this.farmhands);
+  }
 
-    const mails = entries(STARDROP_MAIL_FLAGS);
-
-    return mails.map(([mailId, description]) => ({
-      description,
-      gathered: farmer.receivedMailFlags.includes(mailId),
-    }));
+  public getFarmerByName(name: string) {
+    return find(this.getAllFarmers(), { name });
   }
 }

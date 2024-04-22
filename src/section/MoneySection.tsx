@@ -9,21 +9,21 @@ interface Props {
 }
 
 export const MoneySection = (props: Props) => {
-  const farmOverview = props.gameSave.getFarmOverview();
-  const moneySummary = props.gameSave.getMoneySummary();
-
-  const totalDigits = moneySummary.earnedTotal
+  const totalDigits = props.gameSave.totalGoldsEarned
     .toString()
     .padStart(9, " ")
     .split("");
 
   return (
-    <SummarySection id="money" className={styles.section}>
-      <h1>Money </h1>
-
+    <SummarySection
+      id="money"
+      sectionTitle="Money"
+      className={styles.section}
+      collapsable
+    >
       <div>
-        In total, {farmOverview.farmName} Farm has earned{" "}
-        <Currency amount={moneySummary.earnedTotal} />
+        In total, {props.gameSave.farmName} Farm has earned{" "}
+        <Currency amount={props.gameSave.totalGoldsEarned} />
       </div>
 
       <div className={styles.money}>
@@ -36,8 +36,14 @@ export const MoneySection = (props: Props) => {
       </div>
 
       <div>
-        {moneySummary.achievements.map((achievement) => {
-          const achieved = achievement.goal <= moneySummary.earnedTotal;
+        {[
+          { title: "Greenhorn", goal: 15_000 },
+          { title: "Cowpoke ", goal: 50_000 },
+          { title: "Homesteader", goal: 250_000 },
+          { title: "Millionaire", goal: 1_000_000 },
+          { title: "Legend", goal: 10_000_000 },
+        ].map((achievement) => {
+          const achieved = achievement.goal <= props.gameSave.totalGoldsEarned;
 
           return (
             <Achievement
@@ -54,7 +60,7 @@ export const MoneySection = (props: Props) => {
                 <span>
                   —{" "}
                   <Currency
-                    amount={achievement.goal - moneySummary.earnedTotal}
+                    amount={achievement.goal - props.gameSave.totalGoldsEarned}
                     unit="gold"
                   />{" "}
                   more to go

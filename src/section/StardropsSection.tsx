@@ -19,26 +19,22 @@ interface Props {
 }
 
 export const StardropsSection = (props: Props) => {
-  const farmerNames = props.gameSave.getAllFarmerNames();
+  const farmers = props.gameSave.getAllFarmers();
 
   return (
     <SummarySection id="stardrops" sectionTitle="Stardrops" collapsable>
-      <div
-        className={styles.farmers}
-        style={{ ["--farmerCount" as string]: farmerNames.length }}
-      >
-        {farmerNames.map((farmerName) => {
-          const farmer = props.gameSave.getFarmer(farmerName);
-          if (!farmer) return;
-
-          const stardrops = props.gameSave.getStardrops(farmerName)!;
+      <div className={styles.farmers}>
+        {farmers.map((farmer) => {
+          const gatheredStardropCount = farmer.stardrops.filter(
+            (stardrop) => stardrop.gathered
+          ).length;
 
           return (
             <div key={farmer.name} className={styles.farmer}>
               <FarmerTag farmer={farmer} />
 
               <div className={styles.stardropList}>
-                {stardrops.map((stardrop, index) => (
+                {farmer.stardrops.map((stardrop, index) => (
                   <Objective
                     key={index}
                     done={stardrop.gathered}
@@ -74,13 +70,12 @@ export const StardropsSection = (props: Props) => {
                 <Achievement
                   title="Mystery of the Stardrops"
                   description="gather every Stardrop"
-                  achieved={stardrops.every((stardrop) => stardrop.gathered)}
+                  achieved={farmer.stardrops.every(
+                    (stardrop) => stardrop.gathered
+                  )}
                 >
                   <span>
-                    — Missing{" "}
-                    {stardrops.length -
-                      stardrops.filter((stardrop) => stardrop.gathered)
-                        .length}{" "}
+                    — Missing {farmer.stardrops.length - gatheredStardropCount}{" "}
                     more
                   </span>
                 </Achievement>

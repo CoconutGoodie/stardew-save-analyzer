@@ -1,6 +1,7 @@
-import { intersection, keys, values } from "lodash";
+import { entries, intersection, keys, values } from "lodash";
 import { GameSave } from "./GameSave";
 import { STARDEW_PROFESSIONS } from "../const/StardewProfessions";
+import { STARDROP_MAIL_FLAGS } from "../const/StardewStardrops";
 
 export class Farmer {
   public readonly name;
@@ -16,14 +17,11 @@ export class Farmer {
 
   public readonly receivedMailFlags;
   public readonly caughtFish;
+  public readonly stardrops;
 
   constructor(private playerXml: GameSave.FarmerXml) {
     this.name = playerXml.name[0];
-    this.gender =
-      playerXml.gender?.[0] ??
-      (playerXml.isMale?.[0] === "true"
-        ? ("Male" as const)
-        : ("Female" as const));
+    this.gender = this.calcGender();
     this.favoriteThing = playerXml.favoriteThing[0];
     this.playtime = parseInt(playerXml.millisecondsPlayed[0]);
 
@@ -67,6 +65,16 @@ export class Farmer {
         lengthInInches: parseInt(caught.value[0].ArrayOfInt[0].int[1]),
       })
     );
+    this.stardrops = this.calcStardrops();
+  }
+
+  private calcGender() {
+    return (
+      this.playerXml.gender?.[0] ??
+      (this.playerXml.isMale?.[0] === "true"
+        ? ("Male" as const)
+        : ("Female" as const))
+    );
   }
 
   private calcProfessions(skillName: keyof typeof STARDEW_PROFESSIONS) {
@@ -100,5 +108,12 @@ export class Farmer {
     if (v >= 4) return "Bumpkin";
     if (v >= 2) return "Greenhorn";
     return "Newcomer";
+  }
+
+  private calcStardrops() {
+    return entries(STARDROP_MAIL_FLAGS).map(([mailId, description]) => ({
+      description,
+      gathered: this.receivedMailFlags.includes(mailId),
+    }));
   }
 }

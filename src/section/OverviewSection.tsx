@@ -54,12 +54,8 @@ function formatDuration(duration: number): string {
 }
 
 export const OverviewSection = (props: Props) => {
-  const farmOverview = props.gameSave.getFarmOverview();
-
   return (
-    <SummarySection id="overview">
-      <h1>Overview</h1>
-
+    <SummarySection id="overview" sectionTitle="Overview">
       <div className={styles.content}>
         <a href={StardewWiki.getLink("Farm_Maps", "Map_Types")}>
           <div className={styles.farmType}>
@@ -67,36 +63,36 @@ export const OverviewSection = (props: Props) => {
               width={80}
               src={
                 farmTypesAssets.resolve(
-                  lowerCase(farmOverview.farmType).replace(/\s+/g, "-")
+                  lowerCase(props.gameSave.farmType).replace(/\s+/g, "-")
                 )?.default
               }
             />
-            <span>({farmOverview.farmType} Farm)</span>
+            <span>({props.gameSave.farmType} Farm)</span>
           </div>
         </a>
 
         <div className={styles.column}>
-          <h1>{farmOverview.farmName} Farm</h1>
+          <h1>{props.gameSave.farmName} Farm</h1>
           <span>
             Game Version:{" "}
             <span className={styles.gameVersion}>
-              v{farmOverview.gameVersion}
+              v{props.gameSave.gameVersion}
             </span>
           </span>
           <span>
             Playtime: <img width={18} src={clockPng} />{" "}
-            <em>{formatDuration(farmOverview.playtime)}</em>
+            <em>{formatDuration(props.gameSave.playtime)}</em>
           </span>
           <span>
-            Today is <GameDateDisplay date={farmOverview.currentDate} />
+            Today is <GameDateDisplay date={props.gameSave.currentDate} />
           </span>
         </div>
 
         <div className={styles.divider} />
 
         <div className={styles.farmers}>
-          {[farmOverview.player]
-            .concat(farmOverview.farmhands)
+          {[props.gameSave.player]
+            .concat(props.gameSave.farmhands)
             .map((farmer) => (
               <div
                 key={farmer.name}
@@ -111,7 +107,7 @@ export const OverviewSection = (props: Props) => {
                 </h1>
                 <ul>
                   <li>
-                    {farmer === farmOverview.player
+                    {farmer === props.gameSave.player
                       ? "Owner of the Farm"
                       : "Farmhand"}
                   </li>

@@ -26,9 +26,7 @@ const professionSprites = new AssetRepository<{ default: string }>(
 );
 
 export const SkillsSection = (props: Props) => {
-  const farmers = props.gameSave
-    .getAllFarmerNames()
-    .map((name) => props.gameSave.getFarmer(name));
+  const farmers = props.gameSave.getAllFarmers();
 
   return (
     <SummarySection id="skills" sectionTitle="Skills" collapsable>

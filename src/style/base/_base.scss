@@ -1,7 +1,7 @@
 #root {
   min-height: 100vh;
-  background: #060216;
   color: #d4ccbc;
+  background-color: #060216;
 
   main {
     max-width: 1000px;
@@ -19,6 +19,20 @@
       font-family: "Stardew Valley";
       font-size: 16px;
       color: #ceb07e;
+      z-index: 0;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 250px;
+        background-image: url(./src/assets/background.png);
+        background-repeat: repeat-x;
+        mask-image: linear-gradient(to bottom, #fff, rgba(#fff, 0));
+        z-index: -1;
+      }
     }
 
     & > :first-child {

@@ -1,0 +1,78 @@
+.farmers {
+  display: flex;
+  gap: 50px;
+}
+
+.farmer {
+  & > :nth-child(2) {
+    margin-bottom: 5px;
+  }
+  & > :nth-child(3) {
+    margin-bottom: 15px;
+  }
+}
+
+.categories {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .category {
+    --background: url("");
+
+    position: relative;
+    padding: 10px 10px 10px 20px;
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 120px 1fr;
+    background: rgba(#36515c, 0.3);
+    border-radius: 10px;
+    z-index: 0;
+
+    &::before {
+      position: absolute;
+      content: "";
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.25;
+      background-image: var(--background);
+      background-size: cover;
+      filter: blur(3px);
+      border-radius: inherit;
+      z-index: -1;
+    }
+
+    & h1 {
+      margin: 0;
+      font-family: "Stardew Valley";
+      font-size: 20px;
+    }
+  }
+}
+
+.fishes {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  align-items: center;
+  gap: 10px;
+
+  .fish {
+    display: flex;
+    opacity: 0.2;
+
+    &.caught {
+      $color: #62a2b6;
+      $width: 2px;
+      opacity: 1;
+      filter: drop-shadow(0px -2px 0px $color) drop-shadow(0px 2px 0px $color)
+        drop-shadow(2px 0px 0px $color) drop-shadow(-2px 0px 0px $color);
+    }
+  }
+}
+
+.objective {
+  margin-bottom: 10px;
+}

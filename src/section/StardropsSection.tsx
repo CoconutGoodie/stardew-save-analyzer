@@ -12,6 +12,7 @@ import styles from "./StardropsSection.module.scss";
 import clsx from "clsx";
 import { StardewWiki } from "../util/StardewWiki";
 import { Objective } from "../component/Objective";
+import { FarmerTag } from "../component/FarmerTag";
 
 interface Props {
   gameSave: GameSave;
@@ -30,18 +31,13 @@ export const StardropsSection = (props: Props) => {
       >
         {farmerNames.map((farmerName) => {
           const farmer = props.gameSave.getFarmer(farmerName);
+          if (!farmer) return;
+
           const stardrops = props.gameSave.getStardrops(farmerName)!;
 
           return (
-            <div key={farmer?.name} className={styles.farmer}>
-              <h1 className={styles.name}>
-                <img src={farmer?.gender[0] === "Male" ? malePng : femalePng} />
-                <span>{farmerName}</span>
-                {/* <span className={styles.progress}>
-                  - ({stardrops.filter((stardrop) => stardrop.gathered).length}{" "}
-                  out of {stardrops.length} gathered)
-                </span> */}
-              </h1>
+            <div key={farmer.name} className={styles.farmer}>
+              <FarmerTag farmer={farmer} />
 
               <div className={styles.starfruitList}>
                 {stardrops.map((stardrop, index) => (
@@ -77,7 +73,7 @@ export const StardropsSection = (props: Props) => {
               <div style={{ marginTop: 10 }}>
                 <Achievement
                   title="Mystery of the Stardrops"
-                  description="Gather every Stardrop"
+                  description="gather every Stardrop"
                   achieved={stardrops.every((stardrop) => stardrop.gathered)}
                 >
                   {/* <span>

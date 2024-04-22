@@ -8,12 +8,12 @@ module.exports = {
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
-  plugins: ["react-refresh"],
+  plugins: ["react", "react-refresh"],
   rules: {
-    "react/jsx-key": "on",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/no-unused-vars": "off",
+    "react/jsx-key": ["error", { checkFragmentShorthand: true }],
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true },

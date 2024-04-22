@@ -14,6 +14,7 @@ import { SummarySection } from "./component/SummarySection";
 import { LoadSaveSection } from "./section/LoadSaveSection";
 
 import "./style/style.scss";
+import { FishingSection } from "./section/FishingSection";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
@@ -54,6 +55,8 @@ function App() {
 
           <StardropsSection gameSave={gameSave} />
 
+          <FishingSection gameSave={gameSave} />
+
           <SpecialOrdersSection gameSave={gameSave} />
 
           <SummarySection>
@@ -74,6 +77,25 @@ function App() {
 
           <SummarySection>
             <h1>Many More... [WIP]</h1>
+          </SummarySection>
+
+          <SummarySection>
+            <h1>Todo List</h1>
+
+            <ul>
+              <li>"Quests" Section</li>
+              <li>"Craftables" Section</li>
+              <li>"Cooking" Section</li>
+              <li>"Forest Neightbors" Section</li>
+              <li>"Ginger Island" Section</li>
+              <li>"Secret Notes" Section</li>
+              <li>"Grandpa's Evaluation" Section</li>
+              <li>"Socials" Section</li>
+              <li>"Community Center" Section</li>
+              <li>"Perfection" Section</li>
+              <li>Tooltips Component</li>
+              <li>Better Advancement Structure</li>
+            </ul>
           </SummarySection>
         </>
       )}

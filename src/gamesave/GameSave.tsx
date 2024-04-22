@@ -188,9 +188,4 @@ export class GameSave {
       gathered: farmer.receivedMailFlags.includes(mailId),
     }));
   }
-
-  public getCaughtFishes(farmerName: string) {
-    const farmer = this.getFarmer(farmerName);
-    if (!farmer) return;
-  }
 }

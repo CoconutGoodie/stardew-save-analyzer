@@ -4,12 +4,10 @@ import { SummarySection } from "../component/SummarySection";
 import { AssetRepository } from "../util/AssetRepository";
 import { GameSave } from "../gamesave/GameSave";
 
-import femalePng from "../assets/icon/female.png";
-import malePng from "../assets/icon/male.png";
-
 import styles from "./SkillsSection.module.scss";
 import { StardewWiki } from "../util/StardewWiki";
 import { entries, values } from "lodash";
+import { FarmerTag } from "../component/FarmerTag";
 
 interface Props {
   gameSave: GameSave;
@@ -45,9 +43,7 @@ export const SkillsSection = (props: Props) => {
 
           return (
             <div key={farmer.name} className={styles.farmer}>
-              <h1 className={styles.name}>
-                <img src={farmer.gender === "Male" ? malePng : femalePng} />
-                <span>{farmer.name}</span>
+              <FarmerTag farmer={farmer}>
                 <a
                   href={StardewWiki.getLink("Skills", "Skill-Based_Title")}
                   target="_blank"
@@ -55,7 +51,7 @@ export const SkillsSection = (props: Props) => {
                   ({farmer?.skillBasedTitle}{" "}
                   <span>- Skill Lv. {farmer.skillLevelTotal / 2})</span>
                 </a>
-              </h1>
+              </FarmerTag>
 
               {entries(farmer.skills).map(([skillId, skill]) => (
                 <div key={skillId} className={styles.skill}>
@@ -125,7 +121,7 @@ export const SkillsSection = (props: Props) => {
                 achieved={values(farmer.skills).some(
                   (skill) => skill.level === 10
                 )}
-                description={<>Reach Level 10 in a skill</>}
+                description={<>reach Level 10 in a skill</>}
               />
 
               <Achievement
@@ -133,7 +129,7 @@ export const SkillsSection = (props: Props) => {
                 achieved={values(farmer.skills).every(
                   (skill) => skill.level === 10
                 )}
-                description={<>Reach Level 10 in every skill</>}
+                description={<>reach Level 10 in every skill</>}
               />
             </div>
           );

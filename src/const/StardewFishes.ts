@@ -8,12 +8,18 @@ export enum FishCategory {
   Summer = "Summer",
   Fall = "Fall",
   Winter = "Winter",
-  NightMarket = "Night Market",
-  GingerIsland = "Ginger Island",
-  CrabPot = "Crab Pot",
+  Night_Market = "Night_Market",
+  Ginger_Island = "Ginger_Island",
+  Crab_Pot = "Crab_Pot",
   Other = "Other",
   Legendary = "Legendary",
-  Legendary2 = "Legendary II",
+  Legendary_2 = "Legendary_2",
+}
+
+export interface Fish {
+  name: string;
+  categories: ValueOf<typeof FishCategory>[];
+  weather?: Weather;
 }
 
 export const STARDEW_FISH_CATEGORIES = {
@@ -29,7 +35,7 @@ export const STARDEW_FISH_CATEGORIES = {
   [FishCategory.Winter]: {
     accentColor: "#429BA3",
   },
-  [FishCategory.CrabPot]: {
+  [FishCategory.Crab_Pot]: {
     accentColor: "#429BA3",
   },
   [FishCategory.Other]: {
@@ -38,48 +44,42 @@ export const STARDEW_FISH_CATEGORIES = {
   [FishCategory.Legendary]: {
     accentColor: "#429BA3",
   },
-  [FishCategory.Legendary2]: {
+  [FishCategory.Legendary_2]: {
     accentColor: "#429BA3",
   },
 };
 
-export const STARDEW_FISHES = {
+export const STARDEW_FISHES: Record<number, Fish> = {
   // "Fish" category
   152: {
     name: "Seaweed",
-    masterAngler: true,
     categories: [FishCategory.Other],
   },
   153: {
     name: "Green Algae",
-    masterAngler: true,
     categories: [FishCategory.Other],
   },
   157: {
     name: "White Algae",
-    masterAngler: true,
     categories: [FishCategory.Other],
   },
 
   // "Fish -4" category
   128: {
     name: "Pufferfish",
-    masterAngler: true,
-    categories: [FishCategory.Summer, FishCategory.GingerIsland],
+    categories: [FishCategory.Summer, FishCategory.Ginger_Island],
     weather: Weather.Sun,
   },
   129: {
     name: "Anchovy",
-    masterAngler: true,
     categories: [FishCategory.Spring, FishCategory.Fall],
   },
   130: {
     name: "Tuna",
-    masterAngler: true,
     categories: [
       FishCategory.Summer,
       FishCategory.Winter,
-      FishCategory.GingerIsland,
+      FishCategory.Ginger_Island,
     ],
   },
   // 131: {
@@ -186,10 +186,10 @@ export const STARDEW_FISHES = {
   //   name: "Lava Eel",
   //   masterAngler: true,
   // },
-  // 163: {
-  //   name: "Legend",
-  //   masterAngler: true,
-  // },
+  163: {
+    name: "Legend",
+    categories: [FishCategory.Legendary],
+  },
   // 164: {
   //   name: "Sandfish",
   //   masterAngler: true,
@@ -242,10 +242,10 @@ export const STARDEW_FISHES = {
   //   name: "Halibut",
   //   masterAngler: true,
   // },
-  // 715: {
-  //   name: "Lobster",
-  //   masterAngler: true,
-  // },
+  715: {
+    name: "Lobster",
+    categories: [FishCategory.Crab_Pot],
+  },
   // 716: {
   //   name: "Crayfish",
   //   masterAngler: true,
@@ -296,10 +296,10 @@ export const STARDEW_FISHES = {
   // },
 
   // // >= 1.3
-  // 798: {
-  //   name: "Midnight Squid",
-  //   masterAngler: true,
-  // },
+  798: {
+    name: "Midnight Squid",
+    categories: [FishCategory.Night_Market],
+  },
   // 799: {
   //   name: "Spook Fish",
   //   masterAngler: true,
@@ -336,4 +336,9 @@ export const STARDEW_FISHES = {
   //   meta.bobber[901] = 'Radioactive Carp';
   //   meta.bobber[902] = 'Glacierfish Jr.';
   // }
+
+  900: {
+    name: "Legend II",
+    categories: [FishCategory.Legendary_2],
+  },
 };

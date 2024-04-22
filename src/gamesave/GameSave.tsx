@@ -6,6 +6,9 @@ import { STARDEW_SPECIAL_ORDERS } from "../const/StardewSpecialOrders";
 import { GameDate, GameSeason } from "../util/GameDate";
 import { StardewWiki } from "../util/StardewWiki";
 import { Farmer } from "./Farmer";
+import { ReactNode } from "react";
+import { Currency } from "@src/component/Currency";
+import { Achievement } from "@src/component/Achievement";
 
 type StringNumber = `${number}`;
 type StringBoolean = `${boolean}`;
@@ -83,6 +86,9 @@ export class GameSave {
 
   public readonly specialOrders;
 
+  public readonly grandpaShrineCandlesLit;
+  public readonly grandpaScore;
+
   constructor(private saveXml: GameSave.SaveXml) {
     this.gameVersion = this.calcGameVersion();
     this.farmName = this.saveXml.player[0].farmName[0];
@@ -102,6 +108,9 @@ export class GameSave {
     this.farmhands = this.calcFarmhands();
 
     this.specialOrders = this.calcSpecialOrders();
+
+    this.grandpaShrineCandlesLit = this.calcGrandpaShrineCandlesLit();
+    this.grandpaScore = this.calcGrandpaScore();
   }
 
   private calcGameVersion() {
@@ -157,6 +166,49 @@ export class GameSave {
           : false,
       wiki: StardewWiki.getLink("Quests", title.replace(/\s+/g, "_")),
     }));
+  }
+
+  private calcGrandpaShrineCandlesLit() {
+    return 3; // TODO
+  }
+
+  private calcGrandpaScore() {
+    const scorePoints: {
+      earned: boolean;
+      score: number;
+      reason: ReactNode;
+    }[] = [];
+
+    scorePoints.push(
+      ...[
+        [1, 50_000],
+        [1, 100_000],
+        [1, 200_000],
+        [1, 300_000],
+        [1, 500_000],
+        [2, 1_000_000],
+      ].map<(typeof scorePoints)[number]>(([score, earningGoal]) => ({
+        earned: this.totalGoldsEarned >= earningGoal,
+        reason: (
+          <>
+            earning at least <Currency amount={earningGoal} unit="gold" />
+          </>
+        ),
+        score,
+      }))
+    );
+
+    scorePoints.push({
+      earned: false,
+      reason: (
+        <>
+          achieving <em>A Complete Collection</em>
+        </>
+      ),
+      score: 1,
+    });
+
+    return scorePoints;
   }
 
   public getAllFarmers() {

@@ -1,0 +1,99 @@
+.section {
+  display: flex;
+  gap: 20px;
+}
+
+.objective {
+  margin-top: 10px;
+}
+
+.shrine {
+  position: relative;
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  .candle1 {
+    position: absolute;
+    left: 2px;
+    top: 30px;
+  }
+
+  .candle2 {
+    position: absolute;
+    left: 19px;
+    top: -20px;
+  }
+
+  .candle3 {
+    position: absolute;
+    left: 109px;
+    top: -20px;
+  }
+
+  .candle4 {
+    position: absolute;
+    left: 126px;
+    top: 30px;
+  }
+}
+
+.grandpa {
+  opacity: 0.1;
+  filter: grayscale(0.7);
+
+  &.returned {
+    opacity: 1;
+    filter: none;
+  }
+}
+
+.eval {
+  position: relative;
+  margin-top: 100px;
+  padding: 35px 20px 20px 20px;
+  // width: 400px;
+  display: flex;
+  flex-direction: column;
+  z-index: 0;
+
+  &::before {
+    $color: #67dde6;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba($color, 0.2);
+    border: 3px solid $color;
+    border-radius: 20px;
+    // mask-image: linear-gradient(-25deg, #fff, rgba(#fff, 0));
+    z-index: -10;
+  }
+
+  .grandpaPortrait {
+    position: absolute;
+    // left: 25px;
+    left: 50%;
+    transform: translateX(-50%);
+    top: -105px;
+    margin-left: auto;
+    mask-image: linear-gradient(to bottom, #fff 90%, rgba(#fff, 0) 100%);
+  }
+
+  & > span {
+    font-style: italic;
+    margin-bottom: 10px;
+  }
+
+  li.unearned {
+    opacity: 0.3;
+  }
+
+  hr {
+    margin: 20px 0 !important;
+    border-color: #364746 !important;
+  }
+}

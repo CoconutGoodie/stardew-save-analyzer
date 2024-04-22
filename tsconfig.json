@@ -17,11 +17,12 @@
     /* Linting */
     "strict": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    "paths": {
+      "@src/*": ["./src/*"]
+    }
   },
   "include": ["src"],
-  "references": [{ "path": "./tsconfig.node.json" }],
-  "paths": {
-    "@src/*": ["./src/*"]
-  }
+  "references": [{ "path": "./tsconfig.node.json" }]
 }

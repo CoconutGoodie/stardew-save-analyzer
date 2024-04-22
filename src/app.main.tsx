@@ -15,6 +15,7 @@ import { LoadSaveSection } from "./section/LoadSaveSection";
 
 import { FishingSection } from "./section/FishingSection";
 import "./style/style.scss";
+import { GrandpasEvaluationsSection } from "./section/GrandpasSection";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
@@ -56,6 +57,8 @@ function App() {
           <FishingSection gameSave={gameSave} />
 
           <SpecialOrdersSection gameSave={gameSave} />
+
+          <GrandpasEvaluationsSection gameSave={gameSave} />
 
           <hr />
 

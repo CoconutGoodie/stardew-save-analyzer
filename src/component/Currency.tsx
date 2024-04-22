@@ -3,6 +3,7 @@ import starTokenSrc from "../assets/icon/star-token.png";
 import heartSrc from "../assets/icon/heart_filled.png";
 import qiGemSrc from "../assets/icon/qi-gem.png";
 import qiCoinSrc from "../assets/icon/qi-coin.png";
+import diamondSrc from "../assets/icon/diamond.png";
 
 interface Props {
   amount: number;
@@ -39,6 +40,12 @@ const UNITS = {
     iconSrc: qiCoinSrc,
     color: "#E246FF",
     suffix: undefined,
+  },
+  diamonds: {
+    title: "Diamond",
+    iconSrc: diamondSrc,
+    color: "#59F4FF",
+    suffix: (amount: number) => " " + (amount === 1 ? "diamond" : "diamond"),
   },
 };
 

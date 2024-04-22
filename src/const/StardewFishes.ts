@@ -53,7 +53,7 @@ export const STARDEW_FISH_CATEGORIES = {
   },
 };
 
-export const STARDEW_FISHES: Record<number, Fish> = {
+export const STARDEW_FISHES: Record<string, Fish> = {
   128: {
     name: "Pufferfish",
     categories: [FishCategory.Summer, FishCategory.Ginger_Island],
@@ -181,10 +181,10 @@ export const STARDEW_FISHES: Record<number, Fish> = {
     name: "Crimsonfish",
     categories: [FishCategory.Legendary, FishCategory.Summer],
   },
-  // 160: {
-  //   name: "Angler",
-  //   masterAngler: true,
-  // },
+  160: {
+    name: "Angler",
+    categories: [FishCategory.Legendary],
+  },
   161: {
     name: "Ice Pip",
     categories: [FishCategory.The_Mines],
@@ -221,10 +221,14 @@ export const STARDEW_FISHES: Record<number, Fish> = {
       FishCategory.Ginger_Island,
     ],
   },
-  // 682: {
-  //   name: "Mutant Carp",
-  //   masterAngler: true,
-  // },
+  372: {
+    name: "Clam",
+    categories: [FishCategory.Crab_Pot],
+  },
+  682: {
+    name: "Mutant Carp",
+    categories: [FishCategory.Legendary],
+  },
   698: {
     name: "Sturgeon",
     categories: [FishCategory.Summer, FishCategory.Winter],
@@ -262,106 +266,124 @@ export const STARDEW_FISHES: Record<number, Fish> = {
     categories: [FishCategory.Spring, FishCategory.Summer, FishCategory.Fall],
     weatherCondition: [WeatherCondition.Rain],
   },
-  // 707: {
-  //   name: "Lingcod",
-  //   masterAngler: true,
-  // },
-  // 708: {
-  //   name: "Halibut",
-  //   masterAngler: true,
-  // },
+  707: {
+    name: "Lingcod",
+    categories: [FishCategory.Winter],
+  },
+  708: {
+    name: "Halibut",
+    categories: [FishCategory.Spring, FishCategory.Summer, FishCategory.Winter],
+  },
   715: {
     name: "Lobster",
     categories: [FishCategory.Crab_Pot],
   },
-  // 716: {
-  //   name: "Crayfish",
-  //   masterAngler: true,
-  // },
-  // 717: {
-  //   name: "Crab",
-  //   masterAngler: true,
-  // },
-  // 718: {
-  //   name: "Cockle",
-  //   masterAngler: true,
-  // },
-  // 719: {
-  //   name: "Mussel",
-  //   masterAngler: true,
-  // },
-  // 720: {
-  //   name: "Shrimp",
-  //   masterAngler: true,
-  // },
-  // 721: {
-  //   name: "Snail",
-  //   masterAngler: true,
-  // },
-  // 722: {
-  //   name: "Periwinkle",
-  //   masterAngler: true,
-  // },
-  // 723: {
-  //   name: "Oyster",
-  //   masterAngler: true,
-  // },
-  // 734: {
-  //   name: "Woodskip",
-  //   masterAngler: true,
-  // },
-  // 775: {
-  //   name: "Glacierfish",
-  //   masterAngler: true,
-  // },
-  // 795: {
-  //   name: "Void Salmon",
-  //   masterAngler: true,
-  // },
-  // 796: {
-  //   name: "Slimejack",
-  //   masterAngler: true,
-  // },
-
-  // // >= 1.3
+  716: {
+    name: "Crayfish",
+    categories: [FishCategory.Crab_Pot],
+  },
+  717: {
+    name: "Crab",
+    categories: [FishCategory.Crab_Pot],
+  },
+  718: {
+    name: "Cockle",
+    categories: [FishCategory.Crab_Pot],
+  },
+  719: {
+    name: "Mussel",
+    categories: [FishCategory.Crab_Pot],
+  },
+  720: {
+    name: "Shrimp",
+    categories: [FishCategory.Crab_Pot],
+  },
+  721: {
+    name: "Snail",
+    categories: [FishCategory.Crab_Pot],
+  },
+  722: {
+    name: "Periwinkle",
+    categories: [FishCategory.Crab_Pot],
+  },
+  723: {
+    name: "Oyster",
+    categories: [FishCategory.Crab_Pot],
+  },
+  734: {
+    name: "Woodskip",
+    categories: [FishCategory.Any_Season],
+  },
+  775: {
+    name: "Glacierfish",
+    categories: [FishCategory.Legendary],
+  },
+  795: {
+    name: "Void Salmon",
+    categories: [FishCategory.Any_Season],
+  },
+  796: {
+    name: "Slimejack",
+    categories: [FishCategory.Any_Season],
+  },
   798: {
     name: "Midnight Squid",
     categories: [FishCategory.Night_Market],
   },
-  // 799: {
-  //   name: "Spook Fish",
-  //   masterAngler: true,
-  // },
-  // 800: {
-  //   name: "Blobfish",
-  //   masterAngler: true,
-  // },
-
-  // TODO
-  // if (compareSemVer(saveInfo.version, "1.5") >= 0) {
-  //   meta.recipes[836] = 'Stingray';
-  //   meta.recipes[837] = 'Lionfish';
-  //   meta.recipes[838] = 'Blue Discus';
-  // }
-
-  // if (compareSemVer(saveInfo.version, "1.6") >= 0) {
-  //   meta.recipes["Goby"] = 'Goby';
-  //   meta.recipes["CaveJelly"] = 'Cave Jelly';
-  //   meta.recipes["RiverJelly"] = 'River Jelly';
-  //   meta.recipes["SeaJelly"] = 'Sea Jelly';
-  //   meta.recipes[372] = 'Clam';
-
-  // Extended Family legendaries were added in 1.5 but not tracked until 1.6 because they are only
-  // necessary for bobber unlocks
-  //   meta.bobber[898] = 'Son of Crimsonfish';
-  //   meta.bobber[899] = 'Ms. Angler';
-  //   meta.bobber[900] = 'Legend II';
-  //   meta.bobber[901] = 'Radioactive Carp';
-  //   meta.bobber[902] = 'Glacierfish Jr.';
-  // }
-
+  799: {
+    name: "Spook Fish",
+    categories: [FishCategory.Night_Market],
+  },
+  800: {
+    name: "Blobfish",
+    categories: [FishCategory.Night_Market],
+  },
+  836: {
+    name: "Stingray",
+    categories: [FishCategory.Ginger_Island],
+  },
+  837: {
+    name: "Lionfish",
+    categories: [FishCategory.Ginger_Island],
+  },
+  838: {
+    name: "Blue Discus",
+    categories: [FishCategory.Ginger_Island],
+  },
+  Goby: {
+    name: "Goby",
+    categories: [FishCategory.Any_Season],
+  },
+  CaveJelly: {
+    name: "Cave Jelly",
+    categories: [FishCategory.Other],
+  },
+  RiverJelly: {
+    name: "River Jelly",
+    categories: [FishCategory.Other],
+  },
+  SeaJelly: {
+    name: "Sea Jelly",
+    categories: [FishCategory.Other],
+  },
+  898: {
+    name: "Son of Crimsonfish",
+    categories: [FishCategory.Legendary_2],
+  },
+  899: {
+    name: "Ms. Angler",
+    categories: [FishCategory.Legendary_2],
+  },
   900: {
     name: "Legend II",
+    categories: [FishCategory.Legendary_2],
+  },
+  901: {
+    name: "Radioactive Carp",
+    categories: [FishCategory.Legendary_2],
+  },
+  902: {
+    name: "Glacierfish Jr.",
     categories: [FishCategory.Legendary_2],
   },
 };

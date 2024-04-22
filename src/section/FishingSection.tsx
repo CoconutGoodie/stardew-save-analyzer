@@ -32,8 +32,7 @@ const FISHES_BY_CATEGORIES = entries(STARDEW_FISHES).reduce(
   {} as Record<FishCategory, (Fish & { id: string })[]>
 );
 
-console.log(FISHES_BY_CATEGORIES);
-const skillSprites = new AssetRepository<{ default: string }>(
+const fishSprites = new AssetRepository<{ default: string }>(
   import.meta.glob("../assets/sprite/fish/*.png", { eager: true }),
   "../assets/sprite/fish/",
   ".png"
@@ -46,7 +45,7 @@ const backgroundSprites = new AssetRepository<{ default: string }>(
 );
 
 export const FishingSection = (props: Props) => {
-  const [compact, setCompact] = useState(true);
+  const [compact, setCompact] = useState(false);
 
   const farmers = props.gameSave
     .getAllFarmerNames()
@@ -80,12 +79,12 @@ export const FishingSection = (props: Props) => {
                 different fish in total.
               </Objective>
 
-              <button
+              {/* <button
                 className={styles.compactBtn}
                 onClick={() => setCompact((c) => !c)}
               >
                 Toggle Compact View
-              </button>
+              </button> */}
 
               <div className={styles.categories}>
                 {keys(FishCategory).map((categoryId) => {
@@ -186,7 +185,7 @@ export const FishingSection = (props: Props) => {
                                   width={35}
                                   title={`${fish.name}`}
                                   src={
-                                    skillSprites.resolve(snakeCase(fish.name))
+                                    fishSprites.resolve(snakeCase(fish.name))
                                       ?.default
                                   }
                                 />

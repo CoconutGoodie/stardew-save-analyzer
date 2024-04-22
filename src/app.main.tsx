@@ -27,6 +27,7 @@ function App() {
           // For debug purposes
           // onClick={() => console.log(saveXml.SaveGame)}
         />
+        <span>last updated for v1.6.4</span>
       </header>
 
       {gameSave == null ? (
@@ -37,7 +38,17 @@ function App() {
         <>
           <OverviewSection gameSave={gameSave} />
 
-          <MoneySection gameSave={gameSave} />
+          <div style={{ display: "flex", gap: 50 }}>
+            <MoneySection gameSave={gameSave} />
+
+            <SummarySection>
+              <h1>Animals & Pets [WIP]</h1>
+
+              <p>...</p>
+              <p>...</p>
+              <p>...</p>
+            </SummarySection>
+          </div>
 
           <SkillsSection gameSave={gameSave} />
 

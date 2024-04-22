@@ -31,7 +31,9 @@ const ingameSprites = new AssetRepository<{ default: string }>(
 );
 
 export const Achievement = (props: Props) => {
-  const achievementId = lowerCase(props.title).replace(/\s+/g, "_");
+  const achievementId = lowerCase(props.title)
+    .replace(/\s+/g, "_")
+    .replace(/'/, "");
 
   return (
     <div className={styles.container}>

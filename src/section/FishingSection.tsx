@@ -51,13 +51,17 @@ export const FishingSection = (props: Props) => {
     .getAllFarmerNames()
     .map((farmerName) => props.gameSave.getFarmer(farmerName)!);
 
+  const anglerFishes = entries(STARDEW_FISHES).filter(
+    ([fishId, fish]) => !fish.categories.includes(FishCategory.Legendary_2)
+  );
+
   return (
     <SummarySection>
       <h1>Fishing</h1>
 
       <div className={styles.farmers}>
         {farmers.map((farmer) => {
-          const totalFish = farmer.caughtFish.reduce(
+          const caughtFishCount = farmer.caughtFish.reduce(
             (total, fish) => total + fish.amount,
             0
           );
@@ -66,17 +70,26 @@ export const FishingSection = (props: Props) => {
             (fish) => fish.amount > 0
           ).length;
 
+          const unlockedBobberCount = 1 + Math.floor(caughtTypeCount / 2);
+
+          const maxBobberCount =
+            1 + Math.floor(Object.keys(STARDEW_FISHES).length / 2);
+
           return (
             <div key={farmer.name} className={styles.farmer}>
               <FarmerTag farmer={farmer} />
 
               <Objective icon={<img width={20} src={fishPng} />} done>
-                {farmer.name} has caught <strong>{totalFish}</strong> fish in
-                total.
+                {farmer.name} has caught <strong>{caughtFishCount}</strong> fish
+                in total.
               </Objective>
               <Objective icon={<img width={20} src={fishPng} />} done>
                 {farmer.name} has caught <strong>{caughtTypeCount}</strong>{" "}
                 different fish in total.
+              </Objective>
+              <Objective icon={<img width={20} src={fishPng} />} done>
+                {farmer.name} has unlocked{" "}
+                <strong>{unlockedBobberCount}</strong> bobber styles.
               </Objective>
 
               {/* <button
@@ -201,36 +214,58 @@ export const FishingSection = (props: Props) => {
 
               <Achievement
                 title="Mother Catch"
-                achieved={totalFish >= 100}
+                achieved={caughtFishCount >= 100}
                 description="catch 100 total fish"
               />
 
-              <Achievement
-                title="Fisherman"
-                achieved={caughtTypeCount >= 10}
-                description="catch 10 different fish"
-              />
-              <Achievement
-                title="Ol' Mariner"
-                achieved={caughtTypeCount >= 24}
-                description="catch 24 different fish"
-              />
-              <Achievement
-                title="Master Angler"
-                achieved={caughtTypeCount >= Object.keys(STARDEW_FISHES).length}
-                description="catch every fish"
-              />
+              {thru(caughtTypeCount >= 10, (done) => (
+                <Achievement
+                  title="Fisherman"
+                  achieved={done}
+                  description="catch 10 different fish"
+                >
+                  {!done && <> — Completed {caughtTypeCount} out of 10</>}
+                </Achievement>
+              ))}
+
+              {thru(caughtTypeCount >= 24, (done) => (
+                <Achievement
+                  title="Ol' Mariner"
+                  achieved={done}
+                  description="catch 24 different fish"
+                >
+                  {!done && <> — Completed {caughtTypeCount} out of 24</>}
+                </Achievement>
+              ))}
+
+              {thru(
+                caughtTypeCount >= Object.keys(STARDEW_FISHES).length,
+                (done) => (
+                  <Achievement
+                    title="Master Angler"
+                    achieved={done}
+                    description="catch every fish"
+                  >
+                    {!done && (
+                      <>
+                        {" "}
+                        — Completed {caughtTypeCount} out of{" "}
+                        {anglerFishes.length}
+                      </>
+                    )}
+                  </Achievement>
+                )
+              )}
 
               <Objective
                 className={styles.objective}
-                done={caughtTypeCount >= Object.keys(STARDEW_FISHES).length}
+                done={unlockedBobberCount >= maxBobberCount}
               >
                 Every "Bobber Type" is unlocked.
                 {caughtTypeCount < Object.keys(STARDEW_FISHES).length && (
                   <>
                     {" "}
-                    — Completed {caughtTypeCount} out of{" "}
-                    {Object.keys(STARDEW_FISHES).length}
+                    — Completed {unlockedBobberCount} out of {maxBobberCount}
                   </>
                 )}
               </Objective>

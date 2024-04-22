@@ -5,17 +5,34 @@
   gap: 50px;
 }
 
-.starfruitList {
+.stardropList {
+  width: 500px;
   margin: 20px -4px;
   display: flex;
   flex-direction: column;
   gap: 8px;
 
-  .starfruit {
+  .stardrop {
+    position: relative;
+    padding: 4px 6px;
     display: flex;
     align-items: center;
     gap: 5px;
     opacity: 0.5;
+    z-index: 0;
+
+    &::before {
+      position: absolute;
+      content: "";
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #1f1925;
+      border-radius: 10px;
+      mask-image: linear-gradient(to right, #fff, rgba(#fff, 0.1));
+      z-index: -10;
+    }
 
     &.gathered {
       opacity: 1;

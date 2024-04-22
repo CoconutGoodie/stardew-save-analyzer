@@ -154,7 +154,6 @@ export class GameSave {
 
   public getFarmer(name: string) {
     const farmhands = this.calcFarmhands();
-    console.log(name,farmhands)
     if (this.saveXml.player[0].name[0] === name)
       return new Farmer(this.saveXml.player[0]);
     const farmer = farmhands?.find((farmhand) => farmhand.name === name);

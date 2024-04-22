@@ -31,9 +31,7 @@ export const SkillsSection = (props: Props) => {
     .map((name) => props.gameSave.getFarmer(name));
 
   return (
-    <SummarySection id="skills">
-      <h1>Skills</h1>
-
+    <SummarySection id="skills" sectionTitle="Skills" collapsable>
       <div
         className={styles.farmers}
         style={{ ["--farmerCount" as string]: farmers.length }}

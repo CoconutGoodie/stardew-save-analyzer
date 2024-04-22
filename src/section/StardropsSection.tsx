@@ -22,9 +22,7 @@ export const StardropsSection = (props: Props) => {
   const farmerNames = props.gameSave.getAllFarmerNames();
 
   return (
-    <SummarySection id="stardrops">
-      <h1>Stardrops</h1>
-
+    <SummarySection id="stardrops" sectionTitle="Stardrops" collapsable>
       <div
         className={styles.farmers}
         style={{ ["--farmerCount" as string]: farmerNames.length }}
@@ -39,12 +37,13 @@ export const StardropsSection = (props: Props) => {
             <div key={farmer.name} className={styles.farmer}>
               <FarmerTag farmer={farmer} />
 
-              <div className={styles.starfruitList}>
+              <div className={styles.stardropList}>
                 {stardrops.map((stardrop, index) => (
                   <Objective
+                    key={index}
                     done={stardrop.gathered}
                     className={clsx(
-                      styles.starfruit,
+                      styles.stardrop,
                       stardrop.gathered && styles.gathered
                     )}
                     icon={
@@ -54,6 +53,7 @@ export const StardropsSection = (props: Props) => {
                       >
                         <img
                           width={35}
+                          className={styles.stardrop}
                           src={stardrop.gathered ? stardropGif : stardropPng}
                           title={`Stardrop #${index + 1}`}
                         />
@@ -76,13 +76,13 @@ export const StardropsSection = (props: Props) => {
                   description="gather every Stardrop"
                   achieved={stardrops.every((stardrop) => stardrop.gathered)}
                 >
-                  {/* <span>
-                    —{" "}
+                  <span>
+                    — Missing{" "}
                     {stardrops.length -
                       stardrops.filter((stardrop) => stardrop.gathered)
                         .length}{" "}
-                    more to go
-                  </span> */}
+                    more
+                  </span>
                 </Achievement>
               </div>
             </div>

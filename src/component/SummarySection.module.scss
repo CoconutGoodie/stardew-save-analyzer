@@ -1,6 +1,35 @@
 .section {
+  display: flex;
+  flex-direction: column;
+
+  .wrapper {
+    &.open {
+      height: 100px;
+      overflow: hidden;
+      mask-image: linear-gradient(to bottom, #fff, rgba(#fff, 0));
+    }
+  }
+
   & > h1 {
     margin: 0 0 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 5px;
     font-size: 28px;
+
+    & > button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border: 1px solid #d4ccbc;
+      border-radius: 5px;
+      background: none;
+
+      &.open {
+        transform: rotate(90deg);
+      }
+    }
   }
 }

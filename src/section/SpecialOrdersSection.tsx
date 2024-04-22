@@ -39,9 +39,11 @@ export const SpecialOrdersSection = (props: Props) => {
   const everyOrderCompleted = completedCount === specialOrders.length;
 
   return (
-    <SummarySection id="special-orders">
-      <h1>Special Orders</h1>
-
+    <SummarySection
+      id="special-orders"
+      sectionTitle="Special Orders"
+      collapsable
+    >
       <div className={styles.board}>
         <a
           href={StardewWiki.getLink("Quests", "List_of_Special_Orders")}

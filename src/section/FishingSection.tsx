@@ -56,9 +56,7 @@ export const FishingSection = (props: Props) => {
   );
 
   return (
-    <SummarySection>
-      <h1>Fishing</h1>
-
+    <SummarySection id="fishing" sectionTitle="Fishing" collapsable>
       <div className={styles.farmers}>
         {farmers.map((farmer) => {
           const caughtFishCount = farmer.caughtFish.reduce(
@@ -261,7 +259,14 @@ export const FishingSection = (props: Props) => {
                 className={styles.objective}
                 done={unlockedBobberCount >= maxBobberCount}
               >
-                Every "Bobber Type" is unlocked.
+                Every "
+                <a
+                  href={StardewWiki.getLink("Fish_Shop", "Bobber_Machine")}
+                  target="_blank"
+                >
+                  <strong>Bobber Style</strong>
+                </a>
+                " is unlocked.
                 {caughtTypeCount < Object.keys(STARDEW_FISHES).length && (
                   <>
                     {" "}

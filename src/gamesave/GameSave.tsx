@@ -3,7 +3,6 @@ import { entries, find, lowerCase } from "lodash";
 
 import { STARDEW_FARM_TYPES } from "../const/StardewFarmTypes";
 import { STARDEW_SPECIAL_ORDERS } from "../const/StardewSpecialOrders";
-import { STARDROP_MAIL_FLAGS } from "../const/StardewStardrops";
 import { GameDate, GameSeason } from "../util/GameDate";
 import { StardewWiki } from "../util/StardewWiki";
 import { Farmer } from "./Farmer";

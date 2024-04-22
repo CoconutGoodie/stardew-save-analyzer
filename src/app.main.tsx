@@ -9,12 +9,12 @@ import logoPng from "./assets/logo.png";
 
 // import saveXml from "./assets/Save_1.6.xml";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { SummarySection } from "./component/SummarySection";
 import { LoadSaveSection } from "./section/LoadSaveSection";
 
-import "./style/style.scss";
 import { FishingSection } from "./section/FishingSection";
+import "./style/style.scss";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
@@ -73,6 +73,7 @@ function App() {
               <li>"Ginger Island" Section</li>
               <li>"Secret Notes" Section</li>
               <li>"Grandpa's Evaluation" Section</li>
+              <li>"Monster Hunting" Section</li>
               <li>"Socials" Section</li>
               <li>"Community Center" Section</li>
               <li>"Perfection" Section</li>

@@ -1,21 +1,21 @@
 import { capitalCase, snakeCase } from "case-anything";
-import { entries, find, keys, set, thru } from "lodash";
+import { entries, find, keys, thru } from "lodash";
 import { FarmerTag } from "../component/FarmerTag";
 import { SummarySection } from "../component/SummarySection";
 import { Fish, FishCategory, STARDEW_FISHES } from "../const/StardewFishes";
 import { GameSave } from "../gamesave/GameSave";
 import { AssetRepository } from "../util/AssetRepository";
 
-import styles from "./FishingSection.module.scss";
 import clsx from "clsx";
-import { StardewWiki } from "../util/StardewWiki";
+import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";
-import { Achievement } from "../component/Achievement";
-import { Objective } from "../component/Objective";
-import fishPng from "../assets/sprite/skill/fishing.png";
 import checkmarkPng from "../assets/icon/checkmark.png";
 import questPng from "../assets/icon/quest.png";
-import { useState } from "react";
+import fishPng from "../assets/sprite/skill/fishing.png";
+import { Achievement } from "../component/Achievement";
+import { Objective } from "../component/Objective";
+import { StardewWiki } from "../util/StardewWiki";
+import styles from "./FishingSection.module.scss";
 
 interface Props {
   gameSave: GameSave;

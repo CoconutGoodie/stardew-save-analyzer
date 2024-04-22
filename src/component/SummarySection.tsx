@@ -4,7 +4,7 @@ import styles from "./SummarySection.module.scss";
 import chevronRightSvg from "../assets/icon/chevron-right.svg";
 
 type Props = ComponentProps<"section"> & {
-  sectionTitle: string;
+  sectionTitle?: string;
   collapsable?: boolean;
 };
 
@@ -15,17 +15,19 @@ export const SummarySection = (props: Props) => {
 
   return (
     <section {...nativeProps} className={clsx(styles.section, props.className)}>
-      <h1>
-        <span>{sectionTitle}</span>
-        {collapsable && (
-          <button
-            className={clsx(open && styles.open)}
-            onClick={() => setOpen((o) => !o)}
-          >
-            <img height={10} src={chevronRightSvg} />
-          </button>
-        )}
-      </h1>
+      {sectionTitle && (
+        <h1>
+          <span>{sectionTitle}</span>
+          {collapsable && (
+            <button
+              className={clsx(open && styles.open)}
+              onClick={() => setOpen((o) => !o)}
+            >
+              <img height={10} src={chevronRightSvg} />
+            </button>
+          )}
+        </h1>
+      )}
 
       <div className={clsx(styles.wrapper, !open && styles.open)}>
         {props.children}

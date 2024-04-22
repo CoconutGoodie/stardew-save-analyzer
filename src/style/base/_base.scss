@@ -28,7 +28,7 @@
         left: 0;
         width: 100%;
         height: 250px;
-        background-image: url(./src/assets/background.png);
+        background-image: url("./src/assets/background.png");
         background-repeat: repeat-x;
         mask-image: linear-gradient(to bottom, #fff, rgba(#fff, 0));
         z-index: -1;
@@ -66,7 +66,7 @@ li {
   margin-top: 0;
   margin-bottom: 0;
   padding-left: 25px;
-  list-style-image: url(./src/assets/icon/list-bullet.png);
+  list-style-image: url("./src/assets/icon/list-bullet.png");
 
   & li {
     padding: 0;

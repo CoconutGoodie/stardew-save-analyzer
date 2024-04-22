@@ -1,18 +1,16 @@
-import { Achievement } from "../component/Achievement";
-import { GameSave } from "../gamesave/GameSave";
 import stardropGif from "../assets/stardrop.gif";
 import stardropPng from "../assets/stardrop.png";
+import { Achievement } from "../component/Achievement";
 import { SummarySection } from "../component/SummarySection";
+import { GameSave } from "../gamesave/GameSave";
 
-import femalePng from "../assets/icon/female.png";
-import malePng from "../assets/icon/male.png";
 import checkmarkPng from "../assets/icon/checkmark.png";
 
-import styles from "./StardropsSection.module.scss";
 import clsx from "clsx";
-import { StardewWiki } from "../util/StardewWiki";
-import { Objective } from "../component/Objective";
 import { FarmerTag } from "../component/FarmerTag";
+import { Objective } from "../component/Objective";
+import { StardewWiki } from "../util/StardewWiki";
+import styles from "./StardropsSection.module.scss";
 
 interface Props {
   gameSave: GameSave;

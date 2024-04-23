@@ -21,6 +21,7 @@ export namespace GameSave {
       {
         GameLocation: {
           $: { "xsi:type": string };
+          grandpaScore?: [StringNumber];
           buildings: [
             {
               Building: {
@@ -87,9 +88,12 @@ export class GameSave {
   public readonly specialOrders;
 
   public readonly grandpaShrineCandlesLit;
-  public readonly grandpaScore;
+  public readonly grandpaScorePoints;
+  public readonly grandpaScoreTotal;
 
   constructor(private saveXml: GameSave.SaveXml) {
+    console.log(saveXml);
+
     this.gameVersion = this.calcGameVersion();
     this.farmName = this.saveXml.player[0].farmName[0];
     this.farmType = this.calcFarmType();
@@ -110,7 +114,11 @@ export class GameSave {
     this.specialOrders = this.calcSpecialOrders();
 
     this.grandpaShrineCandlesLit = this.calcGrandpaShrineCandlesLit();
-    this.grandpaScore = this.calcGrandpaScore();
+    this.grandpaScorePoints = this.calcGrandpaScorePoints();
+    this.grandpaScoreTotal = this.grandpaScorePoints.reduce(
+      (total, scorePoint) => total + (scorePoint.earned ? 0 : scorePoint.score),
+      0
+    );
   }
 
   private calcGameVersion() {
@@ -169,10 +177,14 @@ export class GameSave {
   }
 
   private calcGrandpaShrineCandlesLit() {
-    return 3; // TODO
+    const farmLocation = find(
+      this.saveXml.locations?.[0].GameLocation,
+      (location) => location.$["xsi:type"] === "Farm"
+    );
+    return parseInt(farmLocation?.grandpaScore?.[0] ?? "0");
   }
 
-  private calcGrandpaScore() {
+  private calcGrandpaScorePoints() {
     const scorePoints: {
       earned: boolean;
       score: number;

@@ -25,17 +25,12 @@ export const GrandpasEvaluationsSection = (props: Props) => {
   const grandpaReturned =
     props.gameSave.currentDate.canonicalDay >= GHOST_RETURN_DATE.canonicalDay;
 
-  const nextEvalScore = props.gameSave.grandpaScore.reduce(
-    (total, { earned, score }) => total + (!earned ? 0 : score),
-    0
-  );
-
-  const nextCandlesLit = useMemo(() => {
-    if (nextEvalScore <= 3) return 1;
-    if (nextEvalScore <= 7) return 2;
-    if (nextEvalScore <= 11) return 3;
+  const nextCandlesLit = (() => {
+    if (props.gameSave.grandpaScoreTotal <= 3) return 1;
+    if (props.gameSave.grandpaScoreTotal <= 7) return 2;
+    if (props.gameSave.grandpaScoreTotal <= 11) return 3;
     return 4;
-  }, [nextEvalScore]);
+  })();
 
   return (
     <SummarySection
@@ -85,7 +80,7 @@ export const GrandpasEvaluationsSection = (props: Props) => {
           )}
 
           <ul>
-            {props.gameSave.grandpaScore.map(
+            {props.gameSave.grandpaScorePoints.map(
               ({ earned, reason, score }, index) =>
                 earned ? (
                   <li key={index}>
@@ -100,8 +95,9 @@ export const GrandpasEvaluationsSection = (props: Props) => {
             )}
             <hr />
             <li>
-              Total Score: <strong>{nextEvalScore}</strong>, which means{" "}
-              <strong>{nextCandlesLit}</strong> candle(s) will be lit.
+              Total Score: <strong>{props.gameSave.grandpaScoreTotal}</strong>,
+              which means <strong>{nextCandlesLit}</strong> candle(s) will be
+              lit.
             </li>
           </ul>
         </div>

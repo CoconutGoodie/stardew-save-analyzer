@@ -179,6 +179,7 @@ export class GameSave {
       reason: ReactNode;
     }[] = [];
 
+    // Earnings
     scorePoints.push(
       ...[
         [1, 50_000],
@@ -198,15 +199,43 @@ export class GameSave {
       }))
     );
 
-    scorePoints.push({
-      earned: false,
-      reason: (
-        <>
-          achieving <em>A Complete Collection</em>
-        </>
-      ),
-      score: 1,
-    });
+    const farmerWithMostSkillLevels = this.getAllFarmers().reduce<Farmer>(
+      (theFarmer, farmer) => {
+        return farmer.skillLevelTotal > theFarmer.skillLevelTotal
+          ? farmer
+          : theFarmer;
+      },
+      this.player
+    );
+
+    // Skill Levels
+    scorePoints.push(
+      ...[
+        [1, 30],
+        [1, 50],
+      ].map<(typeof scorePoints)[number]>(([score, skillLevels]) => ({
+        earned: farmerWithMostSkillLevels.skillLevelTotal >= skillLevels,
+        reason: (
+          <>
+            reaching <strong>{skillLevels}</strong> skill levels. (
+            {farmerWithMostSkillLevels.name})
+          </>
+        ),
+        score,
+      }))
+    );
+
+    for (let i = 0; i < 7; i++) {
+      scorePoints.push({
+        earned: false,
+        reason: (
+          <>
+            achieving <em>A Complete Collection</em>
+          </>
+        ),
+        score: 1,
+      });
+    }
 
     return scorePoints;
   }

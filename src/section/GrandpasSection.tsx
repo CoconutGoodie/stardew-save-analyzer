@@ -63,56 +63,63 @@ export const GrandpasEvaluationsSection = (props: Props) => {
               )
           )}
         </div>
+        <div className={styles.eval}>
+          <img
+            src={grandpaPortraitPng}
+            className={clsx(
+              styles.grandpaPortrait,
+              grandpaReturned && styles.returned
+            )}
+          />
 
-        <Objective done={grandpaReturned} className={styles.objective}>
+          {grandpaReturned ? (
+            <span>
+              Next time you bring <Currency amount={1} unit="diamonds" /> to the
+              shrine, your score shall be:
+            </span>
+          ) : (
+            <span>
+              When Grandpa's ghost returns at{" "}
+              <GameDateDisplay date={GHOST_RETURN_DATE} />, your score will be:
+            </span>
+          )}
+
+          <ul>
+            {props.gameSave.grandpaScore.map(
+              ({ earned, reason, score }, index) =>
+                earned ? (
+                  <li key={index}>
+                    <strong>+ {score}</strong> for {reason}{" "}
+                    <img src={checkmarkPng} />
+                  </li>
+                ) : (
+                  <li key={index} className={styles.unearned}>
+                    <strong>+ {score}</strong> for {reason}
+                  </li>
+                )
+            )}
+            <hr />
+            <li>
+              Total Score: <strong>{nextEvalScore}</strong>, which means{" "}
+              <strong>{nextCandlesLit}</strong> candle(s) will be lit.
+            </li>
+          </ul>
+        </div>
+
+        <Objective className={styles.objective} done={grandpaReturned}>
           Grandpa's ghost has returned (at{" "}
           <GameDateDisplay date={GHOST_RETURN_DATE} />)
         </Objective>
 
-        <Objective className={styles.objective}>
-          Grandpa's shrine got all the candles lit. — X more unlit
+        <Objective
+          className={styles.objective}
+          done={props.gameSave.grandpaShrineCandlesLit === 4}
+        >
+          Grandpa's shrine got all the candles lit.{" "}
+          {props.gameSave.grandpaShrineCandlesLit !== 4 && (
+            <>— {4 - props.gameSave.grandpaShrineCandlesLit} more unlit</>
+          )}
         </Objective>
-      </div>
-
-      <div className={styles.eval}>
-        <img
-          src={grandpaPortraitPng}
-          className={clsx(
-            styles.grandpaPortrait,
-            grandpaReturned && styles.returned
-          )}
-        />
-
-        {grandpaReturned ? (
-          <span>
-            Next time you bring <Currency amount={1} unit="diamonds" /> to the
-            shrine, your score shall be:
-          </span>
-        ) : (
-          <span>
-            When Grandpa's ghost returns at{" "}
-            <GameDateDisplay date={GHOST_RETURN_DATE} />, your score will be:,
-          </span>
-        )}
-        <ul>
-          {props.gameSave.grandpaScore.map(({ earned, reason, score }, index) =>
-            earned ? (
-              <li key={index}>
-                <strong>+ {score}</strong> for {reason}{" "}
-                <img src={checkmarkPng} />
-              </li>
-            ) : (
-              <li key={index} className={styles.unearned}>
-                <strong>+ {score}</strong> for {reason}
-              </li>
-            )
-          )}
-          <hr />
-          <li>
-            Total Score: <strong>{nextEvalScore}</strong>, which means{" "}
-            <strong>{nextCandlesLit}</strong> candle(s) will be lit.
-          </li>
-        </ul>
       </div>
     </SummarySection>
   );

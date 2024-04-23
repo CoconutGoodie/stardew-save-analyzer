@@ -46,20 +46,34 @@
   &.returned {
     opacity: 1;
     filter: none;
+    animation: float 6s linear infinite;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translatey(0px);
+    }
+    50% {
+      transform: translatey(-10px);
+    }
+    100% {
+      transform: translatey(0px);
+    }
   }
 }
 
 .eval {
   position: relative;
-  margin-top: 100px;
-  padding: 35px 20px 20px 20px;
-  // width: 400px;
+  padding: 20px;
+  width: 400px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   z-index: 0;
 
   &::before {
     $color: #67dde6;
+    box-sizing: border-box;
     content: "";
     position: absolute;
     top: 0;
@@ -69,18 +83,20 @@
     background: rgba($color, 0.2);
     border: 3px solid $color;
     border-radius: 20px;
-    // mask-image: linear-gradient(-25deg, #fff, rgba(#fff, 0));
+    mask-image: linear-gradient(135deg, #fff, rgba(#fff, 0.1));
     z-index: -10;
   }
 
   .grandpaPortrait {
+    width: 200px;
     position: absolute;
-    // left: 25px;
-    left: 50%;
-    transform: translateX(-50%);
-    top: -105px;
+    bottom: -20px;
+    right: 0;
     margin-left: auto;
+    opacity: 0.1;
     mask-image: linear-gradient(to bottom, #fff 90%, rgba(#fff, 0) 100%);
+    transform: rotate(-15deg);
+    z-index: -10;
   }
 
   & > span {
@@ -94,6 +110,6 @@
 
   hr {
     margin: 20px 0 !important;
-    border-color: #364746 !important;
+    border-color: #354241 !important;
   }
 }

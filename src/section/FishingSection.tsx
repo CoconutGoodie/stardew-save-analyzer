@@ -137,7 +137,10 @@ export const FishingSection = (props: Props) => {
                       )}
 
                       <div
-                        className={clsx(styles.category, compact&&styles.compact)}
+                        className={clsx(
+                          styles.category,
+                          compact && styles.compact
+                        )}
                         style={{
                           ["--background" as string]: `url(${
                             backgroundSprites.resolve(snakeCase(categoryId))

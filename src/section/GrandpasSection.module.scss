@@ -3,6 +3,13 @@
   gap: 20px;
 }
 
+.candleObjectives{
+  // align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .objective {
   margin-top: 10px;
 }
@@ -64,6 +71,7 @@
 
 .eval {
   position: relative;
+  margin-bottom: 20px;
   padding: 20px;
   width: 400px;
   display: flex;

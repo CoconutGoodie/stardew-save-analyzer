@@ -1,10 +1,11 @@
 import { SummarySection } from "../component/SummarySection";
-import { AssetRepository } from "../util/AssetRepository";
 import { GameSave } from "../gamesave/GameSave";
+import { AssetRepository } from "../util/AssetRepository";
 import { StardewWiki } from "../util/StardewWiki";
 
 import boardPng from "../assets/sprite/special-order/special_order_board.png";
 
+import { ImageObjective } from "@src/component/ImageObjective";
 import clsx from "clsx";
 import { GameDateDisplay } from "../component/GameDateDisplay";
 import { Objective } from "../component/Objective";
@@ -61,10 +62,10 @@ export const SpecialOrdersSection = (props: Props) => {
               href={StardewWiki.getLink("Quests", order.title)}
               target="_blank"
             >
-              <img
+              <ImageObjective
+                done={order.completed}
                 width={45}
                 title={order.title}
-                className={clsx(!order.completed && styles.incomplete)}
                 src={specialOrderNpcs.resolve(order.npc).default}
               />
             </a>

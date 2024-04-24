@@ -16,6 +16,7 @@ import { Achievement } from "../component/Achievement";
 import { Objective } from "../component/Objective";
 import { StardewWiki } from "../util/StardewWiki";
 import styles from "./FishingSection.module.scss";
+import { ImageObjective } from "@src/component/ImageObjective";
 
 interface Props {
   gameSave: GameSave;
@@ -185,17 +186,15 @@ export const FishingSection = (props: Props) => {
                               href={StardewWiki.getLink(fish.name)}
                               target="_blank"
                             >
-                              <div
-                                className={clsx(
-                                  styles.fish,
-                                  (find(farmer.caughtFish, {
-                                    fishId: fish.id,
-                                  })?.amount ?? 0) > 0 && styles.caught
-                                )}
-                              >
-                                <img
-                                  width={35}
+                              <div className={styles.fish}>
+                                <ImageObjective
+                                  width={36}
                                   title={`${fish.name}`}
+                                  done={
+                                    (find(farmer.caughtFish, {
+                                      fishId: fish.id,
+                                    })?.amount ?? 0) > 0
+                                  }
                                   src={
                                     fishSprites.resolve(snakeCase(fish.name))
                                       ?.default

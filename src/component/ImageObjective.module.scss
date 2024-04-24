@@ -1,0 +1,34 @@
+@use "@src/style/base/mixin" as mixin;
+
+.wrapper {
+  position: relative;
+  display: flex;
+
+  &:hover {
+    .objective {
+      @include mixin.shadowOutline(2, #fff);
+      opacity: 1;
+    }
+    .checkmark {
+      opacity: 0;
+    }
+  }
+}
+
+.objective {
+  opacity: 0.3;
+
+  &.done {
+    @include mixin.shadowOutline(1, #aaaaaa);
+    opacity: 1;
+  }
+}
+
+.checkmark {
+  width: 20px;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  
+  @include mixin.shadowOutline(1, #060216);
+}

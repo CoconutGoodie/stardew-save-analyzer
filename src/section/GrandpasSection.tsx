@@ -57,6 +57,20 @@ export const GrandpasEvaluationsSection = (props: Props) => {
                 />
               )
           )}
+          <div className={styles.candleObjectives}>
+            <Objective done={props.gameSave.grandpaShrineCandlesLit >= 1}>
+              First candle is lit.
+            </Objective>
+            <Objective done={props.gameSave.grandpaShrineCandlesLit >= 2}>
+              Second candle is lit.
+            </Objective>
+            <Objective done={props.gameSave.grandpaShrineCandlesLit >= 3}>
+              Third candle is lit.
+            </Objective>
+            <Objective done={props.gameSave.grandpaShrineCandlesLit >= 4}>
+              Fourth candle is lit.
+            </Objective>
+          </div>
         </div>
         <div className={styles.eval}>
           <img

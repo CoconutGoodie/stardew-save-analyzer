@@ -6,8 +6,8 @@
 
   &:hover {
     .objective {
-      @include mixin.shadowOutline(2, #fff);
       opacity: 1;
+      @include mixin.shadowOutline(2, #fff);
     }
     .checkmark {
       opacity: 0;
@@ -19,8 +19,11 @@
   opacity: 0.3;
 
   &.done {
-    @include mixin.shadowOutline(1, #aaaaaa);
     opacity: 1;
+    
+    &:not(.noOutline) {
+      @include mixin.shadowOutline(1, #aaaaaa);
+    }
   }
 }
 
@@ -29,6 +32,6 @@
   position: absolute;
   right: 0;
   bottom: 0;
-  
+
   @include mixin.shadowOutline(1, #060216);
 }

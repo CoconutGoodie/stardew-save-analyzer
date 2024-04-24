@@ -88,12 +88,12 @@ export const FishingSection = (props: Props) => {
                 <strong>{unlockedBobberCount}</strong> bobber styles.
               </Objective>
 
-              {/* <button
+              <button
                 className={styles.compactBtn}
                 onClick={() => setCompact((c) => !c)}
               >
                 Toggle Compact View
-              </button> */}
+              </button>
 
               <div className={styles.categories}>
                 {keys(FishCategory).map((categoryId) => {
@@ -137,7 +137,7 @@ export const FishingSection = (props: Props) => {
                       )}
 
                       <div
-                        className={styles.category}
+                        className={clsx(styles.category, compact&&styles.compact)}
                         style={{
                           ["--background" as string]: `url(${
                             backgroundSprites.resolve(snakeCase(categoryId))

@@ -63,6 +63,16 @@
       z-index: -1;
     }
 
+    &.compact {
+      grid-template-columns: 80px 1fr;
+      padding: 5px 5px 5px 20px;
+      font-size: 14px;
+
+      & h1 {
+        font-size: 16px;
+      }
+    }
+
     & h1 {
       margin: 0;
       margin-top: 6px;
@@ -92,9 +102,18 @@
   &.compact {
     display: flex;
     flex-wrap: wrap;
+    gap: 5px;
 
     .fish {
-      margin-left: -20px;
+      margin-left: -9px;
+
+      img {
+        width: 24px;
+      }
+
+      &.caught {
+        filter: none;
+      }
     }
   }
 

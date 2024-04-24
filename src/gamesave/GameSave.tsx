@@ -229,8 +229,10 @@ export class GameSave {
         earned: farmerWithMostSkillLevels.skillLevelTotal >= skillLevels,
         reason: (
           <>
-            reaching <strong>{skillLevels}</strong> skill levels. (
-            {farmerWithMostSkillLevels.name})
+            reaching <strong>{skillLevels}</strong> skill levels.{" "}
+            {farmerWithMostSkillLevels.skillLevelTotal >= skillLevels && (
+              <>({farmerWithMostSkillLevels.name})</>
+            )}
           </>
         ),
         score,
@@ -242,7 +244,7 @@ export class GameSave {
         earned: false,
         reason: (
           <>
-            achieving <em>A Complete Collection</em>
+            achieving <em>A Complete Collection</em> [WIP]
           </>
         ),
         score: 1,

@@ -1,10 +1,5 @@
 @use "@src/style/base/mixin" as mixin;
 
-.farmers {
-  display: flex;
-  gap: 50px;
-}
-
 .farmer {
   width: 460px;
   display: flex;
@@ -37,50 +32,51 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
 
-  .category {
-    --background: url("");
+.category {
+  --background: url("");
 
-    position: relative;
-    padding: 10px 10px 10px 20px;
-    display: grid;
-    grid-template-columns: 120px 1fr;
-    background: rgba(#36515c, 0.3);
-    border-radius: 10px;
-    z-index: 0;
+  position: relative;
+  padding: 10px 10px 10px 20px;
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 10px;
+  background: rgba(#36515c, 0.3);
+  border-radius: 10px;
+  z-index: 0;
 
-    &::before {
-      position: absolute;
-      content: "";
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      opacity: 0.15;
-      background-image: var(--background);
-      background-size: cover;
-      filter: blur(2px);
-      border-radius: inherit;
-      z-index: -1;
-    }
+  &::before {
+    position: absolute;
+    content: "";
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.15;
+    background-image: var(--background);
+    background-size: cover;
+    filter: blur(2px);
+    border-radius: inherit;
+    z-index: -1;
+  }
 
-    &.compact {
-      grid-template-columns: 95px 1fr;
-      gap: 0;
-      padding: 5px 5px 5px 20px;
-      font-size: 14px;
-
-      & h1 {
-        font-size: 16px;
-      }
-    }
+  &.compact {
+    grid-template-columns: 95px 1fr;
+    gap: 0;
+    padding: 5px 5px 5px 20px;
+    font-size: 14px;
 
     & h1 {
-      margin: 0;
-      margin-top: 6px;
-      font-family: "Stardew Valley";
-      font-size: 22px;
+      font-size: 16px;
     }
+  }
+
+  & h1 {
+    margin: 0;
+    margin-top: 6px;
+    font-family: "Stardew Valley";
+    font-size: 22px;
   }
 }
 
@@ -99,7 +95,7 @@
   display: grid;
   grid-template-columns: repeat(7, 40px);
   align-items: center;
-  gap: 5px;
+  gap: 8px;
 
   &.compact {
     display: flex;

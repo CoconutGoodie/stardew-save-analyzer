@@ -22,6 +22,7 @@ import { Achievement } from "../component/Achievement";
 import { Objective } from "../component/Objective";
 import { StardewWiki } from "../util/StardewWiki";
 import styles from "./FishingSection.module.scss";
+import { FarmersRow } from "@src/component/FarmersRow";
 
 interface Props {
   gameSave: GameSave;
@@ -48,7 +49,7 @@ export const FishingSection = (props: Props) => {
 
   return (
     <SummarySection id="fishing" sectionTitle="Fishing" collapsable>
-      <div className={styles.farmers}>
+      <FarmersRow>
         {farmers.map((farmer) => {
           const caughtFishCount = sumBy(farmer.caughtFish, (v) => v.amount);
 
@@ -277,7 +278,7 @@ export const FishingSection = (props: Props) => {
             </div>
           );
         })}
-      </div>
+      </FarmersRow>
     </SummarySection>
   );
 };

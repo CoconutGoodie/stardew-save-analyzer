@@ -12,6 +12,7 @@ import { Objective } from "../component/Objective";
 import { StardewWiki } from "../util/StardewWiki";
 import styles from "./StardropsSection.module.scss";
 import { thru } from "@src/util/utilities";
+import { FarmersRow } from "@src/component/FarmersRow";
 
 interface Props {
   gameSave: GameSave;
@@ -20,7 +21,7 @@ interface Props {
 export const StardropsSection = (props: Props) => {
   return (
     <SummarySection id="stardrops" sectionTitle="Stardrops" collapsable>
-      <div className={styles.farmers}>
+      <FarmersRow>
         {props.gameSave.getAllFarmers().map((farmer) => {
           const gatheredStardropCount = farmer.stardrops.filter(
             (stardrop) => stardrop.gathered
@@ -83,7 +84,7 @@ export const StardropsSection = (props: Props) => {
             </div>
           );
         })}
-      </div>
+      </FarmersRow>
     </SummarySection>
   );
 };

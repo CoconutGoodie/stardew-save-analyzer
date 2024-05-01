@@ -390,7 +390,13 @@ export const STARDEW_FISHES: Record<string, Fish> = {
   },
 };
 
-export const FISHES_BY_CATEGORIES = entries(STARDEW_FISHES).reduce(
+export const STARDEW_ACHIEVEMENT_FISHES = new Set(
+  entries(STARDEW_FISHES)
+    .filter(([_, fish]) => !fish.categories.includes(FishCategory.Legendary_2))
+    .map(([fishId]) => fishId)
+);
+
+export const STARDEW_FISHES_BY_CATEGORIES = entries(STARDEW_FISHES).reduce(
   (lookup, [fishId, fish]) => {
     (fish.categories as (keyof typeof FishCategory)[]).forEach((category) => {
       if (!lookup[category]) lookup[category] = [];

@@ -1,19 +1,19 @@
-import { SummarySection } from "../component/SummarySection";
 import { GameSave } from "@src/gamesave/GameSave";
+import { SummarySection } from "../component/SummarySection";
 
-import grandpaPortraitPng from "@src/assets/sprite/grandpa/portrait.png";
-import grandpaGhostPng from "@src/assets/sprite/grandpa/ghost.png";
-import shrinePng from "@src/assets/sprite/grandpa/shrine.png";
-import candleFirePng from "@src/assets/sprite/grandpa/candle-fire.gif";
 import checkmarkPng from "@src/assets/icon/checkmark.png";
+import candleFirePng from "@src/assets/sprite/grandpa/candle-fire.gif";
+import grandpaGhostPng from "@src/assets/sprite/grandpa/ghost.png";
+import grandpaPortraitPng from "@src/assets/sprite/grandpa/portrait.png";
+import shrinePng from "@src/assets/sprite/grandpa/shrine.png";
 
-import styles from "./GrandpasSection.module.scss";
+import { Currency } from "@src/component/Currency";
+import { GameDateDisplay } from "@src/component/GameDateDisplay";
 import { Objective } from "@src/component/Objective";
 import { GameDate, GameSeason } from "@src/util/GameDate";
-import { GameDateDisplay } from "@src/component/GameDateDisplay";
 import clsx from "clsx";
-import { Currency } from "@src/component/Currency";
-import { useMemo } from "react";
+import styles from "./GrandpasSection.module.scss";
+import { sumBy } from "remeda";
 
 interface Props {
   gameSave: GameSave;
@@ -25,10 +25,15 @@ export const GrandpasEvaluationsSection = (props: Props) => {
   const grandpaReturned =
     props.gameSave.currentDate.canonicalDay >= GHOST_RETURN_DATE.canonicalDay;
 
+  const grandpaScoreTotal = sumBy(
+    props.gameSave.grandpaScoreSubjects,
+    (subject) => (subject.earned ? subject.score : 0)
+  );
+
   const nextCandlesLit = (() => {
-    if (props.gameSave.grandpaScoreTotal <= 3) return 1;
-    if (props.gameSave.grandpaScoreTotal <= 7) return 2;
-    if (props.gameSave.grandpaScoreTotal <= 11) return 3;
+    if (grandpaScoreTotal <= 3) return 1;
+    if (grandpaScoreTotal <= 7) return 2;
+    if (grandpaScoreTotal <= 11) return 3;
     return 4;
   })();
 
@@ -109,9 +114,8 @@ export const GrandpasEvaluationsSection = (props: Props) => {
             )}
             <hr />
             <li>
-              Total Score: <strong>{props.gameSave.grandpaScoreTotal}</strong>,
-              which means <strong>{nextCandlesLit}</strong> candle(s) will be
-              lit.
+              Total Score: <strong>{grandpaScoreTotal}</strong>, which means{" "}
+              <strong>{nextCandlesLit}</strong> candle(s) will be lit.
             </li>
           </ul>
         </div>

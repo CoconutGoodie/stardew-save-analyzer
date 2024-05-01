@@ -9,6 +9,9 @@ interface Props {
 }
 
 export const MoneySection = (props: Props) => {
+  const playerAchievements =
+    props.gameSave.achievements[props.gameSave.player.name];
+
   const totalDigits = props.gameSave.totalGoldsEarned
     .toString()
     .padStart(9, " ")
@@ -35,32 +38,32 @@ export const MoneySection = (props: Props) => {
         ))}
       </div>
 
-      <div>
+      <div className={styles.achievements}>
         {[
-          { title: "Greenhorn", goal: 15_000 },
-          { title: "Cowpoke ", goal: 50_000 },
-          { title: "Homesteader", goal: 250_000 },
-          { title: "Millionaire", goal: 1_000_000 },
-          { title: "Legend", goal: 10_000_000 },
+          playerAchievements.greenhorn,
+          playerAchievements.cowpoke,
+          playerAchievements.homesteader,
+          playerAchievements.millionaire,
+          playerAchievements.legend,
         ].map((achievement) => {
-          const achieved = achievement.goal <= props.gameSave.totalGoldsEarned;
-
           return (
             <Achievement
               key={achievement.title}
               title={achievement.title}
-              achieved={achieved}
+              achieved={achievement.achieved}
               description={
                 <>
                   earn <Currency amount={achievement.goal} />
                 </>
               }
             >
-              {!achieved && (
+              {!achievement.achieved && (
                 <span>
                   —{" "}
                   <Currency
-                    amount={achievement.goal - props.gameSave.totalGoldsEarned}
+                    amount={
+                      achievement.goal - props.gameSave.totalGoldsEarned
+                    }
                     unit="gold"
                   />{" "}
                   more to go

@@ -3,7 +3,7 @@
   gap: 20px;
 }
 
-.candleObjectives{
+.candleObjectives {
   // align-self: flex-start;
   display: flex;
   flex-direction: column;
@@ -112,8 +112,12 @@
     margin-bottom: 10px;
   }
 
-  li.unearned {
-    opacity: 0.3;
+  li {
+    line-height: 26px;
+
+    &.unearned {
+      opacity: 0.3;
+    }
   }
 
   hr {

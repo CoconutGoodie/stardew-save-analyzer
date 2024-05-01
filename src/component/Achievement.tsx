@@ -12,6 +12,7 @@ interface Props extends PropsWithChildren {
   title: string;
   description?: ReactNode;
   achieved?: boolean;
+  inline?: boolean;
 }
 
 const platformSprites = new AssetRepository<{ default: string }>(
@@ -36,7 +37,7 @@ export const Achievement = (props: Props) => {
     .replace(/'/, "");
 
   return (
-    <div className={styles.container}>
+    <div className={clsx(styles.container, props.inline && styles.inline)}>
       {/* <img
         width={25}
         alt="In-game Icon"
@@ -75,7 +76,7 @@ export const Achievement = (props: Props) => {
         {props.children}
       </div>
 
-      {props.achieved && <img src={checkmarkPng} />}
+      {props.achieved && !props.inline && <img src={checkmarkPng} />}
     </div>
   );
 };

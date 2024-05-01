@@ -1,14 +1,15 @@
 import { capitalCase, lowerCase } from "case-anything";
 
+import { Achievement } from "@src/component/Achievement";
+import { Currency } from "@src/component/Currency";
+import { Achievements } from "@src/gamesave/Achievements";
+import { ReactNode } from "react";
+import { entries, find, firstBy, mapToObj } from "remeda";
 import { STARDEW_FARM_TYPES } from "../const/StardewFarmTypes";
 import { STARDEW_SPECIAL_ORDERS } from "../const/StardewSpecialOrders";
 import { GameDate, GameSeason } from "../util/GameDate";
 import { StardewWiki } from "../util/StardewWiki";
 import { Farmer } from "./Farmer";
-import { ReactNode } from "react";
-import { Currency } from "@src/component/Currency";
-import { Achievement } from "@src/component/Achievement";
-import { entries, find, firstBy, maxBy } from "remeda";
 
 type StringNumber = `${number}`;
 type StringBoolean = `${boolean}`;
@@ -89,7 +90,8 @@ export class GameSave {
 
   public readonly grandpaShrineCandlesLit;
   public readonly grandpaScoreSubjects;
-  public readonly grandpaScoreTotal;
+
+  public readonly achievements;
 
   constructor(private saveXml: GameSave.SaveXml) {
     console.log(saveXml);
@@ -115,10 +117,11 @@ export class GameSave {
 
     this.grandpaShrineCandlesLit = this.calcGrandpaShrineCandlesLit();
     this.grandpaScoreSubjects = this.calcGrandpaScoreSubjects();
-    this.grandpaScoreTotal = this.grandpaScoreSubjects.reduce(
-      (total, scorePoint) => total + (scorePoint.earned ? 0 : scorePoint.score),
-      0
-    );
+
+    this.achievements = mapToObj(this.getAllFarmers(), (farmer) => [
+      farmer.name,
+      new Achievements(farmer, this),
+    ]);
   }
 
   private calcGameVersion() {
@@ -239,26 +242,25 @@ export class GameSave {
       })
     );
 
-    for (let i = 0; i < 7; i++) {
-      scoreSubjects.push({
-        earned: false,
-        reason: (
-          <>
-            achieving <em>A Complete Collection</em> [WIP]
-          </>
-        ),
-        score: 1,
-      });
-    }
+    scoreSubjects.push(
+      ...["A Complete Collection", "Master Angler", "Full Shipment"].map(
+        (achi) => ({
+          earned: false,
+          reason: (
+            <>
+              achieving <Achievement title={achi} achieved={false} inline />{" "}
+              [WIP]
+            </>
+          ),
+          score: 1,
+        })
+      )
+    );
 
     return scoreSubjects;
   }
 
   public getAllFarmers() {
     return [this.player].concat(this.farmhands);
-  }
-
-  public getFarmerByName(name: string) {
-    return find(this.getAllFarmers(), (farmer) => farmer.name == name);
   }
 }

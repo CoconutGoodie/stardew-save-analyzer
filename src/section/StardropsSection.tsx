@@ -11,18 +11,17 @@ import { FarmerTag } from "../component/FarmerTag";
 import { Objective } from "../component/Objective";
 import { StardewWiki } from "../util/StardewWiki";
 import styles from "./StardropsSection.module.scss";
+import { thru } from "@src/util/utilities";
 
 interface Props {
   gameSave: GameSave;
 }
 
 export const StardropsSection = (props: Props) => {
-  const farmers = props.gameSave.getAllFarmers();
-
   return (
     <SummarySection id="stardrops" sectionTitle="Stardrops" collapsable>
       <div className={styles.farmers}>
-        {farmers.map((farmer) => {
+        {props.gameSave.getAllFarmers().map((farmer) => {
           const gatheredStardropCount = farmer.stardrops.filter(
             (stardrop) => stardrop.gathered
           ).length;
@@ -65,18 +64,21 @@ export const StardropsSection = (props: Props) => {
               </div>
 
               <div style={{ marginTop: 10 }}>
-                <Achievement
-                  title="Mystery of the Stardrops"
-                  description="gather every Stardrop"
-                  achieved={farmer.stardrops.every(
-                    (stardrop) => stardrop.gathered
-                  )}
-                >
-                  <span>
-                    — Missing {farmer.stardrops.length - gatheredStardropCount}{" "}
-                    more
-                  </span>
-                </Achievement>
+                {thru(
+                  props.gameSave.achievements[farmer.name],
+                  (achievements) => (
+                    <Achievement
+                      title={achievements.mysteryOfTheStardrops.title}
+                      description="gather every Stardrop"
+                      achieved={achievements.mysteryOfTheStardrops.achieved}
+                    >
+                      <span>
+                        — Missing{" "}
+                        {farmer.stardrops.length - gatheredStardropCount} more
+                      </span>
+                    </Achievement>
+                  )
+                )}
               </div>
             </div>
           );

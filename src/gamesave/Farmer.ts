@@ -26,6 +26,7 @@ export class Farmer {
 
   public readonly receivedMailFlags;
   public readonly caughtFish;
+  public readonly unlockedBobberCount;
   public readonly stardrops;
 
   constructor(private playerXml: GameSave.FarmerXml) {
@@ -74,6 +75,8 @@ export class Farmer {
         lengthInInches: parseInt(caught.value[0].ArrayOfInt[0].int[1]),
       })
     );
+    this.unlockedBobberCount =
+      1 + Math.floor(this.caughtFish.filter((v) => v.amount > 0).length / 2);
     this.stardrops = this.calcStardrops();
   }
 
@@ -89,7 +92,7 @@ export class Farmer {
   private calcProfessions(skillName: keyof typeof STARDEW_PROFESSIONS) {
     const skillProfessions: Record<number, string> =
       STARDEW_PROFESSIONS[skillName];
-      
+
     return intersection
       .multiset(this.playerXml.professions[0].int, keys(skillProfessions))
       .map((id) => parseInt(id))
@@ -100,20 +103,20 @@ export class Farmer {
   private calcSkillBasedTitle() {
     const v = this.skillLevelTotal / 2;
     if (v >= 30) return "Farm King";
-    if (v >= 28) return "Cropmaster";
-    if (v >= 25) return "Agriculturist";
-    if (v >= 24) return "Farmer";
-    if (v >= 22) return "Rancher";
-    if (v >= 20) return "Planter";
-    if (v >= 18) return "Granger";
-    if (v >= 16) return this.gender === "Female" ? "Farmgirl" : "Farmboy";
-    if (v >= 14) return "Sodbuster";
-    if (v >= 12) return "Smallholder";
-    if (v >= 10) return "Tiller";
-    if (v >= 8) return "Farmhand";
-    if (v >= 6) return "Cowpoke";
-    if (v >= 4) return "Bumpkin";
-    if (v >= 2) return "Greenhorn";
+    if (v > 28) return "Cropmaster";
+    if (v > 26) return "Agriculturist";
+    if (v > 24) return "Farmer";
+    if (v > 22) return "Rancher";
+    if (v > 20) return "Planter";
+    if (v > 18) return "Granger";
+    if (v > 16) return this.gender === "Female" ? "Farmgirl" : "Farmboy";
+    if (v > 14) return "Sodbuster";
+    if (v > 12) return "Smallholder";
+    if (v > 10) return "Tiller";
+    if (v > 8) return "Farmhand";
+    if (v > 6) return "Cowpoke";
+    if (v > 4) return "Bumpkin";
+    if (v > 2) return "Greenhorn";
     return "Newcomer";
   }
 

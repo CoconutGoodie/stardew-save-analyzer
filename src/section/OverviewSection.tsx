@@ -57,7 +57,7 @@ export const OverviewSection = (props: Props) => {
   return (
     <SummarySection id="overview" sectionTitle="Overview">
       <div className={styles.content}>
-        <a href={StardewWiki.getLink("Farm_Maps", "Map_Types")}>
+        <a href={StardewWiki.getLink("Farm_Maps", "Map_Types")} target="_blank">
           <div className={styles.farmType}>
             <img
               width={80}

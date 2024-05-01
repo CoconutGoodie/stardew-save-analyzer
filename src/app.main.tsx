@@ -53,38 +53,61 @@ function App() {
 
             <SkillsSection gameSave={gameSave} />
 
+            <SummarySection sectionTitle="Masteries [WIP]" collapsable>
+              [WIP] Skill Masteries & Unlocked Perks here
+            </SummarySection>
+
+            <SummarySection sectionTitle="Quests [WIP]" collapsable>
+              [WIP] "Help Wanted" Quests & Story Quests here
+            </SummarySection>
+
+            <SpecialOrdersSection gameSave={gameSave} />
+
             <StardropsSection gameSave={gameSave} />
 
-          <FishingSection gameSave={gameSave} />
+            <FishingSection gameSave={gameSave} />
 
-          <SpecialOrdersSection gameSave={gameSave} />
+            <SummarySection sectionTitle="Crafting [WIP]" collapsable>
+              [WIP] Craftables here
+            </SummarySection>
 
-          <GrandpasEvaluationsSection gameSave={gameSave} />
+            <SummarySection sectionTitle="Cooking [WIP]" collapsable>
+              [WIP] Cooking Recipes here
+            </SummarySection>
 
-          <hr />
+            <SummarySection sectionTitle="Shipping [WIP]" collapsable>
+              [WIP] Shipping Bin Achievements here
+            </SummarySection>
 
-          <SummarySection sectionTitle="Craftables [WIP]" />
-          <SummarySection sectionTitle="Socials [WIP]" />
-          <SummarySection sectionTitle="Community Center [WIP]" />
-          <SummarySection sectionTitle="Many More [WIP]" />
+            <SummarySection sectionTitle="Museum [WIP]" collapsable>
+              [WIP] Museum Artifacts & Minerals here
+            </SummarySection>
 
-          <SummarySection sectionTitle="Todo List">
-            <ul>
-              <li>"Quests" Section</li>
-              <li>"Craftables" Section</li>
-              <li>"Cooking" Section</li>
-              <li>"Forest Neightbors" Section</li>
-              <li>"Ginger Island" Section</li>
-              <li>"Secret Notes" Section</li>
-              <li>"Grandpa's Evaluation" Section</li>
-              <li>"Monster Hunting" Section</li>
-              <li>"Socials" Section</li>
-              <li>"Community Center" Section</li>
-              <li>"Perfection" Section</li>
-              <li>Tooltips Component</li>
-              <li>Better Advancement Structure</li>
-            </ul>
-          </SummarySection>
+            <GrandpasEvaluationsSection gameSave={gameSave} />
+
+            <SummarySection sectionTitle="Perfection Tracker [WIP]" collapsable>
+              [WIP] Perfection Tracker Analysis here
+            </SummarySection>
+
+            <hr />
+
+            <SummarySection sectionTitle="Todo List">
+              <ul>
+                <li>"Quests" Section</li>
+                <li>"Craftables" Section</li>
+                <li>"Cooking" Section</li>
+                <li>"Forest Neightbors" Section</li>
+                <li>"Ginger Island" Section</li>
+                <li>"Secret Notes" Section</li>
+                <li>"Grandpa's Evaluation" Section</li>
+                <li>"Monster Hunting" Section</li>
+                <li>"Socials" Section</li>
+                <li>"Community Center" Section</li>
+                <li>"Perfection" Section</li>
+                <li>Tooltips Component</li>
+                <li>Better Advancement Structure</li>
+              </ul>
+            </SummarySection>
           </>
         )}
       </div>

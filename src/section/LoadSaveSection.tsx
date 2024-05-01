@@ -5,7 +5,7 @@ import { AssetRepository } from "../util/AssetRepository";
 
 import clockPng from "../assets/icon/clock.png";
 
-import style from "./LoadSaveSection.module.scss";
+import styles from "./LoadSaveSection.module.scss";
 
 const demoSaves = new AssetRepository(
   import.meta.glob<Promise<{ default: { SaveGame: GameSave.SaveXml } }>>(
@@ -30,14 +30,14 @@ export const LoadSaveSection = (props: Props) => {
   };
 
   return (
-    <SummarySection>
-      <div className={style.fileUpload}>Upload your own save file [WIP]</div>
+    <SummarySection className={styles.section}>
+      <div className={styles.fileUpload}>Upload your own save file [WIP]</div>
 
-      <span className={style.or}>OR</span>
+      <span className={styles.or}>OR</span>
 
-      <span className={style.info}>Select a demo save (for now)</span>
+      <span className={styles.info}>Select a demo save (for now)</span>
 
-      <div className={style.demoSaves}>
+      <div className={styles.demoSaves}>
         <button onClick={() => loadDemo("1.2")}>v1.2</button>
         <button onClick={() => loadDemo("1.3")}>v1.3</button>
         <button onClick={() => loadDemo("1.5")}>v1.5</button>
@@ -45,7 +45,7 @@ export const LoadSaveSection = (props: Props) => {
       </div>
 
       {loading && (
-        <div className={style.loader}>
+        <div className={styles.loader}>
           <img width={50} src={clockPng} />
           <span>Loading...</span>
         </div>

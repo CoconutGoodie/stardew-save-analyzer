@@ -6,7 +6,7 @@
 }
 
 .board {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   display: grid;
   grid-template-columns: auto auto 1fr;
   align-items: center;
@@ -25,7 +25,7 @@
   .orders {
     width: fit-content;
     display: grid;
-    grid-template-columns: repeat(9, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: 10px;
   }
 }

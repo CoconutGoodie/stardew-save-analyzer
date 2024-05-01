@@ -4,18 +4,30 @@ import { Achievement } from "@src/component/Achievement";
 import { Currency } from "@src/component/Currency";
 import { Achievements } from "@src/gamesave/Achievements";
 import { ReactNode } from "react";
-import { entries, find, first, firstBy, map, mapToObj, pipe } from "remeda";
+import {
+  entries,
+  find,
+  first,
+  firstBy,
+  keys,
+  map,
+  mapToObj,
+  pipe,
+} from "remeda";
 import { STARDEW_FARM_TYPES } from "../const/StardewFarmTypes";
 import { STARDEW_SPECIAL_ORDERS } from "../const/StardewSpecialOrders";
 import { GameDate, GameSeason } from "../util/GameDate";
 import { StardewWiki } from "../util/StardewWiki";
 import { Farmer } from "./Farmer";
 import { thru } from "@src/util/utilities";
+import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "@src/const/StardewMuseum";
 
 type StringNumber = `${number}`;
 type StringBoolean = `${boolean}`;
 
 export namespace GameSave {
+  export type KeyValueMap<K, V> = { key: K; value: V }[];
+
   export interface SaveXml {
     player: [FarmerXml];
     farmhands?: { Farmer: [FarmerXml] }[];
@@ -24,6 +36,14 @@ export namespace GameSave {
         GameLocation: {
           $: { "xsi:type": string };
           grandpaScore?: [StringNumber];
+          museumPieces?: [
+            {
+              item: KeyValueMap<
+                [{ Vector2: [{ X: [StringNumber]; Y: [StringNumber] }] }],
+                [{ string: [StringNumber] }]
+              >;
+            }
+          ];
           buildings: [
             {
               Building: {
@@ -44,8 +64,6 @@ export namespace GameSave {
     hasApplied1_4_UpdateChanges?: [StringBoolean];
     gameVersion?: [string];
   }
-
-  export type KeyValueMap<K, V> = { key: K; value: V }[];
 
   export interface FarmerXml {
     name: [string];
@@ -89,6 +107,8 @@ export class GameSave {
 
   public readonly specialOrders;
 
+  public readonly museumPieces;
+
   public readonly achievements;
 
   public readonly grandpaShrineCandlesLit;
@@ -115,6 +135,8 @@ export class GameSave {
     this.farmhands = this.calcFarmhands();
 
     this.specialOrders = this.calcSpecialOrders();
+
+    this.museumPieces = this.calcMuseumPieces();
 
     this.achievements = mapToObj(this.getAllFarmers(), (farmer) => [
       farmer.name,
@@ -178,6 +200,30 @@ export class GameSave {
           : false,
       wiki: StardewWiki.getLink("Quests", title.replace(/\s+/g, "_")),
     }));
+  }
+
+  private calcMuseumPieces() {
+    const museumLocation = this.saveXml.locations?.[0].GameLocation.find(
+      (x) => x.museumPieces != null
+    );
+
+    const handedInPieces: string[] =
+      museumLocation?.museumPieces?.[0]?.item?.map(
+        (item) => item.value[0].string[0]
+      ) ?? [];
+
+    return {
+      minerals: new Set(
+        keys(STARDEW_MINERALS).filter((mineralId) =>
+          handedInPieces.includes(mineralId)
+        )
+      ),
+      artifacts: new Set(
+        keys(STARDEW_ARTIFACTS).filter((artifactId) =>
+          handedInPieces.includes(artifactId)
+        )
+      ),
+    };
   }
 
   private calcGrandpaShrineCandlesLit() {

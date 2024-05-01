@@ -4,12 +4,13 @@ import { Achievement } from "@src/component/Achievement";
 import { Currency } from "@src/component/Currency";
 import { Achievements } from "@src/gamesave/Achievements";
 import { ReactNode } from "react";
-import { entries, find, firstBy, mapToObj } from "remeda";
+import { entries, find, first, firstBy, map, mapToObj, pipe } from "remeda";
 import { STARDEW_FARM_TYPES } from "../const/StardewFarmTypes";
 import { STARDEW_SPECIAL_ORDERS } from "../const/StardewSpecialOrders";
 import { GameDate, GameSeason } from "../util/GameDate";
 import { StardewWiki } from "../util/StardewWiki";
 import { Farmer } from "./Farmer";
+import { thru } from "@src/util/utilities";
 
 type StringNumber = `${number}`;
 type StringBoolean = `${boolean}`;
@@ -88,10 +89,10 @@ export class GameSave {
 
   public readonly specialOrders;
 
+  public readonly achievements;
+
   public readonly grandpaShrineCandlesLit;
   public readonly grandpaScoreSubjects;
-
-  public readonly achievements;
 
   constructor(private saveXml: GameSave.SaveXml) {
     console.log(saveXml);
@@ -115,13 +116,13 @@ export class GameSave {
 
     this.specialOrders = this.calcSpecialOrders();
 
-    this.grandpaShrineCandlesLit = this.calcGrandpaShrineCandlesLit();
-    this.grandpaScoreSubjects = this.calcGrandpaScoreSubjects();
-
     this.achievements = mapToObj(this.getAllFarmers(), (farmer) => [
       farmer.name,
       new Achievements(farmer, this),
     ]);
+
+    this.grandpaShrineCandlesLit = this.calcGrandpaShrineCandlesLit();
+    this.grandpaScoreSubjects = this.calcGrandpaScoreSubjects();
   }
 
   private calcGameVersion() {
@@ -187,6 +188,7 @@ export class GameSave {
     return parseInt(farmLocation?.grandpaScore?.[0] ?? "0");
   }
 
+  // TODO: Extract into its own class
   private calcGrandpaScoreSubjects() {
     interface ScoreSubject {
       earned: boolean;
@@ -216,13 +218,13 @@ export class GameSave {
       }))
     );
 
+    // Skill Levels
     const mostSkillfulFarmer =
       firstBy(this.getAllFarmers(), [
         (farmer) => farmer.skillLevelTotal,
         "desc",
       ]) ?? this.player;
 
-    // Skill Levels
     scoreSubjects.push(
       ...[
         [1, 30],
@@ -242,19 +244,39 @@ export class GameSave {
       })
     );
 
+    // Achievements
     scoreSubjects.push(
-      ...["A Complete Collection", "Master Angler", "Full Shipment"].map(
-        (achi) => ({
-          earned: false,
+      thru(
+        this.getAllFarmers().find(
+          (farmer) => this.achievements[farmer.name].masterAngler.achieved
+        ) ?? this.player,
+        (achiever) => ({
+          earned: this.achievements[achiever.name].masterAngler.achieved,
+          score: 1,
           reason: (
             <>
-              achieving <Achievement title={achi} achieved={false} inline />{" "}
-              [WIP]
+              achieving{" "}
+              <Achievement
+                title={this.achievements[achiever.name].masterAngler.title}
+                achieved={false}
+                inline
+              />
             </>
           ),
-          score: 1,
         })
       )
+    );
+
+    scoreSubjects.push(
+      ...["A Complete Collection", "Full Shipment"].map((achi) => ({
+        earned: false,
+        reason: (
+          <>
+            achieving <Achievement title={achi} achieved={false} inline /> [WIP]
+          </>
+        ),
+        score: Infinity,
+      }))
     );
 
     return scoreSubjects;

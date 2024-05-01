@@ -1,17 +1,18 @@
+@use "breakpoints";
+
 #root {
   min-height: 100vh;
   color: #d4ccbc;
   background-color: #060216;
+  overflow-x: auto;
 
   main {
-    max-width: 1000px;
     margin: 0 auto;
-    padding: 3rem;
     display: flex;
     flex-direction: column;
-    gap: 80px;
 
     header {
+      padding: 3rem;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -35,8 +36,22 @@
       }
     }
 
-    & > :first-child {
+    #content {
       margin: 0 auto;
+      margin-top: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 80px;
+      max-width: 1100px;
+
+      @include breakpoints.breakpointLarge() {
+        max-width: 800px;
+      }
+
+      @include breakpoints.breakpointMedium() {
+        padding: 0 40px;
+        max-width: 600px;
+      }
     }
 
     hr {

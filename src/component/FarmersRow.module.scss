@@ -1,0 +1,11 @@
+.row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 50px;
+
+  & > * {
+    width: 500px;
+    min-width: 500px;
+    max-width: 500px;
+  }
+}

@@ -9,6 +9,7 @@ import { StardewWiki } from "../util/StardewWiki";
 import { entries, values } from "remeda";
 import { FarmerTag } from "../component/FarmerTag";
 import { thru } from "@src/util/utilities";
+import { FarmersRow } from "@src/component/FarmersRow";
 
 interface Props {
   gameSave: GameSave;
@@ -31,10 +32,7 @@ export const SkillsSection = (props: Props) => {
 
   return (
     <SummarySection id="skills" sectionTitle="Skills" collapsable>
-      <div
-        className={styles.farmers}
-        style={{ ["--farmerCount" as string]: farmers.length }}
-      >
+      <FarmersRow className={styles.farmers}>
         {farmers.map((farmer) => (
           <div key={farmer.name} className={styles.farmer}>
             <FarmerTag farmer={farmer}>
@@ -48,7 +46,7 @@ export const SkillsSection = (props: Props) => {
             </FarmerTag>
 
             {entries(farmer.skills).map(([skillId, skill]) => (
-              <div key={skillId} className={styles.skill}>
+              <div key={skillId} className={styles.skillRow}>
                 <span>{capitalCase(skillId)}</span>
 
                 <a
@@ -130,7 +128,7 @@ export const SkillsSection = (props: Props) => {
             )}
           </div>
         ))}
-      </div>
+      </FarmersRow>
     </SummarySection>
   );
 };

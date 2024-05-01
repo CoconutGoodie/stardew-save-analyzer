@@ -32,27 +32,28 @@ function App() {
         <span>last updated for v1.6.4</span>
       </header>
 
-      {gameSave == null ? (
-        <>
-          <LoadSaveSection onSelected={setGameSave} />
-        </>
-      ) : (
-        <>
-          <OverviewSection gameSave={gameSave} />
+      <div id="content">
+        {gameSave == null ? (
+          <>
+            <LoadSaveSection onSelected={setGameSave} />
+          </>
+        ) : (
+          <>
+            <OverviewSection gameSave={gameSave} />
 
-          <div style={{ display: "flex", gap: 50 }}>
-            <MoneySection gameSave={gameSave} />
+            <div style={{ display: "flex", gap: 50 }}>
+              <MoneySection gameSave={gameSave} />
 
-            <SummarySection sectionTitle="Animals & Pets [WIP]" collapsable>
-              <p>...</p>
-              <p>...</p>
-              <p>...</p>
-            </SummarySection>
-          </div>
+              <SummarySection sectionTitle="Animals & Pets [WIP]" collapsable>
+                <p>...</p>
+                <p>...</p>
+                <p>...</p>
+              </SummarySection>
+            </div>
 
-          <SkillsSection gameSave={gameSave} />
+            <SkillsSection gameSave={gameSave} />
 
-          <StardropsSection gameSave={gameSave} />
+            <StardropsSection gameSave={gameSave} />
 
           <FishingSection gameSave={gameSave} />
 
@@ -84,8 +85,9 @@ function App() {
               <li>Better Advancement Structure</li>
             </ul>
           </SummarySection>
-        </>
-      )}
+          </>
+        )}
+      </div>
 
       <footer style={{ height: 200 }}></footer>
     </main>

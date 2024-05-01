@@ -1,3 +1,5 @@
+import { entries } from "remeda";
+
 export enum WeatherCondition {
   Sun = "Sun",
   Rain = "Rain",
@@ -183,7 +185,7 @@ export const STARDEW_FISHES: Record<string, Fish> = {
   },
   160: {
     name: "Angler",
-    categories: [FishCategory.Legendary],
+    categories: [FishCategory.Legendary, FishCategory.Fall],
   },
   161: {
     name: "Ice Pip",
@@ -195,7 +197,7 @@ export const STARDEW_FISHES: Record<string, Fish> = {
   },
   163: {
     name: "Legend",
-    categories: [FishCategory.Legendary],
+    categories: [FishCategory.Legendary, FishCategory.Spring],
   },
   164: {
     name: "Sandfish",
@@ -316,7 +318,7 @@ export const STARDEW_FISHES: Record<string, Fish> = {
   },
   775: {
     name: "Glacierfish",
-    categories: [FishCategory.Legendary],
+    categories: [FishCategory.Legendary, FishCategory.Winter],
   },
   795: {
     name: "Void Salmon",
@@ -387,3 +389,14 @@ export const STARDEW_FISHES: Record<string, Fish> = {
     categories: [FishCategory.Legendary_2],
   },
 };
+
+export const FISHES_BY_CATEGORIES = entries(STARDEW_FISHES).reduce(
+  (lookup, [fishId, fish]) => {
+    (fish.categories as (keyof typeof FishCategory)[]).forEach((category) => {
+      if (!lookup[category]) lookup[category] = [];
+      lookup[category].push({ id: fishId, ...fish });
+    });
+    return lookup;
+  },
+  {} as Record<FishCategory, Prettify<Fish & { id: string }>[]>
+);

@@ -1,5 +1,4 @@
-import { capitalCase } from "case-anything";
-import { entries, find, lowerCase } from "lodash";
+import { capitalCase, lowerCase } from "case-anything";
 
 import { STARDEW_FARM_TYPES } from "../const/StardewFarmTypes";
 import { STARDEW_SPECIAL_ORDERS } from "../const/StardewSpecialOrders";
@@ -9,6 +8,7 @@ import { Farmer } from "./Farmer";
 import { ReactNode } from "react";
 import { Currency } from "@src/component/Currency";
 import { Achievement } from "@src/component/Achievement";
+import { entries, find, firstBy, maxBy } from "remeda";
 
 type StringNumber = `${number}`;
 type StringBoolean = `${boolean}`;
@@ -88,7 +88,7 @@ export class GameSave {
   public readonly specialOrders;
 
   public readonly grandpaShrineCandlesLit;
-  public readonly grandpaScorePoints;
+  public readonly grandpaScoreSubjects;
   public readonly grandpaScoreTotal;
 
   constructor(private saveXml: GameSave.SaveXml) {
@@ -114,8 +114,8 @@ export class GameSave {
     this.specialOrders = this.calcSpecialOrders();
 
     this.grandpaShrineCandlesLit = this.calcGrandpaShrineCandlesLit();
-    this.grandpaScorePoints = this.calcGrandpaScorePoints();
-    this.grandpaScoreTotal = this.grandpaScorePoints.reduce(
+    this.grandpaScoreSubjects = this.calcGrandpaScoreSubjects();
+    this.grandpaScoreTotal = this.grandpaScoreSubjects.reduce(
       (total, scorePoint) => total + (scorePoint.earned ? 0 : scorePoint.score),
       0
     );
@@ -178,21 +178,23 @@ export class GameSave {
 
   private calcGrandpaShrineCandlesLit() {
     const farmLocation = find(
-      this.saveXml.locations?.[0].GameLocation,
+      this.saveXml.locations?.[0].GameLocation ?? [],
       (location) => location.$["xsi:type"] === "Farm"
     );
     return parseInt(farmLocation?.grandpaScore?.[0] ?? "0");
   }
 
-  private calcGrandpaScorePoints() {
-    const scorePoints: {
+  private calcGrandpaScoreSubjects() {
+    interface ScoreSubject {
       earned: boolean;
       score: number;
       reason: ReactNode;
-    }[] = [];
+    }
+
+    const scoreSubjects: ScoreSubject[] = [];
 
     // Earnings
-    scorePoints.push(
+    scoreSubjects.push(
       ...[
         [1, 50_000],
         [1, 100_000],
@@ -200,7 +202,7 @@ export class GameSave {
         [1, 300_000],
         [1, 500_000],
         [2, 1_000_000],
-      ].map<(typeof scorePoints)[number]>(([score, earningGoal]) => ({
+      ].map<ScoreSubject>(([score, earningGoal]) => ({
         earned: this.totalGoldsEarned >= earningGoal,
         reason: (
           <>
@@ -211,36 +213,34 @@ export class GameSave {
       }))
     );
 
-    const farmerWithMostSkillLevels = this.getAllFarmers().reduce<Farmer>(
-      (theFarmer, farmer) => {
-        return farmer.skillLevelTotal > theFarmer.skillLevelTotal
-          ? farmer
-          : theFarmer;
-      },
-      this.player
-    );
+    const mostSkillfulFarmer =
+      firstBy(this.getAllFarmers(), [
+        (farmer) => farmer.skillLevelTotal,
+        "desc",
+      ]) ?? this.player;
 
     // Skill Levels
-    scorePoints.push(
+    scoreSubjects.push(
       ...[
         [1, 30],
         [1, 50],
-      ].map<(typeof scorePoints)[number]>(([score, skillLevels]) => ({
-        earned: farmerWithMostSkillLevels.skillLevelTotal >= skillLevels,
-        reason: (
-          <>
-            reaching <strong>{skillLevels}</strong> skill levels.{" "}
-            {farmerWithMostSkillLevels.skillLevelTotal >= skillLevels && (
-              <>({farmerWithMostSkillLevels.name})</>
-            )}
-          </>
-        ),
-        score,
-      }))
+      ].map<ScoreSubject>(([score, skillLevels]) => {
+        const earned = mostSkillfulFarmer.skillLevelTotal >= skillLevels;
+        return {
+          earned,
+          reason: (
+            <>
+              reaching <strong>{skillLevels}</strong> skill levels.{" "}
+              {earned && <>({mostSkillfulFarmer.name})</>}
+            </>
+          ),
+          score,
+        };
+      })
     );
 
     for (let i = 0; i < 7; i++) {
-      scorePoints.push({
+      scoreSubjects.push({
         earned: false,
         reason: (
           <>
@@ -251,7 +251,7 @@ export class GameSave {
       });
     }
 
-    return scorePoints;
+    return scoreSubjects;
   }
 
   public getAllFarmers() {
@@ -259,6 +259,6 @@ export class GameSave {
   }
 
   public getFarmerByName(name: string) {
-    return find(this.getAllFarmers(), { name });
+    return find(this.getAllFarmers(), (farmer) => farmer.name == name);
   }
 }

@@ -1,13 +1,19 @@
 import { capitalCase, snakeCase } from "case-anything";
-import { entries, find, keys, thru } from "lodash";
+import { entries, keys, sumBy, values } from "remeda";
 import { FarmerTag } from "../component/FarmerTag";
 import { SummarySection } from "../component/SummarySection";
-import { Fish, FishCategory, STARDEW_FISHES } from "../const/StardewFishes";
+import {
+  FISHES_BY_CATEGORIES,
+  FishCategory,
+  STARDEW_FISHES,
+} from "../const/StardewFishes";
 import { GameSave } from "../gamesave/GameSave";
 import { AssetRepository } from "../util/AssetRepository";
 
+import { ImageObjective } from "@src/component/ImageObjective";
+import { thru } from "@src/util/utilities";
 import clsx from "clsx";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import checkmarkPng from "../assets/icon/checkmark.png";
 import questPng from "../assets/icon/quest.png";
@@ -16,22 +22,10 @@ import { Achievement } from "../component/Achievement";
 import { Objective } from "../component/Objective";
 import { StardewWiki } from "../util/StardewWiki";
 import styles from "./FishingSection.module.scss";
-import { ImageObjective } from "@src/component/ImageObjective";
 
 interface Props {
   gameSave: GameSave;
 }
-
-const FISHES_BY_CATEGORIES = entries(STARDEW_FISHES).reduce(
-  (lookup, [fishId, fish]) => {
-    (fish.categories as (keyof typeof FishCategory)[]).forEach((category) => {
-      if (!lookup[category]) lookup[category] = [];
-      lookup[category].push({ id: fishId, ...fish });
-    });
-    return lookup;
-  },
-  {} as Record<FishCategory, (Fish & { id: string })[]>
-);
 
 const fishSprites = new AssetRepository<{ default: string }>(
   import.meta.glob("../assets/sprite/fish/*.png", { eager: true }),
@@ -50,27 +44,33 @@ export const FishingSection = (props: Props) => {
 
   const farmers = props.gameSave.getAllFarmers();
 
-  const anglerFishes = entries(STARDEW_FISHES).filter(
-    ([_, fish]) => !fish.categories.includes(FishCategory.Legendary_2)
-  );
+  const achievementFishes = useMemo(() => {
+    return new Set(
+      entries(STARDEW_FISHES)
+        .filter(
+          ([_, fish]) => !fish.categories.includes(FishCategory.Legendary_2)
+        )
+        .map(([fishId]) => fishId)
+    );
+  }, []);
+
+  const maxBobberCount = 1 + Math.floor(keys(STARDEW_FISHES).length / 2);
 
   return (
     <SummarySection id="fishing" sectionTitle="Fishing" collapsable>
       <div className={styles.farmers}>
         {farmers.map((farmer) => {
-          const caughtFishCount = farmer.caughtFish.reduce(
-            (total, fish) => total + fish.amount,
-            0
-          );
+          const caughtFishCount = sumBy(farmer.caughtFish, (v) => v.amount);
 
           const caughtTypeCount = farmer.caughtFish.filter(
-            (fish) => fish.amount > 0
+            (v) => v.amount > 0
+          ).length;
+
+          const achievementCoughtTypeCount = farmer.caughtFish.filter(
+            (v) => v.amount > 0 && achievementFishes.has(v.fishId)
           ).length;
 
           const unlockedBobberCount = 1 + Math.floor(caughtTypeCount / 2);
-
-          const maxBobberCount =
-            1 + Math.floor(Object.keys(STARDEW_FISHES).length / 2);
 
           return (
             <div key={farmer.name} className={styles.farmer}>
@@ -102,9 +102,9 @@ export const FishingSection = (props: Props) => {
                     FISHES_BY_CATEGORIES[categoryId as FishCategory] ?? [];
 
                   const totalCaught = fishes.reduce((total, fish) => {
-                    const caughtFish = find(farmer.caughtFish, {
-                      fishId: fish.id,
-                    });
+                    const caughtFish = farmer.caughtFish.find(
+                      (caughFish) => caughFish.fishId === fish.id
+                    );
                     if (!caughtFish) return total;
                     return total + 1;
                   }, 0);
@@ -123,7 +123,8 @@ export const FishingSection = (props: Props) => {
                           >
                             <strong>Extended Fish Family</strong>
                           </a>{" "}
-                          Quest. They still get you new{" "}
+                          Quest. They won't count towards the achievement, yet
+                          still get you new{" "}
                           <a
                             href={StardewWiki.getLink(
                               "Fish_Shop",
@@ -192,9 +193,9 @@ export const FishingSection = (props: Props) => {
                                   noOutline={compact}
                                   title={`${fish.name}`}
                                   done={
-                                    (find(farmer.caughtFish, {
-                                      fishId: fish.id,
-                                    })?.amount ?? 0) > 0
+                                    (farmer.caughtFish.find(
+                                      (v) => v.fishId === fish.id
+                                    )?.amount ?? 0) > 0
                                   }
                                   src={
                                     fishSprites.resolve(snakeCase(fish.name))
@@ -217,7 +218,7 @@ export const FishingSection = (props: Props) => {
                 description="catch 100 total fish"
               />
 
-              {thru(caughtTypeCount >= 10, (done) => (
+              {thru(achievementCoughtTypeCount >= 10, (done) => (
                 <Achievement
                   title="Fisherman"
                   achieved={done}
@@ -227,7 +228,7 @@ export const FishingSection = (props: Props) => {
                 </Achievement>
               ))}
 
-              {thru(caughtTypeCount >= 24, (done) => (
+              {thru(achievementCoughtTypeCount >= 24, (done) => (
                 <Achievement
                   title="Ol' Mariner"
                   achieved={done}
@@ -238,7 +239,7 @@ export const FishingSection = (props: Props) => {
               ))}
 
               {thru(
-                caughtTypeCount >= Object.keys(STARDEW_FISHES).length,
+                achievementCoughtTypeCount >= keys(STARDEW_FISHES).length,
                 (done) => (
                   <Achievement
                     title="Master Angler"
@@ -249,7 +250,7 @@ export const FishingSection = (props: Props) => {
                       <>
                         {" "}
                         — Completed {caughtTypeCount} out of{" "}
-                        {anglerFishes.length}
+                        {achievementFishes.size}
                       </>
                     )}
                   </Achievement>

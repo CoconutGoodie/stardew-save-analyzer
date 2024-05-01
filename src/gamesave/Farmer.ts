@@ -1,7 +1,16 @@
-import { entries, intersection, keys, values } from "lodash";
-import { GameSave } from "./GameSave";
+import {
+  entries,
+  intersection,
+  keys,
+  map,
+  pipe,
+  sort,
+  sumBy,
+  values,
+} from "remeda";
 import { STARDEW_PROFESSIONS } from "../const/StardewProfessions";
 import { STARDROP_MAIL_FLAGS } from "../const/StardewStardrops";
+import { GameSave } from "./GameSave";
 
 export class Farmer {
   public readonly name;
@@ -49,7 +58,7 @@ export class Farmer {
         professions: this.calcProfessions("combat"),
       },
     };
-    this.skillLevelTotal = values(this.skills).reduce((s, c) => s + c.level, 0);
+    this.skillLevelTotal = sumBy(values(this.skills), (skill) => skill.level);
     this.skillBasedTitle = this.calcSkillBasedTitle();
 
     this.receivedMailFlags = playerXml.mailReceived.flatMap(
@@ -78,16 +87,14 @@ export class Farmer {
   }
 
   private calcProfessions(skillName: keyof typeof STARDEW_PROFESSIONS) {
-    return intersection(
-      this.playerXml.professions[0].int,
-      keys(STARDEW_PROFESSIONS[skillName])
-    )
+    const skillProfessions: Record<number, string> =
+      STARDEW_PROFESSIONS[skillName];
+      
+    return intersection
+      .multiset(this.playerXml.professions[0].int, keys(skillProfessions))
       .map((id) => parseInt(id))
-      .sort((a, b) => a - b) // Ensure, 5 level professions come first
-      .map((professionId) => {
-        const professions = STARDEW_PROFESSIONS[skillName];
-        return professions[professionId as keyof typeof professions];
-      });
+      .sort((a, b) => a - b)
+      .map((professionId) => skillProfessions[professionId]);
   }
 
   private calcSkillBasedTitle() {

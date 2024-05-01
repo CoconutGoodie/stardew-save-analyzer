@@ -19,7 +19,7 @@ interface Props {
   gameSave: GameSave;
 }
 
-const GHOST_RETURN_DATE = new GameDate(3, GameSeason.Spring, 1);
+const GHOST_RETURN_DATE = new GameDate(1, GameSeason.Spring, 3);
 
 export const GrandpasEvaluationsSection = (props: Props) => {
   const grandpaReturned =
@@ -94,18 +94,18 @@ export const GrandpasEvaluationsSection = (props: Props) => {
           )}
 
           <ul>
-            {props.gameSave.grandpaScorePoints.map(
-              ({ earned, reason, score }, index) =>
-                earned ? (
-                  <li key={index}>
-                    <strong>+ {score}</strong> for {reason}{" "}
-                    <img src={checkmarkPng} />
-                  </li>
-                ) : (
-                  <li key={index} className={styles.unearned}>
-                    <strong>+ {score}</strong> for {reason}
-                  </li>
-                )
+            {props.gameSave.grandpaScoreSubjects.map(
+              ({ earned, reason, score }, index) => (
+                <li key={index} className={clsx(!earned && styles.unearned)}>
+                  <strong>+ {score}</strong> for {reason}
+                  {earned && (
+                    <>
+                      {" "}
+                      <img src={checkmarkPng} />
+                    </>
+                  )}
+                </li>
+              )
             )}
             <hr />
             <li>

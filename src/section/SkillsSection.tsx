@@ -6,7 +6,7 @@ import { GameSave } from "../gamesave/GameSave";
 
 import styles from "./SkillsSection.module.scss";
 import { StardewWiki } from "../util/StardewWiki";
-import { entries, values } from "lodash";
+import { entries, values } from "remeda";
 import { FarmerTag } from "../component/FarmerTag";
 
 interface Props {

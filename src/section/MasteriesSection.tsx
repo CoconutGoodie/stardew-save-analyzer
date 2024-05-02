@@ -38,7 +38,9 @@ export const MasteriesSection = (props: Props) => {
       <FarmersRow>
         {props.gameSave.getAllFarmers().map((farmer) => {
           const expPercentage =
-            farmer.masteries.currentExp / farmer.masteries.tnl;
+            farmer.masteries.currentLevel >= 5
+              ? 1
+              : farmer.masteries.currentExp / farmer.masteries.tnl;
 
           return (
             <div key={farmer.name}>

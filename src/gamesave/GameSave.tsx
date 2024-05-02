@@ -40,7 +40,7 @@ export namespace GameSave {
             {
               item: KeyValueMap<
                 [{ Vector2: [{ X: [StringNumber]; Y: [StringNumber] }] }],
-                [{ string: [StringNumber] }]
+                [{ string: [StringNumber] } | { int: [StringNumber] }]
               >;
             }
           ];
@@ -208,9 +208,11 @@ export class GameSave {
     );
 
     const handedInPieces: string[] =
-      museumLocation?.museumPieces?.[0]?.item?.map(
-        (item) => item.value[0].string[0]
-      ) ?? [];
+      museumLocation?.museumPieces?.[0]?.item
+        ?.map((item) => item?.value?.[0])
+        ?.map((value) =>
+          "string" in value ? value.string[0] : value.int[0]
+        ) ?? [];
 
     return {
       minerals: new Set(
@@ -291,30 +293,37 @@ export class GameSave {
     );
 
     // Achievements
-    scoreSubjects.push(
-      thru(
-        this.getAllFarmers().find(
-          (farmer) => this.achievements[farmer.name].masterAngler.achieved
-        ) ?? this.player,
-        (achiever) => ({
-          earned: this.achievements[achiever.name].masterAngler.achieved,
-          score: 1,
-          reason: (
-            <>
-              achieving{" "}
-              <Achievement
-                title={this.achievements[achiever.name].masterAngler.title}
-                achieved={false}
-                inline
-              />
-            </>
-          ),
-        })
+    const achievements = [
+      "masterAngler",
+      "aCompleteCollection",
+    ] as (keyof Achievements)[];
+
+    achievements.forEach((achievement) =>
+      scoreSubjects.push(
+        thru(
+          this.getAllFarmers().find(
+            (farmer) => this.achievements[farmer.name][achievement].achieved
+          ) ?? this.player,
+          (achiever) => ({
+            earned: this.achievements[achiever.name][achievement].achieved,
+            score: 1,
+            reason: (
+              <>
+                achieving{" "}
+                <Achievement
+                  title={this.achievements[achiever.name][achievement].title}
+                  achieved={this.achievements[achiever.name][achievement].achieved}
+                  inline
+                />
+              </>
+            ),
+          })
+        )
       )
     );
 
     scoreSubjects.push(
-      ...["A Complete Collection", "Full Shipment"].map((achi) => ({
+      ...["Full Shipment"].map((achi) => ({
         earned: false,
         reason: (
           <>

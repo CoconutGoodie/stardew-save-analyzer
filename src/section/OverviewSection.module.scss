@@ -17,13 +17,14 @@
 }
 
 .column {
-  min-width: 250px;
+  flex-shrink: 0;
+  width: 250px;
   display: flex;
   flex-direction: column;
   gap: 5px;
 
   &.farmer {
-    min-width: 280px;
+    width: 300px;
   }
 
   & > h1 {

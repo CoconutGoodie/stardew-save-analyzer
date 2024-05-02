@@ -32,29 +32,7 @@ export namespace GameSave {
   export interface SaveXml {
     player: [FarmerXml];
     farmhands?: { Farmer: [FarmerXml] }[];
-    locations?: [
-      {
-        GameLocation: {
-          $: { "xsi:type": string };
-          grandpaScore?: [StringNumber];
-          museumPieces?: [
-            {
-              item: KeyValueMap<
-                [{ Vector2: [{ X: [StringNumber]; Y: [StringNumber] }] }],
-                [{ string: [StringNumber] } | { int: [StringNumber] }]
-              >;
-            }
-          ];
-          buildings: [
-            {
-              Building: {
-                indoors?: [{ farmhand?: [FarmerXml] }];
-              }[];
-            }
-          ];
-        }[];
-      }
-    ];
+    locations?: [LocationsXml];
     whichFarm?: [keyof typeof STARDEW_FARM_TYPES];
     year: [StringNumber];
     currentSeason: [string];
@@ -64,6 +42,41 @@ export namespace GameSave {
     hasApplied1_3_UpdateChanges?: [StringBoolean];
     hasApplied1_4_UpdateChanges?: [StringBoolean];
     gameVersion?: [string];
+    stats?: [StatsXml];
+  }
+
+  export interface LocationsXml {
+    GameLocation: {
+      $: { "xsi:type": string };
+      grandpaScore?: [StringNumber];
+      museumPieces?: [
+        {
+          item: KeyValueMap<
+            [{ Vector2: [{ X: [StringNumber]; Y: [StringNumber] }] }],
+            [{ string: [StringNumber] } | { int: [StringNumber] }]
+          >;
+        }
+      ];
+      buildings: [
+        {
+          Building: {
+            indoors?: [{ farmhand?: [FarmerXml] }];
+          }[];
+        }
+      ];
+    }[];
+  }
+
+  export interface StatsXml {
+    Values?: [
+      {
+        item: KeyValueMap<
+          [{ string: [string] }],
+          [{ unsignedInt: [StringNumber] }]
+        >;
+      }
+    ];
+    questsCompleted?: [StringNumber];
   }
 
   export interface FarmerXml {
@@ -91,18 +104,7 @@ export namespace GameSave {
         >;
       }
     ];
-    stats?: [
-      {
-        Values?: [
-          {
-            item: KeyValueMap<
-              [{ string: [string] }],
-              [{ unsignedInt: [StringNumber] }]
-            >;
-          }
-        ];
-      }
-    ];
+    stats?: [StatsXml];
   }
 }
 
@@ -144,7 +146,7 @@ export class GameSave {
       this.saveXml.player[0].totalMoneyEarned[0]
     );
 
-    this.player = new Farmer(this.saveXml.player[0]);
+    this.player = new Farmer(this.saveXml.player[0], this.saveXml);
     this.farmhands = this.calcFarmhands();
 
     this.specialOrders = this.calcSpecialOrders();
@@ -180,7 +182,7 @@ export class GameSave {
 
   private calcFarmhands() {
     let farmhands = this.saveXml.farmhands?.map(
-      (farmhand) => new Farmer(farmhand.Farmer[0])
+      (farmhand) => new Farmer(farmhand.Farmer[0], this.saveXml)
     );
 
     // This is how it was stored before 1.6
@@ -193,7 +195,7 @@ export class GameSave {
         (buildingEntry) => buildingEntry?.indoors?.[0]?.farmhand?.[0]
       )
         .filter((farmhandXml) => !!farmhandXml)
-        .map((farmhandXml) => new Farmer(farmhandXml!));
+        .map((farmhandXml) => new Farmer(farmhandXml!, this.saveXml));
     }
 
     return farmhands ?? [];

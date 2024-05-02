@@ -10,6 +10,7 @@ import questPng from "@src/assets/sprite/help-wanted/quest.png";
 
 import styles from "./HelpWantedSection.module.scss";
 import { Objective } from "@src/component/Objective";
+import { StardewWiki } from "@src/util/StardewWiki";
 
 interface Props {
   gameSave: GameSave;
@@ -28,17 +29,24 @@ export const HelpWantedSection = (props: Props) => {
               done
               icon={<img height={16} src={questPng} />}
             >
-              Fulfilled <strong>90</strong> help request(s).
+              Fulfilled <strong>{farmer.completedQuests}</strong> help
+              request(s).
             </Objective>
 
             <div className={styles.info}>
-              <img height={80} src={bulletinBoardPng} />
+              <a
+                target="_blank"
+                href={StardewWiki.getLink("Quests", "Help_Wanted_Quests")}
+              >
+                <img height={80} src={bulletinBoardPng} />
+              </a>
 
               <div className={styles.requestsDone}>
                 <div className={styles.notePapers}>
-                  {times(56, (i) => (
+                  {times(Math.min(55, farmer.completedQuests), (i) => (
                     <img key={i} height={27} src={questPng} />
                   ))}
+                  {farmer.completedQuests > 55 && <span>...</span>}
                 </div>
               </div>
             </div>
@@ -47,12 +55,22 @@ export const HelpWantedSection = (props: Props) => {
               <AchievementDisplay
                 title="Gofer"
                 description="complete 10 help requests"
-              />
+                achieved={farmer.completedQuests >= 10}
+              >
+                {farmer.completedQuests < 10 && (
+                  <> — Helped {farmer.completedQuests} out of 10</>
+                )}
+              </AchievementDisplay>
 
               <AchievementDisplay
                 title="A Big Help"
                 description="complete 40 help requests"
-              />
+                achieved={farmer.completedQuests >= 40}
+              >
+                {farmer.completedQuests < 40 && (
+                  <> — Helped {farmer.completedQuests} out of 10</>
+                )}
+              </AchievementDisplay>
             </div>
           </div>
         ))}

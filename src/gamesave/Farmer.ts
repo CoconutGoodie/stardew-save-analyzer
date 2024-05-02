@@ -27,38 +27,43 @@ export class Farmer {
 
   public readonly masteries;
 
+  public readonly completedQuests;
+
   public readonly receivedMailFlags;
   public readonly caughtFish;
   public readonly unlockedBobberCount;
   public readonly stardrops;
 
-  constructor(private playerXml: GameSave.FarmerXml) {
-    this.name = playerXml.name[0];
+  constructor(
+    private farmerXml: GameSave.FarmerXml,
+    private saveXml?: GameSave.SaveXml
+  ) {
+    this.name = farmerXml.name[0];
     this.gender = this.calcGender();
-    this.favoriteThing = playerXml.favoriteThing[0];
-    this.playtime = parseInt(playerXml.millisecondsPlayed[0]);
+    this.favoriteThing = farmerXml.favoriteThing[0];
+    this.playtime = parseInt(farmerXml.millisecondsPlayed[0]);
 
-    this.qiGems = parseInt(playerXml.qiGems?.[0] ?? "0");
+    this.qiGems = parseInt(farmerXml.qiGems?.[0] ?? "0");
 
     this.skills = {
       farming: {
-        level: parseInt(playerXml.farmingLevel[0]),
+        level: parseInt(farmerXml.farmingLevel[0]),
         professions: this.calcProfessions("farming"),
       },
       fishing: {
-        level: parseInt(playerXml.fishingLevel[0]),
+        level: parseInt(farmerXml.fishingLevel[0]),
         professions: this.calcProfessions("fishing"),
       },
       mining: {
-        level: parseInt(playerXml.miningLevel[0]),
+        level: parseInt(farmerXml.miningLevel[0]),
         professions: this.calcProfessions("mining"),
       },
       foraging: {
-        level: parseInt(playerXml.foragingLevel[0]),
+        level: parseInt(farmerXml.foragingLevel[0]),
         professions: this.calcProfessions("foraging"),
       },
       combat: {
-        level: parseInt(playerXml.combatLevel[0]),
+        level: parseInt(farmerXml.combatLevel[0]),
         professions: this.calcProfessions("combat"),
       },
     };
@@ -67,10 +72,12 @@ export class Farmer {
 
     this.masteries = this.calcMasteries();
 
-    this.receivedMailFlags = playerXml.mailReceived.flatMap(
+    this.completedQuests = this.calcCompletedQuests();
+
+    this.receivedMailFlags = farmerXml.mailReceived.flatMap(
       (entry) => entry.string
     );
-    this.caughtFish = (this.playerXml.fishCaught?.[0]?.item ?? []).map(
+    this.caughtFish = (this.farmerXml.fishCaught?.[0]?.item ?? []).map(
       (caught) => ({
         fishId: ("string" in caught.key[0]
           ? caught.key[0].string[0]
@@ -87,8 +94,8 @@ export class Farmer {
 
   private calcGender() {
     return (
-      this.playerXml.gender?.[0] ??
-      (this.playerXml.isMale?.[0] === "true"
+      this.farmerXml.gender?.[0] ??
+      (this.farmerXml.isMale?.[0] === "true"
         ? ("Male" as const)
         : ("Female" as const))
     );
@@ -99,7 +106,7 @@ export class Farmer {
       STARDEW_PROFESSIONS[skillName];
 
     return intersection
-      .multiset(this.playerXml.professions[0].int, keys(skillProfessions))
+      .multiset(this.farmerXml.professions[0].int, keys(skillProfessions))
       .map((id) => parseInt(id))
       .sort((a, b) => a - b)
       .map((professionId) => skillProfessions[professionId]);
@@ -126,7 +133,7 @@ export class Farmer {
   }
 
   private calcMasteries() {
-    const stats = this.playerXml.stats?.[0].Values?.[0]?.item;
+    const stats = this.farmerXml.stats?.[0].Values?.[0]?.item;
 
     const totalExp = parseInt(
       stats?.find((x) => x.key[0].string[0] === "MasteryExp")?.value?.[0]
@@ -163,6 +170,20 @@ export class Farmer {
           stats?.some((s) => s?.key?.[0]?.string?.[0] === "mastery_3") ?? false,
       },
     };
+  }
+
+  private calcCompletedQuests() {
+    let value = this.farmerXml.stats?.[0]?.Values?.[0]?.item?.find(
+      (v) => v?.key?.[0]?.string?.[0] === "questsCompleted"
+    )?.value?.[0]?.unsignedInt?.[0];
+
+    // version >= 1.3
+    if (value == null) value = this.farmerXml.stats?.[0]?.questsCompleted?.[0];
+
+    // version >= 1.2
+    if (value == null) value = this.saveXml?.stats?.[0]?.questsCompleted?.[0];
+
+    return parseInt(value ?? "0");
   }
 
   private calcStardrops() {

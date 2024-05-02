@@ -1,0 +1,41 @@
+.text {
+  margin-bottom: 15px;
+}
+
+.info {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 20px;
+
+  .requestsDone {
+    display: flex;
+    flex-direction: column;
+
+    .notePapers {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2px;
+
+      img {
+        margin-bottom: -10px;
+        box-shadow: 0 0 5px #000;
+        filter: brightness(0.9);
+
+        &:nth-child(2n) {
+          transform: rotate(10deg);
+        }
+        &:nth-child(3n) {
+          transform: rotate(-5deg) scale(1.2);
+        }
+        &:nth-child(4n) {
+          transform: rotate(8deg) scale(0.9);
+        }
+      }
+    }
+  }
+}
+
+.achievements {
+  display: flex;
+  flex-direction: column;
+}

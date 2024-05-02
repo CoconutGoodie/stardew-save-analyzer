@@ -6,12 +6,6 @@ import { GameSave } from "@src/gamesave/GameSave";
 
 import starPng from "@src/assets/sprite/skill/mastery/mastery_star.png";
 
-import combatPng from "@src/assets/sprite/skill/mastery/combat.png";
-import farmingPng from "@src/assets/sprite/skill/mastery/farming.png";
-import fishingPng from "@src/assets/sprite/skill/mastery/fishing.png";
-import foragingPng from "@src/assets/sprite/skill/mastery/foraging.png";
-import miningPng from "@src/assets/sprite/skill/mastery/mining.png";
-
 import { ImageObjective } from "@src/component/ImageObjective";
 import styles from "./MasteriesSection.module.scss";
 import { StardewWiki } from "@src/util/StardewWiki";

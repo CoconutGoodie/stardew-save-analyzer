@@ -20,6 +20,7 @@ import { MuseumSection } from "@src/section/MuseumSection";
 
 import questPng from "@src/assets/icon/exclamation.png";
 import { MasteriesSection } from "@src/section/MasteriesSection";
+import { HelpWantedSection } from "@src/section/HelpWantedSection";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
@@ -108,9 +109,7 @@ function App() {
 
             <MasteriesSection gameSave={gameSave} />
 
-            <SummarySection sectionTitle="Quests [WIP]" collapsable>
-              [WIP] "Help Wanted" Quests & Story Quests here
-            </SummarySection>
+            <HelpWantedSection gameSave={gameSave} />
 
             <SpecialOrdersSection gameSave={gameSave} />
 

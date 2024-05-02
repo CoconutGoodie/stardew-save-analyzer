@@ -24,6 +24,8 @@ import { StardewWiki } from "../util/StardewWiki";
 import styles from "./FishingSection.module.scss";
 import { FarmersRow } from "@src/component/FarmersRow";
 
+import barbedHookPng from "@src/assets/icon/barbed_hook.png";
+
 interface Props {
   gameSave: GameSave;
 }
@@ -61,15 +63,15 @@ export const FishingSection = (props: Props) => {
             <div key={farmer.name} className={styles.farmer}>
               <FarmerTag farmer={farmer} />
 
-              <Objective icon={<img width={20} src={fishPng} />} done>
+              <Objective icon={<img width={16} src={barbedHookPng} />} done>
                 {farmer.name} has caught <strong>{caughtFishCount}</strong> fish
                 in total.
               </Objective>
-              <Objective icon={<img width={20} src={fishPng} />} done>
+              <Objective icon={<img width={16} src={barbedHookPng} />} done>
                 {farmer.name} has caught <strong>{caughtTypeCount}</strong>{" "}
                 different fish in total.
               </Objective>
-              <Objective icon={<img width={20} src={fishPng} />} done>
+              <Objective icon={<img width={16} src={barbedHookPng} />} done>
                 {farmer.name} has unlocked{" "}
                 <strong>{farmer.unlockedBobberCount}</strong> bobber styles.
               </Objective>

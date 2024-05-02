@@ -33,6 +33,7 @@
         background-repeat: repeat-x;
         mask-image: linear-gradient(to bottom, #fff, rgba(#fff, 0));
         z-index: -1;
+        pointer-events: none;
       }
     }
 
@@ -59,6 +60,45 @@
       margin: 0;
       border: none;
       border-bottom: 1px solid #17161a;
+    }
+  }
+}
+
+.disclaimers {
+  margin: -20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.disclaimer {
+  padding: 10px 15px;
+  display: flex;
+  gap: 20px;
+  background: #161616;
+  border-radius: 10px;
+  border: 2px solid #3f3f3f;
+
+  img {
+    margin-top: 5px;
+  }
+
+  p {
+    margin: 0;
+    font-family: "Stardew Valley";
+    font-size: 20px;
+    line-height: 20px;
+    color: #a7abaf;
+    white-space: pre-wrap;
+
+    a {
+      color: #ceb07e;
+      // font-size: 24px;
+      font-weight: 600;
+    }
+    
+    .heart {
+      color: rgb(238, 112, 96);
     }
   }
 }

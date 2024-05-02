@@ -18,22 +18,73 @@ import "./style/style.scss";
 import { GrandpasEvaluationsSection } from "./section/GrandpasSection";
 import { MuseumSection } from "@src/section/MuseumSection";
 
+import questPng from "@src/assets/icon/exclamation.png";
+
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
 
   return (
     <main>
       <header>
-        <img
-          width={350}
-          src={logoPng}
-          // For debug purposes
-          // onClick={() => console.log(saveXml.SaveGame)}
-        />
+        <img width={350} src={logoPng} />
         <span>last updated for v1.6.4</span>
       </header>
 
       <div id="content">
+        <div className="disclaimers">
+          <div className="disclaimer">
+            <img height={30} src={questPng} />
+            <p>
+              <em>Disclaimer!</em> This website is not affiliated with,
+              endorsed, sponsored, or specifically approved by{" "}
+              <a target="_blank" href="https://twitter.com/ConcernedApe">
+                ConcernedApe
+              </a>{" "}
+              or{" "}
+              <a target="_blank" href="https://www.stardewvalley.net/">
+                Stardew Valley
+              </a>
+              .{"\n"}It is an independent, fan-made tool crafted by{" "}
+              <a target="_blank" href="https://github.com/iGoodie">
+                iGoodie
+              </a>
+              . Its aim is to provide players with helpful resources and
+              utilities, purely out of our passion for the game.
+            </p>
+          </div>
+          <div className="disclaimer">
+            <img height={30} src={questPng} />
+            <p>
+              This website has no commercial concerns whatsoever. It DOES NOT
+              seek to profit from the use of Stardew Valley's intellectual
+              property. Instead, its goal is to contribute positively to the
+              community and enhance the gaming experience for fellow players.
+            </p>
+          </div>
+          <div className="disclaimer">
+            <img height={30} src={questPng} />
+            <p>
+              For any inquiries or concerns regarding this website, please feel
+              free to contact me on{" "}
+              <a
+                target="_blank"
+                href="https://discordapp.com/users/117741752437309449"
+              >
+                Discord
+              </a>
+              , or leave a{" "}
+              <a
+                target="_blank"
+                href="https://github.com/iGoodie/stardew-save-analyzer/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc"
+              >
+                Github Issue
+              </a>
+              .{"\n"}I appreciate your support and understanding.{" "}
+              <span className="heart">♥</span>
+            </p>
+          </div>
+        </div>
+
         {gameSave == null ? (
           <>
             <LoadSaveSection onSelected={setGameSave} />

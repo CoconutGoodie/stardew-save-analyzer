@@ -57,7 +57,7 @@ export const OverviewSection = (props: Props) => {
   return (
     <SummarySection id="overview" sectionTitle="Overview">
       <div className={styles.content}>
-        <a href={StardewWiki.getLink("Farm_Maps", "Map_Types")}>
+        <a href={StardewWiki.getLink("Farm_Maps", "Map_Types")} target="_blank">
           <div className={styles.farmType}>
             <img
               width={80}
@@ -80,11 +80,11 @@ export const OverviewSection = (props: Props) => {
             </span>
           </span>
           <span>
-            Playtime: <img width={18} src={clockPng} />{" "}
-            <em>{formatDuration(props.gameSave.playtime)}</em>
+            Today is <GameDateDisplay date={props.gameSave.currentDate} />
           </span>
           <span>
-            Today is <GameDateDisplay date={props.gameSave.currentDate} />
+            <img width={18} src={clockPng} />{" "}
+            <em>{formatDuration(props.gameSave.playtime)}</em>
           </span>
         </div>
 
@@ -113,13 +113,13 @@ export const OverviewSection = (props: Props) => {
                   </li>
                   <li>
                     <div>
-                      Favorite thing is "<img width={14} src={favoritePng} />{" "}
+                      Favorite: "<img width={14} src={favoritePng} />{" "}
                       <em>{farmer.favoriteThing}</em>"
                     </div>
                   </li>
                   <li>
                     <div>
-                      Played for <img width={14} src={clockPng} />{" "}
+                      <img width={14} src={clockPng} />{" "}
                       <em>{formatDuration(farmer.playtime)}</em>
                     </div>
                   </li>

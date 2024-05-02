@@ -1,16 +1,34 @@
-import { capitalCase } from "case-anything";
-import { entries, find, lowerCase } from "lodash";
+import { capitalCase, lowerCase } from "case-anything";
 
+import { AchievementDisplay } from "@src/component/AchievementDisplay";
+import { Currency } from "@src/component/Currency";
+import { Achievements } from "@src/gamesave/Achievements";
+import { ReactNode } from "react";
+import {
+  entries,
+  find,
+  first,
+  firstBy,
+  keys,
+  map,
+  mapToObj,
+  pipe,
+  times,
+} from "remeda";
 import { STARDEW_FARM_TYPES } from "../const/StardewFarmTypes";
 import { STARDEW_SPECIAL_ORDERS } from "../const/StardewSpecialOrders";
 import { GameDate, GameSeason } from "../util/GameDate";
 import { StardewWiki } from "../util/StardewWiki";
 import { Farmer } from "./Farmer";
+import { thru } from "@src/util/utilities";
+import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "@src/const/StardewMuseum";
 
 type StringNumber = `${number}`;
 type StringBoolean = `${boolean}`;
 
 export namespace GameSave {
+  export type KeyValueMap<K, V> = { key: K; value: V }[];
+
   export interface SaveXml {
     player: [FarmerXml];
     farmhands?: { Farmer: [FarmerXml] }[];
@@ -18,6 +36,15 @@ export namespace GameSave {
       {
         GameLocation: {
           $: { "xsi:type": string };
+          grandpaScore?: [StringNumber];
+          museumPieces?: [
+            {
+              item: KeyValueMap<
+                [{ Vector2: [{ X: [StringNumber]; Y: [StringNumber] }] }],
+                [{ string: [StringNumber] } | { int: [StringNumber] }]
+              >;
+            }
+          ];
           buildings: [
             {
               Building: {
@@ -38,8 +65,6 @@ export namespace GameSave {
     hasApplied1_4_UpdateChanges?: [StringBoolean];
     gameVersion?: [string];
   }
-
-  export type KeyValueMap<K, V> = { key: K; value: V }[];
 
   export interface FarmerXml {
     name: [string];
@@ -66,6 +91,18 @@ export namespace GameSave {
         >;
       }
     ];
+    stats?: [
+      {
+        Values?: [
+          {
+            item: KeyValueMap<
+              [{ string: [string] }],
+              [{ unsignedInt: [StringNumber] }]
+            >;
+          }
+        ];
+      }
+    ];
   }
 }
 
@@ -83,7 +120,16 @@ export class GameSave {
 
   public readonly specialOrders;
 
+  public readonly museumPieces;
+
+  public readonly achievements;
+
+  public readonly grandpaShrineCandlesLit;
+  public readonly grandpaScoreSubjects;
+
   constructor(private saveXml: GameSave.SaveXml) {
+    console.log(saveXml);
+
     this.gameVersion = this.calcGameVersion();
     this.farmName = this.saveXml.player[0].farmName[0];
     this.farmType = this.calcFarmType();
@@ -102,6 +148,16 @@ export class GameSave {
     this.farmhands = this.calcFarmhands();
 
     this.specialOrders = this.calcSpecialOrders();
+
+    this.museumPieces = this.calcMuseumPieces();
+
+    this.achievements = mapToObj(this.getAllFarmers(), (farmer) => [
+      farmer.name,
+      new Achievements(farmer, this),
+    ]);
+
+    this.grandpaShrineCandlesLit = this.calcGrandpaShrineCandlesLit();
+    this.grandpaScoreSubjects = this.calcGrandpaScoreSubjects();
   }
 
   private calcGameVersion() {
@@ -159,11 +215,161 @@ export class GameSave {
     }));
   }
 
-  public getAllFarmers() {
-    return [this.player].concat(this.farmhands);
+  private calcMuseumPieces() {
+    const museumLocation = this.saveXml.locations?.[0].GameLocation.find(
+      (x) => x.museumPieces != null
+    );
+
+    const handedInPieces: string[] =
+      museumLocation?.museumPieces?.[0]?.item
+        ?.map((item) => item?.value?.[0])
+        ?.map((value) =>
+          "string" in value ? value.string[0] : value.int[0]
+        ) ?? [];
+
+    return {
+      minerals: new Set(
+        keys(STARDEW_MINERALS).filter((mineralId) =>
+          handedInPieces.includes(mineralId)
+        )
+      ),
+      artifacts: new Set(
+        keys(STARDEW_ARTIFACTS).filter((artifactId) =>
+          handedInPieces.includes(artifactId)
+        )
+      ),
+    };
   }
 
-  public getFarmerByName(name: string) {
-    return find(this.getAllFarmers(), { name });
+  private calcGrandpaShrineCandlesLit() {
+    const farmLocation = find(
+      this.saveXml.locations?.[0].GameLocation ?? [],
+      (location) => location.$["xsi:type"] === "Farm"
+    );
+    return parseInt(farmLocation?.grandpaScore?.[0] ?? "0");
+  }
+
+  // TODO: Extract into its own class
+  private calcGrandpaScoreSubjects() {
+    interface ScoreSubject {
+      earned: boolean;
+      score: number;
+      reason: ReactNode;
+    }
+
+    const scoreSubjects: ScoreSubject[] = [];
+
+    // Earnings
+    scoreSubjects.push(
+      ...[
+        [1, 50_000],
+        [1, 100_000],
+        [1, 200_000],
+        [1, 300_000],
+        [1, 500_000],
+        [2, 1_000_000],
+      ].map<ScoreSubject>(([score, earningGoal]) => ({
+        earned: this.totalGoldsEarned >= earningGoal,
+        reason: (
+          <>
+            earning at least <Currency amount={earningGoal} unit="gold" />
+          </>
+        ),
+        score,
+      }))
+    );
+
+    // Skill Levels
+    const mostSkillfulFarmer =
+      firstBy(this.getAllFarmers(), [
+        (farmer) => farmer.skillLevelTotal,
+        "desc",
+      ]) ?? this.player;
+
+    scoreSubjects.push(
+      ...[
+        [1, 30],
+        [1, 50],
+      ].map<ScoreSubject>(([score, skillLevels]) => {
+        const earned = mostSkillfulFarmer.skillLevelTotal >= skillLevels;
+        return {
+          earned,
+          reason: (
+            <>
+              reaching <strong>{skillLevels}</strong> skill levels.{" "}
+              {earned && <>({mostSkillfulFarmer.name})</>}
+            </>
+          ),
+          score,
+        };
+      })
+    );
+
+    // Achievements
+    const achievements = [
+      "masterAngler",
+      "aCompleteCollection",
+    ] as (keyof Achievements)[];
+
+    achievements.forEach((achievement) =>
+      scoreSubjects.push(
+        thru(
+          this.getAllFarmers().find(
+            (farmer) => this.achievements[farmer.name][achievement].achieved
+          ) ?? this.player,
+          (achiever) => ({
+            earned: this.achievements[achiever.name][achievement].achieved,
+            score: 1,
+            reason: (
+              <>
+                achieving{" "}
+                <AchievementDisplay
+                  title={this.achievements[achiever.name][achievement].title}
+                  achieved={
+                    this.achievements[achiever.name][achievement].achieved
+                  }
+                  inline
+                />
+              </>
+            ),
+          })
+        )
+      )
+    );
+
+    scoreSubjects.push(
+      ...["Full Shipment"].map((achi) => ({
+        earned: false,
+        reason: (
+          <>
+            achieving{" "}
+            <AchievementDisplay title={achi} achieved={false} inline /> [WIP]
+          </>
+        ),
+        score: Infinity,
+      }))
+    );
+
+    times(5, (i) =>
+      scoreSubjects.push({
+        earned: false,
+        reason: `Friendship #${i + 1} [WIP]`,
+        score: Infinity,
+      })
+    );
+
+    times(4, (i) =>
+      scoreSubjects.push({
+        earned: false,
+        reason: `Other #${i + 1} [WIP]`,
+        score: Infinity,
+      })
+    );
+
+    return scoreSubjects;
+  }
+
+  public getAllFarmers() {
+    return [this.player].concat(this.farmhands);
   }
 }

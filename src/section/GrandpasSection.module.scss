@@ -1,0 +1,128 @@
+.section {
+  display: flex;
+  gap: 20px;
+}
+
+.candleObjectives {
+  // align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.objective {
+  margin-top: 10px;
+}
+
+.shrine {
+  position: relative;
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+
+  .candle1 {
+    position: absolute;
+    left: 2px;
+    top: 30px;
+  }
+
+  .candle2 {
+    position: absolute;
+    left: 19px;
+    top: -20px;
+  }
+
+  .candle3 {
+    position: absolute;
+    left: 109px;
+    top: -20px;
+  }
+
+  .candle4 {
+    position: absolute;
+    left: 126px;
+    top: 30px;
+  }
+}
+
+.grandpa {
+  opacity: 0.1;
+  filter: grayscale(0.7);
+
+  &.returned {
+    opacity: 1;
+    filter: none;
+    animation: float 6s linear infinite;
+  }
+
+  @keyframes float {
+    0% {
+      transform: translatey(0px);
+    }
+    50% {
+      transform: translatey(-10px);
+    }
+    100% {
+      transform: translatey(0px);
+    }
+  }
+}
+
+.eval {
+  position: relative;
+  margin-bottom: 20px;
+  padding: 20px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 0;
+
+  &::before {
+    $color: #67dde6;
+    box-sizing: border-box;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba($color, 0.2);
+    border: 3px solid $color;
+    border-radius: 20px;
+    mask-image: linear-gradient(135deg, #fff, rgba(#fff, 0.1));
+    z-index: -10;
+  }
+
+  .grandpaPortrait {
+    width: 200px;
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+    margin-left: auto;
+    opacity: 0.1;
+    mask-image: linear-gradient(to bottom, #fff 90%, rgba(#fff, 0) 100%);
+    transform: rotate(-15deg);
+    z-index: -10;
+  }
+
+  & > span {
+    font-style: italic;
+    margin-bottom: 10px;
+  }
+
+  li {
+    height: 22px;
+
+    &.unearned {
+      opacity: 0.3;
+    }
+  }
+
+  hr {
+    width: 150px !important;
+    margin: 20px 0 !important;
+    border-color: #354241 !important;
+  }
+}

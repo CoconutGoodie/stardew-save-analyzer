@@ -1,0 +1,55 @@
+.info {
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  & > a > img {
+    margin-left: 10px;
+    border-radius: 20px;
+  }
+
+  ul {
+    li {
+      line-height: 25px;
+
+      a {
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+.shelf {
+  margin-bottom: 15px;
+  padding: 5px;
+  width: fit-content;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+
+  .item {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #43588f;
+    border-radius: 5px;
+  }
+
+  .label {
+    grid-column: 1 / span all;
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-family: "Stardew Valley";
+    font-size: 30px;
+    color: #718cce;
+  }
+}
+
+.achievements {
+  display: flex;
+  flex-direction: column;
+}

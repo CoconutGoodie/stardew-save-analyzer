@@ -1,0 +1,18 @@
+::-webkit-scrollbar {
+  width: 15px;
+  height: 15px;
+
+  // &-corner {
+  //   // background: $track;
+  //   border-end-end-radius: 50%;
+  // }
+
+  &-track {
+    background: #060216;
+  }
+
+  &-thumb {
+    background: linear-gradient(to right, #fccc52, #e0a100);
+    border-radius: 5px;
+  }
+}

@@ -6,12 +6,13 @@ import { StardewWiki } from "../util/StardewWiki";
 
 import checkmarkPng from "../assets/icon/checkmark.png";
 
-import styles from "./Achievement.module.scss";
+import styles from "./AchievementDisplay.module.scss";
 
 interface Props extends PropsWithChildren {
   title: string;
   description?: ReactNode;
   achieved?: boolean;
+  inline?: boolean;
 }
 
 const platformSprites = new AssetRepository<{ default: string }>(
@@ -30,13 +31,13 @@ const ingameSprites = new AssetRepository<{ default: string }>(
   ".png"
 );
 
-export const Achievement = (props: Props) => {
+export const AchievementDisplay = (props: Props) => {
   const achievementId = lowerCase(props.title)
     .replace(/\s+/g, "_")
     .replace(/'/, "");
 
   return (
-    <div className={styles.container}>
+    <div className={clsx(styles.container, props.inline && styles.inline)}>
       {/* <img
         width={25}
         alt="In-game Icon"
@@ -75,7 +76,7 @@ export const Achievement = (props: Props) => {
         {props.children}
       </div>
 
-      {props.achieved && <img src={checkmarkPng} />}
+      {props.achieved && !props.inline && <img src={checkmarkPng} />}
     </div>
   );
 };

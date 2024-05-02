@@ -1,7 +1,17 @@
-import { entries, intersection, keys, values } from "lodash";
-import { GameSave } from "./GameSave";
+import {
+  entries,
+  intersection,
+  keys,
+  map,
+  pipe,
+  sort,
+  sumBy,
+  values,
+} from "remeda";
 import { STARDEW_PROFESSIONS } from "../const/StardewProfessions";
 import { STARDROP_MAIL_FLAGS } from "../const/StardewStardrops";
+import { GameSave } from "./GameSave";
+import { STARDEW_MASTERY_LEVEL_EXP } from "@src/const/StardewMasteryLevels";
 
 export class Farmer {
   public readonly name;
@@ -15,8 +25,11 @@ export class Farmer {
   public readonly skillLevelTotal;
   public readonly skillBasedTitle;
 
+  public readonly masteries;
+
   public readonly receivedMailFlags;
   public readonly caughtFish;
+  public readonly unlockedBobberCount;
   public readonly stardrops;
 
   constructor(private playerXml: GameSave.FarmerXml) {
@@ -49,8 +62,10 @@ export class Farmer {
         professions: this.calcProfessions("combat"),
       },
     };
-    this.skillLevelTotal = values(this.skills).reduce((s, c) => s + c.level, 0);
+    this.skillLevelTotal = sumBy(values(this.skills), (skill) => skill.level);
     this.skillBasedTitle = this.calcSkillBasedTitle();
+
+    this.masteries = this.calcMasteries();
 
     this.receivedMailFlags = playerXml.mailReceived.flatMap(
       (entry) => entry.string
@@ -65,6 +80,8 @@ export class Farmer {
         lengthInInches: parseInt(caught.value[0].ArrayOfInt[0].int[1]),
       })
     );
+    this.unlockedBobberCount =
+      1 + Math.floor(this.caughtFish.filter((v) => v.amount > 0).length / 2);
     this.stardrops = this.calcStardrops();
   }
 
@@ -78,36 +95,74 @@ export class Farmer {
   }
 
   private calcProfessions(skillName: keyof typeof STARDEW_PROFESSIONS) {
-    return intersection(
-      this.playerXml.professions[0].int,
-      keys(STARDEW_PROFESSIONS[skillName])
-    )
+    const skillProfessions: Record<number, string> =
+      STARDEW_PROFESSIONS[skillName];
+
+    return intersection
+      .multiset(this.playerXml.professions[0].int, keys(skillProfessions))
       .map((id) => parseInt(id))
-      .sort((a, b) => a - b) // Ensure, 5 level professions come first
-      .map((professionId) => {
-        const professions = STARDEW_PROFESSIONS[skillName];
-        return professions[professionId as keyof typeof professions];
-      });
+      .sort((a, b) => a - b)
+      .map((professionId) => skillProfessions[professionId]);
   }
 
   private calcSkillBasedTitle() {
     const v = this.skillLevelTotal / 2;
     if (v >= 30) return "Farm King";
-    if (v >= 28) return "Cropmaster";
-    if (v >= 25) return "Agriculturist";
-    if (v >= 24) return "Farmer";
-    if (v >= 22) return "Rancher";
-    if (v >= 20) return "Planter";
-    if (v >= 18) return "Granger";
-    if (v >= 16) return this.gender === "Female" ? "Farmgirl" : "Farmboy";
-    if (v >= 14) return "Sodbuster";
-    if (v >= 12) return "Smallholder";
-    if (v >= 10) return "Tiller";
-    if (v >= 8) return "Farmhand";
-    if (v >= 6) return "Cowpoke";
-    if (v >= 4) return "Bumpkin";
-    if (v >= 2) return "Greenhorn";
+    if (v > 28) return "Cropmaster";
+    if (v > 26) return "Agriculturist";
+    if (v > 24) return "Farmer";
+    if (v > 22) return "Rancher";
+    if (v > 20) return "Planter";
+    if (v > 18) return "Granger";
+    if (v > 16) return this.gender === "Female" ? "Farmgirl" : "Farmboy";
+    if (v > 14) return "Sodbuster";
+    if (v > 12) return "Smallholder";
+    if (v > 10) return "Tiller";
+    if (v > 8) return "Farmhand";
+    if (v > 6) return "Cowpoke";
+    if (v > 4) return "Bumpkin";
+    if (v > 2) return "Greenhorn";
     return "Newcomer";
+  }
+
+  private calcMasteries() {
+    const stats = this.playerXml.stats?.[0].Values?.[0]?.item;
+
+    const totalExp = parseInt(
+      stats?.find((x) => x.key[0].string[0] === "MasteryExp")?.value?.[0]
+        ?.unsignedInt?.[0] ?? "0"
+    );
+
+    const currentLevel = STARDEW_MASTERY_LEVEL_EXP.reduce(
+      (currentLevel, exp, level) => {
+        if (totalExp >= exp) return level;
+        return currentLevel;
+      },
+      0
+    );
+
+    return {
+      totalExp,
+      currentExp: totalExp - STARDEW_MASTERY_LEVEL_EXP[currentLevel],
+      currentLevel,
+      tnl:
+        currentLevel === STARDEW_MASTERY_LEVEL_EXP.length - 1
+          ? Infinity
+          : STARDEW_MASTERY_LEVEL_EXP[currentLevel + 1] -
+            STARDEW_MASTERY_LEVEL_EXP[currentLevel],
+      perks: {
+        combat:
+          stats?.some((s) => s?.key?.[0]?.string?.[0] === "mastery_4") ?? false,
+        farming:
+          stats?.some((s) => s?.key?.[0]?.string?.[0] === "mastery_0") ?? false,
+        fishing:
+          stats?.some((s) => s?.key?.[0]?.string?.[0] === "mastery_1") ?? false,
+        foraging:
+          stats?.some((s) => s?.key?.[0]?.string?.[0] === "mastery_2") ?? false,
+        mining:
+          stats?.some((s) => s?.key?.[0]?.string?.[0] === "mastery_3") ?? false,
+      },
+    };
   }
 
   private calcStardrops() {

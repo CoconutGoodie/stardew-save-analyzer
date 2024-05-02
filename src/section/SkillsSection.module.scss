@@ -1,66 +1,59 @@
-.farmers {
-  --farmerCount: 0;
-
-  display: grid;
-  gap: 50px;
-  grid-template-columns: repeat(var(--farmerCount), 1fr);
-}
-
 .farmer {
   margin-bottom: 20px;
+}
 
-  .skill {
-    height: 34px;
+.skillRow {
+  height: 34px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  & > :first-child {
+    width: 8ch;
+    text-align: end;
+  }
+
+  & > h2 {
+    margin: 0;
+    width: 2ch;
+    text-align: center;
+  }
+
+  .level {
     display: flex;
-    align-items: center;
-    gap: 10px;
+    gap: 5px;
 
-    & > :first-child {
-      width: 8ch;
-      text-align: end;
+    .pip {
+      width: 18px;
+      height: 25px;
+      background: #9b1e40;
+      border: 2px solid #86175e;
+      border-radius: 5px;
+      box-shadow: inset -2px 2px 0px 0px rgba(#fff, 0.25),
+        inset 2px -2px 0px 0px rgba(#000, 0.25);
     }
 
-    & > h2 {
-      margin: 0;
-      width: 2ch;
-      text-align: center;
-    }
-
-    .level {
+    .largePip {
+      width: 35px;
+      height: 25px;
       display: flex;
-      gap: 5px;
+      align-items: center;
+      justify-content: center;
+      background: #ffa600;
+      border: 2px solid #ca6551;
+      border-radius: 5px;
+      box-shadow: inset -2px 2px 0px 0px rgba(#fff, 0.25),
+        inset 1px -1px 0px 0px rgba(#000, 0.25);
 
-      .pip {
-        width: 18px;
-        height: 25px;
-        background: #dd003b;
-        border: 2px solid #63003e;
-        border-radius: 5px;
-        box-shadow: inset -2px 2px 0px 0px rgba(#fff, 0.25),
-          inset 2px -2px 0px 0px rgba(#000, 0.25);
+      & > a {
+        width: 100%;
+        display: flex;
+        justify-content: center;
       }
 
-      .largePip {
-        width: 35px;
-        height: 25px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #ffa600;
-        border: 2px solid #ca6551;
-        border-radius: 5px;
-        box-shadow: inset -2px 2px 0px 0px rgba(#fff, 0.25),
-          inset 1px -1px 0px 0px rgba(#000, 0.25);
-
-        & > a {
-          width: 100%;
-          display: flex;
-          justify-content: center;
-        }
-
-        &:not(:empty):hover {
-          border-color: #fff;
-        }
+      &:not(:empty):hover {
+        border-color: #fff;
+        transform: scale(1.5);
       }
     }
   }

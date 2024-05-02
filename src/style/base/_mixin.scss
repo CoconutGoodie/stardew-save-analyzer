@@ -1,0 +1,5 @@
+@mixin shadowOutline($width: 1, $color: #fff) {
+  filter: drop-shadow(0 -#{$width}px 0 $color)
+    drop-shadow(0 #{$width}px 0 $color) drop-shadow(-#{$width}px 0 0 $color)
+    drop-shadow(#{$width}px 0 0 $color);
+}

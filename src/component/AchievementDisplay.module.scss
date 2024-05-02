@@ -1,9 +1,33 @@
 .container {
   padding: 2px 0;
-  display: grid;
-  align-items: center;
-  grid-template-columns: auto auto 1fr;
-  gap: 8px;
+  display: inline-block;
+  // display: grid;
+  // align-items: center;
+  // grid-template-columns: auto auto 1fr;
+  // gap: 8px;
+
+  &.inline {
+    line-height: 20px;
+
+    .icon {
+      width: auto;
+      height: 15px;
+    }
+
+    & > * {
+      &:not(:first-child) {
+        margin-left: 4px;
+      }
+    }
+  }
+
+  & > * {
+    vertical-align: middle;
+
+    &:not(:first-child) {
+      margin-left: 8px;
+    }
+  }
 
   & a {
     color: unset;

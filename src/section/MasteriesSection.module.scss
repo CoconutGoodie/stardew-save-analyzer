@@ -1,0 +1,86 @@
+.levelInfo {
+  position: relative;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+
+  .level {
+    position: absolute;
+    left: 13px;
+    width: 20px;
+    font-family: "Stardew Valley";
+    font-size: 50px;
+    text-align: center;
+    line-height: 40px;
+    color: #d0ffe6;
+    text-shadow: 2px 2px 0px #18683d, -2px -2px 0px #18683d,
+      -2px 2px 0px #18683d, 2px -2px 0px #18683d;
+  }
+
+  .exp {
+    margin-bottom: 5px;
+
+    span {
+      padding: 0 8px;
+      font-family: "Stardew Valley";
+      font-size: 18px;
+      line-height: 20px;
+      color: #8cdfb2;
+    }
+
+    .bar {
+      --percentage: 0%;
+      position: relative;
+      width: 230px;
+      height: 20px;
+      background: rgba(#052e19, 0.2);
+      border: 3px solid transparent;
+      border-radius: 8px;
+      z-index: 0;
+
+      &::before {
+        position: absolute;
+        width: var(--percentage);
+        height: 100%;
+        left: 0;
+        top: 0;
+        content: "";
+        background: linear-gradient(15deg, #378059, #31885a 60%, #6da348 100%);
+        z-index: -100;
+      }
+
+      &::after {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        content: "";
+        border-radius: 8px;
+        border: 3px solid #2b4238;
+        transform: translate(-3px, -3px);
+        z-index: 100;
+      }
+    }
+  }
+}
+
+.perks {
+  width: fit-content;
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+
+  & > * {
+    img {
+      border-radius: 10px;
+    }
+  }
+}
+
+.objectives {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}

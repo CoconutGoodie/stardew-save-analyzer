@@ -14,7 +14,7 @@ export const SummarySection = (props: Props) => {
   const [open, setOpen] = useState(true);
 
   return (
-    <section {...nativeProps} className={clsx(styles.section, props.className)}>
+    <section {...nativeProps} className={styles.section}>
       {sectionTitle && (
         <h1>
           <span>{sectionTitle}</span>
@@ -29,7 +29,9 @@ export const SummarySection = (props: Props) => {
         </h1>
       )}
 
-      <div className={clsx(styles.wrapper, !open && styles.open)}>
+      <div
+        className={clsx(styles.wrapper, !open && styles.open, props.className)}
+      >
         {props.children}
       </div>
     </section>

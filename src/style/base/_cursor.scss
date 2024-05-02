@@ -16,3 +16,17 @@ button {
     @include cursorPointer();
   }
 }
+
+::-webkit-scrollbar {
+  &-corner {
+    @include cursorPointer();
+  }
+
+  &-track {
+    @include cursorPointer();
+  }
+
+  &-thumb {
+    @include cursorPointer();
+  }
+}

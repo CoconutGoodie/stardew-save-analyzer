@@ -2,6 +2,7 @@ import {
   STARDEW_ACHIEVEMENT_FISHES,
   STARDEW_FISHES_BY_CATEGORIES,
 } from "@src/const/StardewFishes";
+import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "@src/const/StardewMuseum";
 import { Farmer } from "@src/gamesave/Farmer";
 import { GameSave } from "@src/gamesave/GameSave";
 import { keys, sumBy, values } from "remeda";
@@ -22,6 +23,9 @@ export class Achievements {
   public readonly fisherman;
   public readonly olMariner;
   public readonly masterAngler;
+
+  public readonly treasureTrove;
+  public readonly aCompleteCollection;
 
   constructor(farmer: Farmer, gameSave: GameSave) {
     this.greenhorn = new MoneyAchievement(gameSave, "Greenhorn", 15_000);
@@ -54,6 +58,18 @@ export class Achievements {
       farmer,
       "Master Angler",
       STARDEW_ACHIEVEMENT_FISHES.size
+    );
+
+    this.treasureTrove = new Achievement(
+      "Treasure Trove",
+      gameSave.museumPieces.minerals.size +
+        gameSave.museumPieces.artifacts.size >=
+        40
+    );
+    this.aCompleteCollection = new Achievement(
+      "A Complete Collection",
+      gameSave.museumPieces.minerals.size === keys(STARDEW_MINERALS).length &&
+        gameSave.museumPieces.artifacts.size === keys(STARDEW_ARTIFACTS).length
     );
   }
 }

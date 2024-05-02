@@ -16,6 +16,7 @@ import { LoadSaveSection } from "./section/LoadSaveSection";
 import { FishingSection } from "./section/FishingSection";
 import "./style/style.scss";
 import { GrandpasEvaluationsSection } from "./section/GrandpasSection";
+import { MuseumSection } from "@src/section/MuseumSection";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
@@ -79,9 +80,7 @@ function App() {
               [WIP] Shipping Bin Achievements here
             </SummarySection>
 
-            <SummarySection sectionTitle="Museum [WIP]" collapsable>
-              [WIP] Museum Artifacts & Minerals here
-            </SummarySection>
+            <MuseumSection gameSave={gameSave} />
 
             <GrandpasEvaluationsSection gameSave={gameSave} />
 

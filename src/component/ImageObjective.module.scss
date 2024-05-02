@@ -21,7 +21,7 @@
   &.done {
     opacity: 1;
     @include mixin.shadowOutline(1, #aaaaaa);
-    
+
     &.noOutline {
       filter: none !important;
     }

@@ -8,13 +8,9 @@
     .objective {
       opacity: 1;
       @include mixin.shadowOutline(2, #fff);
-
-      &.noOutline {
-        @include mixin.shadowOutline(2, #fff);
-      }
     }
     .checkmark {
-      opacity: 0;
+      opacity: 0.5;
     }
   }
 }
@@ -25,11 +21,7 @@
 
   &.done {
     opacity: 1;
-    @include mixin.shadowOutline(1, #aaaaaa);
-
-    &.noOutline {
-      filter: none;
-    }
+    filter: none;
   }
 }
 

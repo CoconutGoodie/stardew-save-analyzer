@@ -176,7 +176,6 @@ export const FishingSection = (props: Props) => {
                               <div className={styles.fish}>
                                 <ImageObjective
                                   width={compact ? 24 : 36}
-                                  noOutline={compact}
                                   title={`${fish.name}`}
                                   done={
                                     (farmer.caughtFish.find(

@@ -110,7 +110,6 @@ export const MuseumSection = (props: Props) => {
                   )?.default ?? ""
                 }
                 done={props.gameSave.museumPieces.artifacts.has(artifactId)}
-                noOutline
                 width={36}
                 height={36}
               />
@@ -145,7 +144,6 @@ export const MuseumSection = (props: Props) => {
                   )?.default ?? ""
                 }
                 done={props.gameSave.museumPieces.minerals.has(mineralId)}
-                noOutline
                 width={36}
                 height={36}
               />

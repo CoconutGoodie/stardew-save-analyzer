@@ -1,5 +1,6 @@
 import {
   entries,
+  fromEntries,
   intersection,
   keys,
   map,
@@ -28,6 +29,8 @@ export class Farmer {
   public readonly masteries;
 
   public readonly completedQuests;
+
+  public readonly craftedRecipes;
 
   public readonly receivedMailFlags;
   public readonly caughtFish;
@@ -73,6 +76,8 @@ export class Farmer {
     this.masteries = this.calcMasteries();
 
     this.completedQuests = this.calcCompletedQuests();
+
+    this.craftedRecipes = this.calcCraftedRecipes();
 
     this.receivedMailFlags = farmerXml.mailReceived.flatMap(
       (entry) => entry.string
@@ -184,6 +189,23 @@ export class Farmer {
     if (value == null) value = this.saveXml?.stats?.[0]?.questsCompleted?.[0];
 
     return parseInt(value ?? "0");
+  }
+
+  private calcCraftedRecipes() {
+    const relocatedNames: Record<string, string> = {
+      "Oil Of Garlic": "Oil of Garlic",
+    };
+
+    return fromEntries(
+      this.farmerXml.craftingRecipes?.[0]?.item
+        ?.map((entry) => {
+          const recipeName = entry?.key?.[0]?.string?.[0];
+          const craftedTimes = parseInt(entry?.value?.[0]?.int?.[0] ?? "0");
+          return [recipeName, craftedTimes] as const;
+        })
+        ?.filter(([key]) => key != null)
+        ?.map(([key, value]) => [relocatedNames[key] ?? key, value]) ?? []
+    );
   }
 
   private calcStardrops() {

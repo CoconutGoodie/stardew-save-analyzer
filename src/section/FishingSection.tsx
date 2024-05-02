@@ -112,7 +112,7 @@ export const FishingSection = (props: Props) => {
                             <strong>Extended Fish Family</strong>
                           </a>{" "}
                           Quest. They won't count towards the achievement, yet
-                          still get you new{" "}
+                          they will still get you new{" "}
                           <a
                             href={StardewWiki.getLink(
                               "Fish_Shop",

@@ -104,6 +104,11 @@ export namespace GameSave {
         >;
       }
     ];
+    craftingRecipes?: [
+      {
+        item?: KeyValueMap<[{ string: [string] }], [{ int: [StringNumber] }]>;
+      }
+    ];
     stats?: [StatsXml];
   }
 }

@@ -28,7 +28,7 @@ const perkSprites = new AssetRepository<{ default: string }>(
 
 export const MasteriesSection = (props: Props) => {
   return (
-    <SummarySection sectionTitle="Masteries" collapsable>
+    <SummarySection sectionTitle="Skill Masteries" collapsable>
       <FarmersRow>
         {props.gameSave.getAllFarmers().map((farmer) => {
           const expPercentage =

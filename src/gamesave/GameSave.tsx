@@ -13,6 +13,7 @@ import {
   map,
   mapToObj,
   pipe,
+  times,
 } from "remeda";
 import { STARDEW_FARM_TYPES } from "../const/StardewFarmTypes";
 import { STARDEW_SPECIAL_ORDERS } from "../const/StardewSpecialOrders";
@@ -312,7 +313,9 @@ export class GameSave {
                 achieving{" "}
                 <AchievementDisplay
                   title={this.achievements[achiever.name][achievement].title}
-                  achieved={this.achievements[achiever.name][achievement].achieved}
+                  achieved={
+                    this.achievements[achiever.name][achievement].achieved
+                  }
                   inline
                 />
               </>
@@ -327,11 +330,28 @@ export class GameSave {
         earned: false,
         reason: (
           <>
-            achieving <AchievementDisplay title={achi} achieved={false} inline /> [WIP]
+            achieving{" "}
+            <AchievementDisplay title={achi} achieved={false} inline /> [WIP]
           </>
         ),
         score: Infinity,
       }))
+    );
+
+    times(5, (i) =>
+      scoreSubjects.push({
+        earned: false,
+        reason: `Friendship #${i + 1} [WIP]`,
+        score: Infinity,
+      })
+    );
+
+    times(4, (i) =>
+      scoreSubjects.push({
+        earned: false,
+        reason: `Other #${i + 1} [WIP]`,
+        score: Infinity,
+      })
     );
 
     return scoreSubjects;

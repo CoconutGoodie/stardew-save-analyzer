@@ -26,8 +26,8 @@
     .pip {
       width: 18px;
       height: 25px;
-      background: #dd003b;
-      border: 2px solid #63003e;
+      background: #9b1e40;
+      border: 2px solid #86175e;
       border-radius: 5px;
       box-shadow: inset -2px 2px 0px 0px rgba(#fff, 0.25),
         inset 2px -2px 0px 0px rgba(#000, 0.25);
@@ -53,6 +53,7 @@
 
       &:not(:empty):hover {
         border-color: #fff;
+        transform: scale(1.5);
       }
     }
   }

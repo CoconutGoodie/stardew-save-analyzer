@@ -81,7 +81,10 @@ export const MuseumSection = (props: Props) => {
 
       <div className={styles.shelf}>
         <span className={styles.label}>
-          Artifacts — {props.gameSave.museumPieces.artifacts.size} /{" "}
+          <a href={StardewWiki.getLink("Artifacts")} target="_blank">
+            Artifacts
+          </a>{" "}
+          — {props.gameSave.museumPieces.artifacts.size} /{" "}
           {keys(STARDEW_ARTIFACTS).length}{" "}
           {props.gameSave.museumPieces.artifacts.size ===
             keys(STARDEW_ARTIFACTS).length && (
@@ -91,15 +94,7 @@ export const MuseumSection = (props: Props) => {
         {entries(STARDEW_ARTIFACTS).map(([artifactId, artifact]) => (
           <div key={artifactId} className={styles.item}>
             <a
-              href={StardewWiki.getLink(
-                "Artifacts",
-                snakeCase(artifact.title)
-                  .replace(/_iv/g, "4")
-                  .replace(/_iii/g, "3")
-                  .replace(/_ii/g, "2")
-                  .replace(/_i/g, "1")
-                  .replace(/_/g, "")
-              )}
+              href={StardewWiki.getLink(artifact.title.replace(/\s+/g, "_"))}
               target="_blank"
             >
               <ImageObjective
@@ -120,7 +115,10 @@ export const MuseumSection = (props: Props) => {
 
       <div className={styles.shelf}>
         <span className={styles.label}>
-          Minerals — {props.gameSave.museumPieces.minerals.size} /{" "}
+          <a href={StardewWiki.getLink("Minerals")} target="_blank">
+            Minerals
+          </a>{" "}
+          — {props.gameSave.museumPieces.minerals.size} /{" "}
           {keys(STARDEW_MINERALS).length}{" "}
           {props.gameSave.museumPieces.minerals.size ===
             keys(STARDEW_MINERALS).length && (
@@ -130,10 +128,7 @@ export const MuseumSection = (props: Props) => {
         {entries(STARDEW_MINERALS).map(([mineralId, mineral]) => (
           <div key={mineralId} className={styles.item}>
             <a
-              href={StardewWiki.getLink(
-                "Minerals",
-                snakeCase(mineral.title).replace(/_/g, "")
-              )}
+              href={StardewWiki.getLink(mineral.title.replace(/\s+/g, "_"))}
               target="_blank"
             >
               <ImageObjective

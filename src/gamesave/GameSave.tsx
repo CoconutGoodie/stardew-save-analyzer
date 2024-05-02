@@ -91,6 +91,18 @@ export namespace GameSave {
         >;
       }
     ];
+    stats?: [
+      {
+        Values?: [
+          {
+            item: KeyValueMap<
+              [{ string: [string] }],
+              [{ unsignedInt: [StringNumber] }]
+            >;
+          }
+        ];
+      }
+    ];
   }
 }
 

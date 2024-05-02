@@ -11,6 +11,7 @@ import {
 import { STARDEW_PROFESSIONS } from "../const/StardewProfessions";
 import { STARDROP_MAIL_FLAGS } from "../const/StardewStardrops";
 import { GameSave } from "./GameSave";
+import { STARDEW_MASTERY_LEVEL_EXP } from "@src/const/StardewMasteryLevels";
 
 export class Farmer {
   public readonly name;
@@ -23,6 +24,8 @@ export class Farmer {
   public readonly skills;
   public readonly skillLevelTotal;
   public readonly skillBasedTitle;
+
+  public readonly masteries;
 
   public readonly receivedMailFlags;
   public readonly caughtFish;
@@ -61,6 +64,8 @@ export class Farmer {
     };
     this.skillLevelTotal = sumBy(values(this.skills), (skill) => skill.level);
     this.skillBasedTitle = this.calcSkillBasedTitle();
+
+    this.masteries = this.calcMasteries();
 
     this.receivedMailFlags = playerXml.mailReceived.flatMap(
       (entry) => entry.string
@@ -118,6 +123,46 @@ export class Farmer {
     if (v > 4) return "Bumpkin";
     if (v > 2) return "Greenhorn";
     return "Newcomer";
+  }
+
+  private calcMasteries() {
+    const stats = this.playerXml.stats?.[0].Values?.[0]?.item;
+
+    const totalExp = parseInt(
+      stats?.find((x) => x.key[0].string[0] === "MasteryExp")?.value?.[0]
+        ?.unsignedInt?.[0] ?? "0"
+    );
+
+    const currentLevel = STARDEW_MASTERY_LEVEL_EXP.reduce(
+      (currentLevel, exp, level) => {
+        if (totalExp >= exp) return level;
+        return currentLevel;
+      },
+      0
+    );
+
+    return {
+      totalExp,
+      currentExp: totalExp - STARDEW_MASTERY_LEVEL_EXP[currentLevel],
+      currentLevel,
+      tnl:
+        currentLevel === STARDEW_MASTERY_LEVEL_EXP.length - 1
+          ? Infinity
+          : STARDEW_MASTERY_LEVEL_EXP[currentLevel + 1] -
+            STARDEW_MASTERY_LEVEL_EXP[currentLevel],
+      perks: {
+        combat:
+          stats?.some((s) => s?.key?.[0]?.string?.[0] === "mastery_4") ?? false,
+        farming:
+          stats?.some((s) => s?.key?.[0]?.string?.[0] === "mastery_0") ?? false,
+        fishing:
+          stats?.some((s) => s?.key?.[0]?.string?.[0] === "mastery_1") ?? false,
+        foraging:
+          stats?.some((s) => s?.key?.[0]?.string?.[0] === "mastery_2") ?? false,
+        mining:
+          stats?.some((s) => s?.key?.[0]?.string?.[0] === "mastery_3") ?? false,
+      },
+    };
   }
 
   private calcStardrops() {

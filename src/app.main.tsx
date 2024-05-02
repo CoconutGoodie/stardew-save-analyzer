@@ -19,6 +19,7 @@ import { GrandpasEvaluationsSection } from "./section/GrandpasSection";
 import { MuseumSection } from "@src/section/MuseumSection";
 
 import questPng from "@src/assets/icon/exclamation.png";
+import { MasteriesSection } from "@src/section/MasteriesSection";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
@@ -44,12 +45,12 @@ function App() {
               <a target="_blank" href="https://www.stardewvalley.net/">
                 Stardew Valley
               </a>
-              .{"\n"}It is an independent, fan-made tool crafted by{" "}
+              .{"\n"}It is an independent, open-source, fan-made tool crafted by{" "}
               <a target="_blank" href="https://github.com/iGoodie">
                 iGoodie
               </a>
               . Its aim is to provide players with helpful resources and
-              utilities, purely out of our passion for the game.
+              utilities, purely out of my passion for the game.
             </p>
           </div>
           <div className="disclaimer">
@@ -105,9 +106,7 @@ function App() {
 
             <SkillsSection gameSave={gameSave} />
 
-            <SummarySection sectionTitle="Masteries [WIP]" collapsable>
-              [WIP] Skill Masteries & Unlocked Perks here
-            </SummarySection>
+            <MasteriesSection gameSave={gameSave} />
 
             <SummarySection sectionTitle="Quests [WIP]" collapsable>
               [WIP] "Help Wanted" Quests & Story Quests here

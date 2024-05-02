@@ -30,7 +30,7 @@ export const LoadSaveSection = (props: Props) => {
   };
 
   return (
-    <SummarySection className={styles.section}>
+    <SummarySection>
       <div className={styles.fileUpload}>Upload your own save file [WIP]</div>
 
       <span className={styles.or}>OR</span>

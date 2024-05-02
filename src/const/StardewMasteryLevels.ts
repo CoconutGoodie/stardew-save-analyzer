@@ -1,0 +1,3 @@
+export const STARDEW_MASTERY_LEVEL_EXP = [
+  0, 10_000, 25_000, 45_000, 70_000, 100_000,
+];

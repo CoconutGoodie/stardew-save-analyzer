@@ -21,6 +21,7 @@
 
 .objective {
   opacity: 0.3;
+  filter: grayscale(1);
 
   &.done {
     opacity: 1;

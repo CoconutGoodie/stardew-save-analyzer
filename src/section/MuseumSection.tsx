@@ -11,7 +11,7 @@ import { lowerCase, snakeCase } from "case-anything";
 import checkmarkPng from "@src/assets/icon/checkmark.png";
 import styles from "./MuseumSection.module.scss";
 import { Objective } from "@src/component/Objective";
-import { Achievement } from "@src/component/Achievement";
+import { AchievementDisplay } from "@src/component/AchievementDisplay";
 
 interface Props {
   gameSave: GameSave;
@@ -155,7 +155,7 @@ export const MuseumSection = (props: Props) => {
       </div>
 
       <div className={styles.achievements}>
-        <Achievement
+        <AchievementDisplay
           title={playerAchievements.treasureTrove.title}
           achieved={playerAchievements.treasureTrove.achieved}
           description="donate 40 items"
@@ -163,9 +163,9 @@ export const MuseumSection = (props: Props) => {
           {!playerAchievements.treasureTrove.achieved && (
             <> — Donated {totalDonated} out of 40</>
           )}
-        </Achievement>
+        </AchievementDisplay>
 
-        <Achievement
+        <AchievementDisplay
           title={playerAchievements.aCompleteCollection.title}
           achieved={playerAchievements.aCompleteCollection.achieved}
           description="complete the whole collection"
@@ -176,7 +176,7 @@ export const MuseumSection = (props: Props) => {
               — Donated {totalDonated} out of {maxDonateCount}
             </>
           )}
-        </Achievement>
+        </AchievementDisplay>
       </div>
     </SummarySection>
   );

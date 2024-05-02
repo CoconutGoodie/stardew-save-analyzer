@@ -1,4 +1,4 @@
-import { Achievement } from "../component/Achievement";
+import { AchievementDisplay } from "../component/AchievementDisplay";
 import { Currency } from "../component/Currency";
 import { SummarySection } from "../component/SummarySection";
 import { GameSave } from "../gamesave/GameSave";
@@ -47,7 +47,7 @@ export const MoneySection = (props: Props) => {
           playerAchievements.legend,
         ].map((achievement) => {
           return (
-            <Achievement
+            <AchievementDisplay
               key={achievement.title}
               title={achievement.title}
               achieved={achievement.achieved}
@@ -69,7 +69,7 @@ export const MoneySection = (props: Props) => {
                   more to go
                 </span>
               )}
-            </Achievement>
+            </AchievementDisplay>
           );
         })}
       </div>

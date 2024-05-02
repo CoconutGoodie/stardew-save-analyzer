@@ -93,7 +93,7 @@ export const GrandpasEvaluationsSection = (props: Props) => {
             </span>
           ) : (
             <span>
-              When Grandpa's ghost returns at{" "}
+              When Grandpa's ghost returns on{" "}
               <GameDateDisplay date={GHOST_RETURN_DATE} />, your score will be:
             </span>
           )}
@@ -121,7 +121,7 @@ export const GrandpasEvaluationsSection = (props: Props) => {
         </div>
 
         <Objective className={styles.objective} done={grandpaReturned}>
-          Grandpa's ghost has returned (at{" "}
+          Grandpa's ghost has returned. (On{" "}
           <GameDateDisplay date={GHOST_RETURN_DATE} />)
         </Objective>
 

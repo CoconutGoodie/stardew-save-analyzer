@@ -1,5 +1,5 @@
 import { capitalCase, lowerCase } from "case-anything";
-import { Achievement } from "../component/Achievement";
+import { AchievementDisplay } from "../component/AchievementDisplay";
 import { SummarySection } from "../component/SummarySection";
 import { AssetRepository } from "../util/AssetRepository";
 import { GameSave } from "../gamesave/GameSave";
@@ -112,13 +112,13 @@ export const SkillsSection = (props: Props) => {
               props.gameSave.achievements[farmer.name],
               (farmerAchievements) => (
                 <>
-                  <Achievement
+                  <AchievementDisplay
                     title={farmerAchievements.singularTalent.title}
                     achieved={farmerAchievements.singularTalent.achieved}
                     description={<>reach Level 10 in a skill</>}
                   />
 
-                  <Achievement
+                  <AchievementDisplay
                     title={farmerAchievements.masterOfTheFiveWays.title}
                     achieved={farmerAchievements.masterOfTheFiveWays.achieved}
                     description={<>reach Level 10 in every skill</>}

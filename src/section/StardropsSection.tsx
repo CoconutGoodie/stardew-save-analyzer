@@ -1,6 +1,6 @@
 import stardropGif from "../assets/stardrop.gif";
 import stardropPng from "../assets/stardrop.png";
-import { Achievement } from "../component/Achievement";
+import { AchievementDisplay } from "../component/AchievementDisplay";
 import { SummarySection } from "../component/SummarySection";
 import { GameSave } from "../gamesave/GameSave";
 
@@ -68,7 +68,7 @@ export const StardropsSection = (props: Props) => {
                 {thru(
                   props.gameSave.achievements[farmer.name],
                   (achievements) => (
-                    <Achievement
+                    <AchievementDisplay
                       title={achievements.mysteryOfTheStardrops.title}
                       description="gather every Stardrop"
                       achieved={achievements.mysteryOfTheStardrops.achieved}
@@ -77,7 +77,7 @@ export const StardropsSection = (props: Props) => {
                         — Missing{" "}
                         {farmer.stardrops.length - gatheredStardropCount} more
                       </span>
-                    </Achievement>
+                    </AchievementDisplay>
                   )
                 )}
               </div>

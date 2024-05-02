@@ -64,7 +64,7 @@ export const SpecialOrdersSection = (props: Props) => {
             >
               <ImageObjective
                 done={order.completed}
-                width={45}
+                width={42}
                 title={order.title}
                 src={specialOrderNpcs.resolve(order.npc).default}
               />

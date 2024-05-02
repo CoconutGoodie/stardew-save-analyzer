@@ -18,7 +18,7 @@ import { Fragment } from "react/jsx-runtime";
 import checkmarkPng from "../assets/icon/checkmark.png";
 import questPng from "../assets/icon/quest.png";
 import fishPng from "../assets/sprite/skill/fishing.png";
-import { Achievement } from "../component/Achievement";
+import { AchievementDisplay } from "../component/AchievementDisplay";
 import { Objective } from "../component/Objective";
 import { StardewWiki } from "../util/StardewWiki";
 import styles from "./FishingSection.module.scss";
@@ -202,13 +202,13 @@ export const FishingSection = (props: Props) => {
                 props.gameSave.achievements[farmer.name],
                 (farmerAchievements) => (
                   <>
-                    <Achievement
+                    <AchievementDisplay
                       title={farmerAchievements.motherCatch.title}
                       achieved={farmerAchievements.motherCatch.achieved}
                       description="catch 100 total fish"
                     />
 
-                    <Achievement
+                    <AchievementDisplay
                       title={farmerAchievements.fisherman.title}
                       achieved={farmerAchievements.fisherman.achieved}
                       description={`catch ${farmerAchievements.fisherman.goal} different fish`}
@@ -220,9 +220,9 @@ export const FishingSection = (props: Props) => {
                           of {farmerAchievements.fisherman.goal}
                         </>
                       )}
-                    </Achievement>
+                    </AchievementDisplay>
 
-                    <Achievement
+                    <AchievementDisplay
                       title={farmerAchievements.olMariner.title}
                       achieved={farmerAchievements.olMariner.achieved}
                       description={`catch ${farmerAchievements.olMariner.goal} different fish`}
@@ -234,9 +234,9 @@ export const FishingSection = (props: Props) => {
                           of {farmerAchievements.olMariner.goal}
                         </>
                       )}
-                    </Achievement>
+                    </AchievementDisplay>
 
-                    <Achievement
+                    <AchievementDisplay
                       title={farmerAchievements.masterAngler.title}
                       achieved={farmerAchievements.masterAngler.achieved}
                       description="catch every fish"
@@ -250,7 +250,7 @@ export const FishingSection = (props: Props) => {
                           out of {farmerAchievements.masterAngler.goal}
                         </>
                       )}
-                    </Achievement>
+                    </AchievementDisplay>
                   </>
                 )
               )}

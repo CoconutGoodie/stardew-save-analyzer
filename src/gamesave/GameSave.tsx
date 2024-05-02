@@ -1,6 +1,6 @@
 import { capitalCase, lowerCase } from "case-anything";
 
-import { Achievement } from "@src/component/Achievement";
+import { AchievementDisplay } from "@src/component/AchievementDisplay";
 import { Currency } from "@src/component/Currency";
 import { Achievements } from "@src/gamesave/Achievements";
 import { ReactNode } from "react";
@@ -310,7 +310,7 @@ export class GameSave {
             reason: (
               <>
                 achieving{" "}
-                <Achievement
+                <AchievementDisplay
                   title={this.achievements[achiever.name][achievement].title}
                   achieved={this.achievements[achiever.name][achievement].achieved}
                   inline
@@ -327,7 +327,7 @@ export class GameSave {
         earned: false,
         reason: (
           <>
-            achieving <Achievement title={achi} achieved={false} inline /> [WIP]
+            achieving <AchievementDisplay title={achi} achieved={false} inline /> [WIP]
           </>
         ),
         score: Infinity,

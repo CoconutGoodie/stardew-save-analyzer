@@ -15,6 +15,7 @@ import { ImageObjective } from "@src/component/ImageObjective";
 import { AssetRepository } from "@src/util/AssetRepository";
 import { snakeCase } from "case-anything";
 import { StardewWiki } from "@src/util/StardewWiki";
+import { useState } from "react";
 
 interface Props {
   gameSave: GameSave;
@@ -27,10 +28,14 @@ const craftingRecipeSprites = new AssetRepository<{ default: string }>(
 );
 
 export const CraftingSection = (props: Props) => {
+  const [expanded, setExpanded] = useState(false);
+
   return (
     <SummarySection sectionTitle="Crafting" collapsable>
       <FarmersRow>
         {props.gameSave.getAllFarmers().map((farmer) => {
+          const farmerAchievements = props.gameSave.achievements[farmer.name];
+
           const totalCrafts = values(farmer.craftedRecipes).filter(
             (v) => v > 0
           ).length;
@@ -53,33 +58,39 @@ export const CraftingSection = (props: Props) => {
                 </Objective>
               </div>
 
-              <div className={styles.recipes}>
-                {STARDEW_CRAFTING_RECIPES.map((recipe) => (
-                  <div
-                    key={recipe}
-                    className={clsx(
-                      styles.recipe,
-                      !(recipe in farmer.craftedRecipes) && styles.locked
-                    )}
-                  >
-                    <a href={StardewWiki.getLink(recipe)} target="_blank">
-                      <ImageObjective
-                        width={32}
-                        height={72}
-                        src={
-                          craftingRecipeSprites.resolve(
-                            snakeCase(recipe.replace(/-/g, " "))
-                          )?.default ?? ""
-                        }
-                        title={recipe}
-                        done={farmer.craftedRecipes[recipe] > 0}
-                      />
-                    </a>
-                  </div>
-                ))}
+              <div className={clsx(styles.view, expanded && styles.expanded)}>
+                <button onClick={() => setExpanded((v) => !v)}>
+                  {expanded ? "Collapse view" : "Expand view"}
+                </button>
+
+                <div className={styles.recipes}>
+                  {STARDEW_CRAFTING_RECIPES.map((recipe) => (
+                    <div
+                      key={recipe}
+                      className={clsx(
+                        styles.recipe,
+                        !(recipe in farmer.craftedRecipes) && styles.locked
+                      )}
+                    >
+                      <a href={StardewWiki.getLink(recipe)} target="_blank">
+                        <ImageObjective
+                          width={32}
+                          height={72}
+                          src={
+                            craftingRecipeSprites.resolve(
+                              snakeCase(recipe.replace(/-/g, " "))
+                            )?.default ?? ""
+                          }
+                          title={recipe}
+                          done={farmer.craftedRecipes[recipe] > 0}
+                        />
+                      </a>
+                    </div>
+                  ))}
+                </div>
               </div>
 
-              <p>
+              {/* <p>
                 <em>
                   "Wedding Ring" is only available in{" "}
                   <a target="_blank" href={StardewWiki.getLink("Multiplayer")}>
@@ -88,9 +99,9 @@ export const CraftingSection = (props: Props) => {
                   . It won't count towards the achievement, yet is still
                   displayed for convenience:
                 </em>
-              </p>
+              </p> */}
 
-              <div className={styles.recipes}>
+              {/* <div className={styles.recipes}>
                 <div
                   className={clsx(
                     styles.recipe,
@@ -110,12 +121,33 @@ export const CraftingSection = (props: Props) => {
                     />
                   </a>
                 </div>
-              </div>
+              </div> */}
 
               <div className={styles.achievements}>
-                <AchievementDisplay title="D.I.Y." />
-                <AchievementDisplay title="Y" />
-                <AchievementDisplay title="Z" />
+                {[
+                  farmerAchievements.diy,
+                  farmerAchievements.artisan,
+                  farmerAchievements.craftMaster,
+                ].map((achievement) => (
+                  <AchievementDisplay
+                    key={achievement.title}
+                    title={achievement.title}
+                    description={
+                      achievement === farmerAchievements.craftMaster
+                        ? "craft every recipe"
+                        : `craft ${achievement.goal} different recipes`
+                    }
+                    achieved={achievement.achieved}
+                  >
+                    {!achievement.achieved && (
+                      <>
+                        {" "}
+                        — Crafted <strong>{totalCrafts}</strong> of{" "}
+                        <strong>{STARDEW_CRAFTING_RECIPES.length}</strong>
+                      </>
+                    )}
+                  </AchievementDisplay>
+                ))}
               </div>
             </div>
           );

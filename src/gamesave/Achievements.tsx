@@ -1,7 +1,5 @@
-import {
-  STARDEW_ACHIEVEMENT_FISHES,
-  STARDEW_FISHES_BY_CATEGORIES,
-} from "@src/const/StardewFishes";
+import { STARDEW_CRAFTING_RECIPES } from "@src/const/StardewCrafting";
+import { STARDEW_ACHIEVEMENT_FISHES } from "@src/const/StardewFishes";
 import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "@src/const/StardewMuseum";
 import { Farmer } from "@src/gamesave/Farmer";
 import { GameSave } from "@src/gamesave/GameSave";
@@ -26,6 +24,10 @@ export class Achievements {
 
   public readonly treasureTrove;
   public readonly aCompleteCollection;
+
+  public readonly diy;
+  public readonly artisan;
+  public readonly craftMaster;
 
   constructor(farmer: Farmer, gameSave: GameSave) {
     this.greenhorn = new MoneyAchievement(gameSave, "Greenhorn", 15_000);
@@ -71,6 +73,14 @@ export class Achievements {
       gameSave.museumPieces.minerals.size === keys(STARDEW_MINERALS).length &&
         gameSave.museumPieces.artifacts.size === keys(STARDEW_ARTIFACTS).length
     );
+
+    this.diy = new DifferentCraftAchievement(farmer, "D.I.Y.", 10);
+    this.artisan = new DifferentCraftAchievement(farmer, "Artisan", 30);
+    this.craftMaster = new DifferentCraftAchievement(
+      farmer,
+      "Craft Master",
+      STARDEW_CRAFTING_RECIPES.length
+    );
   }
 }
 
@@ -99,5 +109,17 @@ export class DifferentFishAchievement extends Achievement {
     ).length
   ) {
     super(title, caught >= goal);
+  }
+}
+
+export class DifferentCraftAchievement extends Achievement {
+  constructor(
+    farmer: Farmer,
+    title: string,
+    public readonly goal: number,
+    public readonly crafted = values(farmer.craftedRecipes).filter((v) => v > 0)
+      .length
+  ) {
+    super(title, crafted >= goal);
   }
 }

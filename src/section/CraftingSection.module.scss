@@ -4,6 +4,37 @@
   gap: 5px;
 }
 
+.view {
+  position: relative;
+
+  &.expanded > :nth-child(2) {
+    .recipe {
+      width: 45px;
+    }
+  }
+
+  &:not(.expanded) > :nth-child(2) {
+    height: 400px;
+    overflow: auto;
+  }
+
+  & > button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translateY(-100%) translateY(-7px);
+    border: none;
+    background: none;
+    color: #eab11e;
+    font-size: 14px;
+    font-style: italic;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
 .recipes {
   margin: 10px 0;
   display: flex;
@@ -13,7 +44,7 @@
 
 .recipe {
   box-sizing: border-box;
-  width: 44px;
+  width: 43px;
   height: 80px;
   display: flex;
   align-items: center;

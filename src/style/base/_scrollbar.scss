@@ -8,11 +8,18 @@
   // }
 
   &-track {
-    background: #060216;
+    background: rgb(19, 13, 41);
+    border-radius: 5px;
   }
 
   &-thumb {
     background: linear-gradient(to right, #fccc52, #e0a100);
     border-radius: 5px;
+  }
+}
+
+body::-webkit-scrollbar {
+  &-track {
+    border-radius: unset;
   }
 }

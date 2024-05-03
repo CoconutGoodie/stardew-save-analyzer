@@ -14,20 +14,39 @@
   }
 }
 
-.compactBtn {
-  margin-left: auto;
-  margin-bottom: 5px;
-  border: none;
-  background: none;
-  color: #b9af9b;
-  font-size: 14px;
+.view {
+  position: relative;
 
-  &:hover {
-    text-decoration: underline;
+  &.expanded > :nth-child(2) {
+    .fishes {
+      grid-template-columns: repeat(7, 40px);
+    }
+  }
+
+  &:not(.expanded) > :nth-child(2) {
+    height: 400px;
+    overflow: auto;
+  }
+
+  & > button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translateY(-100%) translateY(-7px);
+    border: none;
+    background: none;
+    color: #eab11e;
+    font-size: 14px;
+    font-style: italic;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 
 .categories {
+  padding-right: 10px;
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
@@ -93,7 +112,7 @@
 
 .fishes {
   display: grid;
-  grid-template-columns: repeat(7, 40px);
+  grid-template-columns: repeat(6, 40px);
   align-items: center;
   gap: 8px;
 

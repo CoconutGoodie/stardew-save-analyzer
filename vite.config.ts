@@ -9,7 +9,7 @@ export default defineConfig({
     react(),
     content({
       xml: {
-        enabled: true,
+        enabled: false,
         xml2jsOptions: {
           trim: true,
           // attrkey: "$attr",

@@ -73,7 +73,7 @@ export const FishingSection = (props: Props) => {
               </Objective>
               <Objective icon={<img width={16} src={barbedHookPng} />} done>
                 Unlocked <strong>{farmer.unlockedBobberCount}</strong> bobber
-                styles.
+                style(s).
               </Objective>
 
               {/* TODO: Extract to ExpandableView component */}

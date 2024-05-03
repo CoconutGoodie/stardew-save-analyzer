@@ -150,7 +150,7 @@ function App() {
                 <li>"Community Center" Section</li>
                 <li>"Perfection" Section</li>
                 <li>Tooltips Component</li>
-                <li>Better Advancement Structure</li>
+                <li>Support "Separate Wallets"</li>
               </ul>
             </SummarySection>
           </>

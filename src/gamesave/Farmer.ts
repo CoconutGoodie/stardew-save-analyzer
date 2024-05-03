@@ -209,6 +209,7 @@ export class Farmer {
   }
 
   private calcStardrops() {
+    // TODO: Refactor to extract description from here. Keep it as SSOT
     return entries(STARDROP_MAIL_FLAGS).map(([mailId, description]) => ({
       description,
       gathered: this.receivedMailFlags.includes(mailId),

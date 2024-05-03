@@ -11,25 +11,22 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    opacity: 0.5;
-    z-index: 0;
-
-    &::before {
-      position: absolute;
-      content: "";
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: #1f1925;
-      border-radius: 10px;
-      mask-image: linear-gradient(to right, #fff, rgba(#fff, 0.1));
-      z-index: -10;
-    }
+    background: linear-gradient(to right, #1f1925, rgba(#1f1925, 0.1));
+    border-radius: 10px;
 
     &.gathered {
-      opacity: 1;
       color: #ac5afd;
+    }
+
+    &:hover:not(.gathered) {
+      opacity: 0.6;
+      filter: none;
+      // outline: 2px solid #fff;
+    }
+
+    .stardropIcon {
+      padding: 4px;
+      display: flex;
     }
 
     .description {

@@ -64,15 +64,15 @@ export const FishingSection = (props: Props) => {
               <FarmerTag farmer={farmer} />
 
               <Objective icon={<img width={16} src={barbedHookPng} />} done>
-                {farmer.name} has caught <strong>{caughtFishCount}</strong> fish
+                Caught <strong>{caughtFishCount}</strong> fish
                 in total.
               </Objective>
               <Objective icon={<img width={16} src={barbedHookPng} />} done>
-                {farmer.name} has caught <strong>{caughtTypeCount}</strong>{" "}
+                Caught <strong>{caughtTypeCount}</strong>{" "}
                 different fish in total.
               </Objective>
               <Objective icon={<img width={16} src={barbedHookPng} />} done>
-                {farmer.name} has unlocked{" "}
+                Unlocked{" "}
                 <strong>{farmer.unlockedBobberCount}</strong> bobber styles.
               </Objective>
 

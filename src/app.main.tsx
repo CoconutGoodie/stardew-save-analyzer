@@ -21,6 +21,7 @@ import { MuseumSection } from "@src/section/MuseumSection";
 import questPng from "@src/assets/icon/exclamation.png";
 import { MasteriesSection } from "@src/section/MasteriesSection";
 import { HelpWantedSection } from "@src/section/HelpWantedSection";
+import { CraftingSection } from "@src/section/CraftingSection";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
@@ -113,13 +114,9 @@ function App() {
 
             <SpecialOrdersSection gameSave={gameSave} />
 
-            <StardropsSection gameSave={gameSave} />
-
             <FishingSection gameSave={gameSave} />
 
-            <SummarySection sectionTitle="Crafting [WIP]" collapsable>
-              [WIP] Craftables here
-            </SummarySection>
+            <CraftingSection gameSave={gameSave} />
 
             <SummarySection sectionTitle="Cooking [WIP]" collapsable>
               [WIP] Cooking Recipes here
@@ -128,6 +125,8 @@ function App() {
             <SummarySection sectionTitle="Shipping [WIP]" collapsable>
               [WIP] Shipping Bin Achievements here
             </SummarySection>
+
+            <StardropsSection gameSave={gameSave} />
 
             <MuseumSection gameSave={gameSave} />
 

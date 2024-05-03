@@ -52,6 +52,7 @@ export const HelpWantedSection = (props: Props) => {
             </div>
 
             <div className={styles.achievements}>
+              {/* TODO: Extract to Achievements class */}
               <AchievementDisplay
                 title="Gofer"
                 description="complete 10 help requests"

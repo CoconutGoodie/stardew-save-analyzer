@@ -47,7 +47,7 @@ export const StardropsSection = (props: Props) => {
                       >
                         <img
                           width={35}
-                          className={styles.stardrop}
+                          className={styles.stardropIcon}
                           src={stardrop.gathered ? stardropGif : stardropPng}
                           title={`Stardrop #${index + 1}`}
                         />
@@ -73,10 +73,14 @@ export const StardropsSection = (props: Props) => {
                       description="gather every Stardrop"
                       achieved={achievements.mysteryOfTheStardrops.achieved}
                     >
-                      <span>
-                        — Missing{" "}
-                        {farmer.stardrops.length - gatheredStardropCount} more
-                      </span>
+                      {!achievements.mysteryOfTheStardrops.achieved && (
+                        <>
+                          {" "}
+                          — {farmer.stardrops.length -
+                            gatheredStardropCount}{" "}
+                          more left
+                        </>
+                      )}
                     </AchievementDisplay>
                   )
                 )}

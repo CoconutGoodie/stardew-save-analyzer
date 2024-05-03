@@ -76,11 +76,12 @@ export const FishingSection = (props: Props) => {
                 styles.
               </Objective>
 
+              {/* TODO: Extract to ExpandableView component */}
               <div className={clsx(styles.view, expanded && styles.expanded)}>
                 <button onClick={() => setExpanded((v) => !v)}>
                   {expanded ? "Collapse view" : "Expand view"}
                 </button>
-                
+
                 <div className={styles.categories}>
                   {keys(FishCategory).map((categoryId) => {
                     const fishes =

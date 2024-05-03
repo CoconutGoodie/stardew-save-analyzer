@@ -1,5 +1,5 @@
 .info {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -20,12 +20,18 @@
   }
 }
 
+.shelves {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
 .shelf {
   margin-bottom: 15px;
   padding: 5px;
   width: fit-content;
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(8, 1fr);
 
   .item {
     width: 48px;

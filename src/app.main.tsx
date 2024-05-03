@@ -140,7 +140,6 @@ function App() {
 
             <SummarySection sectionTitle="Todo List">
               <ul>
-                <li>"Craftables" Section</li>
                 <li>"Cooking" Section</li>
                 <li>"Forest Neightbors" Section</li>
                 <li>"Ginger Island" Section</li>

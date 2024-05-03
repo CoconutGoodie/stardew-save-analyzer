@@ -47,7 +47,9 @@ export const CraftingSection = (props: Props) => {
                 </Objective>
 
                 <Objective icon={<img height={16} src={craftingPng} />} done>
-                  Crafted <strong>{totalCrafts}</strong> different recipes.
+                  Crafted <strong>{totalCrafts}</strong> of{" "}
+                  <strong>{STARDEW_CRAFTING_RECIPES.length}</strong> different
+                  recipes.
                 </Objective>
               </div>
 
@@ -77,13 +79,44 @@ export const CraftingSection = (props: Props) => {
                 ))}
               </div>
 
+              <p>
+                <em>
+                  "Wedding Ring" is only available in{" "}
+                  <a target="_blank" href={StardewWiki.getLink("Multiplayer")}>
+                    <strong>Multiplayer</strong>
+                  </a>
+                  . It won't count towards the achievement, yet is still
+                  displayed for convenience:
+                </em>
+              </p>
+
+              <div className={styles.recipes}>
+                <div
+                  className={clsx(
+                    styles.recipe,
+                    !("Wedding Ring" in farmer.craftedRecipes) && styles.locked
+                  )}
+                >
+                  <a target="_blank" href={StardewWiki.getLink("Wedding Ring")}>
+                    <ImageObjective
+                      width={32}
+                      height={72}
+                      src={
+                        craftingRecipeSprites.resolve("wedding_ring")
+                          ?.default ?? ""
+                      }
+                      title={"Wedding Ring"}
+                      done={farmer.craftedRecipes["Wedding Ring"] > 0}
+                    />
+                  </a>
+                </div>
+              </div>
+
               <div className={styles.achievements}>
-                <AchievementDisplay title="X" />
+                <AchievementDisplay title="D.I.Y." />
                 <AchievementDisplay title="Y" />
                 <AchievementDisplay title="Z" />
               </div>
-
-              <pre>{JSON.stringify(farmer.craftedRecipes, null, 2)}</pre>
             </div>
           );
         })}

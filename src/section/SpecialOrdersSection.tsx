@@ -40,7 +40,7 @@ export const SpecialOrdersSection = (props: Props) => {
   return (
     <SummarySection
       id="special-orders"
-      sectionTitle="Special Orders"
+      sectionTitle="Special Order Quests"
       collapsable
     >
       <div className={styles.board}>

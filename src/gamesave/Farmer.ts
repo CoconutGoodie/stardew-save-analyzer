@@ -1,5 +1,6 @@
 import {
   entries,
+  fromEntries,
   intersection,
   keys,
   map,
@@ -12,6 +13,7 @@ import { STARDEW_PROFESSIONS } from "../const/StardewProfessions";
 import { STARDROP_MAIL_FLAGS } from "../const/StardewStardrops";
 import { GameSave } from "./GameSave";
 import { STARDEW_MASTERY_LEVEL_EXP } from "@src/const/StardewMasteryLevels";
+import { XMLNode } from "@src/util/XMLNode";
 
 export class Farmer {
   public readonly name;
@@ -27,38 +29,42 @@ export class Farmer {
 
   public readonly masteries;
 
+  public readonly completedQuests;
+
+  public readonly craftedRecipes;
+
   public readonly receivedMailFlags;
   public readonly caughtFish;
   public readonly unlockedBobberCount;
   public readonly stardrops;
 
-  constructor(private playerXml: GameSave.FarmerXml) {
-    this.name = playerXml.name[0];
+  constructor(private farmerXml: XMLNode, private saveXml?: XMLNode) {
+    this.name = farmerXml.query(":scope > name").text();
     this.gender = this.calcGender();
-    this.favoriteThing = playerXml.favoriteThing[0];
-    this.playtime = parseInt(playerXml.millisecondsPlayed[0]);
+    this.favoriteThing = farmerXml.query(":scope > favoriteThing").text();
+    this.playtime = farmerXml.query(":scope > millisecondsPlayed").number();
 
-    this.qiGems = parseInt(playerXml.qiGems?.[0] ?? "0");
+    this.qiGems = farmerXml.query(":scope > qiGems").number();
 
     this.skills = {
       farming: {
-        level: parseInt(playerXml.farmingLevel[0]),
+        level: farmerXml.query(":scope > farmingLevel").number(),
         professions: this.calcProfessions("farming"),
       },
       fishing: {
-        level: parseInt(playerXml.fishingLevel[0]),
+        level: farmerXml.query(":scope > fishingLevel").number(),
         professions: this.calcProfessions("fishing"),
       },
       mining: {
-        level: parseInt(playerXml.miningLevel[0]),
+        level: farmerXml.query(":scope > miningLevel").number(),
         professions: this.calcProfessions("mining"),
       },
       foraging: {
-        level: parseInt(playerXml.foragingLevel[0]),
+        level: farmerXml.query(":scope > foragingLevel").number(),
         professions: this.calcProfessions("foraging"),
       },
       combat: {
-        level: parseInt(playerXml.combatLevel[0]),
+        level: farmerXml.query(":scope > combatLevel").number(),
         professions: this.calcProfessions("combat"),
       },
     };
@@ -67,31 +73,52 @@ export class Farmer {
 
     this.masteries = this.calcMasteries();
 
-    this.receivedMailFlags = playerXml.mailReceived.flatMap(
-      (entry) => entry.string
-    );
-    this.caughtFish = (this.playerXml.fishCaught?.[0]?.item ?? []).map(
-      (caught) => ({
-        fishId: ("string" in caught.key[0]
-          ? caught.key[0].string[0]
-          : caught.key[0].int[0]
-        ).replace(/\(.*?\)/, ""),
-        amount: parseInt(caught.value[0].ArrayOfInt[0].int[0]),
-        lengthInInches: parseInt(caught.value[0].ArrayOfInt[0].int[1]),
-      })
-    );
+    this.completedQuests = this.calcCompletedQuests();
+
+    this.craftedRecipes = this.calcCraftedRecipes();
+
+    this.receivedMailFlags = farmerXml
+      .queryAll("mailReceived > *")
+      .map((x) => x.text());
+
+    this.caughtFish = farmerXml
+      .queryAll("fishCaught > item")
+      .map((caughtXml) => ({
+        fishId: caughtXml
+          .query("key > *")
+          .text()
+          .replace(/\(.*?\)/, ""),
+        amount: caughtXml
+          .query("value > ArrayOfInt > int:nth-child(1)")
+          .number(),
+        lengthInInches: caughtXml
+          .query("value > ArrayOfInt > int:nth-child(2)")
+          .number(),
+      }));
     this.unlockedBobberCount =
       1 + Math.floor(this.caughtFish.filter((v) => v.amount > 0).length / 2);
     this.stardrops = this.calcStardrops();
   }
 
   private calcGender() {
-    return (
-      this.playerXml.gender?.[0] ??
-      (this.playerXml.isMale?.[0] === "true"
-        ? ("Male" as const)
-        : ("Female" as const))
-    );
+    let gender = this.farmerXml
+      .query(":scope > gender")
+      .transformIfPresent((genderXml) =>
+        genderXml.text() === "Male"
+          ? ("Male" as const)
+          : genderXml.text() === "Female"
+          ? ("Female" as const)
+          : null
+      );
+
+    // version < 1.6
+    if (!gender) {
+      gender = this.farmerXml.query(":scope > isMale").boolean()
+        ? "Male"
+        : "Female";
+    }
+
+    return gender;
   }
 
   private calcProfessions(skillName: keyof typeof STARDEW_PROFESSIONS) {
@@ -99,7 +126,10 @@ export class Farmer {
       STARDEW_PROFESSIONS[skillName];
 
     return intersection
-      .multiset(this.playerXml.professions[0].int, keys(skillProfessions))
+      .multiset(
+        this.farmerXml.queryAll("professions > *").map((xml) => xml.text()),
+        keys(skillProfessions)
+      )
       .map((id) => parseInt(id))
       .sort((a, b) => a - b)
       .map((professionId) => skillProfessions[professionId]);
@@ -126,12 +156,14 @@ export class Farmer {
   }
 
   private calcMasteries() {
-    const stats = this.playerXml.stats?.[0].Values?.[0]?.item;
+    const statsXml = this.farmerXml.queryAll(":scope > stats > Values > item");
 
-    const totalExp = parseInt(
-      stats?.find((x) => x.key[0].string[0] === "MasteryExp")?.value?.[0]
-        ?.unsignedInt?.[0] ?? "0"
-    );
+    const masterExpStatXml =
+      statsXml.find(
+        (entryXml) => entryXml.query("key > *").text() === "MasteryExp"
+      ) ?? XMLNode.EMPTY;
+
+    const totalExp = masterExpStatXml.query("value > *").number();
 
     const currentLevel = STARDEW_MASTERY_LEVEL_EXP.reduce(
       (currentLevel, exp, level) => {
@@ -142,7 +174,7 @@ export class Farmer {
     );
 
     return {
-      totalExp,
+      totalExp: totalExp,
       currentExp: totalExp - STARDEW_MASTERY_LEVEL_EXP[currentLevel],
       currentLevel,
       tnl:
@@ -151,21 +183,71 @@ export class Farmer {
           : STARDEW_MASTERY_LEVEL_EXP[currentLevel + 1] -
             STARDEW_MASTERY_LEVEL_EXP[currentLevel],
       perks: {
-        combat:
-          stats?.some((s) => s?.key?.[0]?.string?.[0] === "mastery_4") ?? false,
-        farming:
-          stats?.some((s) => s?.key?.[0]?.string?.[0] === "mastery_0") ?? false,
-        fishing:
-          stats?.some((s) => s?.key?.[0]?.string?.[0] === "mastery_1") ?? false,
-        foraging:
-          stats?.some((s) => s?.key?.[0]?.string?.[0] === "mastery_2") ?? false,
-        mining:
-          stats?.some((s) => s?.key?.[0]?.string?.[0] === "mastery_3") ?? false,
+        combat: statsXml.some(
+          (statXml) => statXml.query("key > *").text() === "mastery_4"
+        ),
+        farming: statsXml.some(
+          (statXml) => statXml.query("key > *").text() === "mastery_0"
+        ),
+        fishing: statsXml.some(
+          (statXml) => statXml.query("key > *").text() === "mastery_1"
+        ),
+        foraging: statsXml.some(
+          (statXml) => statXml.query("key > *").text() === "mastery_2"
+        ),
+        mining: statsXml.some(
+          (statXml) => statXml.query("key > *").text() === "mastery_3"
+        ),
       },
     };
   }
 
+  private calcCompletedQuests() {
+    let completedQuests = this.farmerXml
+      .queryAll(":scope > stats > Values > item")
+      .find(
+        (valueXml) => valueXml.query("key > *").text() === "questsCompleted"
+      )
+      ?.query("value > *")
+      ?.number();
+
+    // version < 1.6
+    if (completedQuests == null) {
+      completedQuests = this.farmerXml
+        .query("stats > questsCompleted")
+        .transformIfPresent((xml) => xml.number());
+    }
+
+    // version < 1.3
+    if (completedQuests == null) {
+      completedQuests = this.saveXml
+        ?.query("stats > questsCompleted")
+        .transformIfPresent((xml) => xml.number());
+    }
+
+    return completedQuests;
+  }
+
+  private calcCraftedRecipes() {
+    const relocatedNames: Record<string, string> = {
+      "Oil Of Garlic": "Oil of Garlic",
+    };
+
+    return fromEntries(
+      this.farmerXml
+        .queryAll("craftingRecipes > item")
+        .map((entry) => {
+          const recipeName = entry.query("key > *").text();
+          const craftedTimes = entry.query("value > *").number();
+          return [recipeName, craftedTimes] as const;
+        })
+        .filter(([key]) => key != null)
+        .map(([key, value]) => [relocatedNames[key] ?? key, value])
+    );
+  }
+
   private calcStardrops() {
+    // TODO: Refactor to extract description from here. Keep it as SSOT
     return entries(STARDROP_MAIL_FLAGS).map(([mailId, description]) => ({
       description,
       gathered: this.receivedMailFlags.includes(mailId),

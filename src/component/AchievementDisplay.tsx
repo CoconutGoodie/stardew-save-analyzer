@@ -57,7 +57,7 @@ export const AchievementDisplay = (props: Props) => {
         className={clsx(!props.achieved && styles.unachieved, styles.icon)}
         src={
           (
-            platformSprites.resolve(achievementId) ??
+            platformSprites.resolve(achievementId.replace(/\./g, "")) ??
             platformSprites.resolve("unknown")
           )?.default
         }

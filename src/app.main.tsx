@@ -20,6 +20,8 @@ import { MuseumSection } from "@src/section/MuseumSection";
 
 import questPng from "@src/assets/icon/exclamation.png";
 import { MasteriesSection } from "@src/section/MasteriesSection";
+import { HelpWantedSection } from "@src/section/HelpWantedSection";
+import { CraftingSection } from "@src/section/CraftingSection";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
@@ -108,19 +110,13 @@ function App() {
 
             <MasteriesSection gameSave={gameSave} />
 
-            <SummarySection sectionTitle="Quests [WIP]" collapsable>
-              [WIP] "Help Wanted" Quests & Story Quests here
-            </SummarySection>
+            <HelpWantedSection gameSave={gameSave} />
 
             <SpecialOrdersSection gameSave={gameSave} />
 
-            <StardropsSection gameSave={gameSave} />
-
             <FishingSection gameSave={gameSave} />
 
-            <SummarySection sectionTitle="Crafting [WIP]" collapsable>
-              [WIP] Craftables here
-            </SummarySection>
+            <CraftingSection gameSave={gameSave} />
 
             <SummarySection sectionTitle="Cooking [WIP]" collapsable>
               [WIP] Cooking Recipes here
@@ -129,6 +125,8 @@ function App() {
             <SummarySection sectionTitle="Shipping [WIP]" collapsable>
               [WIP] Shipping Bin Achievements here
             </SummarySection>
+
+            <StardropsSection gameSave={gameSave} />
 
             <MuseumSection gameSave={gameSave} />
 
@@ -142,8 +140,6 @@ function App() {
 
             <SummarySection sectionTitle="Todo List">
               <ul>
-                <li>"Quests" Section</li>
-                <li>"Craftables" Section</li>
                 <li>"Cooking" Section</li>
                 <li>"Forest Neightbors" Section</li>
                 <li>"Ginger Island" Section</li>
@@ -154,7 +150,7 @@ function App() {
                 <li>"Community Center" Section</li>
                 <li>"Perfection" Section</li>
                 <li>Tooltips Component</li>
-                <li>Better Advancement Structure</li>
+                <li>Support "Separate Wallets"</li>
               </ul>
             </SummarySection>
           </>

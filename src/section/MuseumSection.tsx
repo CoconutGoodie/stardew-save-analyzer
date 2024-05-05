@@ -48,9 +48,9 @@ export const MuseumSection = (props: Props) => {
         </a>
         <ul>
           <li>
-            <strong>{props.gameSave.museumPieces.artifacts.size}</strong>{" "}
-            <a href={StardewWiki.getLink("Artifacts")} target="_blank">
-              artifact(s)
+            <strong>{props.gameSave.museumPieces.minerals.size}</strong>{" "}
+            <a href={StardewWiki.getLink("Minerals")} target="_blank">
+              mineral(s)
             </a>{" "}
             were donated to the{" "}
             <a href={StardewWiki.getLink("Museum")} target="_blank">
@@ -59,9 +59,9 @@ export const MuseumSection = (props: Props) => {
             .
           </li>
           <li>
-            <strong>{props.gameSave.museumPieces.minerals.size}</strong>{" "}
-            <a href={StardewWiki.getLink("Minerals")} target="_blank">
-              mineral(s)
+            <strong>{props.gameSave.museumPieces.artifacts.size}</strong>{" "}
+            <a href={StardewWiki.getLink("Artifacts")} target="_blank">
+              artifact(s)
             </a>{" "}
             were donated to the{" "}
             <a href={StardewWiki.getLink("Museum")} target="_blank">
@@ -79,72 +79,74 @@ export const MuseumSection = (props: Props) => {
         </ul>
       </div>
 
-      <div className={styles.shelf}>
-        <span className={styles.label}>
-          <a href={StardewWiki.getLink("Artifacts")} target="_blank">
-            Artifacts
-          </a>{" "}
-          — {props.gameSave.museumPieces.artifacts.size} /{" "}
-          {keys(STARDEW_ARTIFACTS).length}{" "}
-          {props.gameSave.museumPieces.artifacts.size ===
-            keys(STARDEW_ARTIFACTS).length && (
-            <img src={checkmarkPng} height={16} />
-          )}
-        </span>
-        {entries(STARDEW_ARTIFACTS).map(([artifactId, artifact]) => (
-          <div key={artifactId} className={styles.item}>
-            <a
-              href={StardewWiki.getLink(artifact.title.replace(/\s+/g, "_"))}
-              target="_blank"
-            >
-              <ImageObjective
-                title={artifact.title}
-                src={
-                  artifactSprites.resolve(
-                    snakeCase(artifact.title).replace(/\(\)/g, "")
-                  )?.default ?? ""
-                }
-                done={props.gameSave.museumPieces.artifacts.has(artifactId)}
-                width={36}
-                height={36}
-              />
-            </a>
-          </div>
-        ))}
-      </div>
+      <div className={styles.shelves}>
+        <div className={styles.shelf}>
+          <span className={styles.label}>
+            <a href={StardewWiki.getLink("Minerals")} target="_blank">
+              Minerals
+            </a>{" "}
+            — {props.gameSave.museumPieces.minerals.size} /{" "}
+            {keys(STARDEW_MINERALS).length}{" "}
+            {props.gameSave.museumPieces.minerals.size ===
+              keys(STARDEW_MINERALS).length && (
+              <img src={checkmarkPng} height={16} />
+            )}
+          </span>
+          {entries(STARDEW_MINERALS).map(([mineralId, mineral]) => (
+            <div key={mineralId} className={styles.item}>
+              <a
+                href={StardewWiki.getLink(mineral.title.replace(/\s+/g, "_"))}
+                target="_blank"
+              >
+                <ImageObjective
+                  title={mineral.title}
+                  src={
+                    mineralSprites.resolve(
+                      snakeCase(mineral.title).replace(/\(\)/g, "")
+                    )?.default ?? ""
+                  }
+                  done={props.gameSave.museumPieces.minerals.has(mineralId)}
+                  width={36}
+                  height={36}
+                />
+              </a>
+            </div>
+          ))}
+        </div>
 
-      <div className={styles.shelf}>
-        <span className={styles.label}>
-          <a href={StardewWiki.getLink("Minerals")} target="_blank">
-            Minerals
-          </a>{" "}
-          — {props.gameSave.museumPieces.minerals.size} /{" "}
-          {keys(STARDEW_MINERALS).length}{" "}
-          {props.gameSave.museumPieces.minerals.size ===
-            keys(STARDEW_MINERALS).length && (
-            <img src={checkmarkPng} height={16} />
-          )}
-        </span>
-        {entries(STARDEW_MINERALS).map(([mineralId, mineral]) => (
-          <div key={mineralId} className={styles.item}>
-            <a
-              href={StardewWiki.getLink(mineral.title.replace(/\s+/g, "_"))}
-              target="_blank"
-            >
-              <ImageObjective
-                title={mineral.title}
-                src={
-                  mineralSprites.resolve(
-                    snakeCase(mineral.title).replace(/\(\)/g, "")
-                  )?.default ?? ""
-                }
-                done={props.gameSave.museumPieces.minerals.has(mineralId)}
-                width={36}
-                height={36}
-              />
-            </a>
-          </div>
-        ))}
+        <div className={styles.shelf}>
+          <span className={styles.label}>
+            <a href={StardewWiki.getLink("Artifacts")} target="_blank">
+              Artifacts
+            </a>{" "}
+            — {props.gameSave.museumPieces.artifacts.size} /{" "}
+            {keys(STARDEW_ARTIFACTS).length}{" "}
+            {props.gameSave.museumPieces.artifacts.size ===
+              keys(STARDEW_ARTIFACTS).length && (
+              <img src={checkmarkPng} height={16} />
+            )}
+          </span>
+          {entries(STARDEW_ARTIFACTS).map(([artifactId, artifact]) => (
+            <div key={artifactId} className={styles.item}>
+              <a
+                href={StardewWiki.getLink(artifact.title.replace(/\s+/g, "_"))}
+                target="_blank"
+              >
+                <ImageObjective
+                  title={artifact.title}
+                  src={
+                    artifactSprites.resolve(
+                      snakeCase(artifact.title).replace(/\(\)/g, "")
+                    )?.default ?? ""
+                  }
+                  done={props.gameSave.museumPieces.artifacts.has(artifactId)}
+                  width={36}
+                  height={36}
+                />
+              </a>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className={styles.achievements}>

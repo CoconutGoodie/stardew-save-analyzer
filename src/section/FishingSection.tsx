@@ -24,6 +24,8 @@ import { StardewWiki } from "../util/StardewWiki";
 import styles from "./FishingSection.module.scss";
 import { FarmersRow } from "@src/component/FarmersRow";
 
+import barbedHookPng from "@src/assets/icon/barbed_hook.png";
+
 interface Props {
   gameSave: GameSave;
 }
@@ -42,6 +44,7 @@ const backgroundSprites = new AssetRepository<{ default: string }>(
 
 export const FishingSection = (props: Props) => {
   const [compact, setCompact] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const farmers = props.gameSave.getAllFarmers();
 
@@ -61,140 +64,140 @@ export const FishingSection = (props: Props) => {
             <div key={farmer.name} className={styles.farmer}>
               <FarmerTag farmer={farmer} />
 
-              <Objective icon={<img width={20} src={fishPng} />} done>
-                {farmer.name} has caught <strong>{caughtFishCount}</strong> fish
-                in total.
+              <Objective icon={<img width={16} src={barbedHookPng} />} done>
+                Caught <strong>{caughtFishCount}</strong> fish in total.
               </Objective>
-              <Objective icon={<img width={20} src={fishPng} />} done>
-                {farmer.name} has caught <strong>{caughtTypeCount}</strong>{" "}
-                different fish in total.
+              <Objective icon={<img width={16} src={barbedHookPng} />} done>
+                Caught <strong>{caughtTypeCount}</strong> different fish in
+                total.
               </Objective>
-              <Objective icon={<img width={20} src={fishPng} />} done>
-                {farmer.name} has unlocked{" "}
-                <strong>{farmer.unlockedBobberCount}</strong> bobber styles.
+              <Objective icon={<img width={16} src={barbedHookPng} />} done>
+                Unlocked <strong>{farmer.unlockedBobberCount}</strong> bobber
+                style(s).
               </Objective>
 
-              <button
-                className={styles.compactBtn}
-                onClick={() => setCompact((c) => !c)}
-              >
-                Toggle Compact View
-              </button>
+              {/* TODO: Extract to ExpandableView component */}
+              <div className={clsx(styles.view, expanded && styles.expanded)}>
+                <button onClick={() => setExpanded((v) => !v)}>
+                  {expanded ? "Collapse view" : "Expand view"}
+                </button>
 
-              <div className={styles.categories}>
-                {keys(FishCategory).map((categoryId) => {
-                  const fishes =
-                    STARDEW_FISHES_BY_CATEGORIES[categoryId as FishCategory] ??
-                    [];
+                <div className={styles.categories}>
+                  {keys(FishCategory).map((categoryId) => {
+                    const fishes =
+                      STARDEW_FISHES_BY_CATEGORIES[
+                        categoryId as FishCategory
+                      ] ?? [];
 
-                  const totalCaught = fishes.reduce((total, fish) => {
-                    const caughtFish = farmer.caughtFish.find(
-                      (caughFish) => caughFish.fishId === fish.id
-                    );
-                    if (!caughtFish) return total;
-                    return total + 1;
-                  }, 0);
+                    const totalCaught = fishes.reduce((total, fish) => {
+                      const caughtFish = farmer.caughtFish.find(
+                        (caughFish) => caughFish.fishId === fish.id
+                      );
+                      if (!caughtFish) return total;
+                      return total + 1;
+                    }, 0);
 
-                  return (
-                    <Fragment key={categoryId}>
-                      {categoryId === FishCategory.Legendary_2 && (
-                        <em style={{ marginTop: 10 }}>
-                          Following ones are only available during Qi's{" "}
-                          <a
-                            href={StardewWiki.getLink(
-                              "Quests",
-                              "Extended_Family"
-                            )}
-                            target="_blank"
-                          >
-                            <strong>Extended Fish Family</strong>
-                          </a>{" "}
-                          Quest. They won't count towards the achievement, yet
-                          still get you new{" "}
-                          <a
-                            href={StardewWiki.getLink(
-                              "Fish_Shop",
-                              "Bobber_Machine"
-                            )}
-                            target="_blank"
-                          >
-                            <strong>bobber styles</strong>
-                          </a>{" "}
-                          though:
-                        </em>
-                      )}
-
-                      <div
-                        className={clsx(
-                          styles.category,
-                          compact && styles.compact
-                        )}
-                        style={{
-                          ["--background" as string]: `url(${
-                            backgroundSprites.resolve(snakeCase(categoryId))
-                              ?.default
-                          })`,
-                        }}
-                      >
-                        <a href={StardewWiki.getLink("Fish")} target="_blank">
-                          <h1>
-                            {capitalCase(categoryId)
-                              .replace(/_/g, " ")
-                              .replace("2", "II")}
-                          </h1>
-
-                          {thru(totalCaught >= fishes.length, (done) => (
-                            <span
-                              className={clsx(
-                                styles.counts,
-                                done && styles.done
+                    return (
+                      <Fragment key={categoryId}>
+                        {categoryId === FishCategory.Legendary_2 && (
+                          <em style={{ marginTop: 10 }}>
+                            Following ones are only available during Qi's{" "}
+                            <a
+                              href={StardewWiki.getLink(
+                                "Quests",
+                                "Extended_Family"
                               )}
+                              target="_blank"
                             >
-                              {totalCaught} / {fishes.length}{" "}
-                              {
-                                <img
-                                  height={12}
-                                  src={done ? checkmarkPng : questPng}
-                                />
-                              }
-                            </span>
-                          ))}
-                        </a>
+                              <strong>Extended Fish Family</strong>
+                            </a>{" "}
+                            Quest. They won't count towards the achievement, yet
+                            they will still get you new{" "}
+                            <a
+                              href={StardewWiki.getLink(
+                                "Fish_Shop",
+                                "Bobber_Machine"
+                              )}
+                              target="_blank"
+                            >
+                              <strong>bobber styles</strong>
+                            </a>{" "}
+                            though:
+                          </em>
+                        )}
 
                         <div
                           className={clsx(
-                            styles.fishes,
+                            styles.category,
                             compact && styles.compact
                           )}
+                          style={{
+                            ["--background" as string]: `url(${
+                              backgroundSprites.resolve(snakeCase(categoryId))
+                                ?.default
+                            })`,
+                          }}
                         >
-                          {fishes.map((fish) => (
-                            <a
-                              key={fish.id}
-                              href={StardewWiki.getLink(fish.name)}
-                              target="_blank"
-                            >
-                              <div className={styles.fish}>
-                                <ImageObjective
-                                  width={compact ? 24 : 36}
-                                  title={`${fish.name}`}
-                                  done={
-                                    (farmer.caughtFish.find(
-                                      (v) => v.fishId === fish.id
-                                    )?.amount ?? 0) > 0
-                                  }
-                                  src={
-                                    fishSprites.resolve(snakeCase(fish.name))
-                                      ?.default
-                                  }
-                                />
-                              </div>
-                            </a>
-                          ))}
+                          <a href={StardewWiki.getLink("Fish")} target="_blank">
+                            <h1>
+                              {capitalCase(categoryId)
+                                .replace(/_/g, " ")
+                                .replace("2", "II")}
+                            </h1>
+
+                            {thru(totalCaught >= fishes.length, (done) => (
+                              <span
+                                className={clsx(
+                                  styles.counts,
+                                  done && styles.done
+                                )}
+                              >
+                                {totalCaught} / {fishes.length}{" "}
+                                {
+                                  <img
+                                    height={12}
+                                    src={done ? checkmarkPng : questPng}
+                                  />
+                                }
+                              </span>
+                            ))}
+                          </a>
+
+                          <div
+                            className={clsx(
+                              styles.fishes,
+                              compact && styles.compact
+                            )}
+                          >
+                            {fishes.map((fish) => (
+                              <a
+                                key={fish.id}
+                                href={StardewWiki.getLink(fish.name)}
+                                target="_blank"
+                              >
+                                <div className={styles.fish}>
+                                  <ImageObjective
+                                    width={compact ? 24 : 36}
+                                    title={`${fish.name}`}
+                                    done={
+                                      (farmer.caughtFish.find(
+                                        (v) => v.fishId === fish.id
+                                      )?.amount ?? 0) > 0
+                                    }
+                                    src={
+                                      fishSprites.resolve(snakeCase(fish.name))
+                                        ?.default
+                                    }
+                                  />
+                                </div>
+                              </a>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    </Fragment>
-                  );
-                })}
+                      </Fragment>
+                    );
+                  })}
+                </div>
               </div>
 
               {thru(

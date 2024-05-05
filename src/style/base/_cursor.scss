@@ -11,7 +11,8 @@
 }
 
 a,
-button {
+button,
+label:has(input[type="file"]) {
   &:hover {
     @include cursorPointer();
   }

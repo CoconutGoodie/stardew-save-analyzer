@@ -11,7 +11,11 @@
   font-family: "Stardew Valley";
   font-size: 30px;
   color: #fff28f;
-  cursor: not-allowed;
+  background: none;
+
+  & + input {
+    display: none;
+  }
 }
 
 .or {

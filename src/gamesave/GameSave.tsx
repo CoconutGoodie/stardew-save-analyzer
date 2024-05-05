@@ -20,8 +20,9 @@ import { STARDEW_SPECIAL_ORDERS } from "../const/StardewSpecialOrders";
 import { GameDate, GameSeason } from "../util/GameDate";
 import { StardewWiki } from "../util/StardewWiki";
 import { Farmer } from "./Farmer";
-import { thru } from "@src/util/utilities";
+import { isKeyOf, thru } from "@src/util/utilities";
 import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "@src/const/StardewMuseum";
+import { XMLNode } from "@src/util/XMLNode";
 
 type StringNumber = `${number}`;
 type StringBoolean = `${boolean}`;
@@ -32,29 +33,7 @@ export namespace GameSave {
   export interface SaveXml {
     player: [FarmerXml];
     farmhands?: { Farmer: [FarmerXml] }[];
-    locations?: [
-      {
-        GameLocation: {
-          $: { "xsi:type": string };
-          grandpaScore?: [StringNumber];
-          museumPieces?: [
-            {
-              item: KeyValueMap<
-                [{ Vector2: [{ X: [StringNumber]; Y: [StringNumber] }] }],
-                [{ string: [StringNumber] } | { int: [StringNumber] }]
-              >;
-            }
-          ];
-          buildings: [
-            {
-              Building: {
-                indoors?: [{ farmhand?: [FarmerXml] }];
-              }[];
-            }
-          ];
-        }[];
-      }
-    ];
+    locations?: [LocationsXml];
     whichFarm?: [keyof typeof STARDEW_FARM_TYPES];
     year: [StringNumber];
     currentSeason: [string];
@@ -64,6 +43,41 @@ export namespace GameSave {
     hasApplied1_3_UpdateChanges?: [StringBoolean];
     hasApplied1_4_UpdateChanges?: [StringBoolean];
     gameVersion?: [string];
+    stats?: [StatsXml];
+  }
+
+  export interface LocationsXml {
+    GameLocation: {
+      $: { "xsi:type": string };
+      grandpaScore?: [StringNumber];
+      museumPieces?: [
+        {
+          item: KeyValueMap<
+            [{ Vector2: [{ X: [StringNumber]; Y: [StringNumber] }] }],
+            [{ string: [StringNumber] } | { int: [StringNumber] }]
+          >;
+        }
+      ];
+      buildings: [
+        {
+          Building: {
+            indoors?: [{ farmhand?: [FarmerXml] }];
+          }[];
+        }
+      ];
+    }[];
+  }
+
+  export interface StatsXml {
+    Values?: [
+      {
+        item: KeyValueMap<
+          [{ string: [string] }],
+          [{ unsignedInt: [StringNumber] }]
+        >;
+      }
+    ];
+    questsCompleted?: [StringNumber];
   }
 
   export interface FarmerXml {
@@ -91,18 +105,12 @@ export namespace GameSave {
         >;
       }
     ];
-    stats?: [
+    craftingRecipes?: [
       {
-        Values?: [
-          {
-            item: KeyValueMap<
-              [{ string: [string] }],
-              [{ unsignedInt: [StringNumber] }]
-            >;
-          }
-        ];
+        item?: KeyValueMap<[{ string: [string] }], [{ int: [StringNumber] }]>;
       }
     ];
+    stats?: [StatsXml];
   }
 }
 
@@ -113,6 +121,7 @@ export class GameSave {
   public readonly playtime;
   public readonly currentDate;
 
+  public readonly separateWallets;
   public readonly totalGoldsEarned;
 
   public readonly player;
@@ -127,24 +136,21 @@ export class GameSave {
   public readonly grandpaShrineCandlesLit;
   public readonly grandpaScoreSubjects;
 
-  constructor(private saveXml: GameSave.SaveXml) {
-    console.log(saveXml);
+  constructor(private saveXml: XMLNode) {
+    // console.log(saveXml.element);
 
     this.gameVersion = this.calcGameVersion();
-    this.farmName = this.saveXml.player[0].farmName[0];
+    this.farmName = saveXml.query("player > farmName").text();
     this.farmType = this.calcFarmType();
-    this.playtime = parseInt(this.saveXml.player[0].millisecondsPlayed[0]);
-    this.currentDate = new GameDate(
-      parseInt(this.saveXml.dayOfMonth[0]),
-      capitalCase(this.saveXml.currentSeason[0]) as GameSeason,
-      parseInt(this.saveXml.year[0])
-    );
+    this.playtime = saveXml.query("player > millisecondsPlayed").number();
+    this.currentDate = this.calcCurrentDate();
 
-    this.totalGoldsEarned = parseInt(
-      this.saveXml.player[0].totalMoneyEarned[0]
-    );
+    this.separateWallets = saveXml
+      .query("player > useSeparateWallets")
+      .boolean();
+    this.totalGoldsEarned = saveXml.query("player > totalMoneyEarned").number();
 
-    this.player = new Farmer(this.saveXml.player[0]);
+    this.player = new Farmer(saveXml.query("player"), saveXml);
     this.farmhands = this.calcFarmhands();
 
     this.specialOrders = this.calcSpecialOrders();
@@ -161,71 +167,102 @@ export class GameSave {
   }
 
   private calcGameVersion() {
-    return (
-      this.saveXml.gameVersion?.[0] ??
-      this.saveXml.player[0].gameVersion?.[0] ??
-      (this.saveXml.hasApplied1_4_UpdateChanges?.[0] === "true"
-        ? "1.4"
-        : this.saveXml.hasApplied1_3_UpdateChanges?.[0] === "true"
-        ? "1.3"
-        : "1.2")
-    );
+    let gameVersion = this.saveXml.query(":scope > gameVersion").text();
+
+    if (!gameVersion) {
+      gameVersion = this.saveXml.query("player > gameVersion").text();
+    }
+
+    if (!gameVersion) {
+      if (
+        this.saveXml.query(":scope > hasApplied1_4_UpdateChanges").boolean()
+      ) {
+        gameVersion = "1.4";
+      }
+    }
+
+    if (!gameVersion) {
+      if (
+        this.saveXml.query(":scope > hasApplied1_3_UpdateChanges").boolean()
+      ) {
+        gameVersion = "1.3";
+      }
+    }
+
+    return gameVersion ?? "1.2";
   }
 
   private calcFarmType() {
-    return this.saveXml.whichFarm?.[0] != null
-      ? STARDEW_FARM_TYPES[this.saveXml.whichFarm[0]]
+    const whichFarm = this.saveXml.query("whichFarm").text();
+    return isKeyOf(whichFarm, STARDEW_FARM_TYPES)
+      ? STARDEW_FARM_TYPES[whichFarm]
       : STARDEW_FARM_TYPES[0];
   }
 
-  private calcFarmhands() {
-    let farmhands = this.saveXml.farmhands?.map(
-      (farmhand) => new Farmer(farmhand.Farmer[0])
+  private calcCurrentDate() {
+    return new GameDate(
+      this.saveXml.query(":scope > dayOfMonth").number(),
+      capitalCase(
+        this.saveXml.query(":scope > currentSeason").text()
+      ) as GameSeason,
+      this.saveXml.query(":scope > year").number()
     );
+  }
 
-    // This is how it was stored before 1.6
-    if (!farmhands) {
-      const farmLocation = this.saveXml.locations?.[0].GameLocation.find(
-        (x) => x.$["xsi:type"] === "Farm"
+  private calcFarmhands() {
+    let farmhands = this.saveXml
+      .query(":scope > farmhands")
+      .transformIfPresent((farmhandsXml) =>
+        farmhandsXml
+          .queryAll(":scope > Farmer")
+          .map((farmerXml) => new Farmer(farmerXml, this.saveXml))
       );
 
-      farmhands = farmLocation?.buildings[0]?.Building?.map(
-        (buildingEntry) => buildingEntry?.indoors?.[0]?.farmhand?.[0]
-      )
-        .filter((farmhandXml) => !!farmhandXml)
-        .map((farmhandXml) => new Farmer(farmhandXml!));
+    // version < 1.6
+    if (!farmhands) {
+      const farmLocationXml = this.saveXml.query(
+        "locations > GameLocation[xsi\\:type='Farm']"
+      );
+
+      farmhands = farmLocationXml.transformIfPresent((farmLocationXml) =>
+        farmLocationXml
+          .queryAll("farmhand")
+          .map((farmerXml) => new Farmer(farmerXml, this.saveXml))
+      );
     }
 
     return farmhands ?? [];
   }
 
   private calcSpecialOrders() {
-    const orders = entries(STARDEW_SPECIAL_ORDERS.town);
+    const completedOrders = this.saveXml
+      .queryAll("completedSpecialOrders > string")
+      .map((node) => node.text());
 
-    return orders.map(([orderId, title]) => ({
-      title,
-      npc: lowerCase(orderId.replace(/\d+/g, "")),
-      completed:
-        this.saveXml.completedSpecialOrders?.[0] == null
-          ? false
-          : "string" in this.saveXml.completedSpecialOrders[0]
-          ? this.saveXml.completedSpecialOrders[0].string.includes(orderId)
-          : false,
-      wiki: StardewWiki.getLink("Quests", title.replace(/\s+/g, "_")),
-    }));
+    return entries(STARDEW_SPECIAL_ORDERS.town).map(([orderId, orderTitle]) => {
+      return {
+        title: orderTitle,
+        npc: lowerCase(orderId.replace(/\d+/g, "")),
+        completed: completedOrders.includes(orderId),
+      };
+    });
   }
 
   private calcMuseumPieces() {
-    const museumLocation = this.saveXml.locations?.[0].GameLocation.find(
-      (x) => x.museumPieces != null
-    );
+    const museumLocationXml =
+      this.saveXml
+        .queryAll(
+          // TODO: Y u no work?
+          // "locations > GameLocation[xsi\\:type='LibraryMuseum']"
+          "locations > GameLocation"
+        )
+        .find(
+          (node) => node.element?.getAttribute("xsi:type") === "LibraryMuseum"
+        ) ?? XMLNode.EMPTY;
 
-    const handedInPieces: string[] =
-      museumLocation?.museumPieces?.[0]?.item
-        ?.map((item) => item?.value?.[0])
-        ?.map((value) =>
-          "string" in value ? value.string[0] : value.int[0]
-        ) ?? [];
+    const handedInPieces = museumLocationXml
+      .queryAll("value > *")
+      .map((v) => v.text());
 
     return {
       minerals: new Set(
@@ -242,11 +279,10 @@ export class GameSave {
   }
 
   private calcGrandpaShrineCandlesLit() {
-    const farmLocation = find(
-      this.saveXml.locations?.[0].GameLocation ?? [],
-      (location) => location.$["xsi:type"] === "Farm"
+    const farmLocationXml = this.saveXml.query(
+      "locations > GameLocation[xsi\\:type='Farm']"
     );
-    return parseInt(farmLocation?.grandpaScore?.[0] ?? "0");
+    return farmLocationXml.query("grandpaScore").number();
   }
 
   // TODO: Extract into its own class

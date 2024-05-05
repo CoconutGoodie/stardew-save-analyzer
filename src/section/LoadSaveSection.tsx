@@ -56,9 +56,6 @@ export const LoadSaveSection = (props: Props) => {
     setLoading(true);
     const module = await demoSaves.resolve(version)();
     const xml = parseXML(module.default ?? "");
-    console.log(xml.documentElement.outerHTML)
-    console.log(xml.documentElement.querySelector('[xmlns\\:xsi\\:type="Farm"]'));
-    // console.log(xml.querySelector("GameLocation[xsi\\:type='Farm']"))
     const saveXml = new XMLNode(xml.documentElement);
     props.onSelected(new GameSave(saveXml));
     setLoading(false);
@@ -69,7 +66,8 @@ export const LoadSaveSection = (props: Props) => {
 
     setLoading(true);
     const xml = await parseXMLFromFile(file);
-    console.log(xml.querySelector("SaveGame"));
+    const saveXml = new XMLNode(xml.documentElement);
+    props.onSelected(new GameSave(saveXml));
     setLoading(false);
   };
 

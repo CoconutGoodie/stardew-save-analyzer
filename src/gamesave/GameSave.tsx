@@ -249,13 +249,16 @@ export class GameSave {
   }
 
   private calcMuseumPieces() {
-    const museumLocationXml = this.saveXml.query(
-      "locations > GameLocation[xsi\\:type='LibraryMuseum']"
-    );
-
-    // window.XXX = this.saveXml.query('locations').element
-    // console.log(this.saveXml.query('locations').element);
-    // console.log(this.saveXml.query('[xsi\\:type="LibraryMuseum"]').element);
+    const museumLocationXml =
+      this.saveXml
+        .queryAll(
+          // TODO: Y u no work?
+          // "locations > GameLocation[xsi\\:type='LibraryMuseum']"
+          "locations > GameLocation"
+        )
+        .find(
+          (node) => node.element?.getAttribute("xsi:type") === "LibraryMuseum"
+        ) ?? XMLNode.EMPTY;
 
     const handedInPieces = museumLocationXml
       .queryAll("value > *")

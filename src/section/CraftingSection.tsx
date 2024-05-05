@@ -6,16 +6,15 @@ import { GameSave } from "@src/gamesave/GameSave";
 
 import craftingPng from "@src/assets/icon/crafting.png";
 import { AchievementDisplay } from "@src/component/AchievementDisplay";
-import { keys, values } from "remeda";
 
-import styles from "./CraftingSection.module.scss";
-import { STARDEW_CRAFTING_RECIPES } from "@src/const/StardewCrafting";
-import clsx from "clsx";
 import { ImageObjective } from "@src/component/ImageObjective";
+import { STARDEW_CRAFTING_RECIPES } from "@src/const/StardewCrafting";
 import { AssetRepository } from "@src/util/AssetRepository";
-import { snakeCase } from "case-anything";
 import { StardewWiki } from "@src/util/StardewWiki";
+import { snakeCase } from "case-anything";
+import clsx from "clsx";
 import { useState } from "react";
+import styles from "./CraftingSection.module.scss";
 
 interface Props {
   gameSave: GameSave;
@@ -36,8 +35,12 @@ export const CraftingSection = (props: Props) => {
         {props.gameSave.getAllFarmers().map((farmer) => {
           const farmerAchievements = props.gameSave.achievements[farmer.name];
 
-          const totalCrafts = values(farmer.craftedRecipes).filter(
-            (v) => v > 0
+          const totalUnlocked = STARDEW_CRAFTING_RECIPES.filter(
+            (recipeName) => recipeName in farmer.craftedRecipes
+          ).length;
+
+          const totalCrafts = STARDEW_CRAFTING_RECIPES.filter(
+            (recipeName) => farmer.craftedRecipes[recipeName] > 0
           ).length;
 
           return (
@@ -46,8 +49,8 @@ export const CraftingSection = (props: Props) => {
 
               <div className={styles.objectives}>
                 <Objective icon={<img height={16} src={craftingPng} />} done>
-                  Unlocked <strong>{keys(farmer.craftedRecipes).length}</strong>{" "}
-                  of <strong>{STARDEW_CRAFTING_RECIPES.length}</strong> crafting
+                  Unlocked <strong>{totalUnlocked}</strong> of{" "}
+                  <strong>{STARDEW_CRAFTING_RECIPES.length}</strong> crafting
                   recipes.
                 </Objective>
 

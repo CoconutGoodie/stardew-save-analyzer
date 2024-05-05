@@ -18,7 +18,7 @@ export class XMLNode {
   }
 
   public text(defaultValue: string = "") {
-    return this.element?.textContent ?? defaultValue;
+    return this.element?.textContent?.trim() ?? defaultValue;
   }
 
   public number(defaultValue: number = 0) {

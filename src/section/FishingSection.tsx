@@ -13,7 +13,7 @@ import { AssetRepository } from "../util/AssetRepository";
 import { ImageObjective } from "@src/component/ImageObjective";
 import { thru } from "@src/util/utilities";
 import clsx from "clsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import checkmarkPng from "../assets/icon/checkmark.png";
 import questPng from "../assets/icon/quest.png";
@@ -25,6 +25,7 @@ import styles from "./FishingSection.module.scss";
 import { FarmersRow } from "@src/component/FarmersRow";
 
 import barbedHookPng from "@src/assets/icon/barbed_hook.png";
+import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
 
 interface Props {
   gameSave: GameSave;
@@ -45,6 +46,10 @@ const backgroundSprites = new AssetRepository<{ default: string }>(
 export const FishingSection = (props: Props) => {
   const [compact, setCompact] = useState(false);
   const [expanded, setExpanded] = useState(false);
+
+  const { addScrollableRef, scrollAllTo } = useSyncedScrollbar();
+
+  useEffect(() => scrollAllTo(0), [expanded]);
 
   const farmers = props.gameSave.getAllFarmers();
 
@@ -82,7 +87,7 @@ export const FishingSection = (props: Props) => {
                   {expanded ? "Collapse view" : "Expand view"}
                 </button>
 
-                <div className={styles.categories}>
+                <div ref={addScrollableRef} className={styles.categories}>
                   {keys(FishCategory).map((categoryId) => {
                     const fishes =
                       STARDEW_FISHES_BY_CATEGORIES[

@@ -13,8 +13,9 @@ import { AssetRepository } from "@src/util/AssetRepository";
 import { StardewWiki } from "@src/util/StardewWiki";
 import { snakeCase } from "case-anything";
 import clsx from "clsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./CraftingSection.module.scss";
+import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
 
 interface Props {
   gameSave: GameSave;
@@ -28,6 +29,10 @@ const craftingRecipeSprites = new AssetRepository<{ default: string }>(
 
 export const CraftingSection = (props: Props) => {
   const [expanded, setExpanded] = useState(false);
+
+  const { addScrollableRef, scrollAllTo } = useSyncedScrollbar();
+
+  useEffect(() => scrollAllTo(0), [expanded]);
 
   return (
     <SummarySection sectionTitle="Crafting" collapsable>
@@ -66,7 +71,7 @@ export const CraftingSection = (props: Props) => {
                   {expanded ? "Collapse view" : "Expand view"}
                 </button>
 
-                <div className={styles.recipes}>
+                <div ref={addScrollableRef} className={styles.recipes}>
                   {STARDEW_CRAFTING_RECIPES.map((recipe) => (
                     <div
                       key={recipe}

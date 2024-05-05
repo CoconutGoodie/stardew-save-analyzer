@@ -234,14 +234,15 @@ export class Farmer {
     };
 
     return fromEntries(
-      this.farmerXml.craftingRecipes?.[0]?.item
-        ?.map((entry) => {
-          const recipeName = entry?.key?.[0]?.string?.[0];
-          const craftedTimes = parseInt(entry?.value?.[0]?.int?.[0] ?? "0");
+      this.farmerXml
+        .queryAll("craftingRecipes > item")
+        .map((entry) => {
+          const recipeName = entry.query("key > *").text();
+          const craftedTimes = entry.query("value > *").number();
           return [recipeName, craftedTimes] as const;
         })
-        ?.filter(([key]) => key != null)
-        ?.map(([key, value]) => [relocatedNames[key] ?? key, value]) ?? []
+        .filter(([key]) => key != null)
+        .map(([key, value]) => [relocatedNames[key] ?? key, value])
     );
   }
 

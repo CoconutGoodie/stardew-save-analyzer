@@ -30,8 +30,14 @@
   margin-bottom: 15px;
   padding: 5px;
   width: fit-content;
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
+
+  .items {
+    padding: 8px;
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    background: linear-gradient(-14deg, rgba(#03060c, 0.5), #182444);
+    border-radius: 8px;
+  }
 
   .item {
     width: 48px;
@@ -44,7 +50,6 @@
   }
 
   .label {
-    grid-column: 1 / span all;
     margin-bottom: 2px;
     display: flex;
     align-items: center;

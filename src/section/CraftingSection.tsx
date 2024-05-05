@@ -77,7 +77,8 @@ export const CraftingSection = (props: Props) => {
                       key={recipe}
                       className={clsx(
                         styles.recipe,
-                        !(recipe in farmer.craftedRecipes) && styles.locked
+                        !(recipe in farmer.craftedRecipes) && styles.locked,
+                        farmer.craftedRecipes[recipe] === 0 && styles.notCrafted
                       )}
                     >
                       <a href={StardewWiki.getLink(recipe)} target="_blank">
@@ -98,16 +99,20 @@ export const CraftingSection = (props: Props) => {
                 </div>
               </div>
 
-              {/* <p>
+              <p>
                 <em>
-                  "Wedding Ring" is only available in{" "}
+                  <strong>NOTE:</strong> "
+                  <a target="_blank" href={StardewWiki.getLink("Wedding Ring")}>
+                    <strong>Wedding Ring</strong>
+                  </a>
+                  " is only available in{" "}
                   <a target="_blank" href={StardewWiki.getLink("Multiplayer")}>
                     <strong>Multiplayer</strong>
                   </a>
-                  . It won't count towards the achievement, yet is still
-                  displayed for convenience:
+                  . It <strong>WON'T</strong> count towards any achievement.
+                  Therefore it is not shown in the list above.
                 </em>
-              </p> */}
+              </p>
 
               {/* <div className={styles.recipes}>
                 <div

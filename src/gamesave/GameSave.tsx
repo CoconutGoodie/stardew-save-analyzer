@@ -13,9 +13,6 @@ import { STARDEW_SPECIAL_ORDERS } from "../const/StardewSpecialOrders";
 import { GameDate, GameSeason } from "../util/GameDate";
 import { Farmer } from "./Farmer";
 
-type StringNumber = `${number}`;
-type StringBoolean = `${boolean}`;
-
 export class GameSave {
   public readonly gameVersion;
   public readonly farmName;

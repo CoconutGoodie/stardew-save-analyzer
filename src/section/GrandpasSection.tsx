@@ -112,7 +112,11 @@ export const GrandpasEvaluationsSection = (props: Props) => {
                 </li>
               )
             )}
-            <hr />
+          </ul>
+
+          <hr />
+
+          <ul>
             <li>
               Total Score: <strong>{grandpaScoreTotal}</strong>, which means{" "}
               <strong>{nextCandlesLit}</strong> candle(s) will be lit.

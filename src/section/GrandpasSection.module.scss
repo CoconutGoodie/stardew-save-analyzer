@@ -73,7 +73,7 @@
   position: relative;
   margin-bottom: 20px;
   padding: 20px;
-  width: 400px;
+  width: 750px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -112,17 +112,22 @@
     margin-bottom: 10px;
   }
 
-  li {
-    height: 22px;
+  ul {
+    column-count: 2;
+    column-gap: 30px;
+    
+    li {
+      height: 24px;
 
-    &.unearned {
-      opacity: 0.3;
+      &.unearned {
+        opacity: 0.3;
+      }
     }
   }
 
   hr {
-    width: 150px !important;
-    margin: 20px 0 !important;
+    width: 200px !important;
+    margin: 15px 10px !important;
     border-color: #354241 !important;
   }
 }

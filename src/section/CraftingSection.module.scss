@@ -54,9 +54,19 @@
   border-radius: 8px;
 
   &.locked {
-    opacity: 0.4;
     border-width: 3px;
     border-style: dashed;
+    
+    &:not(:hover) {
+      opacity: 0.4;
+    }
+  }
+
+  &.notCrafted {
+    &:not(:hover) {
+      opacity: 0.85;
+      filter: saturate(0.55);
+    }
   }
 
   img {

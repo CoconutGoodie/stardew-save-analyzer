@@ -7,13 +7,7 @@ import { Achievements } from "@src/gamesave/Achievements";
 import { XMLNode } from "@src/util/XMLNode";
 import { isKeyOf, thru } from "@src/util/utilities";
 import { ReactNode } from "react";
-import {
-  entries,
-  firstBy,
-  keys,
-  mapToObj,
-  times
-} from "remeda";
+import { entries, firstBy, keys, mapToObj, times } from "remeda";
 import { STARDEW_FARM_TYPES } from "../const/StardewFarmTypes";
 import { STARDEW_SPECIAL_ORDERS } from "../const/StardewSpecialOrders";
 import { GameDate, GameSeason } from "../util/GameDate";
@@ -187,9 +181,16 @@ export class GameSave {
   }
 
   private calcGrandpaShrineCandlesLit() {
-    const farmLocationXml = this.saveXml.query(
-      "locations > GameLocation[xsi\\:type='Farm']"
-    );
+    const farmLocationXml =
+      this.saveXml
+        .queryAll(
+          // TODO: Y u no work?
+          // "locations > GameLocation[xsi\\:type='Farm']"
+          "locations > GameLocation"
+        )
+        .find((node) => node.element?.getAttribute("xsi:type") === "Farm") ??
+      XMLNode.EMPTY;
+
     return farmLocationXml.query("grandpaScore").number();
   }
 

@@ -22,7 +22,9 @@ export class XMLNode {
   }
 
   public number(defaultValue: number = 0) {
-    const number = parseInt(this.text());
+    const text = this.text();
+    if (!text) return defaultValue;
+    const number = parseInt(text);
     return number == null ? defaultValue : number;
   }
 

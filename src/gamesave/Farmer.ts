@@ -225,7 +225,7 @@ export class Farmer {
         .transformIfPresent((xml) => xml.number());
     }
 
-    return completedQuests;
+    return completedQuests ?? 0;
   }
 
   private calcCraftedRecipes() {

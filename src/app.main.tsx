@@ -22,6 +22,7 @@ import { CraftingSection } from "@src/section/CraftingSection";
 
 import "./style/style.scss";
 import { FpsDebugger } from "@src/component/FpsDebugger";
+import { RarecrowSection } from "@src/section/RarecrowsSection";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
@@ -115,6 +116,8 @@ function App() {
             <HelpWantedSection gameSave={gameSave} />
 
             <SpecialOrdersSection gameSave={gameSave} />
+
+            <RarecrowSection gameSave={gameSave} />
 
             <FishingSection gameSave={gameSave} />
 

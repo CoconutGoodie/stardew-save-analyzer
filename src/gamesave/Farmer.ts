@@ -38,6 +38,8 @@ export class Farmer {
   public readonly unlockedBobberCount;
   public readonly stardrops;
 
+  public readonly rarecrowSocietyMailed;
+
   constructor(private farmerXml: XMLNode, private saveXml?: XMLNode) {
     this.name = farmerXml.query(":scope > name").text();
     this.gender = this.calcGender();
@@ -95,9 +97,13 @@ export class Farmer {
           .query("value > ArrayOfInt > int:nth-child(2)")
           .number(),
       }));
+
     this.unlockedBobberCount =
       1 + Math.floor(this.caughtFish.filter((v) => v.amount > 0).length / 2);
     this.stardrops = this.calcStardrops();
+
+    this.rarecrowSocietyMailed =
+      this.receivedMailFlags.includes("RarecrowSociety");
   }
 
   private calcGender() {

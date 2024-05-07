@@ -7,11 +7,21 @@ import { Achievements } from "@src/gamesave/Achievements";
 import { XMLNode } from "@src/util/XMLNode";
 import { isKeyOf, thru } from "@src/util/utilities";
 import { ReactNode } from "react";
-import { entries, firstBy, keys, mapToObj, times } from "remeda";
+import {
+  entries,
+  firstBy,
+  fromKeys,
+  groupBy,
+  identity,
+  keys,
+  mapToObj,
+  times,
+} from "remeda";
 import { STARDEW_FARM_TYPES } from "../const/StardewFarmTypes";
 import { STARDEW_SPECIAL_ORDERS } from "../const/StardewSpecialOrders";
 import { GameDate, GameSeason } from "../util/GameDate";
 import { Farmer } from "./Farmer";
+import { STARDEW_RARECROW_IDS } from "@src/const/StardewRarecrows";
 
 export class GameSave {
   public readonly gameVersion;
@@ -25,6 +35,8 @@ export class GameSave {
 
   public readonly player;
   public readonly farmhands;
+
+  public readonly rarecrowsPlaced;
 
   public readonly specialOrders;
 
@@ -51,6 +63,8 @@ export class GameSave {
 
     this.player = new Farmer(saveXml.query("player"), saveXml);
     this.farmhands = this.calcFarmhands();
+
+    this.rarecrowsPlaced = this.calcRarecrowsPlaced();
 
     this.specialOrders = this.calcSpecialOrders();
 
@@ -131,6 +145,24 @@ export class GameSave {
     }
 
     return farmhands ?? [];
+  }
+
+  private calcRarecrowsPlaced() {
+    const placedRarecrows = mapToObj(STARDEW_RARECROW_IDS, (id) => [id, 0]);
+
+    return this.saveXml
+      .queryAll("locations > GameLocation > objects > item")
+      .map((node) => node.query("value > Object"))
+      .filter(
+        (objectNode) =>
+          objectNode.query("name").text() === "Rarecrow" &&
+          objectNode.query("hasBeenInInventory").boolean()
+      )
+      .map((objectNode) => objectNode.query("itemId").text())
+      .reduce((counts, rarecrowId) => {
+        counts[rarecrowId]++;
+        return counts;
+      }, placedRarecrows);
   }
 
   private calcSpecialOrders() {

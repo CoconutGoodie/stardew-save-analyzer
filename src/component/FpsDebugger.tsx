@@ -31,7 +31,7 @@ export const FpsDebugger = (props: { scanInterval?: number }) => {
     return () => {
       clearInterval(scanInterval);
     };
-  }, []);
+  }, [props.scanInterval]);
 
   return (
     <h1

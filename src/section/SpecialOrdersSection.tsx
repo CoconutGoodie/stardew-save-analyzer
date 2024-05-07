@@ -41,6 +41,7 @@ export const SpecialOrdersSection = (props: Props) => {
     <SummarySection
       id="special-orders"
       sectionTitle="Special Order Quests"
+      versions={["v1.5 Introduced"]}
       collapsable
     >
       <div className={styles.board}>

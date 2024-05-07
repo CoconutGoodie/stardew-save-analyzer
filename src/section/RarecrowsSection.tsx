@@ -35,7 +35,11 @@ export const RarecrowSection = (props: Props) => {
   const totalPlaced = sum(values(props.gameSave.rarecrowsPlaced));
 
   return (
-    <SummarySection sectionTitle="Rarecrow Society" collapsable>
+    <SummarySection
+      sectionTitle="Rarecrow Society"
+      collapsable
+      versions={["v1.4 Introduced"]}
+    >
       <div className={styles.objectives}>
         <Objective done icon={<img src={scarecrowPng} />}>
           In total, <strong>{totalPlaced}</strong> rarecrow(s) are placed all
@@ -100,13 +104,13 @@ export const RarecrowSection = (props: Props) => {
           mail from{" "}
           <a
             target="_blank"
-            href={StardewWiki.getLink("Deluxe Rarecrow", "Letter")}
+            href={StardewWiki.getLink("Deluxe Scarecrow", "Letter")}
           >
             <strong>the Z. C. Rarecrow Society</strong>
           </a>{" "}
           rewarding you with the{" "}
-          <a target="_blank" href={StardewWiki.getLink("Deluxe Rarecrow")}>
-            <strong>Deluxe Rarecrow</strong>
+          <a target="_blank" href={StardewWiki.getLink("Deluxe Scarecrow")}>
+            <strong>Deluxe Scarecrow</strong>
           </a>
           .
         </em>
@@ -135,7 +139,7 @@ export const RarecrowSection = (props: Props) => {
             <strong>{farmer.name}</strong> received the mail from{" "}
             <a
               target="_blank"
-              href={StardewWiki.getLink("Deluxe Rarecrow", "Letter")}
+              href={StardewWiki.getLink("Deluxe Scarecrow", "Letter")}
             >
               <strong>Z.C. Rarecrow Society</strong>
             </a>

@@ -5,6 +5,7 @@ import chevronRightSvg from "../assets/icon/chevron-right.svg";
 
 type Props = ComponentProps<"section"> & {
   sectionTitle?: string;
+  versions?: string[];
   collapsable?: boolean;
 };
 
@@ -17,7 +18,18 @@ export const SummarySection = (props: Props) => {
     <section {...nativeProps} className={styles.section}>
       {sectionTitle && (
         <h1>
+          {nativeProps.id && <a href={`#${nativeProps.id}`}>#</a>}
+
           <span>{sectionTitle}</span>
+
+          {props.versions && (
+            <span className={styles.versions}>
+              {props.versions.map((version) => (
+                <span key={version}>{version}</span>
+              ))}
+            </span>
+          )}
+
           {collapsable && (
             <button
               className={clsx(open && styles.open)}

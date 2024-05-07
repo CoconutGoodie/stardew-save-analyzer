@@ -13,14 +13,19 @@
 
   img {
     object-fit: contain;
-    .incomplete {
+
+    &:hover {
+      @include mixin.shadowOutline(2);
+
+      &.incomplete {
+        @include mixin.shadowOutline(2);
+        opacity: 1;
+      }
+    }
+
+    &.incomplete {
       filter: saturate(0) brightness(0.8);
       opacity: 0.25;
-
-      &:hover {
-        opacity: 0.5;
-        filter: none;
-      }
     }
   }
 

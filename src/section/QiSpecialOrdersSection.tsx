@@ -30,7 +30,7 @@ export const QiSpecialOrdersSection = (props: Props) => {
     (order) => order.completed
   ).length;
 
-  const walnutRoomDiscovered = true;
+  const walnutRoomDiscovered = true; // TODO
 
   const completedEveryOrder =
     completedCount === props.gameSave.qiSpecialOrders.length;

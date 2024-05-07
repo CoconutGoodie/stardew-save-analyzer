@@ -24,13 +24,15 @@ const rarecrowSprites = new AssetRepository<{ default: string }>(
 );
 
 export const RarecrowSection = (props: Props) => {
-  const rarecrowSocietyMissingFarmers = props.gameSave
+  const farmersMissingMail = props.gameSave
     .getAllFarmers()
     .filter((farmer) => !farmer.rarecrowSocietyMailed);
 
   const allCollected =
-    rarecrowSocietyMissingFarmers.length === 0 ||
-    values(props.gameSave.rarecrowsPlaced).every((x) => x > 0);
+    // Either everyone got the letter
+    farmersMissingMail.length === 0 ||
+    // Or at least 1 of each Rarecrow is currently placed down across the Valley
+    values(props.gameSave.rarecrowsPlaced).every((v) => v > 0);
 
   const totalPlaced = sum(values(props.gameSave.rarecrowsPlaced));
 
@@ -87,6 +89,17 @@ export const RarecrowSection = (props: Props) => {
             />
           </a>
         ))}
+
+        <div className={styles.divider} />
+
+        <a target="_blank" href={StardewWiki.getLink("Scarecrow")}>
+          <ImageObjective
+            done={farmersMissingMail.length === 0}
+            height={100}
+            title="Deluxe Scarecrow"
+            src={rarecrowSprites.resolve("deluxe_scarecrow")?.default ?? ""}
+          />
+        </a>
       </div>
 
       <p className={styles.note}>
@@ -118,7 +131,14 @@ export const RarecrowSection = (props: Props) => {
 
       <div className={styles.objectives}>
         <Objective done={allCollected}>
-          Every Rarecrow is collected.
+          Every{" "}
+          <a
+            target="_blank"
+            href={StardewWiki.getLink("Scarecrow", "Rarecrows")}
+          >
+            <strong>Rarecrow</strong>
+          </a>{" "}
+          is collected.
           {!allCollected && (
             <>
               {" "}
@@ -134,7 +154,7 @@ export const RarecrowSection = (props: Props) => {
         {props.gameSave.getAllFarmers().map((farmer) => (
           <Objective
             key={farmer.name}
-            done={!rarecrowSocietyMissingFarmers.includes(farmer)}
+            done={!farmersMissingMail.includes(farmer)}
           >
             <strong>{farmer.name}</strong> received the mail from{" "}
             <a

@@ -29,7 +29,6 @@
     font-size: 28px;
 
     & > a {
-      // margin-left: -25px;
       padding: 0 10px;
       position: absolute;
       left: 0;
@@ -42,7 +41,8 @@
       }
     }
 
-    & > button {
+    @mixin button() {
+      flex: 0;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -54,9 +54,12 @@
     }
 
     .spoilerBtn {
+      @include button();
     }
 
     .collapseBtn {
+      @include button();
+      
       &.open {
         transform: rotate(90deg);
       }
@@ -100,21 +103,26 @@
   align-items: center;
   justify-content: center;
   background: rgba(#3d3d3d, 0.3);
-  background: radial-gradient(
-    ellipse at center,
-    rgba(#ff9900, 0.5),
-    rgba(#1f1609, 0.1)
-  );
-  background: rgba(#f7b85a, 0.05);
+  // background: radial-gradient(
+  //   ellipse at center,
+  //   rgba(#ff9900, 0.5),
+  //   rgba(#1f1609, 0.1)
+  // );
+  // background: rgba(#f7b85a, 0.05);
   background: linear-gradient(
     to right bottom,
     rgba(#ff9900, 0.3),
     rgba(#1f1609, 0.1)
   );
   border-radius: 15px;
-  backdrop-filter: blur(15px);
+  backdrop-filter: blur(30px);
   font-family: "Stardew Valley";
   font-size: 50px;
+  transition: backdrop-filter 180ms linear;
+
+  &:hover {
+    backdrop-filter: blur(15px);
+  }
 
   & > h1 {
     margin: 0;
@@ -129,6 +137,6 @@
     border: 4px solid $color;
     border-radius: 10px;
     color: $color;
-    font-size: 30px;
+    font-size: 25px;
   }
 }

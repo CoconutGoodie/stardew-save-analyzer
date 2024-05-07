@@ -6,22 +6,22 @@ import { SpecialOrdersSection } from "./section/SpecialOrdersSection";
 import { StardropsSection } from "./section/StardropsSection";
 
 import logoPng from "./assets/logo.png";
-
-// import saveXml from "./assets/Save_1.6.xml";
+import questPng from "@src/assets/icon/exclamation.png";
 
 import { useState } from "react";
 import { SummarySection } from "./component/SummarySection";
 import { LoadSaveSection } from "./section/LoadSaveSection";
 
 import { FishingSection } from "./section/FishingSection";
-import "./style/style.scss";
 import { GrandpasEvaluationsSection } from "./section/GrandpasSection";
 import { MuseumSection } from "@src/section/MuseumSection";
 
-import questPng from "@src/assets/icon/exclamation.png";
 import { MasteriesSection } from "@src/section/MasteriesSection";
 import { HelpWantedSection } from "@src/section/HelpWantedSection";
 import { CraftingSection } from "@src/section/CraftingSection";
+
+import "./style/style.scss";
+import { FpsDebugger } from "@src/component/FpsDebugger";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
@@ -34,6 +34,8 @@ function App() {
       </header>
 
       <div id="content">
+        {!import.meta.env.PROD && <FpsDebugger scanInterval={100} />}
+
         <div className="disclaimers">
           <div className="disclaimer">
             <img height={30} src={questPng} />

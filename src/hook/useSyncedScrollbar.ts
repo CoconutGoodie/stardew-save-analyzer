@@ -1,13 +1,15 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 
 export function useSyncedScrollbar() {
-  const refs = useRef<[HTMLElement, () => void][]>([]);
+  const [elements] = useState<Map<HTMLElement, () => void>>(() => new Map());
 
   const addScrollableRef = (element: HTMLElement | null) => {
     if (element == null) return;
+    if (elements.has(element)) return;
 
     const handleScroll = () => {
-      refs.current.forEach(([other]) => {
+      console.log("Handling")
+      elements.forEach((_, other) => {
         if (other === element) return;
         other.scrollTop = element.scrollTop;
       });
@@ -15,11 +17,11 @@ export function useSyncedScrollbar() {
 
     element.addEventListener("scroll", handleScroll);
 
-    refs.current.push([element, handleScroll]);
+    elements.set(element, handleScroll);
   };
 
   const scrollAllTo = (to: number) => {
-    refs.current.forEach(([element]) => {
+    elements.forEach((_, element) => {
       element.scrollTop = to;
     });
   };

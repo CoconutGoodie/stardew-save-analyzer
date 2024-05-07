@@ -40,7 +40,7 @@ export const SpecialOrdersSection = (props: Props) => {
   return (
     <SummarySection
       id="special-orders"
-      sectionTitle="Special Order Quests"
+      sectionTitle="Special Orders"
       versions={["v1.5 Introduced"]}
       collapsable
     >

@@ -41,7 +41,7 @@ export const MuseumSection = (props: Props) => {
     props.gameSave.achievements[props.gameSave.player.name];
 
   return (
-    <SummarySection sectionTitle="Museum" collapsable>
+    <SummarySection sectionTitle="Museum Collection" collapsable>
       <div className={styles.info}>
         <a href={StardewWiki.getLink("Gunther")} target="_blank">
           <img src={guntherPng} />

@@ -22,14 +22,12 @@ type Props = ComponentProps<"section"> & {
 };
 
 export const SummarySection = (props: Props) => {
-  const { sectionTitle, collapsable, ...nativeProps } = props;
+  const { sectionTitle, collapsable, spoiler, ...nativeProps } = props;
 
   const wrapperRef = useRef<ComponentRef<"div">>(null);
   const { width: wrapperWidth, height: wrapperHeight } = useResizeObserver({
     ref: wrapperRef,
   });
-
-  const [expanded, setExpanded] = useState(props.spoiler ? false : true);
 
   const spoilerStore = useSpoilersStore();
 
@@ -37,6 +35,8 @@ export const SummarySection = (props: Props) => {
     props.id != null && props.spoiler
       ? !spoilerStore.revealed.includes(props.id)
       : false;
+
+  const [expanded, setExpanded] = useState(!markedAsSpoiler);
 
   const onSpoilerButtonClick = () => {
     if (!props.id) return;

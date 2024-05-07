@@ -117,6 +117,15 @@ function App() {
 
             <SpecialOrdersSection gameSave={gameSave} />
 
+            <SummarySection
+              id="qi-special-orders"
+              sectionTitle="Mr. Qi's Special Orders [WIP]"
+              collapsable
+              versions={["v1.5 Introduced"]}
+            >
+              [WIP] Mr. Qi's Challenges here
+            </SummarySection>
+
             <RarecrowSection gameSave={gameSave} />
 
             <FishingSection gameSave={gameSave} />

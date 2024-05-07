@@ -29,7 +29,8 @@ export class Farmer {
 
   public readonly masteries;
 
-  public readonly completedQuests;
+  public readonly totalCompletedQuests;
+  public readonly billboardCompletedQuests;
 
   public readonly craftedRecipes;
 
@@ -75,7 +76,8 @@ export class Farmer {
 
     this.masteries = this.calcMasteries();
 
-    this.completedQuests = this.calcCompletedQuests();
+    this.totalCompletedQuests = this.calcTotalCompletedQuests();
+    this.billboardCompletedQuests = this.calcBillboardCompletedQuests();
 
     this.craftedRecipes = this.calcCraftedRecipes();
 
@@ -208,7 +210,7 @@ export class Farmer {
     };
   }
 
-  private calcCompletedQuests() {
+  private calcTotalCompletedQuests() {
     let completedQuests = this.farmerXml
       .queryAll(":scope > stats > Values > item")
       .find(
@@ -229,6 +231,23 @@ export class Farmer {
       completedQuests = this.saveXml
         ?.query("stats > questsCompleted")
         .transformIfPresent((xml) => xml.number());
+    }
+
+    return completedQuests ?? 0;
+  }
+
+  private calcBillboardCompletedQuests() {
+    let completedQuests = this.farmerXml
+      .queryAll(":scope > stats > Values > item")
+      .find(
+        (valueXml) => valueXml.query("key > *").text() === "BillboardQuestsDone"
+      )
+      ?.query("value > *")
+      ?.number();
+
+    // version < 1.5
+    if (completedQuests == null) {
+      completedQuests = this.totalCompletedQuests;
     }
 
     return completedQuests ?? 0;

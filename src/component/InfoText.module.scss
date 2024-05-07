@@ -1,0 +1,33 @@
+.wrapper {
+  margin: 12px 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px;
+
+  & > :first-child {
+    margin-top: 2px;
+  }
+}
+
+.text {
+  margin: 0;
+  font-style: italic;
+  font-size: 16px;
+  line-height: 18px;
+  color: #96beec;
+
+  strong {
+    font-weight: 700;
+    color: #69a3e6;
+  }
+
+  a {
+    font-weight: 600;
+    color: #96d5ff;
+  }
+  
+  em {
+    font-weight: 600;
+    color: #80b4f0;
+  }
+}

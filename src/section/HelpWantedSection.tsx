@@ -11,6 +11,7 @@ import questPng from "@src/assets/sprite/help-wanted/quest.png";
 import styles from "./HelpWantedSection.module.scss";
 import { Objective } from "@src/component/Objective";
 import { StardewWiki } from "@src/util/StardewWiki";
+import { InfoText } from "@src/component/InfoText";
 
 interface Props {
   gameSave: GameSave;
@@ -18,20 +19,23 @@ interface Props {
 
 export const HelpWantedSection = (props: Props) => {
   return (
-    <SummarySection sectionTitle="Help Wanted Quests" collapsable>
+    <SummarySection sectionTitle="Quests" collapsable>
       <FarmersRow>
         {props.gameSave.getAllFarmers().map((farmer) => (
           <div key={farmer.name}>
             <FarmerTag farmer={farmer} />
 
-            <Objective
-              className={styles.text}
-              done
-              icon={<img height={16} src={questPng} />}
-            >
-              Fulfilled <strong>{farmer.completedQuests}</strong> help
-              request(s).
-            </Objective>
+            <div className={styles.stats}>
+              <Objective done icon={<img height={16} src={questPng} />}>
+                Completed <strong>{farmer.totalCompletedQuests}</strong> quests
+                in total.
+              </Objective>
+
+              <Objective done icon={<img height={16} src={questPng} />}>
+                Fulfilled <strong>{farmer.billboardCompletedQuests}</strong>{" "}
+                "Help Wanted" quest(s) off <strong>Bulletin Board</strong>.
+              </Objective>
+            </div>
 
             <div className={styles.info}>
               <a
@@ -43,33 +47,40 @@ export const HelpWantedSection = (props: Props) => {
 
               <div className={styles.requestsDone}>
                 <div className={styles.notePapers}>
-                  {times(Math.min(55, farmer.completedQuests), (i) => (
+                  {times(Math.min(55, farmer.totalCompletedQuests), (i) => (
                     <img key={i} height={27} src={questPng} />
                   ))}
-                  {farmer.completedQuests > 55 && <span>...</span>}
+                  {farmer.totalCompletedQuests > 55 && <span>...</span>}
                 </div>
               </div>
             </div>
+
+            <InfoText>
+              Weekly "<a href="#special-orders">Special Order Quests</a>" and "
+              <a href="#qi-special-orders">Mr. Qi's Special Orders</a>" also
+              count towards the achievements, even though achievements only
+              mention completion of "<em>Help Wanted</em>" quests.
+            </InfoText>
 
             <div className={styles.achievements}>
               {/* TODO: Extract to Achievements class */}
               <AchievementDisplay
                 title="Gofer"
                 description="complete 10 help requests"
-                achieved={farmer.completedQuests >= 10}
+                achieved={farmer.totalCompletedQuests >= 10}
               >
-                {farmer.completedQuests < 10 && (
-                  <> — Helped {farmer.completedQuests} out of 10</>
+                {farmer.totalCompletedQuests < 10 && (
+                  <> — Helped {farmer.totalCompletedQuests} out of 10</>
                 )}
               </AchievementDisplay>
 
               <AchievementDisplay
                 title="A Big Help"
                 description="complete 40 help requests"
-                achieved={farmer.completedQuests >= 40}
+                achieved={farmer.totalCompletedQuests >= 40}
               >
-                {farmer.completedQuests < 40 && (
-                  <> — Helped {farmer.completedQuests} out of 10</>
+                {farmer.totalCompletedQuests < 40 && (
+                  <> — Helped {farmer.totalCompletedQuests} out of 10</>
                 )}
               </AchievementDisplay>
             </div>

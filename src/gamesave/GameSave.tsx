@@ -39,6 +39,7 @@ export class GameSave {
   public readonly rarecrowsPlaced;
 
   public readonly specialOrders;
+  public readonly qiSpecialOrders;
 
   public readonly museumPieces;
 
@@ -67,6 +68,7 @@ export class GameSave {
     this.rarecrowsPlaced = this.calcRarecrowsPlaced();
 
     this.specialOrders = this.calcSpecialOrders();
+    this.qiSpecialOrders = this.calcQiSpecialOrders();
 
     this.museumPieces = this.calcMuseumPieces();
 
@@ -133,9 +135,15 @@ export class GameSave {
 
     // version < 1.6
     if (!farmhands) {
-      const farmLocationXml = this.saveXml.query(
-        "locations > GameLocation[xsi\\:type='Farm']"
-      );
+      const farmLocationXml =
+        this.saveXml
+          .queryAll(
+            // TODO: Y u no work?
+            // "locations > GameLocation[xsi\\:type='Farm']"
+            "locations > GameLocation"
+          )
+          .find((node) => node.element?.getAttribute("xsi:type") === "Farm") ??
+        XMLNode.EMPTY;
 
       farmhands = farmLocationXml.transformIfPresent((farmLocationXml) =>
         farmLocationXml
@@ -174,6 +182,19 @@ export class GameSave {
       return {
         title: orderTitle,
         npc: lowerCase(orderId.replace(/\d+/g, "")),
+        completed: completedOrders.includes(orderId),
+      };
+    });
+  }
+
+  private calcQiSpecialOrders() {
+    const completedOrders = this.saveXml
+      .queryAll("completedSpecialOrders > string")
+      .map((node) => node.text());
+
+    return entries(STARDEW_SPECIAL_ORDERS.qi).map(([orderId, orderTitle]) => {
+      return {
+        title: orderTitle,
         completed: completedOrders.includes(orderId),
       };
     });

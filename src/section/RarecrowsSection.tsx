@@ -10,6 +10,7 @@ import { ImageObjective } from "@src/component/ImageObjective";
 import { AssetRepository } from "@src/util/AssetRepository";
 import { STARDEW_RARECROW_IDS } from "@src/const/StardewRarecrows";
 import { StardewWiki } from "@src/util/StardewWiki";
+import { InfoText } from "@src/component/InfoText";
 
 interface Props {
   gameSave: GameSave;
@@ -102,32 +103,27 @@ export const RarecrowSection = (props: Props) => {
         </a>
       </div>
 
-      <p className={styles.note}>
-        <em>
-          <strong>NOTE:</strong> Once every{" "}
-          <a
-            target="_blank"
-            href={StardewWiki.getLink("Scarecrow", "Rarecrows")}
-          >
-            <strong>Rarecrow</strong>
-          </a>{" "}
-          is collected, at least one of each Rarecrow shall be placed down
-          anywhere across the Valley (or on Ginger Island). Then, the next day,
-          there will be <strong>approximately 90%</strong> chance to receive a
-          mail from{" "}
-          <a
-            target="_blank"
-            href={StardewWiki.getLink("Deluxe Scarecrow", "Letter")}
-          >
-            <strong>the Z. C. Rarecrow Society</strong>
-          </a>{" "}
-          rewarding you with the{" "}
-          <a target="_blank" href={StardewWiki.getLink("Deluxe Scarecrow")}>
-            <strong>Deluxe Scarecrow</strong>
-          </a>
-          .
-        </em>
-      </p>
+      <InfoText className={styles.note}>
+        Once every{" "}
+        <a target="_blank" href={StardewWiki.getLink("Scarecrow", "Rarecrows")}>
+          Rarecrow
+        </a>{" "}
+        is collected, at least one of each Rarecrow shall be placed down
+        anywhere across the Valley (or on Ginger Island). Then, the next day,
+        there will be <strong>approximately 90%</strong> chance to receive a
+        mail from{" "}
+        <a
+          target="_blank"
+          href={StardewWiki.getLink("Deluxe Scarecrow", "Letter")}
+        >
+          the Z. C. Rarecrow Society
+        </a>{" "}
+        rewarding you with the{" "}
+        <a target="_blank" href={StardewWiki.getLink("Deluxe Scarecrow")}>
+          Deluxe Scarecrow
+        </a>{" "}
+        recipe.
+      </InfoText>
 
       <div className={styles.objectives}>
         <Objective done={allCollected}>

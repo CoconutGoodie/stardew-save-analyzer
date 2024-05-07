@@ -16,6 +16,7 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 import styles from "./CraftingSection.module.scss";
 import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
+import { InfoText } from "@src/component/InfoText";
 
 interface Props {
   gameSave: GameSave;
@@ -99,20 +100,18 @@ export const CraftingSection = (props: Props) => {
                 </div>
               </div>
 
-              <p>
-                <em>
-                  <strong>NOTE:</strong> "
-                  <a target="_blank" href={StardewWiki.getLink("Wedding Ring")}>
-                    <strong>Wedding Ring</strong>
-                  </a>
-                  " is only available in{" "}
-                  <a target="_blank" href={StardewWiki.getLink("Multiplayer")}>
-                    <strong>Multiplayer</strong>
-                  </a>
-                  . It <strong>WON'T</strong> count towards any achievement.
-                  Therefore it is not shown in the list above.
-                </em>
-              </p>
+              <InfoText>
+                "
+                <a target="_blank" href={StardewWiki.getLink("Wedding Ring")}>
+                  Wedding Ring
+                </a>
+                " is only available in{" "}
+                <a target="_blank" href={StardewWiki.getLink("Multiplayer")}>
+                  Multiplayer
+                </a>
+                . It <strong>WON'T</strong> count towards any achievement.
+                Therefore it is not shown in the list above.
+              </InfoText>
 
               {/* <div className={styles.recipes}>
                 <div

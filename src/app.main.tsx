@@ -23,6 +23,7 @@ import { CraftingSection } from "@src/section/CraftingSection";
 import "./style/style.scss";
 import { FpsDebugger } from "@src/component/FpsDebugger";
 import { RarecrowSection } from "@src/section/RarecrowsSection";
+import { QiSpecialOrdersSection } from "@src/section/QiSpecialOrdersSection";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
@@ -117,14 +118,7 @@ function App() {
 
             <SpecialOrdersSection gameSave={gameSave} />
 
-            <SummarySection
-              id="qi-special-orders"
-              sectionTitle="Mr. Qi's Special Orders [WIP]"
-              collapsable
-              versions={["v1.5 Introduced"]}
-            >
-              [WIP] Mr. Qi's Challenges here
-            </SummarySection>
+            <QiSpecialOrdersSection gameSave={gameSave} />
 
             <RarecrowSection gameSave={gameSave} />
 

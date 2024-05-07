@@ -320,7 +320,7 @@ export class GameSave {
             <AchievementDisplay title={achi} achieved={false} inline /> [WIP]
           </>
         ),
-        score: Infinity,
+        score: NaN,
       }))
     );
 
@@ -328,7 +328,7 @@ export class GameSave {
       scoreSubjects.push({
         earned: false,
         reason: `Friendship #${i + 1} [WIP]`,
-        score: Infinity,
+        score: NaN,
       })
     );
 
@@ -336,7 +336,7 @@ export class GameSave {
       scoreSubjects.push({
         earned: false,
         reason: `Other #${i + 1} [WIP]`,
-        score: Infinity,
+        score: NaN,
       })
     );
 

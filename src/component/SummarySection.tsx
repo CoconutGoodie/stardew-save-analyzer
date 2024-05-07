@@ -12,6 +12,7 @@ import chevronRightSvg from "@src/assets/icon/chevron-right.svg";
 import eyeOpenSvg from "@src/assets/icon/eye-open.svg";
 import eyeClosedSvg from "@src/assets/icon/eye-closed.svg";
 import { useResizeObserver } from "usehooks-ts";
+import { useSpoilersStore } from "@src/store/useSpoilersStore";
 
 type Props = ComponentProps<"section"> & {
   sectionTitle?: string;
@@ -24,13 +25,24 @@ export const SummarySection = (props: Props) => {
   const { sectionTitle, collapsable, ...nativeProps } = props;
 
   const wrapperRef = useRef<ComponentRef<"div">>(null);
-
   const { width: wrapperWidth, height: wrapperHeight } = useResizeObserver({
     ref: wrapperRef,
   });
 
   const [open, setOpen] = useState(true);
-  const [spoiler, setSpoiler] = useState(props.spoiler ?? false);
+
+  const spoilerStore = useSpoilersStore();
+
+  const markedAsSpoiler =
+    props.id != null && props.spoiler
+      ? !spoilerStore.revealed.includes(props.id)
+      : false;
+
+  const onSpoilerButtonClick = () => {
+    if (!props.id) return;
+    if (markedAsSpoiler) spoilerStore.reveal(props.id);
+    else spoilerStore.hide(props.id);
+  };
 
   return (
     <section {...nativeProps} className={styles.section}>
@@ -52,9 +64,12 @@ export const SummarySection = (props: Props) => {
           {props.spoiler && (
             <button
               className={clsx(styles.spoilerBtn, open && styles.open)}
-              onClick={() => setSpoiler((v) => !v)}
+              onClick={onSpoilerButtonClick}
             >
-              <img height={14} src={spoiler ? eyeOpenSvg : eyeClosedSvg} />
+              <img
+                height={14}
+                src={markedAsSpoiler ? eyeOpenSvg : eyeClosedSvg}
+              />
             </button>
           )}
 
@@ -74,14 +89,14 @@ export const SummarySection = (props: Props) => {
         className={clsx(
           styles.wrapper,
           !open && styles.open,
-          spoiler && styles.spoiler,
+          markedAsSpoiler && styles.spoiler,
           props.className
         )}
       >
         {props.children}
       </div>
 
-      {spoiler && (
+      {markedAsSpoiler && (
         <div
           className={styles.spoilerOverlay}
           style={{
@@ -90,7 +105,7 @@ export const SummarySection = (props: Props) => {
           }}
         >
           <h1>SPOILER ALERT!</h1>
-          <button onClick={() => setSpoiler(false)}>
+          <button onClick={onSpoilerButtonClick}>
             <span>Show anyways</span>
           </button>
         </div>

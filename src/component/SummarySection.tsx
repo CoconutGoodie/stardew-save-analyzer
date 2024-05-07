@@ -29,7 +29,7 @@ export const SummarySection = (props: Props) => {
     ref: wrapperRef,
   });
 
-  const [open, setOpen] = useState(true);
+  const [expanded, setExpanded] = useState(props.spoiler ? false : true);
 
   const spoilerStore = useSpoilersStore();
 
@@ -40,8 +40,13 @@ export const SummarySection = (props: Props) => {
 
   const onSpoilerButtonClick = () => {
     if (!props.id) return;
-    if (markedAsSpoiler) spoilerStore.reveal(props.id);
-    else spoilerStore.hide(props.id);
+
+    if (markedAsSpoiler) {
+      spoilerStore.reveal(props.id);
+      setExpanded(true);
+    } else {
+      spoilerStore.hide(props.id);
+    }
   };
 
   return (
@@ -63,7 +68,7 @@ export const SummarySection = (props: Props) => {
 
           {props.spoiler && (
             <button
-              className={clsx(styles.spoilerBtn, open && styles.open)}
+              className={clsx(styles.spoilerBtn, expanded && styles.expanded)}
               onClick={onSpoilerButtonClick}
             >
               <img
@@ -75,8 +80,8 @@ export const SummarySection = (props: Props) => {
 
           {collapsable && (
             <button
-              className={clsx(styles.collapseBtn, open && styles.open)}
-              onClick={() => setOpen((v) => !v)}
+              className={clsx(styles.collapseBtn, expanded && styles.expanded)}
+              onClick={() => setExpanded((v) => !v)}
             >
               <img height={10} src={chevronRightSvg} />
             </button>
@@ -88,7 +93,7 @@ export const SummarySection = (props: Props) => {
         ref={wrapperRef}
         className={clsx(
           styles.wrapper,
-          !open && styles.open,
+          !expanded && styles.expanded,
           markedAsSpoiler && styles.spoiler,
           props.className
         )}
@@ -98,7 +103,7 @@ export const SummarySection = (props: Props) => {
 
       {markedAsSpoiler && (
         <div
-          className={styles.spoilerOverlay}
+          className={clsx(styles.spoilerOverlay, expanded && styles.expanded)}
           style={{
             ["--wrapperWidth" as string]: `${wrapperWidth}px`,
             ["--wrapperHeight" as string]: `${wrapperHeight}px`,
@@ -106,7 +111,7 @@ export const SummarySection = (props: Props) => {
         >
           <h1>SPOILER ALERT!</h1>
           <button onClick={onSpoilerButtonClick}>
-            <span>Show anyways</span>
+            <span>Click to reveal</span>
           </button>
         </div>
       )}

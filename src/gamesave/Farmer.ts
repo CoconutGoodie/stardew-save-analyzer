@@ -22,6 +22,7 @@ export class Farmer {
   public readonly playtime;
 
   public readonly qiGems;
+  public readonly qiCoins;
 
   public readonly skills;
   public readonly skillLevelTotal;
@@ -48,6 +49,7 @@ export class Farmer {
     this.playtime = farmerXml.query(":scope > millisecondsPlayed").number();
 
     this.qiGems = farmerXml.query(":scope > qiGems").number();
+    this.qiCoins = farmerXml.query(":scope > clubCoins").number();
 
     this.skills = {
       farming: {

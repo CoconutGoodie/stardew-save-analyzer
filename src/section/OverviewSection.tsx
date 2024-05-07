@@ -134,6 +134,13 @@ export const OverviewSection = (props: Props) => {
                     </div>
                   </li>
                 )}
+                {farmer.qiCoins > 0 && (
+                  <li>
+                    <div>
+                      Qi Coins: <Currency amount={farmer.qiCoins} unit="qiCoins" />
+                    </div>
+                  </li>
+                )}
               </ul>
             </div>
 

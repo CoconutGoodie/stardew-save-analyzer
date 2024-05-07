@@ -33,6 +33,7 @@ export const MasteriesSection = (props: Props) => {
       sectionTitle="Skill Masteries"
       collapsable
       versions={["v1.6 Introduced"]}
+      spoiler
     >
       <FarmersRow>
         {props.gameSave.getAllFarmers().map((farmer) => {

@@ -6,12 +6,11 @@ import { StardewWiki } from "../util/StardewWiki";
 import boardPng from "../assets/sprite/special-order/qi/special_orders_board.png";
 
 import { ImageObjective } from "@src/component/ImageObjective";
-import clsx from "clsx";
-import { GameDateDisplay } from "../component/GameDateDisplay";
-import { Objective } from "../component/Objective";
-import { GameDate, GameSeason } from "../util/GameDate";
-import styles from "./QiSpecialOrdersSection.module.scss";
+import { useGoals } from "@src/hook/useGoals";
 import { snakeCase } from "case-anything";
+import clsx from "clsx";
+import { Objective } from "../component/Objective";
+import styles from "./QiSpecialOrdersSection.module.scss";
 
 interface Props {
   gameSave: GameSave;
@@ -26,14 +25,17 @@ const specialOrderIcons = new AssetRepository<{ default: string }>(
 );
 
 export const QiSpecialOrdersSection = (props: Props) => {
-  const completedCount = props.gameSave.qiSpecialOrders.filter(
-    (order) => order.completed
-  ).length;
-
-  const walnutRoomDiscovered = true; // TODO
-
-  const completedEveryOrder =
-    completedCount === props.gameSave.qiSpecialOrders.length;
+  const { goals, allDone } = useGoals({
+    objectives: {
+      walnutRoomDiscovered: true, // TODO
+      orderCompletion: {
+        current: props.gameSave.qiSpecialOrders.filter(
+          (order) => order.completed
+        ).length,
+        goal: props.gameSave.qiSpecialOrders.length,
+      },
+    },
+  });
 
   return (
     <SummarySection
@@ -41,6 +43,7 @@ export const QiSpecialOrdersSection = (props: Props) => {
       sectionTitle="Mr. Qi's Special Orders"
       collapsable
       versions={["v1.5 Introduced"]}
+      allDone={allDone}
     >
       <div className={styles.board}>
         <a
@@ -49,7 +52,9 @@ export const QiSpecialOrdersSection = (props: Props) => {
         >
           <img
             height={108}
-            className={clsx(!walnutRoomDiscovered && styles.incomplete)}
+            className={clsx(
+              !goals.objectives.walnutRoomDiscovered && styles.incomplete
+            )}
             src={boardPng}
           />
         </a>
@@ -75,17 +80,23 @@ export const QiSpecialOrdersSection = (props: Props) => {
         </div>
       </div>
 
-      <Objective done={walnutRoomDiscovered} className={styles.objective}>
+      <Objective
+        done={goals.objectives.walnutRoomDiscovered}
+        className={styles.objective}
+      >
         "Qi's Walnut Room" is discovered. [WIP]
       </Objective>
 
-      <Objective done={completedEveryOrder} className={styles.objective}>
+      <Objective
+        done={goals.objectiveDone.orderCompletion}
+        className={styles.objective}
+      >
         Every Special Order is completed.
-        {!completedEveryOrder && (
+        {!goals.objectiveDone.orderCompletion && (
           <span>
             {" "}
-            — Completed {completedCount} out of{" "}
-            {props.gameSave.qiSpecialOrders.length}
+            — Completed {goals.objectives.orderCompletion.current} out of{" "}
+            {goals.objectives.orderCompletion.goal}
           </span>
         )}
       </Objective>

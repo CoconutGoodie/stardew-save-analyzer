@@ -1,4 +1,4 @@
-$collapsedHeight: 150px;
+$collapsedHeight: 100px;
 
 .section {
   position: relative;
@@ -12,7 +12,7 @@ $collapsedHeight: 150px;
 
   .wrapper {
     &.expanded {
-      height: 100px;
+      height: $collapsedHeight;
       overflow: hidden;
       mask-image: linear-gradient(to bottom, #fff, rgba(#fff, 0));
     }
@@ -32,10 +32,10 @@ $collapsedHeight: 150px;
 
     &.allDone {
       // color: #4fca1c;
-      color: #a9ff85;
+      color: #9ac7a7;
 
       & > img {
-        margin-left: -8px;
+        margin-left: -6px;
       }
     }
 

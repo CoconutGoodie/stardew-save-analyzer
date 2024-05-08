@@ -11,6 +11,7 @@ import { AssetRepository } from "@src/util/AssetRepository";
 import { STARDEW_RARECROW_IDS } from "@src/const/StardewRarecrows";
 import { StardewWiki } from "@src/util/StardewWiki";
 import { InfoText } from "@src/component/InfoText";
+import { useGoals } from "@src/hook/useGoals";
 
 interface Props {
   gameSave: GameSave;
@@ -25,6 +26,11 @@ const rarecrowSprites = new AssetRepository<{ default: string }>(
 );
 
 export const RarecrowSection = (props: Props) => {
+  // const { goals, allDone } = useGoals({
+  //   objectives: {},
+  //   farmers:
+  // });
+
   const farmersMissingMail = props.gameSave
     .getAllFarmers()
     .filter((farmer) => !farmer.rarecrowSocietyMailed);
@@ -39,6 +45,7 @@ export const RarecrowSection = (props: Props) => {
 
   return (
     <SummarySection
+      id="rarecrow-society"
       sectionTitle="Rarecrow Society"
       collapsable
       versions={["v1.4 Introduced"]}

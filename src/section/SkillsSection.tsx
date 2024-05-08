@@ -1,15 +1,16 @@
 import { capitalCase, lowerCase } from "case-anything";
 import { AchievementDisplay } from "../component/AchievementDisplay";
 import { SummarySection } from "../component/SummarySection";
-import { AssetRepository } from "../util/AssetRepository";
 import { GameSave } from "../gamesave/GameSave";
+import { AssetRepository } from "../util/AssetRepository";
 
-import styles from "./SkillsSection.module.scss";
-import { StardewWiki } from "../util/StardewWiki";
-import { entries, values } from "remeda";
-import { FarmerTag } from "../component/FarmerTag";
-import { thru } from "@src/util/utilities";
 import { FarmersRow } from "@src/component/FarmersRow";
+import { useGoals } from "@src/hook/useGoals";
+import { thru } from "@src/util/utilities";
+import { entries, mapToObj } from "remeda";
+import { FarmerTag } from "../component/FarmerTag";
+import { StardewWiki } from "../util/StardewWiki";
+import styles from "./SkillsSection.module.scss";
 
 interface Props {
   gameSave: GameSave;
@@ -30,8 +31,25 @@ const professionSprites = new AssetRepository<{ default: string }>(
 export const SkillsSection = (props: Props) => {
   const farmers = props.gameSave.getAllFarmers();
 
+  const { allDone } = useGoals({
+    farmers: mapToObj(farmers, (farmer) => [
+      farmer.name,
+      {
+        achievements: [
+          props.gameSave.achievements[farmer.name].singularTalent,
+          props.gameSave.achievements[farmer.name].masterOfTheFiveWays,
+        ],
+      },
+    ]),
+  });
+
   return (
-    <SummarySection id="skills" sectionTitle="Skills" collapsable>
+    <SummarySection
+      id="skills"
+      sectionTitle="Skills"
+      collapsable
+      allDone={allDone}
+    >
       <FarmersRow className={styles.farmers}>
         {farmers.map((farmer) => (
           <div key={farmer.name} className={styles.farmer}>

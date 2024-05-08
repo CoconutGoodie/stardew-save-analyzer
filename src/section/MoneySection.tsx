@@ -1,10 +1,9 @@
-import { useObjectives } from "@src/hook/useObjectives";
+import { useGoals } from "@src/hook/useGoals";
 import { AchievementDisplay } from "../component/AchievementDisplay";
 import { Currency } from "../component/Currency";
 import { SummarySection } from "../component/SummarySection";
 import { GameSave } from "../gamesave/GameSave";
 import styles from "./MoneySection.module.scss";
-import { fromEntries, mapToObj } from "remeda";
 
 interface Props {
   gameSave: GameSave;
@@ -27,14 +26,9 @@ export const MoneySection = (props: Props) => {
     .padStart(9, " ")
     .split("");
 
-  const { allDone } = useObjectives(
-    fromEntries(
-      targetAchievements.map((achievement) => [
-        achievement.title,
-        achievement.achieved,
-      ])
-    )
-  );
+  const { allDone } = useGoals({
+    achievements: targetAchievements,
+  });
 
   return (
     <SummarySection

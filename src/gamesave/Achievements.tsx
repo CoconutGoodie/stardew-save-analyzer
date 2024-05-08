@@ -15,6 +15,9 @@ export class Achievements {
   public readonly singularTalent;
   public readonly masterOfTheFiveWays;
 
+  public readonly gofer;
+  public readonly aBigHelp;
+
   public readonly mysteryOfTheStardrops;
 
   public readonly motherCatch;
@@ -44,6 +47,9 @@ export class Achievements {
       "Master of the Five Ways",
       values(farmer.skills).every((skill) => skill.level >= 10)
     );
+
+    this.gofer = new QuestCompletionAchievement(farmer, "Gofer", 10);
+    this.aBigHelp = new QuestCompletionAchievement(farmer, "A Big Help", 40);
 
     this.mysteryOfTheStardrops = new Achievement(
       "Mystery of the Stardrops",
@@ -86,7 +92,7 @@ export class Achievements {
 
 /* --------------------- */
 
-class Achievement {
+export class Achievement {
   constructor(
     public readonly title: string,
     public readonly achieved: boolean
@@ -96,6 +102,17 @@ class Achievement {
 export class MoneyAchievement extends Achievement {
   constructor(gameSave: GameSave, title: string, public readonly goal: number) {
     super(title, gameSave.totalGoldsEarned >= goal);
+  }
+}
+
+export class QuestCompletionAchievement extends Achievement {
+  constructor(
+    farmer: Farmer,
+    title: string,
+    public readonly goal: number,
+    public readonly completed = farmer.totalCompletedQuests
+  ) {
+    super(title, completed >= goal);
   }
 }
 

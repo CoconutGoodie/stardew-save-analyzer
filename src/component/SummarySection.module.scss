@@ -32,8 +32,11 @@ $collapsedHeight: 150px;
 
     &.allDone {
       // color: #82d49a;
-      text-decoration: underline;
-      text-decoration-color: #55e21a;
+
+      & > span:first-of-type {
+        text-decoration: underline;
+        text-decoration-color: #55e21a;
+      }
 
       & > img {
         margin-left: -6px;

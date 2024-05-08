@@ -36,7 +36,7 @@ export const HelpWantedSection = (props: Props) => {
   return (
     <SummarySection
       id="quests"
-      sectionTitle="Quests"
+      sectionTitle={'"Help Wanted" Quests'}
       collapsable
       allDone={allDone}
     >

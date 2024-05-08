@@ -121,6 +121,9 @@ export const SummarySection = (props: Props) => {
         }}
       >
         <h1>SPOILER ALERT!</h1>
+        {expanded && (
+          <p>This section possibly contains spoilers about the latest update</p>
+        )}
         <button onClick={onSpoilerButtonClick}>
           <span>Click to reveal</span>
         </button>

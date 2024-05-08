@@ -26,7 +26,7 @@ export const useSpoilersStore = create<State & Actions>()(
         }),
     })),
     {
-      name: "revealed-spoilers",
+      name: "spoilers",
     }
   )
 );

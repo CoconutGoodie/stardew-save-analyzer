@@ -31,14 +31,16 @@ $collapsedHeight: 150px;
     font-size: 28px;
 
     &.allDone {
-      color: #82d49a;
+      // color: #82d49a;
+      text-decoration: underline;
+      text-decoration-color: #55e21a;
 
       & > img {
         margin-left: -6px;
       }
 
       & > a {
-        color: #5ac279;
+        color: #7ae24d;
       }
     }
 

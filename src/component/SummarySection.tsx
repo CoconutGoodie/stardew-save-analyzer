@@ -109,25 +109,29 @@ export const SummarySection = (props: Props) => {
         {props.children}
       </div>
 
-      <div
-        className={clsx(
-          styles.spoilerOverlay,
-          markedAsSpoiler && styles.shown,
-          expanded && styles.expanded
-        )}
-        style={{
-          ["--wrapperWidth" as string]: `${wrapperWidth}px`,
-          ["--wrapperHeight" as string]: `${wrapperHeight}px`,
-        }}
-      >
-        <h1>SPOILER ALERT!</h1>
-        {expanded && (
-          <p>This section possibly contains spoilers about the latest update</p>
-        )}
-        <button onClick={onSpoilerButtonClick}>
-          <span>Click to reveal</span>
-        </button>
-      </div>
+      {props.spoiler && (
+        <div
+          className={clsx(
+            styles.spoilerOverlay,
+            markedAsSpoiler && styles.shown,
+            expanded && styles.expanded
+          )}
+          style={{
+            ["--wrapperWidth" as string]: `${wrapperWidth}px`,
+            ["--wrapperHeight" as string]: `${wrapperHeight}px`,
+          }}
+        >
+          <h1>SPOILER ALERT!</h1>
+          {expanded && (
+            <p>
+              This section possibly contains spoilers about the latest update
+            </p>
+          )}
+          <button onClick={onSpoilerButtonClick}>
+            <span>Click to reveal</span>
+          </button>
+        </div>
+      )}
     </section>
   );
 };

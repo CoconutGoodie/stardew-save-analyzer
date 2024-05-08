@@ -1,4 +1,4 @@
-$collapsedHeight: 100px;
+$collapsedHeight: 150px;
 
 .section {
   position: relative;
@@ -88,16 +88,19 @@ $collapsedHeight: 100px;
   gap: 5px;
 
   & > * {
-    padding: 2px 6px;
+    padding: 1px 10px;
     background: linear-gradient(to right, #aa9267, #ceba97);
+    border: 2px solid #6e5f45;
     color: #000000;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
-    font-style: italic;
-    border-radius: 5px;
+    // font-style: italic;
+    border-radius: 999px;
 
     &.spoiler {
       background: linear-gradient(to right, #d79b3f, #cf891f);
+      border-color: #9b6008;
+      color: #000000;
     }
   }
 }
@@ -116,23 +119,18 @@ $collapsedHeight: 100px;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: rgba(#3d3d3d, 0.3);
-  // background: radial-gradient(
-  //   ellipse at center,
-  //   rgba(#ff9900, 0.5),
-  //   rgba(#1f1609, 0.1)
-  // );
-  // background: rgba(#f7b85a, 0.05);
   background: linear-gradient(
     to right bottom,
-    rgba(#ff9900, 0.3),
+    rgba(#363636, 0.3),
     rgba(#1f1609, 0.1)
   );
   border-radius: 15px;
   backdrop-filter: blur(30px);
   font-family: "Stardew Valley";
   font-size: 50px;
-  transition: backdrop-filter 180ms linear;
+  opacity: 0;
+  pointer-events: none;
+  transition: backdrop-filter 180ms linear, opacity 200ms linear;
 
   &:hover {
     backdrop-filter: blur(15px);
@@ -141,6 +139,11 @@ $collapsedHeight: 100px;
   &:not(.expanded) {
     padding: 5px 0;
     font-size: 30px;
+  }
+
+  &.shown {
+    opacity: 1;
+    pointer-events: all;
   }
 
   & > h1 {

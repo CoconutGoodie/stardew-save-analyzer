@@ -38,7 +38,7 @@ export const SummarySection = (props: Props) => {
       ? !spoilerStore.revealed.includes(props.id)
       : false;
 
-  const [expanded, setExpanded] = useState(!markedAsSpoiler);
+  const [expanded, setExpanded] = useState(true);
 
   const onSpoilerButtonClick = () => {
     if (!props.id) return;
@@ -70,7 +70,7 @@ export const SummarySection = (props: Props) => {
               {props.versions?.map((version) => (
                 <span key={version}>{version}</span>
               ))}
-              {props.spoiler && <span className={styles.spoiler}>Spoiler</span>}
+              {/* {props.spoiler && <span className={styles.spoiler}>Spoiler</span>} */}
             </span>
           )}
 
@@ -81,7 +81,7 @@ export const SummarySection = (props: Props) => {
             >
               <img
                 height={14}
-                src={markedAsSpoiler ? eyeOpenSvg : eyeClosedSvg}
+                src={markedAsSpoiler ? eyeClosedSvg : eyeOpenSvg}
               />
             </button>
           )}
@@ -109,20 +109,22 @@ export const SummarySection = (props: Props) => {
         {props.children}
       </div>
 
-      {markedAsSpoiler && (
-        <div
-          className={clsx(styles.spoilerOverlay, expanded && styles.expanded)}
-          style={{
-            ["--wrapperWidth" as string]: `${wrapperWidth}px`,
-            ["--wrapperHeight" as string]: `${wrapperHeight}px`,
-          }}
-        >
-          <h1>SPOILER ALERT!</h1>
-          <button onClick={onSpoilerButtonClick}>
-            <span>Click to reveal</span>
-          </button>
-        </div>
-      )}
+      <div
+        className={clsx(
+          styles.spoilerOverlay,
+          markedAsSpoiler && styles.shown,
+          expanded && styles.expanded
+        )}
+        style={{
+          ["--wrapperWidth" as string]: `${wrapperWidth}px`,
+          ["--wrapperHeight" as string]: `${wrapperHeight}px`,
+        }}
+      >
+        <h1>SPOILER ALERT!</h1>
+        <button onClick={onSpoilerButtonClick}>
+          <span>Click to reveal</span>
+        </button>
+      </div>
     </section>
   );
 };

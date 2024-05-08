@@ -52,14 +52,18 @@ export const SummarySection = (props: Props) => {
   };
 
   return (
-    <section {...nativeProps} className={styles.section}>
+    <section
+      {...nativeProps}
+      className={styles.section}
+      data-done={props.allDone}
+    >
       {sectionTitle && (
         <h1 className={clsx(props.allDone && styles.allDone)}>
           {nativeProps.id && <a href={`#${nativeProps.id}`}>#</a>}
 
           <span>{sectionTitle}</span>
 
-          {props.allDone && <img height={18} src={checkmarkPng} />}
+          {props.allDone && <img height={14} src={checkmarkPng} />}
 
           {(props.versions || props.spoiler) && (
             <span className={styles.versions}>

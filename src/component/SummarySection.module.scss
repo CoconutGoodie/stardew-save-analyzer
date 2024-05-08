@@ -31,11 +31,14 @@ $collapsedHeight: 100px;
     font-size: 28px;
 
     &.allDone {
-      // color: #4fca1c;
-      color: #9ac7a7;
+      color: #82d49a;
 
       & > img {
         margin-left: -6px;
+      }
+
+      & > a {
+        color: #5ac279;
       }
     }
 

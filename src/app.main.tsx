@@ -32,7 +32,7 @@ function App() {
     <main>
       <header>
         <img width={350} src={logoPng} />
-        <span>last updated for v1.6.4</span>
+        <span>last updated for v1.6.8</span>
       </header>
 
       <div id="content">

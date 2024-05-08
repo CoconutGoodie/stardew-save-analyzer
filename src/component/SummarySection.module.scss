@@ -30,6 +30,15 @@ $collapsedHeight: 150px;
     gap: 10px;
     font-size: 28px;
 
+    &.allDone {
+      // color: #4fca1c;
+      color: #a9ff85;
+
+      & > img {
+        margin-left: -8px;
+      }
+    }
+
     & > a {
       padding: 0 10px;
       position: absolute;

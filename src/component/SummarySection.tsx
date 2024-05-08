@@ -11,6 +11,7 @@ import styles from "./SummarySection.module.scss";
 import chevronRightSvg from "@src/assets/icon/chevron-right.svg";
 import eyeOpenSvg from "@src/assets/icon/eye-open.svg";
 import eyeClosedSvg from "@src/assets/icon/eye-closed.svg";
+import checkmarkPng from "@src/assets/icon/checkmark.png";
 import { useResizeObserver } from "usehooks-ts";
 import { useSpoilersStore } from "@src/store/useSpoilersStore";
 
@@ -19,10 +20,11 @@ type Props = ComponentProps<"section"> & {
   versions?: string[];
   collapsable?: boolean;
   spoiler?: boolean;
+  allDone?: boolean;
 };
 
 export const SummarySection = (props: Props) => {
-  const { sectionTitle, collapsable, spoiler, ...nativeProps } = props;
+  const { sectionTitle, collapsable, spoiler, allDone, ...nativeProps } = props;
 
   const wrapperRef = useRef<ComponentRef<"div">>(null);
   const { width: wrapperWidth, height: wrapperHeight } = useResizeObserver({
@@ -52,10 +54,12 @@ export const SummarySection = (props: Props) => {
   return (
     <section {...nativeProps} className={styles.section}>
       {sectionTitle && (
-        <h1>
+        <h1 className={clsx(props.allDone && styles.allDone)}>
           {nativeProps.id && <a href={`#${nativeProps.id}`}>#</a>}
 
           <span>{sectionTitle}</span>
+
+          {props.allDone && <img height={18} src={checkmarkPng} />}
 
           {(props.versions || props.spoiler) && (
             <span className={styles.versions}>

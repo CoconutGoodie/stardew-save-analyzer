@@ -1,8 +1,10 @@
+import { useObjectives } from "@src/hook/useObjectives";
 import { AchievementDisplay } from "../component/AchievementDisplay";
 import { Currency } from "../component/Currency";
 import { SummarySection } from "../component/SummarySection";
 import { GameSave } from "../gamesave/GameSave";
 import styles from "./MoneySection.module.scss";
+import { fromEntries, mapToObj } from "remeda";
 
 interface Props {
   gameSave: GameSave;
@@ -12,10 +14,27 @@ export const MoneySection = (props: Props) => {
   const playerAchievements =
     props.gameSave.achievements[props.gameSave.player.name];
 
+  const targetAchievements = [
+    playerAchievements.greenhorn,
+    playerAchievements.cowpoke,
+    playerAchievements.homesteader,
+    playerAchievements.millionaire,
+    playerAchievements.legend,
+  ];
+
   const totalDigits = props.gameSave.totalGoldsEarned
     .toString()
     .padStart(9, " ")
     .split("");
+
+  const { allDone } = useObjectives(
+    fromEntries(
+      targetAchievements.map((achievement) => [
+        achievement.title,
+        achievement.achieved,
+      ])
+    )
+  );
 
   return (
     <SummarySection
@@ -23,9 +42,10 @@ export const MoneySection = (props: Props) => {
       sectionTitle="Money"
       className={styles.section}
       collapsable
+      allDone={allDone}
     >
       <div>
-        In total, {props.gameSave.farmName} Farm has earned{" "}
+        In total, <strong>{props.gameSave.farmName} Farm</strong> has earned{" "}
         <Currency amount={props.gameSave.totalGoldsEarned} />
       </div>
 
@@ -39,13 +59,7 @@ export const MoneySection = (props: Props) => {
       </div>
 
       <div className={styles.achievements}>
-        {[
-          playerAchievements.greenhorn,
-          playerAchievements.cowpoke,
-          playerAchievements.homesteader,
-          playerAchievements.millionaire,
-          playerAchievements.legend,
-        ].map((achievement) => {
+        {targetAchievements.map((achievement) => {
           return (
             <AchievementDisplay
               key={achievement.title}
@@ -61,9 +75,7 @@ export const MoneySection = (props: Props) => {
                 <span>
                   —{" "}
                   <Currency
-                    amount={
-                      achievement.goal - props.gameSave.totalGoldsEarned
-                    }
+                    amount={achievement.goal - props.gameSave.totalGoldsEarned}
                     unit="gold"
                   />{" "}
                   more to go

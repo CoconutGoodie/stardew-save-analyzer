@@ -45,7 +45,7 @@ export const RarecrowSection = (props: Props) => {
     >
       <div className={styles.objectives}>
         <Objective done icon={<img src={scarecrowPng} />}>
-          In total, <strong>{totalPlaced}</strong> rarecrow(s) are placed all
+          In total, <strong>{totalPlaced}</strong> Rarecrow(s) are placed all
           across the Valley.
         </Objective>
         <Objective done icon={<img src={scarecrowPng} />}>
@@ -54,7 +54,7 @@ export const RarecrowSection = (props: Props) => {
             {values(props.gameSave.rarecrowsPlaced).filter((x) => x > 0).length}
           </strong>{" "}
           of <strong>{STARDEW_RARECROW_IDS.length}</strong> different
-          rarecrow(s) all across the Valley.
+          Rarecrow(s) all across the Valley.
         </Objective>
       </div>
 

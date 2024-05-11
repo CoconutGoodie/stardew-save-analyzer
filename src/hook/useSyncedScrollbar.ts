@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { DependencyList, useEffect, useState } from "react";
 
-export function useSyncedScrollbar() {
+export function useSyncedScrollbar(resetDeps?: DependencyList) {
   const [elements] = useState<Map<HTMLElement, () => void>>(() => new Map());
 
   const addScrollableRef = (element: HTMLElement | null) => {
@@ -21,11 +21,11 @@ export function useSyncedScrollbar() {
     elements.set(element, handleScroll);
   };
 
-  const scrollAllTo = (to: number) => {
+  useEffect(() => {
     elements.forEach((_, element) => {
-      element.scrollTop = to;
+      element.scrollTop = 0;
     });
-  };
+  }, resetDeps);
 
   useEffect(() => {
     return () => {
@@ -38,6 +38,5 @@ export function useSyncedScrollbar() {
 
   return {
     addScrollableRef,
-    scrollAllTo,
   };
 }

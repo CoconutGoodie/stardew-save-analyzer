@@ -1,5 +1,5 @@
 import { capitalCase, snakeCase } from "case-anything";
-import { keys, sumBy } from "remeda";
+import { keys, mapToObj, sumBy } from "remeda";
 import { FarmerTag } from "../component/FarmerTag";
 import { SummarySection } from "../component/SummarySection";
 import {
@@ -27,6 +27,7 @@ import { FarmersRow } from "@src/component/FarmersRow";
 import barbedHookPng from "@src/assets/icon/barbed_hook.png";
 import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
 import { Scrollbox } from "@src/component/Scrollbox";
+import { useGoals } from "@src/hook/useGoals";
 
 interface Props {
   gameSave: GameSave;
@@ -48,16 +49,39 @@ export const FishingSection = (props: Props) => {
   const [compact, setCompact] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
-  const { addScrollableRef, scrollAllTo } = useSyncedScrollbar();
-
-  useEffect(() => scrollAllTo(0), [expanded]);
+  const { addScrollableRef } = useSyncedScrollbar([expanded]);
 
   const farmers = props.gameSave.getAllFarmers();
 
   const maxBobberCount = 1 + Math.floor(keys(STARDEW_FISHES).length / 2);
 
+  const { allDone } = useGoals({
+    individuals: mapToObj(farmers, (farmer) => [
+      farmer.name,
+      {
+        achievements: [
+          props.gameSave.achievements[farmer.name].motherCatch,
+          props.gameSave.achievements[farmer.name].fisherman,
+          props.gameSave.achievements[farmer.name].olMariner,
+          props.gameSave.achievements[farmer.name].masterAngler,
+        ],
+        objectives: {
+          collectEveryBobberStyle: {
+            current: farmer.unlockedBobberCount,
+            goal: maxBobberCount,
+          },
+        },
+      },
+    ]),
+  });
+
   return (
-    <SummarySection id="fishing" sectionTitle="Fishing" collapsable>
+    <SummarySection
+      id="fishing"
+      sectionTitle="Fishing"
+      collapsable
+      allDone={allDone}
+    >
       <FarmersRow>
         {farmers.map((farmer) => {
           const caughtFishCount = sumBy(farmer.caughtFish, (v) => v.amount);
@@ -86,6 +110,7 @@ export const FishingSection = (props: Props) => {
                 scrollRef={addScrollableRef}
                 expanded={expanded}
                 onExpanded={setExpanded}
+                className={styles.categoriesScrollbox}
               >
                 <div
                   className={clsx(

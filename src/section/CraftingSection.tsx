@@ -18,6 +18,8 @@ import styles from "./CraftingSection.module.scss";
 import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
 import { InfoText } from "@src/component/InfoText";
 import { Scrollbox } from "@src/component/Scrollbox";
+import { useGoals } from "@src/hook/useGoals";
+import { mapToObj } from "remeda";
 
 interface Props {
   gameSave: GameSave;
@@ -32,14 +34,27 @@ const craftingRecipeSprites = new AssetRepository<{ default: string }>(
 export const CraftingSection = (props: Props) => {
   const [expanded, setExpanded] = useState(false);
 
-  const { addScrollableRef, scrollAllTo } = useSyncedScrollbar();
+  const { addScrollableRef } = useSyncedScrollbar([expanded]);
 
-  useEffect(() => scrollAllTo(0), [expanded]);
+  const farmers = props.gameSave.getAllFarmers();
+
+  const { allDone } = useGoals({
+    individuals: mapToObj(farmers, (farmer) => [
+      farmer.name,
+      {
+        achievements: [
+          props.gameSave.achievements[farmer.name].diy,
+          props.gameSave.achievements[farmer.name].artisan,
+          props.gameSave.achievements[farmer.name].craftMaster,
+        ],
+      },
+    ]),
+  });
 
   return (
-    <SummarySection sectionTitle="Crafting" collapsable>
+    <SummarySection sectionTitle="Crafting" collapsable allDone={allDone}>
       <FarmersRow>
-        {props.gameSave.getAllFarmers().map((farmer) => {
+        {farmers.map((farmer) => {
           const farmerAchievements = props.gameSave.achievements[farmer.name];
 
           const totalUnlocked = STARDEW_CRAFTING_RECIPES.filter(

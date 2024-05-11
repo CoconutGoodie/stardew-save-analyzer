@@ -14,43 +14,18 @@
   }
 }
 
-.view {
-  position: relative;
-
-  &.expanded > :nth-child(2) {
-    .fishes {
-      grid-template-columns: repeat(7, 40px);
-    }
-  }
-
-  &:not(.expanded) > :nth-child(2) {
-    height: 400px;
-    overflow: auto;
-  }
-
-  & > button {
-    position: absolute;
-    right: 0;
-    top: 0;
-    transform: translateY(-100%) translateY(-7px);
-    border: none;
-    background: none;
-    color: #eab11e;
-    font-size: 14px;
-    font-style: italic;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-}
-
 .categories {
   padding-right: 10px;
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
   gap: 8px;
+
+  &.expanded {
+    .fishes {
+      grid-template-columns: repeat(7, 40px);
+    }
+  }
 }
 
 .category {

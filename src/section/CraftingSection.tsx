@@ -17,6 +17,7 @@ import { useEffect, useState } from "react";
 import styles from "./CraftingSection.module.scss";
 import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
 import { InfoText } from "@src/component/InfoText";
+import { Scrollbox } from "@src/component/Scrollbox";
 
 interface Props {
   gameSave: GameSave;
@@ -67,12 +68,15 @@ export const CraftingSection = (props: Props) => {
                 </Objective>
               </div>
 
-              <div className={clsx(styles.view, expanded && styles.expanded)}>
-                <button onClick={() => setExpanded((v) => !v)}>
-                  {expanded ? "Collapse view" : "Expand view"}
-                </button>
-
-                <div ref={addScrollableRef} className={styles.recipes}>
+              <Scrollbox
+                scrollRef={addScrollableRef}
+                expanded={expanded}
+                onExpanded={setExpanded}
+                className={styles.recipesScrollbox}
+              >
+                <div
+                  className={clsx(styles.recipes, expanded && styles.expanded)}
+                >
                   {STARDEW_CRAFTING_RECIPES.map((recipe) => (
                     <div
                       key={recipe}
@@ -98,7 +102,7 @@ export const CraftingSection = (props: Props) => {
                     </div>
                   ))}
                 </div>
-              </div>
+              </Scrollbox>
 
               <InfoText>
                 "

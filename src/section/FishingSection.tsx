@@ -26,6 +26,7 @@ import { FarmersRow } from "@src/component/FarmersRow";
 
 import barbedHookPng from "@src/assets/icon/barbed_hook.png";
 import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
+import { Scrollbox } from "@src/component/Scrollbox";
 
 interface Props {
   gameSave: GameSave;
@@ -81,13 +82,17 @@ export const FishingSection = (props: Props) => {
                 style(s).
               </Objective>
 
-              {/* TODO: Extract to ExpandableView component */}
-              <div className={clsx(styles.view, expanded && styles.expanded)}>
-                <button onClick={() => setExpanded((v) => !v)}>
-                  {expanded ? "Collapse view" : "Expand view"}
-                </button>
-
-                <div ref={addScrollableRef} className={styles.categories}>
+              <Scrollbox
+                scrollRef={addScrollableRef}
+                expanded={expanded}
+                onExpanded={setExpanded}
+              >
+                <div
+                  className={clsx(
+                    styles.categories,
+                    expanded && styles.expanded
+                  )}
+                >
                   {keys(FishCategory).map((categoryId) => {
                     const fishes =
                       STARDEW_FISHES_BY_CATEGORIES[
@@ -203,7 +208,7 @@ export const FishingSection = (props: Props) => {
                     );
                   })}
                 </div>
-              </div>
+              </Scrollbox>
 
               {thru(
                 props.gameSave.achievements[farmer.name],

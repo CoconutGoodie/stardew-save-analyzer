@@ -158,6 +158,7 @@ function App() {
                 <li>"Community Center" Section</li>
                 <li>"Perfection" Section</li>
                 <li>Tooltips Component</li>
+                <li>Table of Contents Quick Navigator</li>
                 <li>Support "Separate Wallets"</li>
               </ul>
             </SummarySection>

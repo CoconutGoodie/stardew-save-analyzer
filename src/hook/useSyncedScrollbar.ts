@@ -8,10 +8,11 @@ export function useSyncedScrollbar() {
     if (elements.has(element)) return;
 
     const handleScroll = () => {
-      console.log("Handling");
       elements.forEach((_, other) => {
         if (other === element) return;
-        other.scrollTop = element.scrollTop;
+        if (other.scrollTop != element.scrollTop) {
+          other.scrollTop = element.scrollTop;
+        }
       });
     };
 

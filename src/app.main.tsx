@@ -155,13 +155,19 @@ function App() {
                 <li>Tooltips Component</li>
                 <li>Table of Contents Quick Navigator</li>
                 <li>Support "Separate Wallets"</li>
+                <li>A better Footer</li>
               </ul>
             </SummarySection>
           </>
         )}
       </div>
 
-      <footer style={{ height: 200 }}></footer>
+      <footer style={{ height: 200 }}>
+        <span className="site-version">Made with ♥ by iGoodie</span>
+        <span className="site-version">
+          Site Version: v{process.env.APP_VERSION}
+        </span>
+      </footer>
     </main>
   );
 }

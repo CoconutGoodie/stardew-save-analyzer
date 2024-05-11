@@ -35,7 +35,16 @@ export const QiSpecialOrdersSection = (props: Props) => {
         goal: props.gameSave.qiSpecialOrders.length,
       },
     },
+    farmers: {
+      aaa: {
+        objectives:{
+          x:true
+        }
+      }
+    }
   });
+
+  goals.farmers["sdasad"].objectiveDone
 
   return (
     <SummarySection

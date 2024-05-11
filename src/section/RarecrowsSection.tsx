@@ -5,13 +5,12 @@ import { GameSave } from "@src/gamesave/GameSave";
 import scarecrowPng from "@src/assets/icon/scarecrow.png";
 import { sum, values } from "remeda";
 
-import styles from "./RarecrowsSection.module.scss";
 import { ImageObjective } from "@src/component/ImageObjective";
-import { AssetRepository } from "@src/util/AssetRepository";
-import { STARDEW_RARECROW_IDS } from "@src/const/StardewRarecrows";
-import { StardewWiki } from "@src/util/StardewWiki";
 import { InfoText } from "@src/component/InfoText";
-import { useGoals } from "@src/hook/useGoals";
+import { STARDEW_RARECROW_IDS } from "@src/const/StardewRarecrows";
+import { AssetRepository } from "@src/util/AssetRepository";
+import { StardewWiki } from "@src/util/StardewWiki";
+import styles from "./RarecrowsSection.module.scss";
 
 interface Props {
   gameSave: GameSave;
@@ -27,9 +26,14 @@ const rarecrowSprites = new AssetRepository<{ default: string }>(
 
 export const RarecrowSection = (props: Props) => {
   // const { goals, allDone } = useGoals({
-  //   objectives: {},
-  //   farmers:
+  //   objectives: {a:true},
+  //   farmers: {
+  //     x: { objectives: { x: false } },
+  //     y: { objectives: { x: true, y: true } },
+  //   },
   // });
+
+  // goals.farmers[0].objectives.
 
   const farmersMissingMail = props.gameSave
     .getAllFarmers()

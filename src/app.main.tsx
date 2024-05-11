@@ -5,25 +5,24 @@ import { SkillsSection } from "./section/SkillsSection";
 import { SpecialOrdersSection } from "./section/SpecialOrdersSection";
 import { StardropsSection } from "./section/StardropsSection";
 
-import logoPng from "./assets/logo.png";
 import questPng from "@src/assets/icon/exclamation.png";
+import logoPng from "./assets/logo.png";
 
 import { useState } from "react";
 import { SummarySection } from "./component/SummarySection";
 import { LoadSaveSection } from "./section/LoadSaveSection";
 
+import { MuseumSection } from "@src/section/MuseumSection";
 import { FishingSection } from "./section/FishingSection";
 import { GrandpasEvaluationsSection } from "./section/GrandpasSection";
-import { MuseumSection } from "@src/section/MuseumSection";
 
-import { MasteriesSection } from "@src/section/MasteriesSection";
-import { HelpWantedSection } from "@src/section/HelpWantedSection";
 import { CraftingSection } from "@src/section/CraftingSection";
+import { HelpWantedSection } from "@src/section/HelpWantedSection";
+import { MasteriesSection } from "@src/section/MasteriesSection";
 
-import "./style/style.scss";
-import { FpsDebugger } from "@src/component/FpsDebugger";
-import { RarecrowSection } from "@src/section/RarecrowsSection";
 import { QiSpecialOrdersSection } from "@src/section/QiSpecialOrdersSection";
+import { RarecrowSection } from "@src/section/RarecrowsSection";
+import "./style/style.scss";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
@@ -36,7 +35,6 @@ function App() {
       </header>
 
       <div id="content">
-        {!import.meta.env.PROD && <FpsDebugger scanInterval={100} />}
 
         <div className="disclaimers">
           <div className="disclaimer">

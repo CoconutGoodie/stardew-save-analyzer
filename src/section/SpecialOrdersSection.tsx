@@ -6,12 +6,12 @@ import { StardewWiki } from "../util/StardewWiki";
 import boardPng from "../assets/sprite/special-order/special_order_board.png";
 
 import { ImageObjective } from "@src/component/ImageObjective";
+import { useGoals } from "@src/hook/useGoals";
 import clsx from "clsx";
 import { GameDateDisplay } from "../component/GameDateDisplay";
 import { Objective } from "../component/Objective";
 import { GameDate, GameSeason } from "../util/GameDate";
 import styles from "./SpecialOrdersSection.module.scss";
-import { useGoals } from "@src/hook/useGoals";
 
 interface Props {
   gameSave: GameSave;
@@ -29,14 +29,17 @@ const specialOrderNpcs = new AssetRepository<{ default: string }>(
 
 export const SpecialOrdersSection = (props: Props) => {
   const { goals, allDone } = useGoals({
-    objectives: {
-      boardBuilt:
-        BOARD_BUILD_DATE.canonicalDay <=
-        props.gameSave.currentDate.canonicalDay,
-      orderCompletion: {
-        current: props.gameSave.specialOrders.filter((order) => order.completed)
-          .length,
-        goal: props.gameSave.specialOrders.length,
+    global: {
+      objectives: {
+        boardBuilt:
+          BOARD_BUILD_DATE.canonicalDay <=
+          props.gameSave.currentDate.canonicalDay,
+        orderCompletion: {
+          current: props.gameSave.specialOrders.filter(
+            (order) => order.completed
+          ).length,
+          goal: props.gameSave.specialOrders.length,
+        },
       },
     },
   });
@@ -57,7 +60,7 @@ export const SpecialOrdersSection = (props: Props) => {
           <img
             height={108}
             className={clsx(
-              !goals.objectives.orderCompletion && styles.incomplete
+              !goals.global.objectives.orderCompletion && styles.incomplete
             )}
             src={boardPng}
           />
@@ -82,7 +85,7 @@ export const SpecialOrdersSection = (props: Props) => {
       </div>
 
       <Objective
-        done={goals.objectives.boardBuilt}
+        done={goals.global.objectives.boardBuilt}
         className={styles.objective}
       >
         "Special Orders Board" has been built. (On{" "}
@@ -90,15 +93,15 @@ export const SpecialOrdersSection = (props: Props) => {
       </Objective>
 
       <Objective
-        done={goals.objectiveDone.orderCompletion}
+        done={goals.global.objectiveStatus.orderCompletion === "done"}
         className={styles.objective}
       >
         Every Special Order is completed.
-        {!goals.objectiveDone.orderCompletion && (
+        {goals.global.objectiveStatus.orderCompletion !== "done" && (
           <span>
             {" "}
-            — Completed {goals.objectives.orderCompletion.current} out of{" "}
-            {goals.objectives.orderCompletion.goal}
+            — Completed {goals.global.objectives.orderCompletion.current} out of{" "}
+            {goals.global.objectives.orderCompletion.goal}
           </span>
         )}
       </Objective>

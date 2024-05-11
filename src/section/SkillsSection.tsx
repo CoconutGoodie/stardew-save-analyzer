@@ -32,7 +32,7 @@ export const SkillsSection = (props: Props) => {
   const farmers = props.gameSave.getAllFarmers();
 
   const { allDone } = useGoals({
-    farmers: mapToObj(farmers, (farmer) => [
+    individuals: mapToObj(farmers, (farmer) => [
       farmer.name,
       {
         achievements: [

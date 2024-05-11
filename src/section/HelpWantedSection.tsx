@@ -22,7 +22,7 @@ export const HelpWantedSection = (props: Props) => {
   const farmers = props.gameSave.getAllFarmers();
 
   const { goals, allDone } = useGoals({
-    farmers: mapToObj(farmers, (farmer) => [
+    individuals: mapToObj(farmers, (farmer) => [
       farmer.name,
       {
         achievements: [
@@ -33,6 +33,8 @@ export const HelpWantedSection = (props: Props) => {
     ]),
   });
 
+  console.log({ goals });
+
   return (
     <SummarySection
       id="quests"
@@ -42,7 +44,7 @@ export const HelpWantedSection = (props: Props) => {
     >
       <FarmersRow>
         {farmers.map((farmer) => {
-          const farmerGoals = goals.farmers[farmer.name];
+          const farmerGoals = goals.individuals[farmer.name];
 
           return (
             <div key={farmer.name}>

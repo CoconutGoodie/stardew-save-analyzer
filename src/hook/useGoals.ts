@@ -1,6 +1,6 @@
 import { Achievement } from "@src/gamesave/Achievements";
 import { isKeyOf } from "@src/util/utilities";
-import { entries, fromEntries, isPlainObject, mapValues, values } from "remeda";
+import { entries, isPlainObject, mapValues, values } from "remeda";
 
 type ObjectiveValue =
   | boolean
@@ -8,66 +8,84 @@ type ObjectiveValue =
   | { [x: string]: ObjectiveValue };
 
 interface Objectives {
-  [name: string]: ObjectiveValue;
+  [name: PropertyKey]: ObjectiveValue;
 }
 
-interface Goals<
-  O extends Objectives,
-  A extends Achievement[],
-  OF extends Objectives,
-  AF extends Achievement[]
-> {
-  achievements?: A;
-  objectives?: O;
-  farmers?: Record<string, Omit<Goals<OF, AF, never, never>, "farmers">>;
+interface Goals<O extends Objectives, A extends Achievement[]> {
+  achievements: A;
+  objectives: O;
 }
 
 export function useGoals<
-  const O extends Objectives,
-  const A extends Achievement[],
-  const OF extends Objectives,
-  const AF extends Achievement[]
->(goals: Goals<O, A, OF, AF>) {
-  return {
-    goals: {
-      achievements: goals.achievements ?? [],
-      objectives: goals.objectives ?? ({} as O),
-      objectiveDone: fromEntries(
-        entries(goals.objectives ?? {}).map(([k, v]) => [k, isObjectiveDone(v)])
+  const GO extends Objectives,
+  const GA extends Achievement[],
+  const IO extends Objectives,
+  const IA extends Achievement[]
+>(args: {
+  global?: Partial<Goals<GO, GA>>;
+  individuals?: { [name: string]: Partial<Goals<IO, IA>> };
+}) {
+  const goals = {
+    global: {
+      achievements: args.global?.achievements ?? [],
+      objectives: args.global?.objectives ?? ({} as GO),
+      objectiveStatus: mapValues(
+        args.global?.objectives ?? ({} as GO),
+        calcObjectiveStatus
       ),
-      farmers: goals.farmers ?? {},
     },
-    allDone: isAllDone(goals),
+    individuals: mapValues(args.individuals ?? {}, (individual) => ({
+      achievements: individual?.achievements ?? [],
+      objectives: individual?.objectives ?? ({} as IO),
+      objectiveStatus: mapValues(
+        individual?.objectives ?? ({} as IO),
+        calcObjectiveStatus
+      ),
+    })),
+  };
+
+  return {
+    goals,
+    allDone:
+      isAllDone(goals.global) && values(goals.individuals).every(isAllDone),
   };
 }
 
-function isAllDone<
-  O extends Objectives,
-  A extends Achievement[],
-  OF extends Objectives,
-  AF extends Achievement[]
->(goals: Goals<O, A, OF, AF>): boolean {
+function isAllDone<O extends Objectives, A extends Achievement[]>(
+  goals: Goals<O, A>
+): boolean {
   const achievementsDone = (goals.achievements ?? []).every(
     (achievement) => achievement.achieved
   );
 
   const objectivesDone = entries(goals.objectives ?? {}).every(
-    ([_, objective]) => isObjectiveDone(objective)
+    ([_, objective]) => calcObjectiveStatus(objective) === "done"
   );
 
-  const farmersDone = !goals.farmers
-    ? true
-    : values(goals.farmers).every((g) => isAllDone(g));
-
-  return achievementsDone && objectivesDone && farmersDone;
+  return achievementsDone && objectivesDone;
 }
 
-function isObjectiveDone(objective: ObjectiveValue) {
-  return typeof objective === "boolean"
-    ? objective
-    : isKeyOf("current", objective) && isKeyOf("goal", objective)
-    ? objective.current >= objective.goal
-    : extractFlattenedEntries(objective).every((v) => !!v);
+function calcObjectiveStatus(objective: ObjectiveValue) {
+  if (typeof objective === "boolean") {
+    return objective ? "done" : "not-started";
+  }
+
+  if (isKeyOf("current", objective) && isKeyOf("goal", objective)) {
+    return objective.current === 0
+      ? "not-started"
+      : objective.current >= objective.goal
+      ? "done"
+      : "in-progress";
+  }
+
+  const subObjectives = extractFlattenedEntries(objective);
+  const doneCount = subObjectives.filter((v) => !!v).length;
+
+  return doneCount === 0
+    ? "not-started"
+    : doneCount >= subObjectives.length
+    ? "done"
+    : "in-progress";
 }
 
 function extractFlattenedEntries<T extends Record<string, unknown>>(obj: T) {

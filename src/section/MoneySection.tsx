@@ -13,21 +13,21 @@ export const MoneySection = (props: Props) => {
   const playerAchievements =
     props.gameSave.achievements[props.gameSave.player.name];
 
-  const targetAchievements = [
-    playerAchievements.greenhorn,
-    playerAchievements.cowpoke,
-    playerAchievements.homesteader,
-    playerAchievements.millionaire,
-    playerAchievements.legend,
-  ];
-
   const totalDigits = props.gameSave.totalGoldsEarned
     .toString()
     .padStart(9, " ")
     .split("");
 
-  const { allDone } = useGoals({
-    achievements: targetAchievements,
+  const { goals, allDone } = useGoals({
+    global: {
+      achievements: [
+        playerAchievements.greenhorn,
+        playerAchievements.cowpoke,
+        playerAchievements.homesteader,
+        playerAchievements.millionaire,
+        playerAchievements.legend,
+      ],
+    },
   });
 
   return (
@@ -53,7 +53,7 @@ export const MoneySection = (props: Props) => {
       </div>
 
       <div className={styles.achievements}>
-        {targetAchievements.map((achievement) => {
+        {goals.global.achievements.map((achievement) => {
           return (
             <AchievementDisplay
               key={achievement.title}

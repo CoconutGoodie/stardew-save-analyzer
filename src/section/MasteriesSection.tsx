@@ -31,7 +31,7 @@ export const MasteriesSection = (props: Props) => {
   const farmers = props.gameSave.getAllFarmers();
 
   const { goals, allDone } = useGoals({
-    farmers: mapToObj(farmers, (farmer) => [
+    individuals: mapToObj(farmers, (farmer) => [
       farmer.name,
       {
         objectives: {
@@ -61,7 +61,7 @@ export const MasteriesSection = (props: Props) => {
               ? 1
               : farmer.masteries.currentExp / farmer.masteries.tnl;
 
-          const farmerGoals = goals.farmers[farmer.name];
+          const farmerGoals = goals.individuals[farmer.name];
 
           return (
             <div key={farmer.name}>
@@ -98,7 +98,7 @@ export const MasteriesSection = (props: Props) => {
                     title={capitalCase(perkName)}
                   >
                     <ImageObjective
-                      done={farmerGoals.objectives!.perksClaimed[perkName]}
+                      done={farmerGoals.objectives.perksClaimed[perkName]}
                       height={150}
                       src={perkSprites.resolve(perkName)?.default ?? ""}
                     />
@@ -107,7 +107,7 @@ export const MasteriesSection = (props: Props) => {
               </div>
 
               <div className={styles.objectives}>
-                <Objective done={farmerGoals.objectives!.accessToCave}>
+                <Objective done={farmerGoals.objectives.accessToCave}>
                   Gained access to{" "}
                   <a href={StardewWiki.getLink("Mastery_Cave")} target="_blank">
                     <strong>Mastery Cave</strong>
@@ -115,12 +115,12 @@ export const MasteriesSection = (props: Props) => {
                   .
                 </Objective>
 
-                <Objective done={farmerGoals.objectives!.maxLevelReached}>
+                <Objective done={farmerGoals.objectives.maxLevelReached}>
                   Reached maximum Mastery level.
                 </Objective>
 
                 <Objective
-                  done={values(farmerGoals.objectives!.perksClaimed).every(
+                  done={values(farmerGoals.objectives.perksClaimed).every(
                     (claimed) => claimed
                   )}
                 >

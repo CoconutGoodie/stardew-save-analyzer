@@ -26,25 +26,18 @@ const specialOrderIcons = new AssetRepository<{ default: string }>(
 
 export const QiSpecialOrdersSection = (props: Props) => {
   const { goals, allDone } = useGoals({
-    objectives: {
-      walnutRoomDiscovered: true, // TODO
-      orderCompletion: {
-        current: props.gameSave.qiSpecialOrders.filter(
-          (order) => order.completed
-        ).length,
-        goal: props.gameSave.qiSpecialOrders.length,
+    global: {
+      objectives: {
+        walnutRoomDiscovered: true, // TODO
+        orderCompletion: {
+          current: props.gameSave.qiSpecialOrders.filter(
+            (order) => order.completed
+          ).length,
+          goal: props.gameSave.qiSpecialOrders.length,
+        },
       },
     },
-    farmers: {
-      aaa: {
-        objectives:{
-          x:true
-        }
-      }
-    }
   });
-
-  goals.farmers["sdasad"].objectiveDone
 
   return (
     <SummarySection
@@ -62,7 +55,7 @@ export const QiSpecialOrdersSection = (props: Props) => {
           <img
             height={108}
             className={clsx(
-              !goals.objectives.walnutRoomDiscovered && styles.incomplete
+              !goals.global.objectives.walnutRoomDiscovered && styles.incomplete
             )}
             src={boardPng}
           />
@@ -90,22 +83,22 @@ export const QiSpecialOrdersSection = (props: Props) => {
       </div>
 
       <Objective
-        done={goals.objectives.walnutRoomDiscovered}
+        done={goals.global.objectives.walnutRoomDiscovered}
         className={styles.objective}
       >
         "Qi's Walnut Room" is discovered. [WIP]
       </Objective>
 
       <Objective
-        done={goals.objectiveDone.orderCompletion}
+        done={goals.global.objectiveStatus.orderCompletion === "done"}
         className={styles.objective}
       >
         Every Special Order is completed.
-        {!goals.objectiveDone.orderCompletion && (
+        {goals.global.objectiveStatus.orderCompletion !== "done" && (
           <span>
             {" "}
-            — Completed {goals.objectives.orderCompletion.current} out of{" "}
-            {goals.objectives.orderCompletion.goal}
+            — Completed {goals.global.objectives.orderCompletion.current} out of{" "}
+            {goals.global.objectives.orderCompletion.goal}
           </span>
         )}
       </Objective>

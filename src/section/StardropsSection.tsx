@@ -13,16 +13,36 @@ import { StardewWiki } from "../util/StardewWiki";
 import styles from "./StardropsSection.module.scss";
 import { thru } from "@src/util/utilities";
 import { FarmersRow } from "@src/component/FarmersRow";
+import { useGoals } from "@src/hook/useGoals";
+import { mapToObj } from "remeda";
 
 interface Props {
   gameSave: GameSave;
 }
 
 export const StardropsSection = (props: Props) => {
+  const farmers = props.gameSave.getAllFarmers();
+
+  const { allDone } = useGoals({
+    individuals: mapToObj(farmers, (farmer) => [
+      farmer.name,
+      {
+        achievements: [
+          props.gameSave.achievements[farmer.name].mysteryOfTheStardrops,
+        ],
+      },
+    ]),
+  });
+
   return (
-    <SummarySection id="stardrops" sectionTitle="Stardrops" collapsable>
+    <SummarySection
+      id="stardrops"
+      sectionTitle="Stardrops"
+      collapsable
+      allDone={allDone}
+    >
       <FarmersRow>
-        {props.gameSave.getAllFarmers().map((farmer) => {
+        {farmers.map((farmer) => {
           const gatheredStardropCount = farmer.stardrops.filter(
             (stardrop) => stardrop.gathered
           ).length;

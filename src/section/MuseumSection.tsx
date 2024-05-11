@@ -12,6 +12,7 @@ import checkmarkPng from "@src/assets/icon/checkmark.png";
 import styles from "./MuseumSection.module.scss";
 import { Objective } from "@src/component/Objective";
 import { AchievementDisplay } from "@src/component/AchievementDisplay";
+import { useGoals } from "@src/hook/useGoals";
 
 interface Props {
   gameSave: GameSave;
@@ -40,8 +41,17 @@ export const MuseumSection = (props: Props) => {
   const playerAchievements =
     props.gameSave.achievements[props.gameSave.player.name];
 
+  const { allDone } = useGoals({
+    global: {
+      achievements: [
+        playerAchievements.treasureTrove,
+        playerAchievements.aCompleteCollection,
+      ],
+    },
+  });
+
   return (
-    <SummarySection sectionTitle="Museum Collection" collapsable>
+    <SummarySection sectionTitle="Museum Collection" collapsable allDone={allDone}>
       <div className={styles.info}>
         <a href={StardewWiki.getLink("Gunther")} target="_blank">
           <img src={guntherPng} />

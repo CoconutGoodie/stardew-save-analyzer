@@ -104,8 +104,8 @@ export const CookingSection = (props: Props) => {
                     >
                       <a href={StardewWiki.getLink(recipe)} target="_blank">
                         <ImageObjective
-                          width={34}
-                          height={34}
+                          width={38}
+                          height={38}
                           src={
                             cookingRecipeSprites.resolve(
                               snakeCase(recipe.replace(/-/g, " "))

@@ -3,7 +3,7 @@ import { SummarySection } from "@src/component/SummarySection";
 import { GameSave } from "@src/gamesave/GameSave";
 
 import scarecrowPng from "@src/assets/icon/scarecrow.png";
-import { sum, values } from "remeda";
+import { mapToObj, sum, values } from "remeda";
 
 import { ImageObjective } from "@src/component/ImageObjective";
 import { InfoText } from "@src/component/InfoText";
@@ -11,6 +11,7 @@ import { STARDEW_RARECROW_IDS } from "@src/const/StardewRarecrows";
 import { AssetRepository } from "@src/util/AssetRepository";
 import { StardewWiki } from "@src/util/StardewWiki";
 import styles from "./RarecrowsSection.module.scss";
+import { useGoals } from "@src/hook/useGoals";
 
 interface Props {
   gameSave: GameSave;
@@ -25,27 +26,31 @@ const rarecrowSprites = new AssetRepository<{ default: string }>(
 );
 
 export const RarecrowSection = (props: Props) => {
-  // const { goals, allDone } = useGoals({
-  //   objectives: {a:true},
-  //   farmers: {
-  //     x: { objectives: { x: false } },
-  //     y: { objectives: { x: true, y: true } },
-  //   },
-  // });
-
-  // goals.farmers[0].objectives.
-
-  const farmersMissingMail = props.gameSave
-    .getAllFarmers()
-    .filter((farmer) => !farmer.rarecrowSocietyMailed);
+  const farmers = props.gameSave.getAllFarmers();
 
   const allCollected =
     // Either everyone got the letter
-    farmersMissingMail.length === 0 ||
+    farmers.every((farmer) => farmer.rarecrowSocietyMailed) ||
     // Or at least 1 of each Rarecrow is currently placed down across the Valley
     values(props.gameSave.rarecrowsPlaced).every((v) => v > 0);
 
   const totalPlaced = sum(values(props.gameSave.rarecrowsPlaced));
+
+  const { goals, allDone } = useGoals({
+    global: {
+      objectives: {
+        allCollected,
+      },
+    },
+    individuals: mapToObj(farmers, (farmer) => [
+      farmer.name,
+      {
+        objectives: {
+          mailReceived: farmer.rarecrowSocietyMailed,
+        },
+      },
+    ]),
+  });
 
   return (
     <SummarySection
@@ -53,6 +58,7 @@ export const RarecrowSection = (props: Props) => {
       sectionTitle="Rarecrow Society"
       collapsable
       versions={["v1.4 Introduced"]}
+      allDone={allDone}
     >
       <div className={styles.objectives}>
         <Objective done icon={<img src={scarecrowPng} />}>
@@ -72,9 +78,9 @@ export const RarecrowSection = (props: Props) => {
       <div className={styles.rarecrows}>
         <a target="_blank" href={StardewWiki.getLink("Scarecrow")}>
           <ImageObjective
-            done={props.gameSave
-              .getAllFarmers()
-              .some((farmer) => farmer.craftedRecipes["Scarecrow"] > 0)}
+            done={farmers.some(
+              (farmer) => farmer.craftedRecipes["Scarecrow"] > 0
+            )}
             height={100}
             title="Scarecrow"
             src={rarecrowSprites.resolve("scarecrow")?.default ?? ""}
@@ -106,7 +112,9 @@ export const RarecrowSection = (props: Props) => {
 
         <a target="_blank" href={StardewWiki.getLink("Scarecrow")}>
           <ImageObjective
-            done={farmersMissingMail.length === 0}
+            done={values(goals.individuals).every(
+              (ind) => ind.objectives.mailReceived
+            )}
             height={100}
             title="Deluxe Scarecrow"
             src={rarecrowSprites.resolve("deluxe_scarecrow")?.default ?? ""}
@@ -161,7 +169,7 @@ export const RarecrowSection = (props: Props) => {
         {props.gameSave.getAllFarmers().map((farmer) => (
           <Objective
             key={farmer.name}
-            done={!farmersMissingMail.includes(farmer)}
+            done={goals.individuals[farmer.name].objectives.mailReceived}
           >
             <strong>{farmer.name}</strong> received the mail from{" "}
             <a

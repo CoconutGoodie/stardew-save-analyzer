@@ -1,3 +1,4 @@
+import { STARDEW_COOKING_RECIPES } from "@src/const/StardewCooking";
 import { STARDEW_CRAFTING_RECIPES } from "@src/const/StardewCrafting";
 import { STARDEW_ACHIEVEMENT_FISHES } from "@src/const/StardewFishes";
 import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "@src/const/StardewMuseum";
@@ -31,6 +32,10 @@ export class Achievements {
   public readonly diy;
   public readonly artisan;
   public readonly craftMaster;
+
+  public readonly cook;
+  public readonly sousChef;
+  public readonly gourmetChef;
 
   constructor(farmer: Farmer, gameSave: GameSave) {
     this.greenhorn = new MoneyAchievement(gameSave, "Greenhorn", 15_000);
@@ -87,6 +92,14 @@ export class Achievements {
       "Craft Master",
       STARDEW_CRAFTING_RECIPES.length
     );
+
+    this.cook = new DifferentCookingAchievement(farmer, "Cook", 10);
+    this.sousChef = new DifferentCookingAchievement(farmer, "Sous Chef", 25);
+    this.gourmetChef = new DifferentCookingAchievement(
+      farmer,
+      "Gourmet Chef",
+      keys(STARDEW_COOKING_RECIPES).length
+    );
   }
 }
 
@@ -135,6 +148,18 @@ export class DifferentCraftAchievement extends Achievement {
     title: string,
     public readonly goal: number,
     public readonly crafted = values(farmer.craftedRecipes).filter((v) => v > 0)
+      .length
+  ) {
+    super(title, crafted >= goal);
+  }
+}
+
+export class DifferentCookingAchievement extends Achievement {
+  constructor(
+    farmer: Farmer,
+    title: string,
+    public readonly goal: number,
+    public readonly crafted = values(farmer.cookedRecipes).filter((v) => v > 0)
       .length
   ) {
     super(title, crafted >= goal);

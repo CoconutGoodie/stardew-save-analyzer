@@ -1,0 +1,59 @@
+.objectives {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.recipesScrollbox {
+  margin: 10px 0;
+}
+
+.recipes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+
+  &.expanded {
+    .recipe {
+      width: 58px;
+      height: 58px;
+    }
+  }
+}
+
+.recipe {
+  box-sizing: border-box;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(-10deg, #613a33, #4e2119);
+  border: 3px solid #462019;
+  border-radius: 6px;
+
+  &.locked {
+    border-width: 3px;
+    border-style: dashed;
+
+    &:not(:hover) {
+      opacity: 0.4;
+    }
+  }
+
+  &.notCrafted {
+    &:not(:hover) {
+      opacity: 0.85;
+      filter: saturate(0.55);
+    }
+  }
+
+  img {
+    object-fit: contain;
+  }
+}
+
+.achievements {
+  display: flex;
+  flex-direction: column;
+}

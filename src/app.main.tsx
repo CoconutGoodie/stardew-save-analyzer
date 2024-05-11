@@ -23,6 +23,7 @@ import { MasteriesSection } from "@src/section/MasteriesSection";
 import { QiSpecialOrdersSection } from "@src/section/QiSpecialOrdersSection";
 import { RarecrowSection } from "@src/section/RarecrowsSection";
 import "./style/style.scss";
+import { CookingSection } from "@src/section/CookingSection";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
@@ -35,7 +36,6 @@ function App() {
       </header>
 
       <div id="content">
-
         <div className="disclaimers">
           <div className="disclaimer">
             <img height={30} src={questPng} />
@@ -124,9 +124,7 @@ function App() {
 
             <CraftingSection gameSave={gameSave} />
 
-            <SummarySection sectionTitle="Cooking [WIP]" collapsable>
-              [WIP] Cooking Recipes here
-            </SummarySection>
+            <CookingSection gameSave={gameSave} />
 
             <SummarySection sectionTitle="Shipping [WIP]" collapsable>
               [WIP] Shipping Bin Achievements here

@@ -14,6 +14,9 @@ import { STARDROP_MAIL_FLAGS } from "../const/StardewStardrops";
 import { GameSave } from "./GameSave";
 import { STARDEW_MASTERY_LEVEL_EXP } from "@src/const/StardewMasteryLevels";
 import { XMLNode } from "@src/util/XMLNode";
+import { STARDEW_CRAFTING_RECIPES } from "@src/const/StardewCrafting";
+import { STARDEW_COOKING_RECIPES } from "@src/const/StardewCooking";
+import { thru } from "@src/util/utilities";
 
 export class Farmer {
   public readonly name;
@@ -34,6 +37,7 @@ export class Farmer {
   public readonly billboardCompletedQuests;
 
   public readonly craftedRecipes;
+  public readonly cookedRecipes;
 
   public readonly receivedMailFlags;
   public readonly caughtFish;
@@ -82,6 +86,9 @@ export class Farmer {
     this.billboardCompletedQuests = this.calcBillboardCompletedQuests();
 
     this.craftedRecipes = this.calcCraftedRecipes();
+    this.cookedRecipes = this.calcCookedRecipes();
+
+    console.log(this.cookedRecipes);
 
     this.receivedMailFlags = farmerXml
       .queryAll("mailReceived > *")
@@ -271,6 +278,44 @@ export class Farmer {
         .filter(([key]) => key != null)
         .map(([key, value]) => [relocatedNames[key] ?? key, value])
     );
+  }
+
+  private calcCookedRecipes() {
+    const relocatedNames: Record<string, string> = {
+      "Cheese Cauli.": "Cheese Cauliflower",
+      Cookies: "Cookie",
+      "Cran. Sauce": "Cranberry Sauce",
+      "Dish o' The Sea": "Dish O' The Sea",
+      "Eggplant Parm.": "Eggplant Parmesan",
+      "Vegetable Stew": "Vegetable Medley",
+    };
+
+    const cookedRecipes = fromEntries(
+      this.farmerXml
+        .queryAll("recipesCooked > item")
+        .map((entry) => {
+          const recipeId = entry.query("key > *").text();
+          const cookedTimes = entry.query("value > *").number();
+          return [STARDEW_COOKING_RECIPES[recipeId], cookedTimes] as const;
+        })
+        .filter(([key]) => key != null)
+        .map(([key, value]) => [relocatedNames[key] ?? key, value])
+    );
+
+    this.farmerXml.queryAll("cookingRecipes > item").forEach((entry) => {
+      const recipeName = thru(
+        entry.query("key > *").text(),
+        (name) => relocatedNames[name] ?? name
+      );
+
+      if (!recipeName) return;
+
+      if (!(recipeName in cookedRecipes)) {
+        cookedRecipes[recipeName] = 0;
+      }
+    });
+
+    return cookedRecipes;
   }
 
   private calcStardrops() {

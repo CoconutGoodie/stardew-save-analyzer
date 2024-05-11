@@ -33,8 +33,6 @@ export const HelpWantedSection = (props: Props) => {
     ]),
   });
 
-  console.log({ goals });
-
   return (
     <SummarySection
       id="quests"

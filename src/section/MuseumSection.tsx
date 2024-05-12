@@ -51,7 +51,12 @@ export const MuseumSection = (props: Props) => {
   });
 
   return (
-    <SummarySection sectionTitle="Museum Collection" collapsable allDone={allDone}>
+    <SummarySection
+      id="museum"
+      sectionTitle="Museum Collection"
+      collapsable
+      allDone={allDone}
+    >
       <div className={styles.info}>
         <a href={StardewWiki.getLink("Gunther")} target="_blank">
           <img src={guntherPng} />

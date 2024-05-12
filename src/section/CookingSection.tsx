@@ -53,7 +53,12 @@ export const CookingSection = (props: Props) => {
   });
 
   return (
-    <SummarySection sectionTitle="Cooking" collapsable allDone={allDone}>
+    <SummarySection
+      id="cooking"
+      sectionTitle="Cooking"
+      collapsable
+      allDone={allDone}
+    >
       <FarmersRow>
         {farmers.map((farmer) => {
           const farmerAchievements = props.gameSave.achievements[farmer.name];

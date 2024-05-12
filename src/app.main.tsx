@@ -108,33 +108,60 @@ function App() {
               </SummarySection>
             </SummarySection>
 
+            <hr />
+
             <SkillsSection gameSave={gameSave} />
+
+            <hr />
 
             <MasteriesSection gameSave={gameSave} />
 
+            <hr />
+
             <HelpWantedSection gameSave={gameSave} />
 
-            <SpecialOrdersSection gameSave={gameSave} />
+            <hr />
 
-            <QiSpecialOrdersSection gameSave={gameSave} />
+            <SummarySection className="specialOrders">
+              <SpecialOrdersSection gameSave={gameSave} />
+              <QiSpecialOrdersSection gameSave={gameSave} />
+            </SummarySection>
+
+            <hr />
 
             <RarecrowSection gameSave={gameSave} />
 
+            <hr />
+
             <FishingSection gameSave={gameSave} />
+
+            <hr />
 
             <CraftingSection gameSave={gameSave} />
 
+            <hr />
+
             <CookingSection gameSave={gameSave} />
+
+            <hr />
 
             <SummarySection sectionTitle="Shipping [WIP]" collapsable>
               [WIP] Shipping Bin Achievements here
             </SummarySection>
 
+            <hr />
+
             <StardropsSection gameSave={gameSave} />
+
+            <hr />
 
             <MuseumSection gameSave={gameSave} />
 
+            <hr />
+
             <GrandpasEvaluationsSection gameSave={gameSave} />
+
+            <hr />
 
             <SummarySection sectionTitle="Perfection Tracker [WIP]" collapsable>
               [WIP] Perfection Tracker Analysis here

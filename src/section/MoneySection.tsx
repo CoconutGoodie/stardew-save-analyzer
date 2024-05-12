@@ -1,3 +1,4 @@
+import { useGoals } from "@src/hook/useGoals";
 import { AchievementDisplay } from "../component/AchievementDisplay";
 import { Currency } from "../component/Currency";
 import { SummarySection } from "../component/SummarySection";
@@ -17,15 +18,28 @@ export const MoneySection = (props: Props) => {
     .padStart(9, " ")
     .split("");
 
+  const { goals, allDone } = useGoals({
+    global: {
+      achievements: [
+        playerAchievements.greenhorn,
+        playerAchievements.cowpoke,
+        playerAchievements.homesteader,
+        playerAchievements.millionaire,
+        playerAchievements.legend,
+      ],
+    },
+  });
+
   return (
     <SummarySection
       id="money"
       sectionTitle="Money"
       className={styles.section}
       collapsable
+      allDone={allDone}
     >
       <div>
-        In total, {props.gameSave.farmName} Farm has earned{" "}
+        In total, <strong>{props.gameSave.farmName} Farm</strong> has earned{" "}
         <Currency amount={props.gameSave.totalGoldsEarned} />
       </div>
 
@@ -39,13 +53,7 @@ export const MoneySection = (props: Props) => {
       </div>
 
       <div className={styles.achievements}>
-        {[
-          playerAchievements.greenhorn,
-          playerAchievements.cowpoke,
-          playerAchievements.homesteader,
-          playerAchievements.millionaire,
-          playerAchievements.legend,
-        ].map((achievement) => {
+        {goals.global.achievements.map((achievement) => {
           return (
             <AchievementDisplay
               key={achievement.title}
@@ -61,9 +69,7 @@ export const MoneySection = (props: Props) => {
                 <span>
                   —{" "}
                   <Currency
-                    amount={
-                      achievement.goal - props.gameSave.totalGoldsEarned
-                    }
+                    amount={achievement.goal - props.gameSave.totalGoldsEarned}
                     unit="gold"
                   />{" "}
                   more to go

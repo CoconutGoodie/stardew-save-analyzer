@@ -1,0 +1,30 @@
+.objectives {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.rarecrows {
+  margin: 25px 0;
+  display: flex;
+  gap: 10px;
+  flex-wrap: nowrap;
+
+  .divider {
+    margin: 0 15px;
+    height: 90px;
+    min-width: 1px;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 40%,
+      rgba(255, 255, 255, 0.1) 60%,
+      transparent 100%
+    );
+  }
+}
+
+.note {
+  width: 75ch;
+  margin-bottom: 20px;
+}

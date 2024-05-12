@@ -1,6 +1,5 @@
 @use "@src/style/base/mixin" as mixin;
 
-
 .objective {
   margin-top: 8px;
 }
@@ -12,13 +11,21 @@
   align-items: center;
   gap: 20px;
 
-  .incomplete {
-    filter: saturate(0) brightness(0.8);
-    opacity: 0.25;
+  img {
+    object-fit: contain;
 
     &:hover {
-      opacity: 0.5;
-      filter: none;
+      @include mixin.shadowOutline(2);
+
+      &.incomplete {
+        @include mixin.shadowOutline(2);
+        opacity: 1;
+      }
+    }
+
+    &.incomplete {
+      filter: saturate(0) brightness(0.8);
+      opacity: 0.25;
     }
   }
 

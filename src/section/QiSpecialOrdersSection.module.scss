@@ -1,0 +1,38 @@
+@use "@src/style/base/mixin" as mixin;
+
+.objective {
+  margin-top: 8px;
+}
+
+.board {
+  margin-bottom: 15px;
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 20px;
+
+  img {
+    object-fit: contain;
+
+    &:hover {
+      @include mixin.shadowOutline(2);
+
+      &.incomplete {
+        @include mixin.shadowOutline(2);
+        opacity: 1;
+      }
+    }
+
+    &.incomplete {
+      filter: saturate(0) brightness(0.8);
+      opacity: 0.25;
+    }
+  }
+
+  .orders {
+    width: fit-content;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+  }
+}

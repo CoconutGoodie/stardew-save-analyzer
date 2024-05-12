@@ -14,6 +14,7 @@ import styles from "./OverviewSection.module.scss";
 import { GameDateDisplay } from "../component/GameDateDisplay";
 import clsx from "clsx";
 import { Currency } from "../component/Currency";
+import { Fragment } from "react/jsx-runtime";
 
 interface Props {
   gameSave: GameSave;
@@ -73,68 +74,79 @@ export const OverviewSection = (props: Props) => {
 
         <div className={styles.column}>
           <h1>{props.gameSave.farmName} Farm</h1>
-          <span>
-            Game Version:{" "}
-            <span className={styles.gameVersion}>
-              v{props.gameSave.gameVersion}
-            </span>
-          </span>
-          <span>
-            Today is <GameDateDisplay date={props.gameSave.currentDate} />
-          </span>
-          <span>
-            <img width={18} src={clockPng} />{" "}
-            <em>{formatDuration(props.gameSave.playtime)}</em>
-          </span>
+          <ul>
+            <li>
+              <div>
+                Game Version:{" "}
+                <span className={styles.gameVersion}>
+                  v{props.gameSave.gameVersion}
+                </span>
+              </div>
+            </li>
+            <li>
+              <div>
+                Today is <GameDateDisplay date={props.gameSave.currentDate} />
+              </div>
+            </li>
+            <li>
+              <div>
+                <img width={18} src={clockPng} />{" "}
+                <em>{formatDuration(props.gameSave.playtime)}</em>
+              </div>
+            </li>
+          </ul>
         </div>
 
         <div className={styles.divider} />
 
-        <div className={styles.farmers}>
-          {[props.gameSave.player]
-            .concat(props.gameSave.farmhands)
-            .map((farmer) => (
-              <div
-                key={farmer.name}
-                className={clsx(styles.column, styles.farmer)}
-              >
-                <h1>
-                  <img
-                    height={20}
-                    src={farmer.gender === "Female" ? femalePng : malePng}
-                  />{" "}
-                  {farmer.name}
-                </h1>
-                <ul>
-                  <li>
-                    {farmer === props.gameSave.player
-                      ? "Owner of the Farm"
-                      : "Farmhand"}
-                  </li>
+        {props.gameSave.getAllFarmers().map((farmer, i, farmers) => (
+          <Fragment key={farmer.name}>
+            <div className={clsx(styles.column, styles.farmer)}>
+              <h1>
+                <img
+                  height={20}
+                  src={farmer.gender === "Female" ? femalePng : malePng}
+                />{" "}
+                {farmer.name}
+              </h1>
+              <ul>
+                <li>
+                  {farmer === props.gameSave.player
+                    ? "Owner of the Farm"
+                    : "Farmhand"}
+                </li>
+                <li>
+                  <div>
+                    Favorite: "<img width={14} src={favoritePng} />{" "}
+                    <em>{farmer.favoriteThing}</em>"
+                  </div>
+                </li>
+                <li>
+                  <div>
+                    <img width={14} src={clockPng} />{" "}
+                    <em>{formatDuration(farmer.playtime)}</em>
+                  </div>
+                </li>
+                {farmer.qiGems > 0 && (
                   <li>
                     <div>
-                      Favorite: "<img width={14} src={favoritePng} />{" "}
-                      <em>{farmer.favoriteThing}</em>"
+                      Qi Gems: <Currency amount={farmer.qiGems} unit="qiGems" />
                     </div>
                   </li>
+                )}
+                {farmer.qiCoins > 0 && (
                   <li>
                     <div>
-                      <img width={14} src={clockPng} />{" "}
-                      <em>{formatDuration(farmer.playtime)}</em>
+                      Qi Coins: <Currency amount={farmer.qiCoins} unit="qiCoins" />
                     </div>
                   </li>
-                  {farmer.qiGems > 0 && (
-                    <li>
-                      <div>
-                        Qi Gems:{" "}
-                        <Currency amount={farmer.qiGems} unit="qiGems" />
-                      </div>
-                    </li>
-                  )}
-                </ul>
-              </div>
-            ))}
-        </div>
+                )}
+              </ul>
+            </div>
+
+            {i !== farmers.length - 1 && <div className={styles.divider} />}
+          </Fragment>
+        ))}
       </div>
     </SummarySection>
   );

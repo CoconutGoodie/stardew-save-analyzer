@@ -1,3 +1,4 @@
+import { STARDEW_COOKING_RECIPES } from "@src/const/StardewCooking";
 import { STARDEW_CRAFTING_RECIPES } from "@src/const/StardewCrafting";
 import { STARDEW_ACHIEVEMENT_FISHES } from "@src/const/StardewFishes";
 import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "@src/const/StardewMuseum";
@@ -15,6 +16,9 @@ export class Achievements {
   public readonly singularTalent;
   public readonly masterOfTheFiveWays;
 
+  public readonly gofer;
+  public readonly aBigHelp;
+
   public readonly mysteryOfTheStardrops;
 
   public readonly motherCatch;
@@ -28,6 +32,10 @@ export class Achievements {
   public readonly diy;
   public readonly artisan;
   public readonly craftMaster;
+
+  public readonly cook;
+  public readonly sousChef;
+  public readonly gourmetChef;
 
   constructor(farmer: Farmer, gameSave: GameSave) {
     this.greenhorn = new MoneyAchievement(gameSave, "Greenhorn", 15_000);
@@ -44,6 +52,9 @@ export class Achievements {
       "Master of the Five Ways",
       values(farmer.skills).every((skill) => skill.level >= 10)
     );
+
+    this.gofer = new QuestCompletionAchievement(farmer, "Gofer", 10);
+    this.aBigHelp = new QuestCompletionAchievement(farmer, "A Big Help", 40);
 
     this.mysteryOfTheStardrops = new Achievement(
       "Mystery of the Stardrops",
@@ -81,12 +92,20 @@ export class Achievements {
       "Craft Master",
       STARDEW_CRAFTING_RECIPES.length
     );
+
+    this.cook = new DifferentCookingAchievement(farmer, "Cook", 10);
+    this.sousChef = new DifferentCookingAchievement(farmer, "Sous Chef", 25);
+    this.gourmetChef = new DifferentCookingAchievement(
+      farmer,
+      "Gourmet Chef",
+      keys(STARDEW_COOKING_RECIPES).length
+    );
   }
 }
 
 /* --------------------- */
 
-class Achievement {
+export class Achievement {
   constructor(
     public readonly title: string,
     public readonly achieved: boolean
@@ -96,6 +115,17 @@ class Achievement {
 export class MoneyAchievement extends Achievement {
   constructor(gameSave: GameSave, title: string, public readonly goal: number) {
     super(title, gameSave.totalGoldsEarned >= goal);
+  }
+}
+
+export class QuestCompletionAchievement extends Achievement {
+  constructor(
+    farmer: Farmer,
+    title: string,
+    public readonly goal: number,
+    public readonly completed = farmer.totalCompletedQuests
+  ) {
+    super(title, completed >= goal);
   }
 }
 
@@ -118,6 +148,18 @@ export class DifferentCraftAchievement extends Achievement {
     title: string,
     public readonly goal: number,
     public readonly crafted = values(farmer.craftedRecipes).filter((v) => v > 0)
+      .length
+  ) {
+    super(title, crafted >= goal);
+  }
+}
+
+export class DifferentCookingAchievement extends Achievement {
+  constructor(
+    farmer: Farmer,
+    title: string,
+    public readonly goal: number,
+    public readonly crafted = values(farmer.cookedRecipes).filter((v) => v > 0)
       .length
   ) {
     super(title, crafted >= goal);

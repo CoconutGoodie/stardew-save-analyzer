@@ -14,6 +14,9 @@ import { STARDROP_MAIL_FLAGS } from "../const/StardewStardrops";
 import { GameSave } from "./GameSave";
 import { STARDEW_MASTERY_LEVEL_EXP } from "@src/const/StardewMasteryLevels";
 import { XMLNode } from "@src/util/XMLNode";
+import { STARDEW_CRAFTING_RECIPES } from "@src/const/StardewCrafting";
+import { STARDEW_COOKING_RECIPES } from "@src/const/StardewCooking";
+import { thru } from "@src/util/utilities";
 
 export class Farmer {
   public readonly name;
@@ -22,6 +25,7 @@ export class Farmer {
   public readonly playtime;
 
   public readonly qiGems;
+  public readonly qiCoins;
 
   public readonly skills;
   public readonly skillLevelTotal;
@@ -29,14 +33,18 @@ export class Farmer {
 
   public readonly masteries;
 
-  public readonly completedQuests;
+  public readonly totalCompletedQuests;
+  public readonly billboardCompletedQuests;
 
   public readonly craftedRecipes;
+  public readonly cookedRecipes;
 
   public readonly receivedMailFlags;
   public readonly caughtFish;
   public readonly unlockedBobberCount;
   public readonly stardrops;
+
+  public readonly rarecrowSocietyMailed;
 
   constructor(private farmerXml: XMLNode, private saveXml?: XMLNode) {
     this.name = farmerXml.query(":scope > name").text();
@@ -45,6 +53,7 @@ export class Farmer {
     this.playtime = farmerXml.query(":scope > millisecondsPlayed").number();
 
     this.qiGems = farmerXml.query(":scope > qiGems").number();
+    this.qiCoins = farmerXml.query(":scope > clubCoins").number();
 
     this.skills = {
       farming: {
@@ -73,9 +82,13 @@ export class Farmer {
 
     this.masteries = this.calcMasteries();
 
-    this.completedQuests = this.calcCompletedQuests();
+    this.totalCompletedQuests = this.calcTotalCompletedQuests();
+    this.billboardCompletedQuests = this.calcBillboardCompletedQuests();
 
     this.craftedRecipes = this.calcCraftedRecipes();
+    this.cookedRecipes = this.calcCookedRecipes();
+
+    console.log(this.cookedRecipes);
 
     this.receivedMailFlags = farmerXml
       .queryAll("mailReceived > *")
@@ -95,9 +108,13 @@ export class Farmer {
           .query("value > ArrayOfInt > int:nth-child(2)")
           .number(),
       }));
+
     this.unlockedBobberCount =
       1 + Math.floor(this.caughtFish.filter((v) => v.amount > 0).length / 2);
     this.stardrops = this.calcStardrops();
+
+    this.rarecrowSocietyMailed =
+      this.receivedMailFlags.includes("RarecrowSociety");
   }
 
   private calcGender() {
@@ -202,7 +219,7 @@ export class Farmer {
     };
   }
 
-  private calcCompletedQuests() {
+  private calcTotalCompletedQuests() {
     let completedQuests = this.farmerXml
       .queryAll(":scope > stats > Values > item")
       .find(
@@ -228,6 +245,23 @@ export class Farmer {
     return completedQuests ?? 0;
   }
 
+  private calcBillboardCompletedQuests() {
+    let completedQuests = this.farmerXml
+      .queryAll(":scope > stats > Values > item")
+      .find(
+        (valueXml) => valueXml.query("key > *").text() === "BillboardQuestsDone"
+      )
+      ?.query("value > *")
+      ?.number();
+
+    // version < 1.5
+    if (completedQuests == null) {
+      completedQuests = this.totalCompletedQuests;
+    }
+
+    return completedQuests ?? 0;
+  }
+
   private calcCraftedRecipes() {
     const relocatedNames: Record<string, string> = {
       "Oil Of Garlic": "Oil of Garlic",
@@ -244,6 +278,44 @@ export class Farmer {
         .filter(([key]) => key != null)
         .map(([key, value]) => [relocatedNames[key] ?? key, value])
     );
+  }
+
+  private calcCookedRecipes() {
+    const relocatedNames: Record<string, string> = {
+      "Cheese Cauli.": "Cheese Cauliflower",
+      Cookies: "Cookie",
+      "Cran. Sauce": "Cranberry Sauce",
+      "Dish o' The Sea": "Dish O' The Sea",
+      "Eggplant Parm.": "Eggplant Parmesan",
+      "Vegetable Stew": "Vegetable Medley",
+    };
+
+    const cookedRecipes = fromEntries(
+      this.farmerXml
+        .queryAll("recipesCooked > item")
+        .map((entry) => {
+          const recipeId = entry.query("key > *").text();
+          const cookedTimes = entry.query("value > *").number();
+          return [STARDEW_COOKING_RECIPES[recipeId], cookedTimes] as const;
+        })
+        .filter(([key]) => key != null)
+        .map(([key, value]) => [relocatedNames[key] ?? key, value])
+    );
+
+    this.farmerXml.queryAll("cookingRecipes > item").forEach((entry) => {
+      const recipeName = thru(
+        entry.query("key > *").text(),
+        (name) => relocatedNames[name] ?? name
+      );
+
+      if (!recipeName) return;
+
+      if (!(recipeName in cookedRecipes)) {
+        cookedRecipes[recipeName] = 0;
+      }
+    });
+
+    return cookedRecipes;
   }
 
   private calcStardrops() {

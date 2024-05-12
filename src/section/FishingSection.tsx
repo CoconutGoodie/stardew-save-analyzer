@@ -1,5 +1,5 @@
 import { capitalCase, snakeCase } from "case-anything";
-import { keys, sumBy } from "remeda";
+import { keys, mapToObj, sumBy } from "remeda";
 import { FarmerTag } from "../component/FarmerTag";
 import { SummarySection } from "../component/SummarySection";
 import {
@@ -13,7 +13,7 @@ import { AssetRepository } from "../util/AssetRepository";
 import { ImageObjective } from "@src/component/ImageObjective";
 import { thru } from "@src/util/utilities";
 import clsx from "clsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import checkmarkPng from "../assets/icon/checkmark.png";
 import questPng from "../assets/icon/quest.png";
@@ -25,6 +25,9 @@ import styles from "./FishingSection.module.scss";
 import { FarmersRow } from "@src/component/FarmersRow";
 
 import barbedHookPng from "@src/assets/icon/barbed_hook.png";
+import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
+import { Scrollbox } from "@src/component/Scrollbox";
+import { useGoals } from "@src/hook/useGoals";
 
 interface Props {
   gameSave: GameSave;
@@ -46,12 +49,39 @@ export const FishingSection = (props: Props) => {
   const [compact, setCompact] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
+  const { addScrollableRef } = useSyncedScrollbar([expanded]);
+
   const farmers = props.gameSave.getAllFarmers();
 
   const maxBobberCount = 1 + Math.floor(keys(STARDEW_FISHES).length / 2);
 
+  const { allDone } = useGoals({
+    individuals: mapToObj(farmers, (farmer) => [
+      farmer.name,
+      {
+        achievements: [
+          props.gameSave.achievements[farmer.name].motherCatch,
+          props.gameSave.achievements[farmer.name].fisherman,
+          props.gameSave.achievements[farmer.name].olMariner,
+          props.gameSave.achievements[farmer.name].masterAngler,
+        ],
+        objectives: {
+          collectEveryBobberStyle: {
+            current: farmer.unlockedBobberCount,
+            goal: maxBobberCount,
+          },
+        },
+      },
+    ]),
+  });
+
   return (
-    <SummarySection id="fishing" sectionTitle="Fishing" collapsable>
+    <SummarySection
+      id="fishing"
+      sectionTitle="Fishing"
+      collapsable
+      allDone={allDone}
+    >
       <FarmersRow>
         {farmers.map((farmer) => {
           const caughtFishCount = sumBy(farmer.caughtFish, (v) => v.amount);
@@ -76,13 +106,18 @@ export const FishingSection = (props: Props) => {
                 style(s).
               </Objective>
 
-              {/* TODO: Extract to ExpandableView component */}
-              <div className={clsx(styles.view, expanded && styles.expanded)}>
-                <button onClick={() => setExpanded((v) => !v)}>
-                  {expanded ? "Collapse view" : "Expand view"}
-                </button>
-
-                <div className={styles.categories}>
+              <Scrollbox
+                scrollRef={addScrollableRef}
+                expanded={expanded}
+                onExpanded={setExpanded}
+                className={styles.categoriesScrollbox}
+              >
+                <div
+                  className={clsx(
+                    styles.categories,
+                    expanded && styles.expanded
+                  )}
+                >
                   {keys(FishCategory).map((categoryId) => {
                     const fishes =
                       STARDEW_FISHES_BY_CATEGORIES[
@@ -198,7 +233,7 @@ export const FishingSection = (props: Props) => {
                     );
                   })}
                 </div>
-              </div>
+              </Scrollbox>
 
               {thru(
                 props.gameSave.achievements[farmer.name],

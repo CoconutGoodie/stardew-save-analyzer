@@ -5,23 +5,25 @@ import { SkillsSection } from "./section/SkillsSection";
 import { SpecialOrdersSection } from "./section/SpecialOrdersSection";
 import { StardropsSection } from "./section/StardropsSection";
 
+import questPng from "@src/assets/icon/exclamation.png";
 import logoPng from "./assets/logo.png";
-
-// import saveXml from "./assets/Save_1.6.xml";
 
 import { useState } from "react";
 import { SummarySection } from "./component/SummarySection";
 import { LoadSaveSection } from "./section/LoadSaveSection";
 
-import { FishingSection } from "./section/FishingSection";
-import "./style/style.scss";
-import { GrandpasEvaluationsSection } from "./section/GrandpasSection";
 import { MuseumSection } from "@src/section/MuseumSection";
+import { FishingSection } from "./section/FishingSection";
+import { GrandpasEvaluationsSection } from "./section/GrandpasSection";
 
-import questPng from "@src/assets/icon/exclamation.png";
-import { MasteriesSection } from "@src/section/MasteriesSection";
-import { HelpWantedSection } from "@src/section/HelpWantedSection";
 import { CraftingSection } from "@src/section/CraftingSection";
+import { HelpWantedSection } from "@src/section/HelpWantedSection";
+import { MasteriesSection } from "@src/section/MasteriesSection";
+
+import { QiSpecialOrdersSection } from "@src/section/QiSpecialOrdersSection";
+import { RarecrowSection } from "@src/section/RarecrowsSection";
+import "./style/style.scss";
+import { CookingSection } from "@src/section/CookingSection";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
@@ -30,7 +32,7 @@ function App() {
     <main>
       <header>
         <img width={350} src={logoPng} />
-        <span>last updated for v1.6.4</span>
+        <span>last updated for v1.6.8</span>
       </header>
 
       <div id="content">
@@ -114,13 +116,15 @@ function App() {
 
             <SpecialOrdersSection gameSave={gameSave} />
 
+            <QiSpecialOrdersSection gameSave={gameSave} />
+
+            <RarecrowSection gameSave={gameSave} />
+
             <FishingSection gameSave={gameSave} />
 
             <CraftingSection gameSave={gameSave} />
 
-            <SummarySection sectionTitle="Cooking [WIP]" collapsable>
-              [WIP] Cooking Recipes here
-            </SummarySection>
+            <CookingSection gameSave={gameSave} />
 
             <SummarySection sectionTitle="Shipping [WIP]" collapsable>
               [WIP] Shipping Bin Achievements here
@@ -140,7 +144,6 @@ function App() {
 
             <SummarySection sectionTitle="Todo List">
               <ul>
-                <li>"Cooking" Section</li>
                 <li>"Forest Neightbors" Section</li>
                 <li>"Ginger Island" Section</li>
                 <li>"Secret Notes" Section</li>
@@ -150,14 +153,21 @@ function App() {
                 <li>"Community Center" Section</li>
                 <li>"Perfection" Section</li>
                 <li>Tooltips Component</li>
+                <li>Table of Contents Quick Navigator</li>
                 <li>Support "Separate Wallets"</li>
+                <li>A better Footer</li>
               </ul>
             </SummarySection>
           </>
         )}
       </div>
 
-      <footer style={{ height: 200 }}></footer>
+      <footer style={{ height: 200 }}>
+        <span className="site-version">Made with ♥ by iGoodie</span>
+        <span className="site-version">
+          Site Version: v{process.env.APP_VERSION}
+        </span>
+      </footer>
     </main>
   );
 }

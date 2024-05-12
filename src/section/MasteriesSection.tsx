@@ -7,12 +7,13 @@ import { GameSave } from "@src/gamesave/GameSave";
 import starPng from "@src/assets/sprite/skill/mastery/mastery_star.png";
 
 import { ImageObjective } from "@src/component/ImageObjective";
-import styles from "./MasteriesSection.module.scss";
-import { StardewWiki } from "@src/util/StardewWiki";
-import { AssetRepository } from "@src/util/AssetRepository";
 import { STARDEW_MASTERY_LEVEL_EXP } from "@src/const/StardewMasteryLevels";
-import { entries, keys, values } from "remeda";
+import { useGoals } from "@src/hook/useGoals";
+import { AssetRepository } from "@src/util/AssetRepository";
+import { StardewWiki } from "@src/util/StardewWiki";
 import { capitalCase } from "case-anything";
+import { keys, mapToObj, values } from "remeda";
+import styles from "./MasteriesSection.module.scss";
 
 interface Props {
   gameSave: GameSave;
@@ -27,14 +28,40 @@ const perkSprites = new AssetRepository<{ default: string }>(
 );
 
 export const MasteriesSection = (props: Props) => {
+  const farmers = props.gameSave.getAllFarmers();
+
+  const { goals, allDone } = useGoals({
+    individuals: mapToObj(farmers, (farmer) => [
+      farmer.name,
+      {
+        objectives: {
+          accessToCave: farmer.skillLevelTotal === 50,
+          perksClaimed: farmer.masteries.perks,
+          maxLevelReached:
+            farmer.masteries.currentLevel >=
+            STARDEW_MASTERY_LEVEL_EXP.length - 1,
+        },
+      },
+    ]),
+  });
+
   return (
-    <SummarySection sectionTitle="Skill Masteries" collapsable>
+    <SummarySection
+      spoiler
+      id="skill-masteries"
+      sectionTitle="Skill Masteries"
+      collapsable
+      versions={["v1.6 Introduced"]}
+      allDone={allDone}
+    >
       <FarmersRow>
-        {props.gameSave.getAllFarmers().map((farmer) => {
+        {farmers.map((farmer) => {
           const expPercentage =
             farmer.masteries.currentLevel >= 5
               ? 1
               : farmer.masteries.currentExp / farmer.masteries.tnl;
+
+          const farmerGoals = goals.individuals[farmer.name];
 
           return (
             <div key={farmer.name}>
@@ -63,7 +90,7 @@ export const MasteriesSection = (props: Props) => {
               </div>
 
               <div className={styles.perks}>
-                {entries(farmer.masteries.perks).map(([perkName, hasPerk]) => (
+                {keys.strict(farmer.masteries.perks).map((perkName) => (
                   <a
                     key={perkName}
                     href={StardewWiki.getLink("Mastery_Cave", "Masteries")}
@@ -71,7 +98,7 @@ export const MasteriesSection = (props: Props) => {
                     title={capitalCase(perkName)}
                   >
                     <ImageObjective
-                      done={hasPerk}
+                      done={farmerGoals.objectives.perksClaimed[perkName]}
                       height={150}
                       src={perkSprites.resolve(perkName)?.default ?? ""}
                     />
@@ -80,7 +107,7 @@ export const MasteriesSection = (props: Props) => {
               </div>
 
               <div className={styles.objectives}>
-                <Objective done={farmer.skillLevelTotal === 50}>
+                <Objective done={farmerGoals.objectives.accessToCave}>
                   Gained access to{" "}
                   <a href={StardewWiki.getLink("Mastery_Cave")} target="_blank">
                     <strong>Mastery Cave</strong>
@@ -88,17 +115,14 @@ export const MasteriesSection = (props: Props) => {
                   .
                 </Objective>
 
-                <Objective
-                  done={
-                    farmer.masteries.currentLevel >=
-                    STARDEW_MASTERY_LEVEL_EXP.length - 1
-                  }
-                >
+                <Objective done={farmerGoals.objectives.maxLevelReached}>
                   Reached maximum Mastery level.
                 </Objective>
 
                 <Objective
-                  done={values(farmer.masteries.perks).every((perk) => perk)}
+                  done={values(farmerGoals.objectives.perksClaimed).every(
+                    (claimed) => claimed
+                  )}
                 >
                   Every Mastery perk is claimed.
                 </Objective>

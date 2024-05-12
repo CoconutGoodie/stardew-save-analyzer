@@ -13,8 +13,13 @@ import { AssetRepository } from "@src/util/AssetRepository";
 import { StardewWiki } from "@src/util/StardewWiki";
 import { snakeCase } from "case-anything";
 import clsx from "clsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./CraftingSection.module.scss";
+import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
+import { InfoText } from "@src/component/InfoText";
+import { Scrollbox } from "@src/component/Scrollbox";
+import { useGoals } from "@src/hook/useGoals";
+import { mapToObj } from "remeda";
 
 interface Props {
   gameSave: GameSave;
@@ -29,10 +34,27 @@ const craftingRecipeSprites = new AssetRepository<{ default: string }>(
 export const CraftingSection = (props: Props) => {
   const [expanded, setExpanded] = useState(false);
 
+  const { addScrollableRef } = useSyncedScrollbar([expanded]);
+
+  const farmers = props.gameSave.getAllFarmers();
+
+  const { allDone } = useGoals({
+    individuals: mapToObj(farmers, (farmer) => [
+      farmer.name,
+      {
+        achievements: [
+          props.gameSave.achievements[farmer.name].diy,
+          props.gameSave.achievements[farmer.name].artisan,
+          props.gameSave.achievements[farmer.name].craftMaster,
+        ],
+      },
+    ]),
+  });
+
   return (
-    <SummarySection sectionTitle="Crafting" collapsable>
+    <SummarySection sectionTitle="Crafting" collapsable allDone={allDone}>
       <FarmersRow>
-        {props.gameSave.getAllFarmers().map((farmer) => {
+        {farmers.map((farmer) => {
           const farmerAchievements = props.gameSave.achievements[farmer.name];
 
           const totalUnlocked = STARDEW_CRAFTING_RECIPES.filter(
@@ -61,18 +83,22 @@ export const CraftingSection = (props: Props) => {
                 </Objective>
               </div>
 
-              <div className={clsx(styles.view, expanded && styles.expanded)}>
-                <button onClick={() => setExpanded((v) => !v)}>
-                  {expanded ? "Collapse view" : "Expand view"}
-                </button>
-
-                <div className={styles.recipes}>
+              <Scrollbox
+                scrollRef={addScrollableRef}
+                expanded={expanded}
+                onExpanded={setExpanded}
+                className={styles.recipesScrollbox}
+              >
+                <div
+                  className={clsx(styles.recipes, expanded && styles.expanded)}
+                >
                   {STARDEW_CRAFTING_RECIPES.map((recipe) => (
                     <div
                       key={recipe}
                       className={clsx(
                         styles.recipe,
-                        !(recipe in farmer.craftedRecipes) && styles.locked
+                        !(recipe in farmer.craftedRecipes) && styles.locked,
+                        farmer.craftedRecipes[recipe] === 0 && styles.notCrafted
                       )}
                     >
                       <a href={StardewWiki.getLink(recipe)} target="_blank">
@@ -91,18 +117,20 @@ export const CraftingSection = (props: Props) => {
                     </div>
                   ))}
                 </div>
-              </div>
+              </Scrollbox>
 
-              {/* <p>
-                <em>
-                  "Wedding Ring" is only available in{" "}
-                  <a target="_blank" href={StardewWiki.getLink("Multiplayer")}>
-                    <strong>Multiplayer</strong>
-                  </a>
-                  . It won't count towards the achievement, yet is still
-                  displayed for convenience:
-                </em>
-              </p> */}
+              <InfoText>
+                "
+                <a target="_blank" href={StardewWiki.getLink("Wedding Ring")}>
+                  Wedding Ring
+                </a>
+                " is only available in{" "}
+                <a target="_blank" href={StardewWiki.getLink("Multiplayer")}>
+                  Multiplayer
+                </a>
+                . It <strong>WON'T</strong> count towards any achievement.
+                Therefore it is not shown in the list above.
+              </InfoText>
 
               {/* <div className={styles.recipes}>
                 <div

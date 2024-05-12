@@ -1,0 +1,27 @@
+.root {
+  position: relative;
+
+  & > button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translateY(-100%) translateY(-7px);
+    border: none;
+    background: none;
+    color: #eab11e;
+    font-size: 14px;
+    font-style: italic;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.wrapper {
+  &:not(.expanded) {
+    height: 400px;
+    overflow-y: scroll;
+    overflow-x: auto;
+  }
+}

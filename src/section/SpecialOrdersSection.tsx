@@ -6,6 +6,7 @@ import { StardewWiki } from "../util/StardewWiki";
 import boardPng from "../assets/sprite/special-order/special_order_board.png";
 
 import { ImageObjective } from "@src/component/ImageObjective";
+import { useGoals } from "@src/hook/useGoals";
 import clsx from "clsx";
 import { GameDateDisplay } from "../component/GameDateDisplay";
 import { Objective } from "../component/Objective";
@@ -27,21 +28,29 @@ const specialOrderNpcs = new AssetRepository<{ default: string }>(
 );
 
 export const SpecialOrdersSection = (props: Props) => {
-  const completedCount = props.gameSave.specialOrders.filter(
-    (order) => order.completed
-  ).length;
-
-  const builtBoard =
-    BOARD_BUILD_DATE.canonicalDay <= props.gameSave.currentDate.canonicalDay;
-
-  const completedEveryOrder =
-    completedCount === props.gameSave.specialOrders.length;
+  const { goals, allDone } = useGoals({
+    global: {
+      objectives: {
+        boardBuilt:
+          BOARD_BUILD_DATE.canonicalDay <=
+          props.gameSave.currentDate.canonicalDay,
+        orderCompletion: {
+          current: props.gameSave.specialOrders.filter(
+            (order) => order.completed
+          ).length,
+          goal: props.gameSave.specialOrders.length,
+        },
+      },
+    },
+  });
 
   return (
     <SummarySection
       id="special-orders"
-      sectionTitle="Special Order Quests"
+      sectionTitle="Special Orders"
+      versions={["v1.5 Introduced"]}
       collapsable
+      allDone={allDone}
     >
       <div className={styles.board}>
         <a
@@ -50,7 +59,9 @@ export const SpecialOrdersSection = (props: Props) => {
         >
           <img
             height={108}
-            className={clsx(!builtBoard && styles.incomplete)}
+            className={clsx(
+              !goals.global.objectives.orderCompletion && styles.incomplete
+            )}
             src={boardPng}
           />
         </a>
@@ -73,18 +84,24 @@ export const SpecialOrdersSection = (props: Props) => {
         </div>
       </div>
 
-      <Objective done={builtBoard} className={styles.objective}>
+      <Objective
+        done={goals.global.objectives.boardBuilt}
+        className={styles.objective}
+      >
         "Special Orders Board" has been built. (On{" "}
         <GameDateDisplay date={BOARD_BUILD_DATE} /> )
       </Objective>
 
-      <Objective done={completedEveryOrder} className={styles.objective}>
+      <Objective
+        done={goals.global.objectiveStatus.orderCompletion === "done"}
+        className={styles.objective}
+      >
         Every Special Order is completed.
-        {!completedEveryOrder && (
+        {goals.global.objectiveStatus.orderCompletion !== "done" && (
           <span>
             {" "}
-            — Completed {completedCount} out of{" "}
-            {props.gameSave.specialOrders.length}
+            — Completed {goals.global.objectives.orderCompletion.current} out of{" "}
+            {goals.global.objectives.orderCompletion.goal}
           </span>
         )}
       </Objective>

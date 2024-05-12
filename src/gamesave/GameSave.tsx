@@ -2,117 +2,26 @@ import { capitalCase, lowerCase } from "case-anything";
 
 import { AchievementDisplay } from "@src/component/AchievementDisplay";
 import { Currency } from "@src/component/Currency";
+import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "@src/const/StardewMuseum";
 import { Achievements } from "@src/gamesave/Achievements";
+import { XMLNode } from "@src/util/XMLNode";
+import { isKeyOf, thru } from "@src/util/utilities";
 import { ReactNode } from "react";
 import {
   entries,
-  find,
-  first,
   firstBy,
+  fromKeys,
+  groupBy,
+  identity,
   keys,
-  map,
   mapToObj,
-  pipe,
   times,
 } from "remeda";
 import { STARDEW_FARM_TYPES } from "../const/StardewFarmTypes";
 import { STARDEW_SPECIAL_ORDERS } from "../const/StardewSpecialOrders";
 import { GameDate, GameSeason } from "../util/GameDate";
-import { StardewWiki } from "../util/StardewWiki";
 import { Farmer } from "./Farmer";
-import { isKeyOf, thru } from "@src/util/utilities";
-import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "@src/const/StardewMuseum";
-import { XMLNode } from "@src/util/XMLNode";
-
-type StringNumber = `${number}`;
-type StringBoolean = `${boolean}`;
-
-export namespace GameSave {
-  export type KeyValueMap<K, V> = { key: K; value: V }[];
-
-  export interface SaveXml {
-    player: [FarmerXml];
-    farmhands?: { Farmer: [FarmerXml] }[];
-    locations?: [LocationsXml];
-    whichFarm?: [keyof typeof STARDEW_FARM_TYPES];
-    year: [StringNumber];
-    currentSeason: [string];
-    dayOfMonth: [StringNumber];
-    weatherForTomorrow: [string];
-    completedSpecialOrders?: [{ string: string[] }];
-    hasApplied1_3_UpdateChanges?: [StringBoolean];
-    hasApplied1_4_UpdateChanges?: [StringBoolean];
-    gameVersion?: [string];
-    stats?: [StatsXml];
-  }
-
-  export interface LocationsXml {
-    GameLocation: {
-      $: { "xsi:type": string };
-      grandpaScore?: [StringNumber];
-      museumPieces?: [
-        {
-          item: KeyValueMap<
-            [{ Vector2: [{ X: [StringNumber]; Y: [StringNumber] }] }],
-            [{ string: [StringNumber] } | { int: [StringNumber] }]
-          >;
-        }
-      ];
-      buildings: [
-        {
-          Building: {
-            indoors?: [{ farmhand?: [FarmerXml] }];
-          }[];
-        }
-      ];
-    }[];
-  }
-
-  export interface StatsXml {
-    Values?: [
-      {
-        item: KeyValueMap<
-          [{ string: [string] }],
-          [{ unsignedInt: [StringNumber] }]
-        >;
-      }
-    ];
-    questsCompleted?: [StringNumber];
-  }
-
-  export interface FarmerXml {
-    name: [string];
-    farmName: [string];
-    gameVersion: [string];
-    gender?: ["Female" | "Male"];
-    isMale?: [StringBoolean];
-    favoriteThing: [string];
-    totalMoneyEarned: [`${string}`];
-    qiGems?: [StringNumber];
-    millisecondsPlayed: [StringNumber];
-    farmingLevel: [StringNumber];
-    fishingLevel: [StringNumber];
-    miningLevel: [StringNumber];
-    foragingLevel: [StringNumber];
-    combatLevel: [StringNumber];
-    professions: [{ int: StringNumber[] }];
-    mailReceived: [{ string: string[] }];
-    fishCaught?: [
-      {
-        item: KeyValueMap<
-          [{ string: [string] } | { int: [string] }],
-          [{ ArrayOfInt: [{ int: [StringNumber, StringNumber] }] }]
-        >;
-      }
-    ];
-    craftingRecipes?: [
-      {
-        item?: KeyValueMap<[{ string: [string] }], [{ int: [StringNumber] }]>;
-      }
-    ];
-    stats?: [StatsXml];
-  }
-}
+import { STARDEW_RARECROW_IDS } from "@src/const/StardewRarecrows";
 
 export class GameSave {
   public readonly gameVersion;
@@ -127,7 +36,10 @@ export class GameSave {
   public readonly player;
   public readonly farmhands;
 
+  public readonly rarecrowsPlaced;
+
   public readonly specialOrders;
+  public readonly qiSpecialOrders;
 
   public readonly museumPieces;
 
@@ -137,7 +49,7 @@ export class GameSave {
   public readonly grandpaScoreSubjects;
 
   constructor(private saveXml: XMLNode) {
-    // console.log(saveXml.element);
+    console.log(saveXml.element);
 
     this.gameVersion = this.calcGameVersion();
     this.farmName = saveXml.query("player > farmName").text();
@@ -153,7 +65,10 @@ export class GameSave {
     this.player = new Farmer(saveXml.query("player"), saveXml);
     this.farmhands = this.calcFarmhands();
 
+    this.rarecrowsPlaced = this.calcRarecrowsPlaced();
+
     this.specialOrders = this.calcSpecialOrders();
+    this.qiSpecialOrders = this.calcQiSpecialOrders();
 
     this.museumPieces = this.calcMuseumPieces();
 
@@ -220,9 +135,15 @@ export class GameSave {
 
     // version < 1.6
     if (!farmhands) {
-      const farmLocationXml = this.saveXml.query(
-        "locations > GameLocation[xsi\\:type='Farm']"
-      );
+      const farmLocationXml =
+        this.saveXml
+          .queryAll(
+            // TODO: Y u no work?
+            // "locations > GameLocation[xsi\\:type='Farm']"
+            "locations > GameLocation"
+          )
+          .find((node) => node.element?.getAttribute("xsi:type") === "Farm") ??
+        XMLNode.EMPTY;
 
       farmhands = farmLocationXml.transformIfPresent((farmLocationXml) =>
         farmLocationXml
@@ -234,6 +155,24 @@ export class GameSave {
     return farmhands ?? [];
   }
 
+  private calcRarecrowsPlaced() {
+    const placedRarecrows = mapToObj(STARDEW_RARECROW_IDS, (id) => [id, 0]);
+
+    return this.saveXml
+      .queryAll("locations > GameLocation > objects > item")
+      .map((node) => node.query("value > Object"))
+      .filter(
+        (objectNode) =>
+          objectNode.query("name").text() === "Rarecrow" &&
+          objectNode.query("hasBeenInInventory").boolean()
+      )
+      .map((objectNode) => objectNode.query("itemId").text())
+      .reduce((counts, rarecrowId) => {
+        counts[rarecrowId]++;
+        return counts;
+      }, placedRarecrows);
+  }
+
   private calcSpecialOrders() {
     const completedOrders = this.saveXml
       .queryAll("completedSpecialOrders > string")
@@ -243,6 +182,19 @@ export class GameSave {
       return {
         title: orderTitle,
         npc: lowerCase(orderId.replace(/\d+/g, "")),
+        completed: completedOrders.includes(orderId),
+      };
+    });
+  }
+
+  private calcQiSpecialOrders() {
+    const completedOrders = this.saveXml
+      .queryAll("completedSpecialOrders > string")
+      .map((node) => node.text());
+
+    return entries(STARDEW_SPECIAL_ORDERS.qi).map(([orderId, orderTitle]) => {
+      return {
+        title: orderTitle,
         completed: completedOrders.includes(orderId),
       };
     });
@@ -279,9 +231,16 @@ export class GameSave {
   }
 
   private calcGrandpaShrineCandlesLit() {
-    const farmLocationXml = this.saveXml.query(
-      "locations > GameLocation[xsi\\:type='Farm']"
-    );
+    const farmLocationXml =
+      this.saveXml
+        .queryAll(
+          // TODO: Y u no work?
+          // "locations > GameLocation[xsi\\:type='Farm']"
+          "locations > GameLocation"
+        )
+        .find((node) => node.element?.getAttribute("xsi:type") === "Farm") ??
+      XMLNode.EMPTY;
+
     return farmLocationXml.query("grandpaScore").number();
   }
 
@@ -382,7 +341,7 @@ export class GameSave {
             <AchievementDisplay title={achi} achieved={false} inline /> [WIP]
           </>
         ),
-        score: Infinity,
+        score: NaN,
       }))
     );
 
@@ -390,7 +349,7 @@ export class GameSave {
       scoreSubjects.push({
         earned: false,
         reason: `Friendship #${i + 1} [WIP]`,
-        score: Infinity,
+        score: NaN,
       })
     );
 
@@ -398,7 +357,7 @@ export class GameSave {
       scoreSubjects.push({
         earned: false,
         reason: `Other #${i + 1} [WIP]`,
-        score: Infinity,
+        score: NaN,
       })
     );
 

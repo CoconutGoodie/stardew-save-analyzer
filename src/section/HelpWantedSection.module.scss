@@ -1,5 +1,12 @@
-.text {
+// .text {
+//   margin-bottom: 15px;
+// }
+
+.stats {
   margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
 .info {

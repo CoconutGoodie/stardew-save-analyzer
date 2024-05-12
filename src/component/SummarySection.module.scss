@@ -1,23 +1,67 @@
+$collapsedHeight: 150px;
+
 .section {
+  position: relative;
   display: flex;
   flex-direction: column;
+  scroll-margin-top: 50px;
+
+  &:hover > h1 > a {
+    opacity: 1;
+  }
 
   .wrapper {
-    &.open {
-      height: 100px;
+    &.expanded {
+      height: $collapsedHeight;
       overflow: hidden;
       mask-image: linear-gradient(to bottom, #fff, rgba(#fff, 0));
+    }
+
+    &.spoiler {
+      min-height: $collapsedHeight;
     }
   }
 
   & > h1 {
+    position: relative;
     margin: 0 0 20px 0;
     display: flex;
     align-items: center;
     gap: 10px;
     font-size: 28px;
 
-    & > button {
+    &.allDone {
+      // color: #82d49a;
+
+      & > span:first-of-type {
+        text-decoration: underline;
+        text-decoration-color: #55e21a;
+      }
+
+      & > img {
+        margin-left: -6px;
+      }
+
+      & > a {
+        color: #7ae24d;
+      }
+    }
+
+    & > a {
+      padding: 0 10px;
+      position: absolute;
+      left: 0;
+      transform: translateX(-100%);
+      opacity: 0;
+      color: #ceba97;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
+
+    @mixin button() {
+      flex: 0;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -26,10 +70,113 @@
       border: 1px solid #d4ccbc;
       border-radius: 5px;
       background: none;
+    }
 
-      &.open {
+    .spoilerBtn {
+      @include button();
+    }
+
+    .collapseBtn {
+      @include button();
+
+      &.expanded {
         transform: rotate(90deg);
       }
     }
+  }
+}
+
+.versions {
+  vertical-align: baseline;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  & > * {
+    padding: 1px 10px;
+    background: linear-gradient(to right, #aa9267, #ceba97);
+    border: 2px solid #6e5f45;
+    color: #000000;
+    font-size: 13px;
+    font-weight: 700;
+    // font-style: italic;
+    border-radius: 999px;
+
+    &.spoiler {
+      background: linear-gradient(to right, #d79b3f, #cf891f);
+      border-color: #9b6008;
+      color: #000000;
+    }
+  }
+}
+
+.spoilerOverlay {
+  --wrapperWidth: 0px;
+  --wrapperHeight: 0px;
+
+  position: absolute;
+  content: "";
+  padding: 20px 0;
+  top: 40px;
+  width: var(--wrapperWidth);
+  height: calc(max(var(--wrapperHeight), $collapsedHeight) + 10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    to right bottom,
+    rgba(#363636, 0.3),
+    rgba(#1f1609, 0.1)
+  );
+  border-radius: 15px;
+  backdrop-filter: blur(30px);
+  font-family: "Stardew Valley";
+  font-size: 50px;
+  opacity: 0;
+  pointer-events: none;
+  transition: backdrop-filter 180ms linear, opacity 200ms linear;
+
+  &:hover {
+    backdrop-filter: blur(15px);
+  }
+
+  &:not(.expanded) {
+    padding: 5px 0;
+
+    & > h1 {
+      margin-bottom: 5px;
+      font-size: 40px;
+    }
+  }
+
+  &.shown {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  & > h1 {
+    margin: 0;
+    color: #ffe6bf;
+  }
+
+  & > p {
+    width: 30ch;
+    margin: 0 0 15px 0;
+    line-height: 2ch;
+    font-size: 35px;
+    text-align: center;
+    color: #ebc280;
+  }
+
+  & > button {
+    $color: #804e04;
+
+    padding: 10px 20px;
+    background: linear-gradient(180deg, #e5c087, #d3a155);
+    border: 4px solid $color;
+    border-radius: 10px;
+    color: $color;
+    font-size: 25px;
   }
 }

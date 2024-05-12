@@ -18,11 +18,13 @@ export class XMLNode {
   }
 
   public text(defaultValue: string = "") {
-    return this.element?.textContent ?? defaultValue;
+    return this.element?.textContent?.trim() ?? defaultValue;
   }
 
   public number(defaultValue: number = 0) {
-    const number = parseInt(this.text());
+    const text = this.text();
+    if (!text) return defaultValue;
+    const number = parseInt(text);
     return number == null ? defaultValue : number;
   }
 

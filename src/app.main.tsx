@@ -24,6 +24,7 @@ import { QiSpecialOrdersSection } from "@src/section/QiSpecialOrdersSection";
 import { RarecrowSection } from "@src/section/RarecrowsSection";
 import "./style/style.scss";
 import { CookingSection } from "@src/section/CookingSection";
+import { Scrollbox } from "@src/component/Scrollbox";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
@@ -101,10 +102,12 @@ function App() {
             <SummarySection className="twoSections">
               <MoneySection gameSave={gameSave} />
 
-              <SummarySection sectionTitle="Animals & Pets [WIP]" collapsable>
-                <p>...</p>
-                <p>...</p>
-                <p>...</p>
+              <SummarySection sectionTitle="Farm Buildings [WIP]" collapsable>
+                <Scrollbox>
+                  <pre>{JSON.stringify(gameSave.pets, null, 2)}</pre>
+                  <pre>{JSON.stringify(gameSave.fishPonds, null, 2)}</pre>
+                  <pre>{JSON.stringify(gameSave.animalBuildings, null, 2)}</pre>
+                </Scrollbox>
               </SummarySection>
             </SummarySection>
 

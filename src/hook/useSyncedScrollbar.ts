@@ -1,9 +1,12 @@
-import { DependencyList, useEffect, useState } from "react";
+import { DependencyList, useEffect, useRef, useState } from "react";
+
+// let scrollingElement: HTMLElement;
+// let isSyncing = false;
 
 export function useSyncedScrollbar(resetDeps?: DependencyList) {
   const [elements] = useState<Map<HTMLElement, () => void>>(() => new Map());
 
-  const addScrollableRef = (element: HTMLElement | null) => {
+  const registerScrollableRef = (element: HTMLElement | null) => {
     if (element == null) return;
     if (elements.has(element)) return;
 
@@ -37,6 +40,6 @@ export function useSyncedScrollbar(resetDeps?: DependencyList) {
   }, []);
 
   return {
-    addScrollableRef,
+    registerScrollableRef,
   };
 }

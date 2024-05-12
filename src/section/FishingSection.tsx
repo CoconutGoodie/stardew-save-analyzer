@@ -48,7 +48,7 @@ export const FishingSection = (props: Props) => {
   const [compact, setCompact] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
-  const { addScrollableRef } = useSyncedScrollbar([expanded]);
+  const { registerScrollableRef: addScrollableRef } = useSyncedScrollbar([expanded]);
 
   const farmers = props.gameSave.getAllFarmers();
 

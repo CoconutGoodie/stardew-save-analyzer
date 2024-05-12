@@ -35,7 +35,7 @@ const cookingRecipeSprites = new AssetRepository<{ default: string }>(
 export const CookingSection = (props: Props) => {
   const [expanded, setExpanded] = useState(false);
 
-  const { addScrollableRef } = useSyncedScrollbar([expanded]);
+  const { registerScrollableRef: addScrollableRef } = useSyncedScrollbar([expanded]);
 
   const farmers = props.gameSave.getAllFarmers();
 

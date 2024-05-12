@@ -8,6 +8,7 @@ interface Props extends PropsWithChildren {
   expanded?: boolean;
   onExpanded?: (expanded: boolean) => void;
   className?: string;
+  scrollClassName?: string;
 }
 
 export const Scrollbox = forwardRef<ComponentRef<"div">, Props>(
@@ -20,7 +21,11 @@ export const Scrollbox = forwardRef<ComponentRef<"div">, Props>(
 
         <div
           ref={props.scrollRef}
-          className={clsx(styles.wrapper, props.expanded && styles.expanded)}
+          className={clsx(
+            styles.wrapper,
+            props.scrollClassName,
+            props.expanded && styles.expanded
+          )}
         >
           {props.children}
         </div>

@@ -90,7 +90,9 @@ export const LoadSaveSection = (props: Props) => {
 
         <span className={styles.or}>OR</span>
 
-        <span className={styles.info}>Select a demo save (for now)</span>
+        <span className={styles.info}>
+          Select a demo save (for proof of concept)
+        </span>
 
         <div className={styles.demoSaves}>
           <button onClick={() => loadDemo("1.2")}>v1.2</button>
@@ -106,6 +108,8 @@ export const LoadSaveSection = (props: Props) => {
           </div>
         )}
       </SummarySection>
+
+      <hr />
 
       <SummarySection sectionTitle="Instructions" collapsable>
         [WIP] Instructions and FAQ here

@@ -35,6 +35,7 @@ export class GameSave {
 
   public readonly player;
   public readonly farmhands;
+  public readonly pets;
 
   public readonly rarecrowsPlaced;
 
@@ -64,6 +65,7 @@ export class GameSave {
 
     this.player = new Farmer(saveXml.query("player"), saveXml);
     this.farmhands = this.calcFarmhands();
+    this.pets = this.calcPets();
 
     this.rarecrowsPlaced = this.calcRarecrowsPlaced();
 
@@ -122,6 +124,21 @@ export class GameSave {
       ) as GameSeason,
       this.saveXml.query(":scope > year").number()
     );
+  }
+
+  private calcPets() {
+    return this.saveXml
+      .queryAll(
+        "locations > GameLocation > :is(characters,Characters) > :is(npc,NPC)"
+      )
+      .filter((node) => node.element?.getAttribute("xsi:type") === "Pet")
+      .map((node) => {
+        return {
+          name: node.query("name").text(),
+          type: node.query("petType").text(),
+          love: node.query("friendshipTowardFarmer").number(),
+        };
+      });
   }
 
   private calcFarmhands() {

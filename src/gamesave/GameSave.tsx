@@ -3,25 +3,16 @@ import { capitalCase, lowerCase } from "case-anything";
 import { AchievementDisplay } from "@src/component/AchievementDisplay";
 import { Currency } from "@src/component/Currency";
 import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "@src/const/StardewMuseum";
+import { STARDEW_RARECROW_IDS } from "@src/const/StardewRarecrows";
 import { Achievements } from "@src/gamesave/Achievements";
 import { XMLNode } from "@src/util/XMLNode";
 import { isKeyOf, thru } from "@src/util/utilities";
 import { ReactNode } from "react";
-import {
-  entries,
-  firstBy,
-  fromKeys,
-  groupBy,
-  identity,
-  keys,
-  mapToObj,
-  times,
-} from "remeda";
+import { entries, firstBy, keys, mapToObj, times } from "remeda";
 import { STARDEW_FARM_TYPES } from "../const/StardewFarmTypes";
 import { STARDEW_SPECIAL_ORDERS } from "../const/StardewSpecialOrders";
 import { GameDate, GameSeason } from "../util/GameDate";
 import { Farmer } from "./Farmer";
-import { STARDEW_RARECROW_IDS } from "@src/const/StardewRarecrows";
 
 export class GameSave {
   public readonly gameVersion;
@@ -36,6 +27,8 @@ export class GameSave {
   public readonly player;
   public readonly farmhands;
   public readonly pets;
+  public readonly animalBuildings;
+  // public readonly fishPonds;
 
   public readonly rarecrowsPlaced;
 
@@ -66,6 +59,7 @@ export class GameSave {
     this.player = new Farmer(saveXml.query("player"), saveXml);
     this.farmhands = this.calcFarmhands();
     this.pets = this.calcPets();
+    this.animalBuildings = this.calcAnimalBuildings();
 
     this.rarecrowsPlaced = this.calcRarecrowsPlaced();
 
@@ -131,7 +125,10 @@ export class GameSave {
       .queryAll(
         "locations > GameLocation > :is(characters,Characters) > :is(npc,NPC)"
       )
-      .filter((node) => node.element?.getAttribute("xsi:type") === "Pet")
+      .filter((node) => {
+        const type = node.element?.getAttribute("xsi:type");
+        return type === "Pet" || type === "Cat" || type === "Dog";
+      })
       .map((node) => {
         return {
           name: node.query("name").text(),
@@ -139,6 +136,47 @@ export class GameSave {
           love: node.query("friendshipTowardFarmer").number(),
         };
       });
+  }
+
+  private calcAnimalBuildings() {
+    const validAnimalBuildings = [
+      "coop",
+      "big coop",
+      "deluxe coop",
+      "barn",
+      "big barn",
+      "deluxe barn",
+    ];
+
+    const farmLocationXml = this.saveXml.queryAllAndFind(
+      "locations > GameLocation",
+      (node) => node.element?.getAttribute("xsi:type") === "Farm"
+    );
+
+    const animalBuildingsXml = farmLocationXml
+      .queryAll("Building")
+      .filter((buildingNode) => {
+        const buildingType = buildingNode.query("buildingType").text();
+        return validAnimalBuildings.includes(buildingType.toLowerCase());
+      });
+
+    return animalBuildingsXml.map((buildingNode) => ({
+      type: buildingNode.query("buildingType").text(),
+      // curr: buildingNode.query("currentOccupants").number(),
+      capacity: buildingNode.query("maxOccupants").number(),
+      animals: buildingNode
+        .queryAll(
+          "indoors > Animals > SerializableDictionaryOfInt64FarmAnimal FarmAnimal"
+        )
+        .map((animalNode) => ({
+          type: animalNode.query("type").text(),
+          name: animalNode.query(":is(name,displayName)").text(),
+          love: animalNode.query("friendshipTowardFarmer").text(),
+          hasEatenAnimalCracker: animalNode
+            .query("hasEatenAnimalCracker")
+            .boolean(),
+        })),
+    }));
   }
 
   private calcFarmhands() {
@@ -152,15 +190,10 @@ export class GameSave {
 
     // version < 1.6
     if (!farmhands) {
-      const farmLocationXml =
-        this.saveXml
-          .queryAll(
-            // TODO: Y u no work?
-            // "locations > GameLocation[xsi\\:type='Farm']"
-            "locations > GameLocation"
-          )
-          .find((node) => node.element?.getAttribute("xsi:type") === "Farm") ??
-        XMLNode.EMPTY;
+      const farmLocationXml = this.saveXml.queryAllAndFind(
+        "locations > GameLocation",
+        (node) => node.element?.getAttribute("xsi:type") === "Farm"
+      );
 
       farmhands = farmLocationXml.transformIfPresent((farmLocationXml) =>
         farmLocationXml
@@ -248,15 +281,10 @@ export class GameSave {
   }
 
   private calcGrandpaShrineCandlesLit() {
-    const farmLocationXml =
-      this.saveXml
-        .queryAll(
-          // TODO: Y u no work?
-          // "locations > GameLocation[xsi\\:type='Farm']"
-          "locations > GameLocation"
-        )
-        .find((node) => node.element?.getAttribute("xsi:type") === "Farm") ??
-      XMLNode.EMPTY;
+    const farmLocationXml = this.saveXml.queryAllAndFind(
+      "locations > GameLocation",
+      (node) => node.element?.getAttribute("xsi:type") === "Farm"
+    );
 
     return farmLocationXml.query("grandpaScore").number();
   }

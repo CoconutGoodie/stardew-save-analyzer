@@ -17,6 +17,13 @@ export class XMLNode {
     );
   }
 
+  public queryAllAndFind(
+    selectors: string,
+    predicate: (node: XMLNode) => boolean
+  ) {
+    return this.queryAll(selectors).find(predicate) ?? XMLNode.EMPTY;
+  }
+
   public text(defaultValue: string = "") {
     return this.element?.textContent?.trim() ?? defaultValue;
   }

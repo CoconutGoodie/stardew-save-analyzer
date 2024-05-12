@@ -1,22 +1,17 @@
+import { STARDEW_COOKING_RECIPES } from "@src/const/StardewCooking";
+import { STARDEW_MASTERY_LEVEL_EXP } from "@src/const/StardewMasteryLevels";
+import { XMLNode } from "@src/util/XMLNode";
+import { thru } from "@src/util/utilities";
 import {
   entries,
   fromEntries,
   intersection,
   keys,
-  map,
-  pipe,
-  sort,
   sumBy,
-  values,
+  values
 } from "remeda";
 import { STARDEW_PROFESSIONS } from "../const/StardewProfessions";
 import { STARDROP_MAIL_FLAGS } from "../const/StardewStardrops";
-import { GameSave } from "./GameSave";
-import { STARDEW_MASTERY_LEVEL_EXP } from "@src/const/StardewMasteryLevels";
-import { XMLNode } from "@src/util/XMLNode";
-import { STARDEW_CRAFTING_RECIPES } from "@src/const/StardewCrafting";
-import { STARDEW_COOKING_RECIPES } from "@src/const/StardewCooking";
-import { thru } from "@src/util/utilities";
 
 export class Farmer {
   public readonly name;
@@ -87,8 +82,6 @@ export class Farmer {
 
     this.craftedRecipes = this.calcCraftedRecipes();
     this.cookedRecipes = this.calcCookedRecipes();
-
-    console.log(this.cookedRecipes);
 
     this.receivedMailFlags = farmerXml
       .queryAll("mailReceived > *")

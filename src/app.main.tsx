@@ -98,7 +98,7 @@ function App() {
           <>
             <OverviewSection gameSave={gameSave} />
 
-            <div style={{ display: "flex", gap: 50 }}>
+            <SummarySection className="twoSections">
               <MoneySection gameSave={gameSave} />
 
               <SummarySection sectionTitle="Animals & Pets [WIP]" collapsable>
@@ -106,7 +106,7 @@ function App() {
                 <p>...</p>
                 <p>...</p>
               </SummarySection>
-            </div>
+            </SummarySection>
 
             <SkillsSection gameSave={gameSave} />
 

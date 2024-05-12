@@ -18,13 +18,21 @@ import { useSpoilersStore } from "@src/store/useSpoilersStore";
 type Props = ComponentProps<"section"> & {
   sectionTitle?: string;
   versions?: string[];
+  stripes?: boolean;
   collapsable?: boolean;
   spoiler?: boolean;
   allDone?: boolean;
 };
 
 export const SummarySection = (props: Props) => {
-  const { sectionTitle, collapsable, spoiler, allDone, ...nativeProps } = props;
+  const {
+    sectionTitle,
+    stripes,
+    collapsable,
+    spoiler,
+    allDone,
+    ...nativeProps
+  } = props;
 
   const wrapperRef = useRef<ComponentRef<"div">>(null);
   const { width: wrapperWidth, height: wrapperHeight } = useResizeObserver({
@@ -54,7 +62,7 @@ export const SummarySection = (props: Props) => {
   return (
     <section
       {...nativeProps}
-      className={styles.section}
+      className={clsx(styles.section, props.stripes && styles.stripes)}
       data-done={props.allDone}
     >
       {sectionTitle && (

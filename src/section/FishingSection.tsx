@@ -10,24 +10,23 @@ import {
 import { GameSave } from "../gamesave/GameSave";
 import { AssetRepository } from "../util/AssetRepository";
 
+import { FarmersRow } from "@src/component/FarmersRow";
 import { ImageObjective } from "@src/component/ImageObjective";
 import { thru } from "@src/util/utilities";
 import clsx from "clsx";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import checkmarkPng from "../assets/icon/checkmark.png";
 import questPng from "../assets/icon/quest.png";
-import fishPng from "../assets/sprite/skill/fishing.png";
 import { AchievementDisplay } from "../component/AchievementDisplay";
 import { Objective } from "../component/Objective";
 import { StardewWiki } from "../util/StardewWiki";
 import styles from "./FishingSection.module.scss";
-import { FarmersRow } from "@src/component/FarmersRow";
 
 import barbedHookPng from "@src/assets/icon/barbed_hook.png";
-import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
 import { Scrollbox } from "@src/component/Scrollbox";
 import { useGoals } from "@src/hook/useGoals";
+import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
 
 interface Props {
   gameSave: GameSave;
@@ -39,9 +38,9 @@ const fishSprites = new AssetRepository<{ default: string }>(
   ".png"
 );
 
-const backgroundSprites = new AssetRepository<{ default: string }>(
-  import.meta.glob("../assets/background/fishing/*.png", { eager: true }),
-  "../assets/background/fishing/",
+const coverSprites = new AssetRepository<{ default: string }>(
+  import.meta.glob("../assets/cover/fishing/*.png", { eager: true }),
+  "../assets/cover/fishing/",
   ".png"
 );
 
@@ -168,7 +167,7 @@ export const FishingSection = (props: Props) => {
                           )}
                           style={{
                             ["--background" as string]: `url(${
-                              backgroundSprites.resolve(snakeCase(categoryId))
+                              coverSprites.resolve(snakeCase(categoryId))
                                 ?.default
                             })`,
                           }}

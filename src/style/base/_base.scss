@@ -29,7 +29,7 @@
         left: 0;
         width: 100%;
         height: 300px;
-        background-image: url("@src/assets/background.png");
+        background-image: url("@src/assets/header-bg.png");
         background-repeat: repeat-x;
         mask-image: linear-gradient(to bottom, #fff, rgba(#fff, 0));
         z-index: -1;
@@ -138,6 +138,11 @@
       color: rgb(238, 112, 96);
     }
   }
+}
+
+.twoSections {
+  display: flex;
+  gap: 80px;
 }
 
 img {

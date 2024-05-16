@@ -131,12 +131,18 @@ export class GameSave {
       )
       .filter((npcNode) => {
         const type = npcNode.element?.getAttribute("xsi:type");
+        // version < 1.6 - there used to be either Cat or Dog
         return type === "Pet" || type === "Cat" || type === "Dog";
       })
       .map((npcNode) => {
+        console.log(npcNode.element);
         return {
           name: npcNode.query("name").text(),
-          type: npcNode.query("petType").text(),
+          type:
+            npcNode.query("petType").text() ||
+            npcNode.element?.getAttribute("xsi:type") ||
+            "Dog",
+          breed: npcNode.query("whichBreed").text() ?? "0",
           love: npcNode.query("friendshipTowardFarmer").number(),
         };
       });
@@ -174,7 +180,7 @@ export class GameSave {
         .map((animalNode) => ({
           type: animalNode.query("type").text(),
           name: animalNode.query(":is(name,displayName)").text(),
-          love: animalNode.query("friendshipTowardFarmer").text(),
+          love: animalNode.query("friendshipTowardFarmer").number(),
           goldenAnimalCracker: animalNode
             .query("hasEatenAnimalCracker")
             .boolean(),

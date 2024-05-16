@@ -17,3 +17,21 @@ export const FISH_COVER_SPRITES = new AssetRepository({
   prefix: "../assets/cover/fishing/",
   postfix: ".png",
 });
+
+export const FARM_BUILDING_SPRITES = new AssetRepository({
+  repository: import.meta.glob<string>("../assets/sprite/building/*.png", {
+    import: "default",
+    eager: true,
+  }),
+  prefix: "../assets/sprite/building/",
+  postfix: ".png",
+});
+
+export const FARM_ANIMALS_SPRITES = new AssetRepository({
+  repository: import.meta.glob<string>("../assets/sprite/animal/*.png", {
+    import: "default",
+    eager: true,
+  }),
+  prefix: "../assets/sprite/animal/",
+  postfix: ".png",
+});

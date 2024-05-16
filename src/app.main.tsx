@@ -20,11 +20,11 @@ import { CraftingSection } from "@src/section/CraftingSection";
 import { HelpWantedSection } from "@src/section/HelpWantedSection";
 import { MasteriesSection } from "@src/section/MasteriesSection";
 
+import { CookingSection } from "@src/section/CookingSection";
+import { FarmBuildingsSection } from "@src/section/FarmBuildingsSection";
 import { QiSpecialOrdersSection } from "@src/section/QiSpecialOrdersSection";
 import { RarecrowSection } from "@src/section/RarecrowsSection";
 import "./style/style.scss";
-import { CookingSection } from "@src/section/CookingSection";
-import { Scrollbox } from "@src/component/Scrollbox";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
@@ -101,22 +101,7 @@ function App() {
 
             <SummarySection className="twoSections">
               <MoneySection gameSave={gameSave} />
-
-              <SummarySection sectionTitle="Farm Buildings [WIP]" collapsable>
-                <div style={{ display: "flex", gap: 10 }}>
-                  <Scrollbox>
-                    <pre>{JSON.stringify(gameSave.pets, null, 2)}</pre>
-                  </Scrollbox>
-                  <Scrollbox>
-                    <pre>{JSON.stringify(gameSave.fishPonds, null, 2)}</pre>
-                  </Scrollbox>
-                  <Scrollbox>
-                    <pre>
-                      {JSON.stringify(gameSave.animalBuildings, null, 2)}
-                    </pre>
-                  </Scrollbox>
-                </div>
-              </SummarySection>
+              <FarmBuildingsSection gameSave={gameSave} />
             </SummarySection>
 
             <hr />
@@ -133,8 +118,6 @@ function App() {
 
             <hr />
 
-            {/* <SummarySection className="specialOrders">
-            </SummarySection> */}
             <SpecialOrdersSection gameSave={gameSave} />
 
             <hr />

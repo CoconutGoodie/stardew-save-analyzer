@@ -23,8 +23,8 @@ export const Scrollbox = forwardRef<ComponentRef<"div">, Props>(
           ref={props.scrollRef}
           className={clsx(
             styles.wrapper,
+            props.expanded && styles.expanded,
             props.scrollClassName,
-            props.expanded && styles.expanded
           )}
         >
           {props.children}

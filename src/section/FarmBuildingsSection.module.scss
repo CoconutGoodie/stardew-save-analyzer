@@ -1,0 +1,74 @@
+@use "@src/style/base/mixin" as mixin;
+
+.section {
+  min-width: 600px;
+}
+
+.scrollbox {
+  --height: 250px;
+  margin: 10px 0;
+  // height: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.building {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 24px;
+
+  &:not(:last-child) {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #130c30;
+  }
+
+  .info {
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 5px;
+    font-family: "Stardew Valley";
+    font-size: 16px;
+    text-align: center;
+    color: #f9b446;
+  }
+}
+
+.animals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.animal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: "Stardew Valley";
+  font-size: 16px;
+  text-align: center;
+
+  &.empty {
+    opacity: 0.25;
+  }
+
+  & > img {
+    object-fit: contain;
+  }
+
+  & > :nth-child(3) {
+    margin-top: 5px;
+    color: #dd5f36;
+  }
+
+  &:hover {
+    text-decoration: unset;
+
+    &:not(.empty) > img {
+      @include mixin.shadowOutline(2);
+    }
+  }
+}

@@ -4,7 +4,11 @@ import { GameSave } from "@src/gamesave/GameSave";
 
 import styles from "./FarmBuildingsSection.module.scss";
 import { useState } from "react";
-import { FARM_ANIMALS_SPRITES, FARM_BUILDING_SPRITES } from "@src/const/Assets";
+import {
+  FARM_ANIMALS_SPRITES,
+  FARM_BUILDING_SPRITES,
+  FISH_SPRITES,
+} from "@src/const/Assets";
 import { snakeCase } from "case-anything";
 import heartFilledPng from "@src/assets/icon/heart_filled.png";
 import { sum, times } from "remeda";
@@ -38,6 +42,22 @@ export const FarmBuildingsSection = (props: Props) => {
           wikiUrl: StardewWiki.getLink(animal.type.split(/\s+/g).at(-1)!),
           iconSrc: FARM_ANIMALS_SPRITES.resolve(snakeCase(animal.type)),
           iconHeight: building.type.endsWith("Barn") ? 42 : 32,
+        }))}
+      />
+    )),
+
+    ...props.gameSave.fishPonds.map((pond, index) => (
+      <BuildingPart
+        key={`building-${index}`}
+        name={`${pond.fish} Pond`}
+        capacity={pond.capacity}
+        iconSrc={FARM_BUILDING_SPRITES.resolve("fish_pond")}
+        emptyIconSrc={FISH_SPRITES.resolve(snakeCase(pond.fish))}
+        animals={times(pond.count - 1, (i) => ({
+          name: `Fish #${i + 1}`,
+          iconHeight: 30,
+          iconSrc: FISH_SPRITES.resolve(snakeCase(pond.fish)),
+          wikiUrl: StardewWiki.getLink(pond.fish),
         }))}
       />
     )),
@@ -77,17 +97,6 @@ export const FarmBuildingsSection = (props: Props) => {
       >
         {partsJsx}
       </Scrollbox>
-      {/* <div style={{ display: "flex", gap: 10 }}>
-        <Scrollbox>
-          <pre>{JSON.stringify(props.gameSave.pets, null, 2)}</pre>
-        </Scrollbox>
-        <Scrollbox>
-          <pre>{JSON.stringify(props.gameSave.fishPonds, null, 2)}</pre>
-        </Scrollbox>
-        <Scrollbox>
-          <pre>{JSON.stringify(props.gameSave.animalBuildings, null, 2)}</pre>
-        </Scrollbox>
-      </div> */}
     </SummarySection>
   );
 };
@@ -97,10 +106,11 @@ export const FarmBuildingsSection = (props: Props) => {
 const BuildingPart = (props: {
   name: string;
   iconSrc: string;
+  emptyIconSrc?: string;
   capacity?: number;
   animals: {
     name: string;
-    lovePercentage: number;
+    lovePercentage?: number;
     iconSrc: string;
     iconHeight: number;
     wikiUrl: string;
@@ -109,7 +119,7 @@ const BuildingPart = (props: {
   return (
     <div key="pets" className={styles.building}>
       <div className={styles.info}>
-        <img width={70} height={70} src={props.iconSrc} />
+        <img width={70} src={props.iconSrc} />
         <span>{props.name}</span>
       </div>
       <div className={styles.animals}>
@@ -122,10 +132,12 @@ const BuildingPart = (props: {
           >
             <span>{animal.name}</span>
             <img height={animal.iconHeight} src={animal.iconSrc} />
-            <span>
-              <img height={12} src={heartFilledPng} />{" "}
-              {Math.floor(animal.lovePercentage * 100)}%
-            </span>
+            {animal.lovePercentage != null && (
+              <span>
+                <img height={12} src={heartFilledPng} />{" "}
+                {Math.floor(animal.lovePercentage * 100)}%
+              </span>
+            )}
           </a>
         ))}
 
@@ -133,10 +145,12 @@ const BuildingPart = (props: {
           times(Math.max(0, props.capacity - props.animals.length), (i) => (
             <div key={i} className={clsx(styles.animal, styles.empty)}>
               <span>Empty</span>
-              <img height={32} src={FARM_ANIMALS_SPRITES.resolve("empty")} />
-              <span>
-                <img height={12} src={heartFilledPng} /> -
-              </span>
+              <img
+                height={32}
+                src={
+                  props.emptyIconSrc ?? FARM_ANIMALS_SPRITES.resolve("empty")
+                }
+              />
             </div>
           ))}
       </div>

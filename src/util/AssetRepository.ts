@@ -26,8 +26,10 @@ export class AssetRepository<T> {
   public resolve(assetName: string) {
     const { repository, prefix, postfix, defaultValue } = this.options;
 
-    return (repository[`${prefix}${assetName}${postfix}`] ??
+    return (
+      repository[`${prefix}${assetName}${postfix}`] ??
       defaultValue ??
-      entries(repository).at(0)) as T;
+      entries(repository).at(0)?.[1] as T
+    );
   }
 }

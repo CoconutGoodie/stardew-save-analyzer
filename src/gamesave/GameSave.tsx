@@ -142,7 +142,7 @@ export class GameSave {
             npcNode.query("petType").text() ||
             npcNode.element?.getAttribute("xsi:type") ||
             "Dog",
-          breed: npcNode.query("whichBreed").text() ?? "0",
+          breed: npcNode.query("whichBreed").text() || "0",
           love: npcNode.query("friendshipTowardFarmer").number(),
         };
       });

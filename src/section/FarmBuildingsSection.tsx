@@ -27,86 +27,36 @@ export const FarmBuildingsSection = (props: Props) => {
 
   const partsJsx = [
     ...props.gameSave.animalBuildings.map((building, index) => (
-      <div key={`building-${index}`} className={styles.building}>
-        <div className={styles.info}>
-          <img
-            width={70}
-            height={70}
-            src={FARM_BUILDING_SPRITES.resolve(snakeCase(building.type))}
-          />
-          <span>{building.type}</span>
-        </div>
-        <div className={styles.animals}>
-          {building.animals.map((animal) => (
-            <a
-              key={animal.name}
-              target="_blank"
-              href={StardewWiki.getLink(animal.type.split(/\s+/g).at(-1)!)}
-              className={styles.animal}
-            >
-              <span>{animal.name}</span>
-              <img
-                height={building.type.endsWith("Barn") ? 42 : 32}
-                src={FARM_ANIMALS_SPRITES.resolve(snakeCase(animal.type))}
-              />
-              <span>
-                <img height={12} src={heartFilledPng} />{" "}
-                {Math.floor((animal.love / 1000) * 100)}%
-              </span>
-            </a>
-          ))}
-          {times(
-            Math.max(0, building.capacity - building.animals.length),
-            (i) => (
-              <div key={i} className={clsx(styles.animal, styles.empty)}>
-                <span>Empty</span>
-                <img
-                  height={building.type.endsWith("Barn") ? 42 : 32}
-                  src={FARM_ANIMALS_SPRITES.resolve("empty")}
-                />
-                <span>
-                  <img height={12} src={heartFilledPng} /> -
-                </span>
-              </div>
-            )
-          )}
-        </div>
-      </div>
+      <BuildingPart
+        key={`building-${index}`}
+        name={building.type}
+        capacity={building.capacity}
+        iconSrc={FARM_BUILDING_SPRITES.resolve(snakeCase(building.type))}
+        animals={building.animals.map((animal) => ({
+          name: animal.name,
+          lovePercentage: animal.love / 1000,
+          wikiUrl: StardewWiki.getLink(animal.type.split(/\s+/g).at(-1)!),
+          iconSrc: FARM_ANIMALS_SPRITES.resolve(snakeCase(animal.type)),
+          iconHeight: building.type.endsWith("Barn") ? 42 : 32,
+        }))}
+      />
     )),
 
     props.gameSave.pets.length > 0 && (
-      <div key="pets" className={styles.building}>
-        <div className={styles.info}>
-          <img
-            width={70}
-            height={60}
-            src={FARM_BUILDING_SPRITES.resolve("pet_bowl")}
-          />
-          <span>Pet Bowl</span>
-        </div>
-        <div className={styles.animals}>
-          {props.gameSave.pets.map((pet) => (
-            <a
-              key={pet.name}
-              target="_blank"
-              href={StardewWiki.getLink(pet.type)}
-              className={styles.animal}
-            >
-              <span>{pet.name}</span>
-              <img
-                height={50}
-                src={FARM_ANIMALS_SPRITES.resolve(
-                  snakeCase(pet.type) + "_" + pet.breed
-                )}
-              />
-              <span>
-                <img height={12} src={heartFilledPng} />{" "}
-                {Math.floor((pet.love / 2000) * 100)}%
-              </span>
-            </a>
-          ))}
-        </div>
-      </div>
+      <BuildingPart
+        key="pet_bowl"
+        name="Pet Bowl"
+        iconSrc={FARM_BUILDING_SPRITES.resolve("pet_bowl")}
+        animals={props.gameSave.pets.map((pet) => ({
+          name: pet.name,
+          lovePercentage: pet.love / 2000,
+          wikiUrl: StardewWiki.getLink(pet.type),
+          iconSrc: FARM_ANIMALS_SPRITES.resolve(
+            snakeCase(pet.type) + "_" + pet.breed
+          ),
+          iconHeight: 50,
+        }))}
+      />
     ),
   ].filter((jsx) => !!jsx);
 
@@ -139,5 +89,57 @@ export const FarmBuildingsSection = (props: Props) => {
         </Scrollbox>
       </div> */}
     </SummarySection>
+  );
+};
+
+/* ---------- */
+
+const BuildingPart = (props: {
+  name: string;
+  iconSrc: string;
+  capacity?: number;
+  animals: {
+    name: string;
+    lovePercentage: number;
+    iconSrc: string;
+    iconHeight: number;
+    wikiUrl: string;
+  }[];
+}) => {
+  return (
+    <div key="pets" className={styles.building}>
+      <div className={styles.info}>
+        <img width={70} height={70} src={props.iconSrc} />
+        <span>{props.name}</span>
+      </div>
+      <div className={styles.animals}>
+        {props.animals.map((animal) => (
+          <a
+            key={animal.name}
+            target="_blank"
+            href={animal.wikiUrl}
+            className={styles.animal}
+          >
+            <span>{animal.name}</span>
+            <img height={animal.iconHeight} src={animal.iconSrc} />
+            <span>
+              <img height={12} src={heartFilledPng} />{" "}
+              {Math.floor(animal.lovePercentage * 100)}%
+            </span>
+          </a>
+        ))}
+
+        {props.capacity != null &&
+          times(Math.max(0, props.capacity - props.animals.length), (i) => (
+            <div key={i} className={clsx(styles.animal, styles.empty)}>
+              <span>Empty</span>
+              <img height={32} src={FARM_ANIMALS_SPRITES.resolve("empty")} />
+              <span>
+                <img height={12} src={heartFilledPng} /> -
+              </span>
+            </div>
+          ))}
+      </div>
+    </div>
   );
 };

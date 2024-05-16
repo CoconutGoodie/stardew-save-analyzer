@@ -2,7 +2,7 @@ import { capitalCase, lowerCase } from "case-anything";
 import { AchievementDisplay } from "../component/AchievementDisplay";
 import { SummarySection } from "../component/SummarySection";
 import { GameSave } from "../gamesave/GameSave";
-import { AssetRepository } from "../util/AssetRepository";
+import { AssetRepositoryOLD } from "../util/AssetRepository";
 
 import { FarmersRow } from "@src/component/FarmersRow";
 import { useGoals } from "@src/hook/useGoals";
@@ -16,13 +16,13 @@ interface Props {
   gameSave: GameSave;
 }
 
-const skillSprites = new AssetRepository<{ default: string }>(
+const skillSprites = new AssetRepositoryOLD<{ default: string }>(
   import.meta.glob("../assets/sprite/skill/*.png", { eager: true }),
   "../assets/sprite/skill/",
   ".png"
 );
 
-const professionSprites = new AssetRepository<{ default: string }>(
+const professionSprites = new AssetRepositoryOLD<{ default: string }>(
   import.meta.glob("../assets/sprite/profession/*.png", { eager: true }),
   "../assets/sprite/profession/",
   ".png"

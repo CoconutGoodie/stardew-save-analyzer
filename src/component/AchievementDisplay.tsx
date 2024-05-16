@@ -1,7 +1,7 @@
 import { lowerCase } from "case-anything";
 import { clsx } from "clsx";
 import { PropsWithChildren, ReactNode } from "react";
-import { AssetRepository } from "../util/AssetRepository";
+import { AssetRepositoryOLD } from "../util/AssetRepository";
 import { StardewWiki } from "../util/StardewWiki";
 
 import checkmarkPng from "../assets/icon/checkmark.png";
@@ -15,7 +15,7 @@ interface Props extends PropsWithChildren {
   inline?: boolean;
 }
 
-const platformSprites = new AssetRepository<{ default: string }>(
+const platformSprites = new AssetRepositoryOLD<{ default: string }>(
   import.meta.glob("../assets/sprite/achievement/platform/*.png", {
     eager: true,
   }),
@@ -23,7 +23,7 @@ const platformSprites = new AssetRepository<{ default: string }>(
   ".png"
 );
 
-const ingameSprites = new AssetRepository<{ default: string }>(
+const ingameSprites = new AssetRepositoryOLD<{ default: string }>(
   import.meta.glob("../assets/sprite/achievement/ingame/*.png", {
     eager: true,
   }),

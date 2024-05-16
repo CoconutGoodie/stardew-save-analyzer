@@ -8,7 +8,6 @@ import {
   STARDEW_FISHES_BY_CATEGORIES,
 } from "../const/StardewFishes";
 import { GameSave } from "../gamesave/GameSave";
-import { AssetRepository } from "../util/AssetRepository";
 
 import { FarmersRow } from "@src/component/FarmersRow";
 import { ImageObjective } from "@src/component/ImageObjective";
@@ -25,6 +24,7 @@ import styles from "./FishingSection.module.scss";
 
 import barbedHookPng from "@src/assets/icon/barbed_hook.png";
 import { Scrollbox } from "@src/component/Scrollbox";
+import { FISH_COVER_SPRITES, FISH_SPRITES } from "@src/const/Assets";
 import { useGoals } from "@src/hook/useGoals";
 import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
 
@@ -32,23 +32,13 @@ interface Props {
   gameSave: GameSave;
 }
 
-const fishSprites = new AssetRepository<{ default: string }>(
-  import.meta.glob("../assets/sprite/fish/*.png", { eager: true }),
-  "../assets/sprite/fish/",
-  ".png"
-);
-
-const coverSprites = new AssetRepository<{ default: string }>(
-  import.meta.glob("../assets/cover/fishing/*.png", { eager: true }),
-  "../assets/cover/fishing/",
-  ".png"
-);
-
 export const FishingSection = (props: Props) => {
   const [compact, setCompact] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
-  const { registerScrollableRef: addScrollableRef } = useSyncedScrollbar([expanded]);
+  const { registerScrollableRef: addScrollableRef } = useSyncedScrollbar([
+    expanded,
+  ]);
 
   const farmers = props.gameSave.getAllFarmers();
 
@@ -166,10 +156,9 @@ export const FishingSection = (props: Props) => {
                             compact && styles.compact
                           )}
                           style={{
-                            ["--background" as string]: `url(${
-                              coverSprites.resolve(snakeCase(categoryId))
-                                ?.default
-                            })`,
+                            ["--background" as string]: `url(${FISH_COVER_SPRITES.resolve(
+                              snakeCase(categoryId)
+                            )})`,
                           }}
                         >
                           <a href={StardewWiki.getLink("Fish")} target="_blank">
@@ -215,13 +204,12 @@ export const FishingSection = (props: Props) => {
                                     title={`${fish.name}`}
                                     done={
                                       (farmer.caughtFish.find(
-                                        (v) => v.fishId === fish.id
+                                        ({ fishId }) => fishId === fish.id
                                       )?.amount ?? 0) > 0
                                     }
-                                    src={
-                                      fishSprites.resolve(snakeCase(fish.name))
-                                        ?.default
-                                    }
+                                    src={FISH_SPRITES.resolve(
+                                      snakeCase(fish.name)
+                                    )}
                                   />
                                 </div>
                               </a>

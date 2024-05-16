@@ -9,7 +9,7 @@ import starPng from "@src/assets/sprite/skill/mastery/mastery_star.png";
 import { ImageObjective } from "@src/component/ImageObjective";
 import { STARDEW_MASTERY_LEVEL_EXP } from "@src/const/StardewMasteryLevels";
 import { useGoals } from "@src/hook/useGoals";
-import { AssetRepository } from "@src/util/AssetRepository";
+import { AssetRepositoryOLD } from "@src/util/AssetRepository";
 import { StardewWiki } from "@src/util/StardewWiki";
 import { capitalCase } from "case-anything";
 import { keys, mapToObj, values } from "remeda";
@@ -21,7 +21,7 @@ interface Props {
 
 const FORMAT = new Intl.NumberFormat("en-US");
 
-const perkSprites = new AssetRepository<{ default: string }>(
+const perkSprites = new AssetRepositoryOLD<{ default: string }>(
   import.meta.glob("../assets/sprite/skill/mastery/*.png", { eager: true }),
   "../assets/sprite/skill/mastery/",
   ".png"

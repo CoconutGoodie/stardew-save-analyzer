@@ -160,6 +160,11 @@
   }
 }
 
+html,
+body {
+  scroll-behavior: smooth;
+}
+
 img {
   image-rendering: pixelated;
 }

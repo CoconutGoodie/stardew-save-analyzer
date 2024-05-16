@@ -8,7 +8,7 @@ import { mapToObj, sum, values } from "remeda";
 import { ImageObjective } from "@src/component/ImageObjective";
 import { InfoText } from "@src/component/InfoText";
 import { STARDEW_RARECROW_IDS } from "@src/const/StardewRarecrows";
-import { AssetRepository } from "@src/util/AssetRepository";
+import { AssetRepositoryOLD } from "@src/util/AssetRepository";
 import { StardewWiki } from "@src/util/StardewWiki";
 import styles from "./RarecrowsSection.module.scss";
 import { useGoals } from "@src/hook/useGoals";
@@ -17,7 +17,7 @@ interface Props {
   gameSave: GameSave;
 }
 
-const rarecrowSprites = new AssetRepository<{ default: string }>(
+const rarecrowSprites = new AssetRepositoryOLD<{ default: string }>(
   import.meta.glob("../assets/sprite/scarecrow/*.png", {
     eager: true,
   }),

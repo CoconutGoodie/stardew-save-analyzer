@@ -81,8 +81,8 @@ export const HelpWantedSection = (props: Props) => {
               <InfoText>
                 Weekly "<a href="#special-orders">Special Order Quests</a>" and
                 "<a href="#qi-special-orders">Mr. Qi's Special Orders</a>" also
-                count towards the achievements, even though achievements only
-                mention completion of "<em>Help Wanted</em>" quests.
+                count towards the achievements, even though they are not
+                specifically mentioned.
               </InfoText>
 
               <div className={styles.achievements}>

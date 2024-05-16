@@ -103,11 +103,19 @@ function App() {
               <MoneySection gameSave={gameSave} />
 
               <SummarySection sectionTitle="Farm Buildings [WIP]" collapsable>
-                <Scrollbox>
-                  <pre>{JSON.stringify(gameSave.pets, null, 2)}</pre>
-                  <pre>{JSON.stringify(gameSave.fishPonds, null, 2)}</pre>
-                  <pre>{JSON.stringify(gameSave.animalBuildings, null, 2)}</pre>
-                </Scrollbox>
+                <div style={{ display: "flex", gap: 10 }}>
+                  <Scrollbox>
+                    <pre>{JSON.stringify(gameSave.pets, null, 2)}</pre>
+                  </Scrollbox>
+                  <Scrollbox>
+                    <pre>{JSON.stringify(gameSave.fishPonds, null, 2)}</pre>
+                  </Scrollbox>
+                  <Scrollbox>
+                    <pre>
+                      {JSON.stringify(gameSave.animalBuildings, null, 2)}
+                    </pre>
+                  </Scrollbox>
+                </div>
               </SummarySection>
             </SummarySection>
 
@@ -125,10 +133,13 @@ function App() {
 
             <hr />
 
-            <SummarySection className="specialOrders">
-              <SpecialOrdersSection gameSave={gameSave} />
-              <QiSpecialOrdersSection gameSave={gameSave} />
-            </SummarySection>
+            {/* <SummarySection className="specialOrders">
+            </SummarySection> */}
+            <SpecialOrdersSection gameSave={gameSave} />
+
+            <hr />
+
+            <QiSpecialOrdersSection gameSave={gameSave} />
 
             <hr />
 

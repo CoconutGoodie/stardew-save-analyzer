@@ -1,6 +1,6 @@
 import { SummarySection } from "../component/SummarySection";
 import { GameSave } from "../gamesave/GameSave";
-import { AssetRepository } from "../util/AssetRepository";
+import { AssetRepositoryOLD } from "../util/AssetRepository";
 import { StardewWiki } from "../util/StardewWiki";
 
 import boardPng from "../assets/sprite/special-order/special_order_board.png";
@@ -19,7 +19,7 @@ interface Props {
 
 const BOARD_BUILD_DATE = new GameDate(2, GameSeason.Fall, 1);
 
-const specialOrderNpcs = new AssetRepository<{ default: string }>(
+const specialOrderNpcs = new AssetRepositoryOLD<{ default: string }>(
   import.meta.glob("../assets/sprite/special-order/*.png", {
     eager: true,
   }),

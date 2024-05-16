@@ -54,8 +54,7 @@ export const FarmBuildingsSection = (props: Props) => {
         capacity={pond.capacity}
         iconSrc={FARM_BUILDING_SPRITES.resolve("fish_pond")}
         emptyIconSrc={FISH_SPRITES.resolve(snakeCase(pond.fish))}
-        animals={times(pond.count, (i) => ({
-          name: `Fish #${i + 1}`,
+        animals={times(pond.count, () => ({
           iconHeight: 40,
           iconSrc: FISH_SPRITES.resolve(snakeCase(pond.fish)),
           wikiUrl: StardewWiki.getLink(pond.fish),
@@ -69,7 +68,6 @@ export const FarmBuildingsSection = (props: Props) => {
         name="Stable"
         iconSrc={FARM_BUILDING_SPRITES.resolve("stable")}
         animals={props.gameSave.stables.map((_, i) => ({
-          name: `Horse #${i + 1}`,
           wikiUrl: StardewWiki.getLink("Horse"),
           iconSrc: FARM_ANIMALS_SPRITES.resolve("horse"),
           iconHeight: 70,
@@ -124,7 +122,7 @@ const BuildingPart = (props: {
   emptyIconSrc?: string;
   capacity?: number;
   animals: {
-    name: string;
+    name?: string;
     lovePercentage?: number;
     iconSrc: string;
     iconHeight: number;
@@ -145,7 +143,7 @@ const BuildingPart = (props: {
             href={animal.wikiUrl}
             className={styles.animal}
           >
-            <span>{animal.name}</span>
+            {animal.name && <span>{animal.name}</span>}
             <img height={animal.iconHeight} src={animal.iconSrc} />
             {animal.lovePercentage != null && (
               <span>
@@ -159,7 +157,6 @@ const BuildingPart = (props: {
         {props.capacity != null &&
           times(Math.max(0, props.capacity - props.animals.length), (i) => (
             <div key={i} className={clsx(styles.animal, styles.empty)}>
-              <span>Empty</span>
               <img
                 height={32}
                 src={

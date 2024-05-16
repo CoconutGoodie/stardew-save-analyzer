@@ -35,7 +35,11 @@
     font-family: "Stardew Valley";
     font-size: 16px;
     text-align: center;
-    color: #f9b446;
+
+    & > :nth-child(3) {
+      color: #f9b446;
+      font-size: 14px;
+    }
   }
 }
 

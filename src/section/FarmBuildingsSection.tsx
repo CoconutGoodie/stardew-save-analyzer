@@ -134,6 +134,11 @@ const BuildingPart = (props: {
       <div className={styles.info}>
         <img width={70} src={props.iconSrc} />
         <span>{props.name}</span>
+        {props.capacity && (
+          <span>
+            {props.animals.length} / {props.capacity}
+          </span>
+        )}
       </div>
       <div className={styles.animals}>
         {props.animals.map((animal) => (

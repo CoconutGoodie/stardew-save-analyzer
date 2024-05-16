@@ -28,10 +28,10 @@ export class GameSave {
   public readonly player;
   public readonly farmhands;
   public readonly pets;
+  public readonly stables;
   public readonly animalBuildings;
   public readonly fishPonds;
   // public readonly slimeHutches;
-  // public readonly stables;
 
   public readonly rarecrowsPlaced;
 
@@ -62,6 +62,7 @@ export class GameSave {
     this.player = new Farmer(saveXml.query("player"), saveXml);
     this.farmhands = this.calcFarmhands();
     this.pets = this.calcPets();
+    this.stables = this.calcStables();
     this.animalBuildings = this.calcAnimalBuildings();
     this.fishPonds = this.calcFishPonds();
 
@@ -145,6 +146,24 @@ export class GameSave {
           love: npcNode.query("friendshipTowardFarmer").number(),
         };
       });
+  }
+
+  private calcStables() {
+    const farmLocationXml = this.saveXml.queryAllAndFind(
+      "locations > GameLocation",
+      (node) => node.element?.getAttribute("xsi:type") === "Farm"
+    );
+
+    const stableBuildingsXml = farmLocationXml
+      .queryAll("Building")
+      .filter(
+        (buildingNode) =>
+          buildingNode.element?.getAttribute("xsi:type") === "Stable"
+      );
+
+    return stableBuildingsXml.map((stableXml) => ({
+      horseId: stableXml.query("HorseId").text(),
+    }));
   }
 
   private calcAnimalBuildings() {

@@ -24,6 +24,7 @@ export const FarmBuildingsSection = (props: Props) => {
 
   const totalAnimalCount =
     props.gameSave.pets.length +
+    props.gameSave.stables.length +
     sum(
       props.gameSave.animalBuildings.map((building) => building.animals.length)
     ) +
@@ -61,6 +62,20 @@ export const FarmBuildingsSection = (props: Props) => {
         }))}
       />
     )),
+
+    props.gameSave.stables.length > 0 && (
+      <BuildingPart
+        key="stable"
+        name="Stable"
+        iconSrc={FARM_BUILDING_SPRITES.resolve("stable")}
+        animals={props.gameSave.stables.map((_, i) => ({
+          name: `Horse #${i + 1}`,
+          wikiUrl: StardewWiki.getLink("Horse"),
+          iconSrc: FARM_ANIMALS_SPRITES.resolve("horse"),
+          iconHeight: 70,
+        }))}
+      />
+    ),
 
     props.gameSave.pets.length > 0 && (
       <BuildingPart

@@ -135,7 +135,6 @@ export class GameSave {
         return type === "Pet" || type === "Cat" || type === "Dog";
       })
       .map((npcNode) => {
-        console.log(npcNode.element);
         return {
           name: npcNode.query("name").text(),
           type:

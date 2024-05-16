@@ -7,7 +7,9 @@
 .scrollbox {
   --height: 250px;
   margin: 10px 0;
-  // height: 250px;
+  padding: 20px;
+  background: linear-gradient(-10deg, #110c24, #060216);
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   gap: 20px;

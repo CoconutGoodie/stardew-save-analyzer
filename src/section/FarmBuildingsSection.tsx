@@ -82,7 +82,7 @@ export const FarmBuildingsSection = (props: Props) => {
 
   return (
     <SummarySection
-      sectionTitle="Farm Buildings [WIP]"
+      sectionTitle="Farm Buildings"
       className={styles.section}
       collapsable
     >

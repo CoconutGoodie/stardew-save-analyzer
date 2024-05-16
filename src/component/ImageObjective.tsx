@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { ComponentProps } from "react";
 
-import checkmarkPng from "@src/assets/icon/checkmark.png";
+import checkmarkPng from "@src/assets/icon/checkmark-outlined.png";
 
 import styles from "./ImageObjective.module.scss";
 

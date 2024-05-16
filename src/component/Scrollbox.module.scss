@@ -1,4 +1,5 @@
 .root {
+  --height: 400px;
   position: relative;
 
   & > button {
@@ -20,7 +21,7 @@
 
 .wrapper {
   &:not(.expanded) {
-    height: 400px;
+    height: var(--height);
     overflow-y: scroll;
     overflow-x: auto;
   }

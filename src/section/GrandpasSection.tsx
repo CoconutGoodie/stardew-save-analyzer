@@ -39,6 +39,7 @@ export const GrandpasEvaluationsSection = (props: Props) => {
 
   return (
     <SummarySection
+      id="grandpas-evaluations"
       sectionTitle="Grandpa's Evaluations"
       collapsable
       className={styles.section}

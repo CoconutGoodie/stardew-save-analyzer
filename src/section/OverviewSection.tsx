@@ -1,6 +1,6 @@
 import { lowerCase } from "case-anything";
 import { SummarySection } from "../component/SummarySection";
-import { AssetRepository } from "../util/AssetRepository";
+import { AssetRepositoryOLD } from "../util/AssetRepository";
 import { GameSave } from "../gamesave/GameSave";
 import { StardewWiki } from "../util/StardewWiki";
 
@@ -20,7 +20,7 @@ interface Props {
   gameSave: GameSave;
 }
 
-const farmTypesAssets = new AssetRepository<{ default: string }>(
+const farmTypesAssets = new AssetRepositoryOLD<{ default: string }>(
   import.meta.glob("../assets/sprite/farm-type/*.png", {
     eager: true,
   }),

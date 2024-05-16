@@ -3,7 +3,7 @@ import { FileUploader } from "react-drag-drop-files";
 import type FileUploaderSrc from "react-drag-drop-files/dist/src/FileUploader";
 import { SummarySection } from "../component/SummarySection";
 import { GameSave } from "../gamesave/GameSave";
-import { AssetRepository } from "../util/AssetRepository";
+import { AssetRepositoryOLD } from "../util/AssetRepository";
 
 import clockPng from "../assets/icon/clock.png";
 
@@ -12,7 +12,7 @@ import { XMLNode } from "@src/util/XMLNode";
 
 const FileUploaderTyped: typeof FileUploaderSrc = FileUploader;
 
-const demoSaves = new AssetRepository(
+const demoSaves = new AssetRepositoryOLD(
   import.meta.glob<Promise<{ default: string }>>("../assets/Save_*.xml", {
     query: "raw",
   }),
@@ -90,7 +90,9 @@ export const LoadSaveSection = (props: Props) => {
 
         <span className={styles.or}>OR</span>
 
-        <span className={styles.info}>Select a demo save (for now)</span>
+        <span className={styles.info}>
+          Select a demo save (for proof of concept)
+        </span>
 
         <div className={styles.demoSaves}>
           <button onClick={() => loadDemo("1.2")}>v1.2</button>
@@ -106,6 +108,8 @@ export const LoadSaveSection = (props: Props) => {
           </div>
         )}
       </SummarySection>
+
+      <hr />
 
       <SummarySection sectionTitle="Instructions" collapsable>
         [WIP] Instructions and FAQ here

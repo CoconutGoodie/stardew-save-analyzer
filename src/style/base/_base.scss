@@ -29,7 +29,7 @@
         left: 0;
         width: 100%;
         height: 300px;
-        background-image: url("@src/assets/background.png");
+        background-image: url("@src/assets/header-bg.png");
         background-repeat: repeat-x;
         mask-image: linear-gradient(to bottom, #fff, rgba(#fff, 0));
         z-index: -1;
@@ -56,10 +56,16 @@
     }
 
     hr {
-      width: 20vw;
-      margin: 0;
+      width: 50vw;
+      height: 1px;
+      margin: -25px -20px;
       border: none;
-      border-bottom: 1px solid #17161a;
+      background: linear-gradient(
+        to right,
+        rgba(#1f183b, 0.4) 0%,
+        #1f183b 10%,
+        transparent
+      );
     }
   }
 
@@ -138,6 +144,25 @@
       color: rgb(238, 112, 96);
     }
   }
+}
+
+.twoSections {
+  display: flex;
+  gap: 80px;
+}
+
+.specialOrders {
+  display: flex;
+  gap: 65px;
+
+  & > * {
+    flex-shrink: 0;
+  }
+}
+
+html,
+body {
+  scroll-behavior: smooth;
 }
 
 img {

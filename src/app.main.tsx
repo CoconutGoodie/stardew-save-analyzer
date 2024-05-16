@@ -20,10 +20,11 @@ import { CraftingSection } from "@src/section/CraftingSection";
 import { HelpWantedSection } from "@src/section/HelpWantedSection";
 import { MasteriesSection } from "@src/section/MasteriesSection";
 
+import { CookingSection } from "@src/section/CookingSection";
+import { FarmBuildingsSection } from "@src/section/FarmBuildingsSection";
 import { QiSpecialOrdersSection } from "@src/section/QiSpecialOrdersSection";
 import { RarecrowSection } from "@src/section/RarecrowsSection";
 import "./style/style.scss";
-import { CookingSection } from "@src/section/CookingSection";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
@@ -98,43 +99,66 @@ function App() {
           <>
             <OverviewSection gameSave={gameSave} />
 
-            <div style={{ display: "flex", gap: 50 }}>
+            <SummarySection className="twoSections">
               <MoneySection gameSave={gameSave} />
+              <FarmBuildingsSection gameSave={gameSave} />
+            </SummarySection>
 
-              <SummarySection sectionTitle="Animals & Pets [WIP]" collapsable>
-                <p>...</p>
-                <p>...</p>
-                <p>...</p>
-              </SummarySection>
-            </div>
+            <hr />
 
             <SkillsSection gameSave={gameSave} />
 
+            <hr />
+
             <MasteriesSection gameSave={gameSave} />
+
+            <hr />
 
             <HelpWantedSection gameSave={gameSave} />
 
+            <hr />
+
             <SpecialOrdersSection gameSave={gameSave} />
+
+            <hr />
 
             <QiSpecialOrdersSection gameSave={gameSave} />
 
+            <hr />
+
             <RarecrowSection gameSave={gameSave} />
+
+            <hr />
 
             <FishingSection gameSave={gameSave} />
 
+            <hr />
+
             <CraftingSection gameSave={gameSave} />
 
+            <hr />
+
             <CookingSection gameSave={gameSave} />
+
+            <hr />
 
             <SummarySection sectionTitle="Shipping [WIP]" collapsable>
               [WIP] Shipping Bin Achievements here
             </SummarySection>
 
+            <hr />
+
             <StardropsSection gameSave={gameSave} />
+
+            <hr />
 
             <MuseumSection gameSave={gameSave} />
 
+            <hr />
+
             <GrandpasEvaluationsSection gameSave={gameSave} />
+
+            <hr />
 
             <SummarySection sectionTitle="Perfection Tracker [WIP]" collapsable>
               [WIP] Perfection Tracker Analysis here

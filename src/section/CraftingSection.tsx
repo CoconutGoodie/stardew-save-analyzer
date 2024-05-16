@@ -9,7 +9,7 @@ import { AchievementDisplay } from "@src/component/AchievementDisplay";
 
 import { ImageObjective } from "@src/component/ImageObjective";
 import { STARDEW_CRAFTING_RECIPES } from "@src/const/StardewCrafting";
-import { AssetRepository } from "@src/util/AssetRepository";
+import { AssetRepositoryOLD } from "@src/util/AssetRepository";
 import { StardewWiki } from "@src/util/StardewWiki";
 import { snakeCase } from "case-anything";
 import clsx from "clsx";
@@ -25,7 +25,7 @@ interface Props {
   gameSave: GameSave;
 }
 
-const craftingRecipeSprites = new AssetRepository<{ default: string }>(
+const craftingRecipeSprites = new AssetRepositoryOLD<{ default: string }>(
   import.meta.glob("../assets/sprite/crafting/*.png", { eager: true }),
   "../assets/sprite/crafting/",
   ".png"
@@ -34,7 +34,7 @@ const craftingRecipeSprites = new AssetRepository<{ default: string }>(
 export const CraftingSection = (props: Props) => {
   const [expanded, setExpanded] = useState(false);
 
-  const { addScrollableRef } = useSyncedScrollbar([expanded]);
+  const { registerScrollableRef: addScrollableRef } = useSyncedScrollbar([expanded]);
 
   const farmers = props.gameSave.getAllFarmers();
 
@@ -52,7 +52,12 @@ export const CraftingSection = (props: Props) => {
   });
 
   return (
-    <SummarySection sectionTitle="Crafting" collapsable allDone={allDone}>
+    <SummarySection
+      id="crafting"
+      sectionTitle="Crafting"
+      collapsable
+      allDone={allDone}
+    >
       <FarmersRow>
         {farmers.map((farmer) => {
           const farmerAchievements = props.gameSave.achievements[farmer.name];

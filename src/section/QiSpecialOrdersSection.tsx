@@ -1,6 +1,6 @@
 import { SummarySection } from "../component/SummarySection";
 import { GameSave } from "../gamesave/GameSave";
-import { AssetRepository } from "../util/AssetRepository";
+import { AssetRepositoryOLD } from "../util/AssetRepository";
 import { StardewWiki } from "../util/StardewWiki";
 
 import boardPng from "../assets/sprite/special-order/qi/special_orders_board.png";
@@ -16,7 +16,7 @@ interface Props {
   gameSave: GameSave;
 }
 
-const specialOrderIcons = new AssetRepository<{ default: string }>(
+const specialOrderIcons = new AssetRepositoryOLD<{ default: string }>(
   import.meta.glob("../assets/sprite/special-order/qi/*.png", {
     eager: true,
   }),

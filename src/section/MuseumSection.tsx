@@ -5,7 +5,7 @@ import { entries, keys } from "remeda";
 
 import guntherPng from "@src/assets/sprite/museum/portrait.png";
 import { ImageObjective } from "@src/component/ImageObjective";
-import { AssetRepository } from "@src/util/AssetRepository";
+import { AssetRepositoryOLD } from "@src/util/AssetRepository";
 import { StardewWiki } from "@src/util/StardewWiki";
 import { lowerCase, snakeCase } from "case-anything";
 import checkmarkPng from "@src/assets/icon/checkmark.png";
@@ -18,13 +18,13 @@ interface Props {
   gameSave: GameSave;
 }
 
-const artifactSprites = new AssetRepository<{ default: string }>(
+const artifactSprites = new AssetRepositoryOLD<{ default: string }>(
   import.meta.glob("../assets/sprite/museum/artifacts/*.png", { eager: true }),
   "../assets/sprite/museum/artifacts/",
   ".png"
 );
 
-const mineralSprites = new AssetRepository<{ default: string }>(
+const mineralSprites = new AssetRepositoryOLD<{ default: string }>(
   import.meta.glob("../assets/sprite/museum/minerals/*.png", { eager: true }),
   "../assets/sprite/museum/minerals/",
   ".png"
@@ -51,7 +51,12 @@ export const MuseumSection = (props: Props) => {
   });
 
   return (
-    <SummarySection sectionTitle="Museum Collection" collapsable allDone={allDone}>
+    <SummarySection
+      id="museum"
+      sectionTitle="Museum Collection"
+      collapsable
+      allDone={allDone}
+    >
       <div className={styles.info}>
         <a href={StardewWiki.getLink("Gunther")} target="_blank">
           <img src={guntherPng} />

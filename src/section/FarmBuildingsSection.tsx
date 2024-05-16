@@ -55,7 +55,7 @@ export const FarmBuildingsSection = (props: Props) => {
         emptyIconSrc={FISH_SPRITES.resolve(snakeCase(pond.fish))}
         animals={times(pond.count, (i) => ({
           name: `Fish #${i + 1}`,
-          iconHeight: 30,
+          iconHeight: 40,
           iconSrc: FISH_SPRITES.resolve(snakeCase(pond.fish)),
           wikiUrl: StardewWiki.getLink(pond.fish),
         }))}

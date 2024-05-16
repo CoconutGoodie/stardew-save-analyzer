@@ -53,7 +53,7 @@ export const FarmBuildingsSection = (props: Props) => {
         capacity={pond.capacity}
         iconSrc={FARM_BUILDING_SPRITES.resolve("fish_pond")}
         emptyIconSrc={FISH_SPRITES.resolve(snakeCase(pond.fish))}
-        animals={times(pond.count - 1, (i) => ({
+        animals={times(pond.count, (i) => ({
           name: `Fish #${i + 1}`,
           iconHeight: 30,
           iconSrc: FISH_SPRITES.resolve(snakeCase(pond.fish)),

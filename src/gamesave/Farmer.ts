@@ -1,5 +1,7 @@
 import { STARDEW_COOKING_RECIPES } from "@src/const/StardewCooking";
 import { STARDEW_MASTERY_LEVEL_EXP } from "@src/const/StardewMasteryLevels";
+import { STARDEW_PROFESSIONS } from "@src/const/StardewProfessions";
+import { STARDROP_MAIL_FLAGS } from "@src/const/StardewStardrops";
 import { XMLNode } from "@src/util/XMLNode";
 import { thru } from "@src/util/utilities";
 import {
@@ -10,8 +12,6 @@ import {
   sumBy,
   values,
 } from "remeda";
-import { STARDEW_PROFESSIONS } from "../const/StardewProfessions";
-import { STARDROP_MAIL_FLAGS } from "../const/StardewStardrops";
 
 export class Farmer {
   public readonly name;

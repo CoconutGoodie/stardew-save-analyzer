@@ -1,9 +1,9 @@
-import { GameDate, GameSeason } from "../util/GameDate";
+import { GameDate, GameSeason } from "@src/util/GameDate";
 
-import springPng from "../assets/sprite/season/spring.png";
-import summerPng from "../assets/sprite/season/summer.png";
-import fallPng from "../assets/sprite/season/fall.png";
-import winterPng from "../assets/sprite/season/winter.png";
+import fallPng from "@src/assets/sprite/season/fall.png";
+import springPng from "@src/assets/sprite/season/spring.png";
+import summerPng from "@src/assets/sprite/season/summer.png";
+import winterPng from "@src/assets/sprite/season/winter.png";
 
 import styles from "./GameDateDisplay.module.scss";
 

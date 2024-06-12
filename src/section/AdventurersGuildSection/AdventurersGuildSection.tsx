@@ -7,7 +7,7 @@ import { SummarySection } from "@src/component/SummarySection";
 import { GameSave } from "@src/gamesave/GameSave";
 import { useGoals } from "@src/hook/useGoals";
 import { StardewWiki } from "@src/util/StardewWiki";
-import { mapToObj } from "remeda";
+import { mapToObj, values } from "remeda";
 
 import styles from "./AdventurersGuildSection.module.scss";
 import { STARDEW_ERADICATION_GOALS } from "@src/const/StardewMonsters";
@@ -35,7 +35,10 @@ export const AdventurersGuildSection = (props: Props) => {
     individuals: mapToObj(farmers, (farmer) => [
       farmer.name,
       {
-        achievements: [],
+        achievements: [
+          props.gameSave.achievements[farmer.name].theBottom,
+          props.gameSave.achievements[farmer.name].protectorOfTheValley,
+        ],
         objectives: {
           gainAccessToGuild: {
             current: farmer.monsterKills.totalKills,
@@ -49,12 +52,13 @@ export const AdventurersGuildSection = (props: Props) => {
   return (
     <SummarySection
       id="adventurers-guild"
-      sectionTitle="Adventurer's Guild [WIP]"
+      sectionTitle="Adventurer's Guild"
       collapsable
       allDone={allDone}
     >
       <FarmersRow>
         {farmers.map((farmer) => {
+          const farmerAchievements = props.gameSave.achievements[farmer.name];
           const farmerGoals = goals.individuals[farmer.name];
 
           return (
@@ -88,8 +92,15 @@ export const AdventurersGuildSection = (props: Props) => {
                 </Objective>
 
                 <Objective icon={<img height={16} src={fooPng} />} done>
-                  Completed <strong>XX</strong> of{" "}
-                  <strong>{STARDEW_ERADICATION_GOALS.length}</strong> Monster
+                  Completed{" "}
+                  <strong>
+                    {
+                      values(
+                        farmerAchievements.protectorOfTheValley.goalsDone
+                      ).filter(Boolean).length
+                    }
+                  </strong>{" "}
+                  of <strong>{STARDEW_ERADICATION_GOALS.length}</strong> Monster
                   Eradication goals.
                 </Objective>
               </div>
@@ -103,39 +114,55 @@ export const AdventurersGuildSection = (props: Props) => {
                 <div
                   className={clsx(styles.monsters, expanded && styles.expanded)}
                 >
-                  {STARDEW_ERADICATION_GOALS.map((goal) => (
-                    <div key={goal.category} className={styles.monsterCategory}>
-                      <div className={styles.header}>
-                        <span>{goal.category}</span>
+                  {STARDEW_ERADICATION_GOALS.map((goal) => {
+                    const goalDone =
+                      farmer.monsterKills.byEradicationGoal[goal.category] >=
+                      goal.amount;
+
+                    return (
+                      <div
+                        key={goal.category}
+                        className={clsx(
+                          styles.monsterCategory,
+                          goalDone && styles.done
+                        )}
+                      >
+                        <div className={styles.header}>
+                          <span>{goal.category}</span>
+                        </div>
+                        <div className={styles.mobs}>
+                          {Array.from(goal.validMonsters).map((monster) => (
+                            <div key={monster} className={styles.mob}>
+                              <img
+                                width={32}
+                                height={64}
+                                title={monster}
+                                src={MONSTER_SPRITES.resolve(
+                                  snakeCase(monster)
+                                )}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                        <Objective className={styles.goal} done={goalDone}>
+                          {farmer.monsterKills.byEradicationGoal[goal.category]}
+                          /{goal.amount} Killed
+                        </Objective>
                       </div>
-                      <div className={styles.mobs}>
-                        {Array.from(goal.validMonsters).map((monster) => (
-                          <div key={monster} className={styles.mob}>
-                            <img
-                              width={32}
-                              height={64}
-                              title={monster}
-                              src={MONSTER_SPRITES.resolve(snakeCase(monster))}
-                            />
-                          </div>
-                        ))}
-                      </div>
-                      <Objective className={styles.goal}>
-                        {farmer.monsterKills.byEradicationGoal[goal.category]}/
-                        {goal.amount} Killed
-                      </Objective>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </Scrollbox>
 
               <div className={styles.achievements}>
                 <AchievementDisplay
-                  title="The Bottom"
+                  title={farmerAchievements.theBottom.title}
+                  achieved={farmerAchievements.theBottom.achieved}
                   description="reach level 120 in the mines"
                 />
                 <AchievementDisplay
-                  title="Protector of the Valley"
+                  title={farmerAchievements.protectorOfTheValley.title}
+                  achieved={farmerAchievements.protectorOfTheValley.achieved}
                   description="complete Monster Eradication Goals"
                 />
                 <Objective

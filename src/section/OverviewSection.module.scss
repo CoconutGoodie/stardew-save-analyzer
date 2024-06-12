@@ -31,11 +31,15 @@
   }
 
   & > span,
-  li > div {
+  li > p {
     display: inline;
 
     & > img {
       vertical-align: middle;
+    }
+
+    .challenge {
+      color: #5f9cff;
     }
   }
 

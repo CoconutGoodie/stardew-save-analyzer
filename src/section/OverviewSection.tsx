@@ -9,6 +9,8 @@ import malePng from "../assets/icon/male.png";
 import clockPng from "../assets/icon/clock.png";
 import favoritePng from "../assets/icon/favorite-thing.png";
 import gamepadPng from "../assets/icon/gamepad.png";
+import shrineOfChallengePng from "../assets/icon/shrine-of-challenge.png";
+import skullAltarPng from "../assets/icon/skull-altar.png";
 
 import styles from "./OverviewSection.module.scss";
 import { GameDateDisplay } from "../component/GameDateDisplay";
@@ -76,24 +78,46 @@ export const OverviewSection = (props: Props) => {
           <h1>{props.gameSave.farmName} Farm</h1>
           <ul>
             <li>
-              <div>
+              <p>
                 Game Version:{" "}
                 <span className={styles.gameVersion}>
                   v{props.gameSave.gameVersion}
                 </span>
-              </div>
+              </p>
             </li>
             <li>
-              <div>
+              <p>
                 Today is <GameDateDisplay date={props.gameSave.currentDate} />
-              </div>
+              </p>
             </li>
             <li>
-              <div>
+              <p>
                 <img width={18} src={clockPng} />{" "}
                 <em>{formatDuration(props.gameSave.playtime)}</em>
-              </div>
+              </p>
             </li>
+            {props.gameSave.mineShrineActive && (
+              <li>
+                <p>
+                  <img width={18} src={shrineOfChallengePng} />{" "}
+                  <span>
+                    Shrine of Challenge:{" "}
+                    <strong className={styles.challenge}>active</strong>.
+                  </span>
+                </p>
+              </li>
+            )}
+            {props.gameSave.skullShrineActive && (
+              <li>
+                <p>
+                  <img width={18} src={skullAltarPng} />{" "}
+                  <span>
+                    Skull Shrine:{" "}
+                    <strong className={styles.challenge}>active</strong>.
+                  </span>
+                </p>
+              </li>
+            )}
           </ul>
         </div>
 
@@ -137,7 +161,8 @@ export const OverviewSection = (props: Props) => {
                 {farmer.qiCoins > 0 && (
                   <li>
                     <div>
-                      Qi Coins: <Currency amount={farmer.qiCoins} unit="qiCoins" />
+                      Qi Coins:{" "}
+                      <Currency amount={farmer.qiCoins} unit="qiCoins" />
                     </div>
                   </li>
                 )}

@@ -22,6 +22,9 @@ export class GameSave {
   public readonly playtime;
   public readonly currentDate;
 
+  public readonly mineShrineActive;
+  public readonly skullShrineActive;
+
   public readonly separateWallets;
   public readonly totalGoldsEarned;
 
@@ -53,6 +56,13 @@ export class GameSave {
     this.farmType = this.calcFarmType();
     this.playtime = saveXml.query("player > millisecondsPlayed").number();
     this.currentDate = this.calcCurrentDate();
+
+    this.mineShrineActive = saveXml
+      .query(":scope > mineShrineActivated")
+      .boolean();
+    this.skullShrineActive = saveXml
+      .query(":scope > skullShrineActivated")
+      .boolean();
 
     this.separateWallets = saveXml
       .query("player > useSeparateWallets")

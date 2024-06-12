@@ -28,6 +28,7 @@ export class Farmer {
 
   public readonly hasSkullKey;
   public readonly deepestMineLevels;
+  public readonly monsterKills;
 
   public readonly masteries;
 
@@ -80,6 +81,7 @@ export class Farmer {
 
     this.hasSkullKey = this.farmerXml.query(":scope > hasSkullKey").boolean();
     this.deepestMineLevels = this.calcDeepestMineLevels();
+    this.monsterKills = this.calcMonsterKills();
 
     this.masteries = this.calcMasteries();
 
@@ -180,6 +182,23 @@ export class Farmer {
     return {
       mountainMine: Math.min(120, mineLevel),
       skullCavern: mineLevel > 120 ? mineLevel - 120 : 0,
+    };
+  }
+
+  private calcMonsterKills() {
+    let totalKills = this.farmerXml
+      .queryAll(":scope > stats > Values > item")
+      .find((valueXml) => valueXml.query("key > *").text() === "monstersKilled")
+      ?.query("value > *")
+      ?.number();
+
+    // version < 1.6
+    if (totalKills == null) {
+      totalKills = 0; // Don't know how to get total kills.. Sob
+    }
+
+    return {
+      totalKills,
     };
   }
 

@@ -17,7 +17,7 @@ import { CraftingSection } from "@src/section/CraftingSection/CraftingSection";
 import { FarmBuildingsSection } from "@src/section/FarmBuildingsSection/FarmBuildingsSection";
 import { HelpWantedSection } from "@src/section/HelpWantedSection/HelpWantedSection";
 import { MasteriesSection } from "@src/section/MasteriesSection/MasteriesSection";
-import { MonsterEradicationSection } from "@src/section/MonsterEradicationSection/MonsterEradicationSection";
+import { AdventurersGuildSection } from "@src/section/AdventurersGuildSection/AdventurersGuildSection";
 import { MuseumSection } from "@src/section/MuseumSection/MuseumSection";
 import { QiChallengesSection } from "@src/section/QiChallengesSection/QiChallengesSection";
 import { RarecrowSection } from "@src/section/RarecrowsSection/RarecrowsSection";
@@ -142,7 +142,7 @@ function App() {
 
             <hr />
 
-            <MonsterEradicationSection gameSave={gameSave} />
+            <AdventurersGuildSection gameSave={gameSave} />
 
             <hr />
 

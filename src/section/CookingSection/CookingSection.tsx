@@ -1,41 +1,35 @@
-import { FarmerTag } from "@src/component/FarmerTag";
-import { FarmersRow } from "@src/component/FarmersRow";
-import { Objective } from "@src/component/Objective";
-import { SummarySection } from "@src/component/SummarySection";
-import { GameSave } from "@src/gamesave/GameSave";
-
 import cookingPng from "@src/assets/icon/cooking.png";
 import { AchievementDisplay } from "@src/component/AchievementDisplay";
-
+import { FarmerTag } from "@src/component/FarmerTag";
+import { FarmersRow } from "@src/component/FarmersRow";
 import { ImageObjective } from "@src/component/ImageObjective";
+import { Objective } from "@src/component/Objective";
+import { Scrollbox } from "@src/component/Scrollbox";
+import { SummarySection } from "@src/component/SummarySection";
+import { STARDEW_COOKING_RECIPES } from "@src/const/StardewCooking";
 import { STARDEW_CRAFTING_RECIPES } from "@src/const/StardewCrafting";
-import { AssetRepositoryOLD } from "@src/util/AssetRepository";
+import { GameSave } from "@src/gamesave/GameSave";
+import { useGoals } from "@src/hook/useGoals";
+import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
 import { StardewWiki } from "@src/util/StardewWiki";
 import { snakeCase } from "case-anything";
 import clsx from "clsx";
-import { useEffect, useState } from "react";
-import styles from "./CookingSection.module.scss";
-import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
-import { InfoText } from "@src/component/InfoText";
-import { Scrollbox } from "@src/component/Scrollbox";
-import { useGoals } from "@src/hook/useGoals";
+import { useState } from "react";
 import { entries, keys, mapToObj, values } from "remeda";
-import { STARDEW_COOKING_RECIPES } from "@src/const/StardewCooking";
+
+import { COOKING_RECIPE_SPRITES } from "@src/const/Assets";
+import styles from "./CookingSection.module.scss";
 
 interface Props {
   gameSave: GameSave;
 }
 
-const cookingRecipeSprites = new AssetRepositoryOLD<{ default: string }>(
-  import.meta.glob("../assets/sprite/cooking/*.png", { eager: true }),
-  "../assets/sprite/cooking/",
-  ".png"
-);
-
 export const CookingSection = (props: Props) => {
   const [expanded, setExpanded] = useState(false);
 
-  const { registerScrollableRef: addScrollableRef } = useSyncedScrollbar([expanded]);
+  const { registerScrollableRef: addScrollableRef } = useSyncedScrollbar([
+    expanded,
+  ]);
 
   const farmers = props.gameSave.getAllFarmers();
 
@@ -111,11 +105,9 @@ export const CookingSection = (props: Props) => {
                         <ImageObjective
                           width={38}
                           height={38}
-                          src={
-                            cookingRecipeSprites.resolve(
-                              snakeCase(recipe.replace(/-/g, " "))
-                            )?.default ?? ""
-                          }
+                          src={COOKING_RECIPE_SPRITES.resolve(
+                            snakeCase(recipe.replace(/-/g, " "))
+                          )}
                           title={recipe}
                           done={farmer.cookedRecipes[recipe] > 0}
                         />

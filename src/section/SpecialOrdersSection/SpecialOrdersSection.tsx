@@ -1,16 +1,15 @@
-import { SummarySection } from "../component/SummarySection";
-import { GameSave } from "../gamesave/GameSave";
-import { AssetRepositoryOLD } from "../util/AssetRepository";
-import { StardewWiki } from "../util/StardewWiki";
-
-import boardPng from "../assets/sprite/special-order/special_order_board.png";
-
+import boardPng from "@src/assets/sprite/special-order/special_order_board.png";
+import { GameDateDisplay } from "@src/component/GameDateDisplay";
 import { ImageObjective } from "@src/component/ImageObjective";
+import { Objective } from "@src/component/Objective";
+import { SummarySection } from "@src/component/SummarySection";
+import { SPECIAL_ORDER_SPRITES } from "@src/const/Assets";
+import { GameSave } from "@src/gamesave/GameSave";
 import { useGoals } from "@src/hook/useGoals";
+import { GameDate, GameSeason } from "@src/util/GameDate";
+import { StardewWiki } from "@src/util/StardewWiki";
 import clsx from "clsx";
-import { GameDateDisplay } from "../component/GameDateDisplay";
-import { Objective } from "../component/Objective";
-import { GameDate, GameSeason } from "../util/GameDate";
+
 import styles from "./SpecialOrdersSection.module.scss";
 
 interface Props {
@@ -18,14 +17,6 @@ interface Props {
 }
 
 const BOARD_BUILD_DATE = new GameDate(2, GameSeason.Fall, 1);
-
-const specialOrderNpcs = new AssetRepositoryOLD<{ default: string }>(
-  import.meta.glob("../assets/sprite/special-order/*.png", {
-    eager: true,
-  }),
-  "../assets/sprite/special-order/",
-  ".png"
-);
 
 export const SpecialOrdersSection = (props: Props) => {
   const { goals, allDone } = useGoals({
@@ -77,7 +68,7 @@ export const SpecialOrdersSection = (props: Props) => {
                 done={order.completed}
                 width={42}
                 title={order.title}
-                src={specialOrderNpcs.resolve(order.npc).default}
+                src={SPECIAL_ORDER_SPRITES.resolve(order.npc)}
               />
             </a>
           ))}

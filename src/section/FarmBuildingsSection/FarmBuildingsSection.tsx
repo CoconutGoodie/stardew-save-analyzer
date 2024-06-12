@@ -1,19 +1,19 @@
+import heartFilledPng from "@src/assets/icon/heart_filled.png";
 import { Scrollbox } from "@src/component/Scrollbox";
 import { SummarySection } from "@src/component/SummarySection";
-import { GameSave } from "@src/gamesave/GameSave";
-
-import styles from "./FarmBuildingsSection.module.scss";
-import { useState } from "react";
 import {
   FARM_ANIMALS_SPRITES,
   FARM_BUILDING_SPRITES,
   FISH_SPRITES,
 } from "@src/const/Assets";
-import { snakeCase } from "case-anything";
-import heartFilledPng from "@src/assets/icon/heart_filled.png";
-import { sum, times } from "remeda";
-import clsx from "clsx";
+import { GameSave } from "@src/gamesave/GameSave";
 import { StardewWiki } from "@src/util/StardewWiki";
+import { snakeCase } from "case-anything";
+import clsx from "clsx";
+import { useState } from "react";
+import { sum, times } from "remeda";
+
+import styles from "./FarmBuildingsSection.module.scss";
 
 interface Props {
   gameSave: GameSave;
@@ -49,7 +49,7 @@ export const FarmBuildingsSection = (props: Props) => {
 
     ...props.gameSave.fishPonds.map((pond, index) => (
       <BuildingPart
-        key={`building-${index}`}
+        key={`pond-${index}`}
         name={`${pond.fish} Pond`}
         capacity={pond.capacity}
         iconSrc={FARM_BUILDING_SPRITES.resolve("fish_pond")}
@@ -67,7 +67,7 @@ export const FarmBuildingsSection = (props: Props) => {
         key="stable"
         name="Stable"
         iconSrc={FARM_BUILDING_SPRITES.resolve("stable")}
-        animals={props.gameSave.stables.map((_, i) => ({
+        animals={props.gameSave.stables.map(() => ({
           wikiUrl: StardewWiki.getLink("Horse"),
           iconSrc: FARM_ANIMALS_SPRITES.resolve("horse"),
           iconHeight: 70,
@@ -141,9 +141,9 @@ const BuildingPart = (props: {
         )}
       </div>
       <div className={styles.animals}>
-        {props.animals.map((animal) => (
+        {props.animals.map((animal, i) => (
           <a
-            key={animal.name}
+            key={animal.name + "_" + i}
             target="_blank"
             href={animal.wikiUrl}
             className={styles.animal}
@@ -161,7 +161,10 @@ const BuildingPart = (props: {
 
         {props.capacity != null &&
           times(Math.max(0, props.capacity - props.animals.length), (i) => (
-            <div key={i} className={clsx(styles.animal, styles.empty)}>
+            <div
+              key={"empty-" + i}
+              className={clsx(styles.animal, styles.empty)}
+            >
               <img
                 height={32}
                 src={

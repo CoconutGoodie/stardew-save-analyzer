@@ -1,20 +1,19 @@
-import stardropGif from "../assets/stardrop.gif";
-import stardropPng from "../assets/stardrop.png";
-import { AchievementDisplay } from "../component/AchievementDisplay";
-import { SummarySection } from "../component/SummarySection";
-import { GameSave } from "../gamesave/GameSave";
-
-import checkmarkPng from "../assets/icon/checkmark.png";
-
-import clsx from "clsx";
-import { FarmerTag } from "../component/FarmerTag";
-import { Objective } from "../component/Objective";
-import { StardewWiki } from "../util/StardewWiki";
-import styles from "./StardropsSection.module.scss";
-import { thru } from "@src/util/utilities";
+import checkmarkPng from "@src/assets/icon/checkmark.png";
+import stardropGif from "@src/assets/stardrop.gif";
+import stardropPng from "@src/assets/stardrop.png";
+import { AchievementDisplay } from "@src/component/AchievementDisplay";
+import { FarmerTag } from "@src/component/FarmerTag";
 import { FarmersRow } from "@src/component/FarmersRow";
+import { Objective } from "@src/component/Objective";
+import { SummarySection } from "@src/component/SummarySection";
+import { GameSave } from "@src/gamesave/GameSave";
 import { useGoals } from "@src/hook/useGoals";
+import { StardewWiki } from "@src/util/StardewWiki";
+import { thru } from "@src/util/utilities";
+import clsx from "clsx";
 import { mapToObj } from "remeda";
+
+import styles from "./StardropsSection.module.scss";
 
 interface Props {
   gameSave: GameSave;

@@ -1,29 +1,20 @@
-import { Objective } from "@src/component/Objective";
-import { SummarySection } from "@src/component/SummarySection";
-import { GameSave } from "@src/gamesave/GameSave";
-
 import scarecrowPng from "@src/assets/icon/scarecrow.png";
-import { mapToObj, sum, values } from "remeda";
-
 import { ImageObjective } from "@src/component/ImageObjective";
 import { InfoText } from "@src/component/InfoText";
+import { Objective } from "@src/component/Objective";
+import { SummarySection } from "@src/component/SummarySection";
+import { RARECROW_SPRITES } from "@src/const/Assets";
 import { STARDEW_RARECROW_IDS } from "@src/const/StardewRarecrows";
-import { AssetRepositoryOLD } from "@src/util/AssetRepository";
-import { StardewWiki } from "@src/util/StardewWiki";
-import styles from "./RarecrowsSection.module.scss";
+import { GameSave } from "@src/gamesave/GameSave";
 import { useGoals } from "@src/hook/useGoals";
+import { StardewWiki } from "@src/util/StardewWiki";
+import { mapToObj, sum, values } from "remeda";
+
+import styles from "./RarecrowsSection.module.scss";
 
 interface Props {
   gameSave: GameSave;
 }
-
-const rarecrowSprites = new AssetRepositoryOLD<{ default: string }>(
-  import.meta.glob("../assets/sprite/scarecrow/*.png", {
-    eager: true,
-  }),
-  "../assets/sprite/scarecrow/",
-  ".png"
-);
 
 export const RarecrowSection = (props: Props) => {
   const farmers = props.gameSave.getAllFarmers();
@@ -83,7 +74,7 @@ export const RarecrowSection = (props: Props) => {
             )}
             height={100}
             title="Scarecrow"
-            src={rarecrowSprites.resolve("scarecrow")?.default ?? ""}
+            src={RARECROW_SPRITES.resolve("scarecrow")}
           />
         </a>
 
@@ -101,9 +92,7 @@ export const RarecrowSection = (props: Props) => {
               }
               height={100}
               title={`Rarecrow #${index + 1}`}
-              src={
-                rarecrowSprites.resolve(`rarecrow_${index + 1}`)?.default ?? ""
-              }
+              src={RARECROW_SPRITES.resolve(`rarecrow_${index + 1}`)}
             />
           </a>
         ))}
@@ -117,7 +106,7 @@ export const RarecrowSection = (props: Props) => {
             )}
             height={100}
             title="Deluxe Scarecrow"
-            src={rarecrowSprites.resolve("deluxe_scarecrow")?.default ?? ""}
+            src={RARECROW_SPRITES.resolve("deluxe_scarecrow")}
           />
         </a>
       </div>

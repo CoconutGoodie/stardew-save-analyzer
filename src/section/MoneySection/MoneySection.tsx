@@ -1,8 +1,9 @@
 import { useGoals } from "@src/hook/useGoals";
-import { AchievementDisplay } from "../component/AchievementDisplay";
-import { Currency } from "../component/Currency";
-import { SummarySection } from "../component/SummarySection";
-import { GameSave } from "../gamesave/GameSave";
+import { AchievementDisplay } from "@src/component/AchievementDisplay";
+import { Currency } from "@src/component/Currency";
+import { SummarySection } from "@src/component/SummarySection";
+import { GameSave } from "@src/gamesave/GameSave";
+
 import styles from "./MoneySection.module.scss";
 
 interface Props {

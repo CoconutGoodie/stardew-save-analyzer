@@ -1,32 +1,20 @@
-import { capitalCase, lowerCase } from "case-anything";
-import { AchievementDisplay } from "../component/AchievementDisplay";
-import { SummarySection } from "../component/SummarySection";
-import { GameSave } from "../gamesave/GameSave";
-import { AssetRepositoryOLD } from "../util/AssetRepository";
-
+import { AchievementDisplay } from "@src/component/AchievementDisplay";
+import { FarmerTag } from "@src/component/FarmerTag";
 import { FarmersRow } from "@src/component/FarmersRow";
+import { SummarySection } from "@src/component/SummarySection";
+import { PROFESSION_SPRITES, SKILL_SPRITES } from "@src/const/Assets";
+import { GameSave } from "@src/gamesave/GameSave";
 import { useGoals } from "@src/hook/useGoals";
+import { StardewWiki } from "@src/util/StardewWiki";
 import { thru } from "@src/util/utilities";
+import { capitalCase, lowerCase } from "case-anything";
 import { entries, mapToObj } from "remeda";
-import { FarmerTag } from "../component/FarmerTag";
-import { StardewWiki } from "../util/StardewWiki";
+
 import styles from "./SkillsSection.module.scss";
 
 interface Props {
   gameSave: GameSave;
 }
-
-const skillSprites = new AssetRepositoryOLD<{ default: string }>(
-  import.meta.glob("../assets/sprite/skill/*.png", { eager: true }),
-  "../assets/sprite/skill/",
-  ".png"
-);
-
-const professionSprites = new AssetRepositoryOLD<{ default: string }>(
-  import.meta.glob("../assets/sprite/profession/*.png", { eager: true }),
-  "../assets/sprite/profession/",
-  ".png"
-);
 
 export const SkillsSection = (props: Props) => {
   const farmers = props.gameSave.getAllFarmers();
@@ -71,10 +59,7 @@ export const SkillsSection = (props: Props) => {
                   href={StardewWiki.getLink("Skills", capitalCase(skillId))}
                   target="_blank"
                 >
-                  <img
-                    width={20}
-                    src={skillSprites.resolve(skillId)?.default}
-                  />
+                  <img width={20} src={SKILL_SPRITES.resolve(skillId)} />
                 </a>
 
                 <div className={styles.level}>
@@ -106,13 +91,9 @@ export const SkillsSection = (props: Props) => {
                             <img
                               width={20}
                               title={skill.professions[professionIndex]}
-                              src={
-                                professionSprites.resolve(
-                                  lowerCase(
-                                    skill.professions?.[professionIndex]
-                                  )
-                                )?.default
-                              }
+                              src={PROFESSION_SPRITES.resolve(
+                                lowerCase(skill.professions?.[professionIndex])
+                              )}
                             />
                           </a>
                         )}

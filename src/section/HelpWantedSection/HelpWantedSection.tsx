@@ -1,17 +1,16 @@
+import bulletinBoardPng from "@src/assets/sprite/help-wanted/bulletin-board.png";
+import questPng from "@src/assets/sprite/help-wanted/quest.png";
 import { AchievementDisplay } from "@src/component/AchievementDisplay";
 import { FarmerTag } from "@src/component/FarmerTag";
 import { FarmersRow } from "@src/component/FarmersRow";
-import { SummarySection } from "@src/component/SummarySection";
-import { GameSave } from "@src/gamesave/GameSave";
-import { mapToObj, times } from "remeda";
-
-import bulletinBoardPng from "@src/assets/sprite/help-wanted/bulletin-board.png";
-import questPng from "@src/assets/sprite/help-wanted/quest.png";
-
 import { InfoText } from "@src/component/InfoText";
 import { Objective } from "@src/component/Objective";
+import { SummarySection } from "@src/component/SummarySection";
+import { GameSave } from "@src/gamesave/GameSave";
 import { useGoals } from "@src/hook/useGoals";
 import { StardewWiki } from "@src/util/StardewWiki";
+import { mapToObj, times } from "remeda";
+
 import styles from "./HelpWantedSection.module.scss";
 
 interface Props {

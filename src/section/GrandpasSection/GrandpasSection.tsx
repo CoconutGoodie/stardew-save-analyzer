@@ -1,19 +1,18 @@
-import { GameSave } from "@src/gamesave/GameSave";
-import { SummarySection } from "../component/SummarySection";
-
 import checkmarkPng from "@src/assets/icon/checkmark.png";
 import candleFirePng from "@src/assets/sprite/grandpa/candle-fire.gif";
 import grandpaGhostPng from "@src/assets/sprite/grandpa/ghost.png";
 import grandpaPortraitPng from "@src/assets/sprite/grandpa/portrait.png";
 import shrinePng from "@src/assets/sprite/grandpa/shrine.png";
-
 import { Currency } from "@src/component/Currency";
 import { GameDateDisplay } from "@src/component/GameDateDisplay";
 import { Objective } from "@src/component/Objective";
+import { SummarySection } from "@src/component/SummarySection";
+import { GameSave } from "@src/gamesave/GameSave";
 import { GameDate, GameSeason } from "@src/util/GameDate";
 import clsx from "clsx";
-import styles from "./GrandpasSection.module.scss";
 import { sumBy } from "remeda";
+
+import styles from "./GrandpasSection.module.scss";
 
 interface Props {
   gameSave: GameSave;

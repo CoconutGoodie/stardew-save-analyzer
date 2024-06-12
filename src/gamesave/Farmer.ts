@@ -8,7 +8,7 @@ import {
   intersection,
   keys,
   sumBy,
-  values
+  values,
 } from "remeda";
 import { STARDEW_PROFESSIONS } from "../const/StardewProfessions";
 import { STARDROP_MAIL_FLAGS } from "../const/StardewStardrops";
@@ -25,6 +25,9 @@ export class Farmer {
   public readonly skills;
   public readonly skillLevelTotal;
   public readonly skillBasedTitle;
+
+  public readonly hasSkullKey;
+  public readonly deepestMineLevels;
 
   public readonly masteries;
 
@@ -74,6 +77,9 @@ export class Farmer {
     };
     this.skillLevelTotal = sumBy(values(this.skills), (skill) => skill.level);
     this.skillBasedTitle = this.calcSkillBasedTitle();
+
+    this.hasSkullKey = this.farmerXml.query(":scope > hasSkullKey").boolean();
+    this.deepestMineLevels = this.calcDeepestMineLevels();
 
     this.masteries = this.calcMasteries();
 
@@ -163,6 +169,18 @@ export class Farmer {
     if (v > 4) return "Bumpkin";
     if (v > 2) return "Greenhorn";
     return "Newcomer";
+  }
+
+  private calcDeepestMineLevels() {
+    let mineLevel = this.farmerXml.query(":scope > deepestMineLevel").number();
+
+    // Thanks to https://github.com/MouseyPounds/stardew-checkup/blob/8e48aa1806ad2c856d35e1a68f08128b4673f2c5/stardew-checkup.js#L3260
+    if (this.hasSkullKey) mineLevel = Math.max(120, mineLevel);
+
+    return {
+      mountainMine: Math.min(120, mineLevel),
+      skullCavern: mineLevel > 120 ? mineLevel - 120 : 0,
+    };
   }
 
   private calcMasteries() {

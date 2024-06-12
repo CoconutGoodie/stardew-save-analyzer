@@ -1,30 +1,21 @@
-import { SummarySection } from "../component/SummarySection";
-import { GameSave } from "../gamesave/GameSave";
-import { AssetRepositoryOLD } from "../util/AssetRepository";
-import { StardewWiki } from "../util/StardewWiki";
-
-import boardPng from "../assets/sprite/special-order/qi/special_orders_board.png";
-
+import boardPng from "@src/assets/sprite/special-order/qi/special_orders_board.png";
 import { ImageObjective } from "@src/component/ImageObjective";
+import { Objective } from "@src/component/Objective";
+import { SummarySection } from "@src/component/SummarySection";
+import { QI_SPECIAL_ORDER_SPRITES } from "@src/const/Assets";
+import { GameSave } from "@src/gamesave/GameSave";
 import { useGoals } from "@src/hook/useGoals";
+import { StardewWiki } from "@src/util/StardewWiki";
 import { snakeCase } from "case-anything";
 import clsx from "clsx";
-import { Objective } from "../component/Objective";
-import styles from "./QiSpecialOrdersSection.module.scss";
+
+import styles from "./QiChallengesSection.module.scss";
 
 interface Props {
   gameSave: GameSave;
 }
 
-const specialOrderIcons = new AssetRepositoryOLD<{ default: string }>(
-  import.meta.glob("../assets/sprite/special-order/qi/*.png", {
-    eager: true,
-  }),
-  "../assets/sprite/special-order/qi/",
-  ".png"
-);
-
-export const QiSpecialOrdersSection = (props: Props) => {
+export const QiChallengesSection = (props: Props) => {
   const { goals, allDone } = useGoals({
     global: {
       objectives: {
@@ -41,8 +32,8 @@ export const QiSpecialOrdersSection = (props: Props) => {
 
   return (
     <SummarySection
-      id="qi-special-orders"
-      sectionTitle="Mr. Qi's Special Orders"
+      id="qi-challenges"
+      sectionTitle="Mr. Qi's Challenges"
       collapsable
       versions={["v1.5 Introduced"]}
       allDone={allDone}
@@ -72,10 +63,7 @@ export const QiSpecialOrdersSection = (props: Props) => {
                 done={order.completed}
                 width={42}
                 title={order.title}
-                src={
-                  specialOrderIcons.resolve(snakeCase(order.title))?.default ??
-                  ""
-                }
+                src={QI_SPECIAL_ORDER_SPRITES.resolve(snakeCase(order.title))}
               />
             </a>
           ))}
@@ -93,7 +81,7 @@ export const QiSpecialOrdersSection = (props: Props) => {
         done={goals.global.objectiveStatus.orderCompletion === "done"}
         className={styles.objective}
       >
-        Every Special Order is completed.
+        Every Challenge is completed.
         {goals.global.objectiveStatus.orderCompletion !== "done" && (
           <span>
             {" "}

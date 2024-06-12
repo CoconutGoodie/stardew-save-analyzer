@@ -1,34 +1,21 @@
+import checkmarkPng from "@src/assets/icon/checkmark.png";
+import guntherPng from "@src/assets/sprite/museum/portrait.png";
+import { AchievementDisplay } from "@src/component/AchievementDisplay";
+import { ImageObjective } from "@src/component/ImageObjective";
 import { SummarySection } from "@src/component/SummarySection";
+import { ARTIFACT_SPRITES, MINERAL_SPRITES } from "@src/const/Assets";
 import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "@src/const/StardewMuseum";
 import { GameSave } from "@src/gamesave/GameSave";
+import { useGoals } from "@src/hook/useGoals";
+import { StardewWiki } from "@src/util/StardewWiki";
+import { snakeCase } from "case-anything";
 import { entries, keys } from "remeda";
 
-import guntherPng from "@src/assets/sprite/museum/portrait.png";
-import { ImageObjective } from "@src/component/ImageObjective";
-import { AssetRepositoryOLD } from "@src/util/AssetRepository";
-import { StardewWiki } from "@src/util/StardewWiki";
-import { lowerCase, snakeCase } from "case-anything";
-import checkmarkPng from "@src/assets/icon/checkmark.png";
 import styles from "./MuseumSection.module.scss";
-import { Objective } from "@src/component/Objective";
-import { AchievementDisplay } from "@src/component/AchievementDisplay";
-import { useGoals } from "@src/hook/useGoals";
 
 interface Props {
   gameSave: GameSave;
 }
-
-const artifactSprites = new AssetRepositoryOLD<{ default: string }>(
-  import.meta.glob("../assets/sprite/museum/artifacts/*.png", { eager: true }),
-  "../assets/sprite/museum/artifacts/",
-  ".png"
-);
-
-const mineralSprites = new AssetRepositoryOLD<{ default: string }>(
-  import.meta.glob("../assets/sprite/museum/minerals/*.png", { eager: true }),
-  "../assets/sprite/museum/minerals/",
-  ".png"
-);
 
 export const MuseumSection = (props: Props) => {
   const totalDonated =
@@ -116,11 +103,9 @@ export const MuseumSection = (props: Props) => {
                 >
                   <ImageObjective
                     title={mineral.title}
-                    src={
-                      mineralSprites.resolve(
-                        snakeCase(mineral.title).replace(/\(\)/g, "")
-                      )?.default ?? ""
-                    }
+                    src={MINERAL_SPRITES.resolve(
+                      snakeCase(mineral.title).replace(/\(\)/g, "")
+                    )}
                     done={props.gameSave.museumPieces.minerals.has(mineralId)}
                     width={36}
                     height={36}
@@ -154,11 +139,9 @@ export const MuseumSection = (props: Props) => {
                 >
                   <ImageObjective
                     title={artifact.title}
-                    src={
-                      artifactSprites.resolve(
-                        snakeCase(artifact.title).replace(/\(\)/g, "")
-                      )?.default ?? ""
-                    }
+                    src={ARTIFACT_SPRITES.resolve(
+                      snakeCase(artifact.title).replace(/\(\)/g, "")
+                    )}
                     done={props.gameSave.museumPieces.artifacts.has(artifactId)}
                     width={36}
                     height={36}

@@ -1,32 +1,31 @@
-import { capitalCase, snakeCase } from "case-anything";
-import { keys, mapToObj, sumBy } from "remeda";
-import { FarmerTag } from "../component/FarmerTag";
-import { SummarySection } from "../component/SummarySection";
+import barbedHookPng from "@src/assets/icon/barbed_hook.png";
+import checkmarkPng from "@src/assets/icon/checkmark.png";
+import questPng from "@src/assets/icon/quest.png";
+import { AchievementDisplay } from "@src/component/AchievementDisplay";
+import { FarmerTag } from "@src/component/FarmerTag";
+import { FarmersRow } from "@src/component/FarmersRow";
+import { ImageObjective } from "@src/component/ImageObjective";
+import { Objective } from "@src/component/Objective";
+import { Scrollbox } from "@src/component/Scrollbox";
+import { SummarySection } from "@src/component/SummarySection";
+import { FISH_COVER_SPRITES, FISH_SPRITES } from "@src/const/Assets";
 import {
   FishCategory,
   STARDEW_FISHES,
   STARDEW_FISHES_BY_CATEGORIES,
-} from "../const/StardewFishes";
-import { GameSave } from "../gamesave/GameSave";
-
-import { FarmersRow } from "@src/component/FarmersRow";
-import { ImageObjective } from "@src/component/ImageObjective";
+} from "@src/const/StardewFishes";
+import { GameSave } from "@src/gamesave/GameSave";
+import { useGoals } from "@src/hook/useGoals";
+import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
+import { StardewWiki } from "@src/util/StardewWiki";
 import { thru } from "@src/util/utilities";
+import { capitalCase, snakeCase } from "case-anything";
 import clsx from "clsx";
 import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";
-import checkmarkPng from "../assets/icon/checkmark.png";
-import questPng from "../assets/icon/quest.png";
-import { AchievementDisplay } from "../component/AchievementDisplay";
-import { Objective } from "../component/Objective";
-import { StardewWiki } from "../util/StardewWiki";
-import styles from "./FishingSection.module.scss";
+import { keys, mapToObj, sumBy } from "remeda";
 
-import barbedHookPng from "@src/assets/icon/barbed_hook.png";
-import { Scrollbox } from "@src/component/Scrollbox";
-import { FISH_COVER_SPRITES, FISH_SPRITES } from "@src/const/Assets";
-import { useGoals } from "@src/hook/useGoals";
-import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
+import styles from "./FishingSection.module.scss";
 
 interface Props {
   gameSave: GameSave;

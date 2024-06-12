@@ -1,18 +1,17 @@
+import starPng from "@src/assets/sprite/skill/mastery/mastery_star.png";
 import { FarmerTag } from "@src/component/FarmerTag";
 import { FarmersRow } from "@src/component/FarmersRow";
+import { ImageObjective } from "@src/component/ImageObjective";
 import { Objective } from "@src/component/Objective";
 import { SummarySection } from "@src/component/SummarySection";
-import { GameSave } from "@src/gamesave/GameSave";
-
-import starPng from "@src/assets/sprite/skill/mastery/mastery_star.png";
-
-import { ImageObjective } from "@src/component/ImageObjective";
+import { PERK_SPRITES } from "@src/const/Assets";
 import { STARDEW_MASTERY_LEVEL_EXP } from "@src/const/StardewMasteryLevels";
+import { GameSave } from "@src/gamesave/GameSave";
 import { useGoals } from "@src/hook/useGoals";
-import { AssetRepositoryOLD } from "@src/util/AssetRepository";
 import { StardewWiki } from "@src/util/StardewWiki";
 import { capitalCase } from "case-anything";
 import { keys, mapToObj, values } from "remeda";
+
 import styles from "./MasteriesSection.module.scss";
 
 interface Props {
@@ -20,12 +19,6 @@ interface Props {
 }
 
 const FORMAT = new Intl.NumberFormat("en-US");
-
-const perkSprites = new AssetRepositoryOLD<{ default: string }>(
-  import.meta.glob("../assets/sprite/skill/mastery/*.png", { eager: true }),
-  "../assets/sprite/skill/mastery/",
-  ".png"
-);
 
 export const MasteriesSection = (props: Props) => {
   const farmers = props.gameSave.getAllFarmers();
@@ -100,7 +93,7 @@ export const MasteriesSection = (props: Props) => {
                     <ImageObjective
                       done={farmerGoals.objectives.perksClaimed[perkName]}
                       height={150}
-                      src={perkSprites.resolve(perkName)?.default ?? ""}
+                      src={PERK_SPRITES.resolve(perkName)}
                     />
                   </a>
                 ))}

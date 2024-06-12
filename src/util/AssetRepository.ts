@@ -1,35 +1,22 @@
 import { entries } from "remeda";
 
-/** @deprecated */
-export class AssetRepositoryOLD<T> {
-  constructor(
-    private repository: Record<string, T>,
-    private prefix: string,
-    private postfix: string
-  ) {}
-
-  public resolve(assetName: string) {
-    return this.repository[`${this.prefix}${assetName}${this.postfix}`];
-  }
-}
-
 export class AssetRepository<T> {
   constructor(
     private options: {
       repository: Record<string, T>;
       prefix: string;
       postfix: string;
-      defaultValue?: T;
+      defaultKey?: string;
     }
   ) {}
 
   public resolve(assetName: string) {
-    const { repository, prefix, postfix, defaultValue } = this.options;
+    const { repository, prefix, postfix, defaultKey } = this.options;
 
     return (
       repository[`${prefix}${assetName}${postfix}`] ??
-      defaultValue ??
-      entries(repository).at(0)?.[1] as T
+      repository[`${prefix}${defaultKey}${postfix}`] ??
+      (entries(repository).at(0)?.[1] as T)
     );
   }
 }

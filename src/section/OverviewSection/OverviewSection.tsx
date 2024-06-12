@@ -1,34 +1,24 @@
+import clockPng from "@src/assets/icon/clock.png";
+import favoritePng from "@src/assets/icon/favorite-thing.png";
+import femalePng from "@src/assets/icon/female.png";
+import malePng from "@src/assets/icon/male.png";
+import shrineOfChallengePng from "@src/assets/icon/shrine-of-challenge.png";
+import skullAltarPng from "@src/assets/icon/skull-altar.png";
+import { Currency } from "@src/component/Currency";
+import { GameDateDisplay } from "@src/component/GameDateDisplay";
+import { SummarySection } from "@src/component/SummarySection";
+import { FARM_TYPE_SPRITES } from "@src/const/Assets";
+import { GameSave } from "@src/gamesave/GameSave";
+import { StardewWiki } from "@src/util/StardewWiki";
 import { lowerCase } from "case-anything";
-import { SummarySection } from "../component/SummarySection";
-import { AssetRepositoryOLD } from "../util/AssetRepository";
-import { GameSave } from "../gamesave/GameSave";
-import { StardewWiki } from "../util/StardewWiki";
-
-import femalePng from "../assets/icon/female.png";
-import malePng from "../assets/icon/male.png";
-import clockPng from "../assets/icon/clock.png";
-import favoritePng from "../assets/icon/favorite-thing.png";
-import gamepadPng from "../assets/icon/gamepad.png";
-import shrineOfChallengePng from "../assets/icon/shrine-of-challenge.png";
-import skullAltarPng from "../assets/icon/skull-altar.png";
+import clsx from "clsx";
+import { Fragment } from "react/jsx-runtime";
 
 import styles from "./OverviewSection.module.scss";
-import { GameDateDisplay } from "../component/GameDateDisplay";
-import clsx from "clsx";
-import { Currency } from "../component/Currency";
-import { Fragment } from "react/jsx-runtime";
 
 interface Props {
   gameSave: GameSave;
 }
-
-const farmTypesAssets = new AssetRepositoryOLD<{ default: string }>(
-  import.meta.glob("../assets/sprite/farm-type/*.png", {
-    eager: true,
-  }),
-  "../assets/sprite/farm-type/",
-  ".png"
-);
 
 function formatDuration(duration: number): string {
   const days = Math.floor(duration / 86400000);
@@ -64,11 +54,9 @@ export const OverviewSection = (props: Props) => {
           <div className={styles.farmType}>
             <img
               width={80}
-              src={
-                farmTypesAssets.resolve(
-                  lowerCase(props.gameSave.farmType).replace(/\s+/g, "-")
-                )?.default
-              }
+              src={FARM_TYPE_SPRITES.resolve(
+                lowerCase(props.gameSave.farmType).replace(/\s+/g, "-")
+              )}
             />
             <span>({props.gameSave.farmType} Farm)</span>
           </div>
@@ -78,44 +66,44 @@ export const OverviewSection = (props: Props) => {
           <h1>{props.gameSave.farmName} Farm</h1>
           <ul>
             <li>
-              <p>
+              <div>
                 Game Version:{" "}
                 <span className={styles.gameVersion}>
                   v{props.gameSave.gameVersion}
                 </span>
-              </p>
+              </div>
             </li>
             <li>
-              <p>
+              <div>
                 Today is <GameDateDisplay date={props.gameSave.currentDate} />
-              </p>
+              </div>
             </li>
             <li>
-              <p>
+              <div>
                 <img width={18} src={clockPng} />{" "}
                 <em>{formatDuration(props.gameSave.playtime)}</em>
-              </p>
+              </div>
             </li>
             {props.gameSave.mineShrineActive && (
               <li>
-                <p>
+                <div>
                   <img width={18} src={shrineOfChallengePng} />{" "}
                   <span>
                     Shrine of Challenge:{" "}
-                    <strong className={styles.challenge}>active</strong>.
+                    <strong className={styles.mineActive}>active</strong>.
                   </span>
-                </p>
+                </div>
               </li>
             )}
             {props.gameSave.skullShrineActive && (
               <li>
-                <p>
+                <div>
                   <img width={18} src={skullAltarPng} />{" "}
                   <span>
                     Skull Shrine:{" "}
-                    <strong className={styles.challenge}>active</strong>.
+                    <strong className={styles.skullActive}>active</strong>.
                   </span>
-                </p>
+                </div>
               </li>
             )}
           </ul>

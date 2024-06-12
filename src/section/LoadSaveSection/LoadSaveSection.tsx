@@ -1,24 +1,15 @@
-import { ComponentProps, useState } from "react";
+import clockPng from "@src/assets/icon/clock.png";
+import { SummarySection } from "@src/component/SummarySection";
+import { DEMO_SAVES } from "@src/const/Assets";
+import { GameSave } from "@src/gamesave/GameSave";
+import { XMLNode } from "@src/util/XMLNode";
+import { useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import type FileUploaderSrc from "react-drag-drop-files/dist/src/FileUploader";
-import { SummarySection } from "../component/SummarySection";
-import { GameSave } from "../gamesave/GameSave";
-import { AssetRepositoryOLD } from "../util/AssetRepository";
-
-import clockPng from "../assets/icon/clock.png";
 
 import styles from "./LoadSaveSection.module.scss";
-import { XMLNode } from "@src/util/XMLNode";
 
 const FileUploaderTyped: typeof FileUploaderSrc = FileUploader;
-
-const demoSaves = new AssetRepositoryOLD(
-  import.meta.glob<Promise<{ default: string }>>("../assets/Save_*.xml", {
-    query: "raw",
-  }),
-  "../assets/Save_",
-  ".xml"
-);
 
 interface Props {
   onSelected: (gameSave: GameSave) => void;
@@ -54,8 +45,8 @@ export const LoadSaveSection = (props: Props) => {
 
   const loadDemo = async (version: string) => {
     setLoading(true);
-    const module = await demoSaves.resolve(version)();
-    const xml = parseXML(module.default ?? "");
+    const raw = await DEMO_SAVES.resolve(version)();
+    const xml = parseXML(raw ?? "");
     const saveXml = new XMLNode(xml.documentElement);
     props.onSelected(new GameSave(saveXml));
     setLoading(false);

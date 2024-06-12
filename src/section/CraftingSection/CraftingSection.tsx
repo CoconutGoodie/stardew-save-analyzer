@@ -1,40 +1,35 @@
-import { FarmerTag } from "@src/component/FarmerTag";
-import { FarmersRow } from "@src/component/FarmersRow";
-import { Objective } from "@src/component/Objective";
-import { SummarySection } from "@src/component/SummarySection";
-import { GameSave } from "@src/gamesave/GameSave";
-
 import craftingPng from "@src/assets/icon/crafting.png";
 import { AchievementDisplay } from "@src/component/AchievementDisplay";
-
+import { FarmerTag } from "@src/component/FarmerTag";
+import { FarmersRow } from "@src/component/FarmersRow";
 import { ImageObjective } from "@src/component/ImageObjective";
+import { InfoText } from "@src/component/InfoText";
+import { Objective } from "@src/component/Objective";
+import { Scrollbox } from "@src/component/Scrollbox";
+import { SummarySection } from "@src/component/SummarySection";
 import { STARDEW_CRAFTING_RECIPES } from "@src/const/StardewCrafting";
-import { AssetRepositoryOLD } from "@src/util/AssetRepository";
+import { GameSave } from "@src/gamesave/GameSave";
+import { useGoals } from "@src/hook/useGoals";
+import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
 import { StardewWiki } from "@src/util/StardewWiki";
 import { snakeCase } from "case-anything";
 import clsx from "clsx";
-import { useEffect, useState } from "react";
-import styles from "./CraftingSection.module.scss";
-import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
-import { InfoText } from "@src/component/InfoText";
-import { Scrollbox } from "@src/component/Scrollbox";
-import { useGoals } from "@src/hook/useGoals";
+import { useState } from "react";
 import { mapToObj } from "remeda";
+
+import { CRAFTING_RECIPE_SPRITES } from "@src/const/Assets";
+import styles from "./CraftingSection.module.scss";
 
 interface Props {
   gameSave: GameSave;
 }
 
-const craftingRecipeSprites = new AssetRepositoryOLD<{ default: string }>(
-  import.meta.glob("../assets/sprite/crafting/*.png", { eager: true }),
-  "../assets/sprite/crafting/",
-  ".png"
-);
-
 export const CraftingSection = (props: Props) => {
   const [expanded, setExpanded] = useState(false);
 
-  const { registerScrollableRef: addScrollableRef } = useSyncedScrollbar([expanded]);
+  const { registerScrollableRef: addScrollableRef } = useSyncedScrollbar([
+    expanded,
+  ]);
 
   const farmers = props.gameSave.getAllFarmers();
 
@@ -110,11 +105,9 @@ export const CraftingSection = (props: Props) => {
                         <ImageObjective
                           width={32}
                           height={72}
-                          src={
-                            craftingRecipeSprites.resolve(
-                              snakeCase(recipe.replace(/-/g, " "))
-                            )?.default ?? ""
-                          }
+                          src={CRAFTING_RECIPE_SPRITES.resolve(
+                            snakeCase(recipe.replace(/-/g, " "))
+                          )}
                           title={recipe}
                           done={farmer.craftedRecipes[recipe] > 0}
                         />
@@ -148,10 +141,7 @@ export const CraftingSection = (props: Props) => {
                     <ImageObjective
                       width={32}
                       height={72}
-                      src={
-                        craftingRecipeSprites.resolve("wedding_ring")
-                          ?.default ?? ""
-                      }
+                      src={craftingRecipeSprites.resolve("wedding_ring")}
                       title={"Wedding Ring"}
                       done={farmer.craftedRecipes["Wedding Ring"] > 0}
                     />

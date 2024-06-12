@@ -1,79 +1,74 @@
 export interface EradicationGoal {
   category: string;
   amount: number;
-  validMonsters: Set<string>;
+  validMonsters: string[];
 }
 
-export const STARDEW_ERADICATION_GOAL: EradicationGoal[] = [
+export const STARDEW_ERADICATION_GOALS: EradicationGoal[] = [
   {
     category: "Slimes",
     amount: 1000,
-    validMonsters: new Set([
-      "Green Slime",
-      "Frost Jelly",
-      "Sludge",
-      "Tiger Slime",
-    ]),
+    validMonsters: ["Green Slime", "Frost Jelly", "Sludge", "Tiger Slime"],
   },
   {
     category: "Void Spirits",
     amount: 150,
-    validMonsters: new Set([
+    validMonsters: [
       "Shadow Shaman",
       "Shadow Brute",
       "Shadow Sniper",
-      "Shadow Guy",
-      "Shadow Girl",
-    ]),
+      // "Shadow Guy",
+      // "Shadow Girl",
+    ],
   },
   {
     category: "Bats",
     amount: 200,
-    validMonsters: new Set(["Bat", "Frost Bat", "Lava Bat", "Iridium Bat"]),
+    validMonsters: ["Bat", "Frost Bat", "Lava Bat", "Iridium Bat"],
   },
   {
     category: "Skeletons",
     amount: 50,
-    validMonsters: new Set(["Skeleton", "Skeleton Mage"]),
+    validMonsters: ["Skeleton", "Skeleton Mage"],
   },
   {
     category: "Cave Insects",
     amount: 80,
-    validMonsters: new Set(["Bug", "Fly", "Grub"]),
+    validMonsters: ["Bug", "Fly", "Grub"],
   },
   {
     category: "Duggies",
     amount: 30,
-    validMonsters: new Set(["Duggy", "Magma Duggy"]),
+    validMonsters: ["Duggy", "Magma Duggy"],
   },
   {
     category: "Dust Sprites",
     amount: 500,
-    validMonsters: new Set(["Dust Spirit"]),
+    validMonsters: ["Dust Spirit"],
   },
   {
     category: "Rock Crabs",
     amount: 60,
-    validMonsters: new Set(["Rock Crab", "Lava Crab", "Iridium Crab"]),
+    validMonsters: ["Rock Crab", "Lava Crab", "Iridium Crab"],
   },
   {
     category: "Mummies",
     amount: 60,
-    validMonsters: new Set(["Mummy"]),
+    validMonsters: ["Mummy"],
   },
   {
     category: "Pepper Rex",
     amount: 50,
-    validMonsters: new Set(["Pepper Rex"]),
+    validMonsters: ["Pepper Rex"],
   },
   {
     category: "Serpents",
     amount: 250,
-    validMonsters: new Set(["Serpent", "Royal Serpent"]),
+    validMonsters: ["Serpent", "Royal Serpent"],
   },
   {
     category: "Magma Sprites",
     amount: 150,
-    validMonsters: new Set(["Magma Sprite", "Magma Sparker"]),
+    validMonsters: ["Magma Sprite", "Magma Sparker"],
   },
 ];

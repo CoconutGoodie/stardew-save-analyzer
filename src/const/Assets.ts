@@ -147,6 +147,15 @@ export const SPECIAL_ORDER_SPRITES = new AssetRepository<string>({
   postfix: ".png",
 });
 
+export const MONSTER_SPRITES = new AssetRepository<string>({
+  repository: import.meta.glob("../assets/sprite/monster/*.png", {
+    import: "default",
+    eager: true,
+  }),
+  prefix: "../assets/sprite/monster/",
+  postfix: ".png",
+});
+
 /* -- Other ------------------------------------ */
 
 export const DEMO_SAVES = new AssetRepository({

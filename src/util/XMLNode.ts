@@ -7,6 +7,10 @@ export class XMLNode {
     return this.element == null ? undefined : transformer(this);
   }
 
+  public parent() {
+    return new XMLNode(this.element?.parentElement ?? undefined);
+  }
+
   public query(selectors: string) {
     return new XMLNode(this.element?.querySelector(selectors) ?? undefined);
   }

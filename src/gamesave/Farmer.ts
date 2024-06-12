@@ -1,5 +1,6 @@
 import { STARDEW_COOKING_RECIPES } from "@src/const/StardewCooking";
 import { STARDEW_MASTERY_LEVEL_EXP } from "@src/const/StardewMasteryLevels";
+import { STARDEW_ERADICATION_GOALS } from "@src/const/StardewMonsters";
 import { STARDEW_PROFESSIONS } from "@src/const/StardewProfessions";
 import { STARDROP_MAIL_FLAGS } from "@src/const/StardewStardrops";
 import { XMLNode } from "@src/util/XMLNode";
@@ -9,6 +10,9 @@ import {
   fromEntries,
   intersection,
   keys,
+  map,
+  pipe,
+  sum,
   sumBy,
   values,
 } from "remeda";
@@ -186,6 +190,26 @@ export class Farmer {
   }
 
   private calcMonsterKills() {
+    let monstersKilledXml = this.farmerXml.query(
+      ":scope > stats > specificMonstersKilled"
+    );
+
+    // version <= 1.2
+    if (monstersKilledXml == null) {
+      monstersKilledXml = this.farmerXml
+        .parent()
+        .query(":scope > stats > specificMonstersKilled");
+    }
+
+    const monstersKilled = fromEntries(
+      monstersKilledXml
+        .queryAll(":scope > item")
+        .map((itemXml) => [
+          itemXml.query("key").text(),
+          itemXml.query("value").number(),
+        ])
+    );
+
     let totalKills = this.farmerXml
       .queryAll(":scope > stats > Values > item")
       .find((valueXml) => valueXml.query("key > *").text() === "monstersKilled")
@@ -194,11 +218,25 @@ export class Farmer {
 
     // version < 1.6
     if (totalKills == null) {
-      totalKills = 0; // Don't know how to get total kills.. Sob
+      // Don't know how else to get total kills.. :sob:
+      totalKills = sum(values(monstersKilled));
     }
 
     return {
       totalKills,
+      individually: monstersKilled,
+      byEradicationGoal: fromEntries(
+        STARDEW_ERADICATION_GOALS.map((goal) => [
+          goal.category,
+          sum(
+            goal.validMonsters.map((monster) => {
+              const killed = monstersKilled[monster];
+              if (!killed) return 0;
+              return killed;
+            })
+          ),
+        ])
+      ),
     };
   }
 

@@ -10,12 +10,25 @@ import { StardewWiki } from "@src/util/StardewWiki";
 import { mapToObj } from "remeda";
 
 import styles from "./AdventurersGuildSection.module.scss";
+import { STARDEW_ERADICATION_GOALS } from "@src/const/StardewMonsters";
+import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
+import { useState } from "react";
+import { Scrollbox } from "@src/component/Scrollbox";
+import { MONSTER_SPRITES } from "@src/const/Assets";
+import { snakeCase } from "case-anything";
+import clsx from "clsx";
 
 interface Props {
   gameSave: GameSave;
 }
 
 export const AdventurersGuildSection = (props: Props) => {
+  const [expanded, setExpanded] = useState(false);
+
+  const { registerScrollableRef: addScrollableRef } = useSyncedScrollbar([
+    expanded,
+  ]);
+
   const farmers = props.gameSave.getAllFarmers();
 
   const { allDone, goals } = useGoals({
@@ -75,12 +88,47 @@ export const AdventurersGuildSection = (props: Props) => {
                 </Objective>
 
                 <Objective icon={<img height={16} src={fooPng} />} done>
-                  Completed <strong>XX</strong> of <strong>YY</strong> Monster
+                  Completed <strong>XX</strong> of{" "}
+                  <strong>{STARDEW_ERADICATION_GOALS.length}</strong> Monster
                   Eradication goals.
                 </Objective>
               </div>
 
-              <div className={styles.monsters}>WIP</div>
+              <Scrollbox
+                scrollRef={addScrollableRef}
+                expanded={expanded}
+                onExpanded={setExpanded}
+                className={styles.monsterScrollbox}
+              >
+                <div
+                  className={clsx(styles.monsters, expanded && styles.expanded)}
+                >
+                  {STARDEW_ERADICATION_GOALS.map((goal) => (
+                    <div key={goal.category} className={styles.monsterCategory}>
+                      <div className={styles.header}>
+                        <span>{goal.category}</span>
+                      </div>
+                      <div className={styles.mobs}>
+                        {Array.from(goal.validMonsters).map((monster) => (
+                          <div key={monster} className={styles.mob}>
+                            <img
+                              width={32}
+                              height={64}
+                              title={monster}
+                              src={MONSTER_SPRITES.resolve(snakeCase(monster))}
+                            />
+                          </div>
+                        ))}
+                      </div>
+                      <Objective className={styles.goal}>
+                        Killed{" "}
+                        {farmer.monsterKills.byEradicationGoal[goal.category]}/
+                        {goal.amount}
+                      </Objective>
+                    </div>
+                  ))}
+                </div>
+              </Scrollbox>
 
               <div className={styles.achievements}>
                 <AchievementDisplay

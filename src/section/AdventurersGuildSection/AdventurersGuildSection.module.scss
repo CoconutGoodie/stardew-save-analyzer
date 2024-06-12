@@ -4,8 +4,56 @@
   gap: 5px;
 }
 
+.monsterScrollbox {
+  margin: 10px 0;
+}
+
 .monsters {
-  margin: 20px 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  flex-wrap: wrap;
+  gap: 10px;
+
+  &:not(.expanded) {
+    margin-right: 16px;
+  }
+}
+
+.monsterCategory {
+  padding: 10px 16px;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(-10deg, #532713, #3d0a55);
+  border-radius: 6px;
+  border: 2px solid #411157;
+
+  .header {
+    font-family: "Stardew Valley";
+    font-size: 25px;
+  }
+
+  .mobs {
+    display: flex;
+    gap: 4px;
+
+    .mob {
+      flex-grow: 1;
+      padding: 4px 2px;
+      display: flex;
+      justify-content: center;
+      background: rgba(#fff, 0.1);
+      border-radius: 6px;
+      img {
+        object-fit: scale-down;
+      }
+    }
+  }
+
+  .goal {
+    margin-top: 10px;
+    font-family: "Stardew Valley";
+    font-size: 20px;
+  }
 }
 
 .achievements {

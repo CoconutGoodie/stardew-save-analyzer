@@ -121,9 +121,8 @@ export const AdventurersGuildSection = (props: Props) => {
                         ))}
                       </div>
                       <Objective className={styles.goal}>
-                        Killed{" "}
                         {farmer.monsterKills.byEradicationGoal[goal.category]}/
-                        {goal.amount}
+                        {goal.amount} Killed
                       </Objective>
                     </div>
                   ))}

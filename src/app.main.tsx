@@ -149,8 +149,20 @@ function App() {
 
             <hr />
 
+            <SummarySection sectionTitle="Socials [WIP]" collapsable>
+              [WIP] Friendship & Spouse & Children here
+            </SummarySection>
+
+            <hr />
+
             <SummarySection sectionTitle="Shipping [WIP]" collapsable>
               [WIP] Shipping Bin Achievements here
+            </SummarySection>
+
+            <hr />
+
+            <SummarySection sectionTitle="Forest Neightbors [WIP]" collapsable>
+              [WIP] Forest Neightbors & Pedro here
             </SummarySection>
 
             <hr />
@@ -167,6 +179,24 @@ function App() {
 
             <hr />
 
+            <SummarySection sectionTitle="Community Center / Joja Membership [WIP]" collapsable>
+              [WIP] Community Center / Joja Membership here
+            </SummarySection>
+
+            <hr />
+            
+            <SummarySection sectionTitle="Secret Notes [WIP]" collapsable>
+              [WIP] Secret Notes here
+            </SummarySection>
+
+            <hr />
+
+            <SummarySection sectionTitle="Ginger Island [WIP]" collapsable>
+              [WIP] Ginger Island here
+            </SummarySection>
+
+            <hr />
+
             <SummarySection sectionTitle="Perfection Tracker [WIP]" collapsable>
               [WIP] Perfection Tracker Analysis here
             </SummarySection>
@@ -175,14 +205,7 @@ function App() {
 
             <SummarySection sectionTitle="Todo List">
               <ul>
-                <li>"Forest Neightbors" Section</li>
-                <li>"Ginger Island" Section</li>
-                <li>"Secret Notes" Section</li>
-                <li>"Socials" Section</li>
-                <li>"Community Center" / "Joja Membership" Section</li>
-                <li>"Perfection" Section</li>
                 <li>Tooltips Component</li>
-                <li>Table of Contents Quick Navigator</li>
                 <li>Support "Separate Wallets"</li>
                 <li>Fix main app layout</li>
                 <li>A better Footer</li>

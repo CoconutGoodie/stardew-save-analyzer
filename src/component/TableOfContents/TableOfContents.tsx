@@ -3,7 +3,7 @@ import clsx from "clsx";
 import { useEffect, useState } from "react";
 
 import crossPng from "@src/assets/icon/cross.png";
-import xPng from "@src/assets/icon/barbed_hook.png";
+import stackPng from "@src/assets/icon/stack.png";
 
 import styles from "./TableOfContents.module.scss";
 
@@ -32,7 +32,7 @@ export const TableOfContents = (props: Props) => {
 
       <div className={clsx(styles.drawer, drew && styles.drew)}>
         <button className={styles.tag} onClick={() => setDrew(!drew)}>
-          <img height={30} src={xPng} />
+          <img height={30} src={stackPng} />
         </button>
 
         <button className={styles.close} onClick={() => setDrew(false)}>
@@ -40,24 +40,34 @@ export const TableOfContents = (props: Props) => {
         </button>
 
         <h1>Table of Contents</h1>
-        <ul>
-          {sections.map((section, i) => (
-            <li key={i} data-wip={!!section.element?.id}>
-              <a
-                href={"#" + section.element?.id}
-                onClick={() => setDrew(false)}
+        
+        <div className={styles.content}>
+          <ul>
+            {sections.map((section, i) => (
+              <li
+                key={i}
+                data-wip={!!section.element?.id}
+                data-done={(section.element as HTMLElement).dataset.done}
               >
-                <img
-                  width={20}
-                  height={20}
-                  src={(section.element as HTMLElement).dataset.icon}
-                />
-                <span>{section.query(":scope > h1 > span").text()}</span>
-                <span style={{ opacity: 0.25 }}> - #{section.element?.id}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
+                <a
+                  href={"#" + section.element?.id}
+                  onClick={() => setDrew(false)}
+                >
+                  <img
+                    width={20}
+                    height={20}
+                    src={(section.element as HTMLElement).dataset.icon}
+                  />
+                  <span>{section.query(":scope > h1 > span").text()}</span>
+                  <span style={{ opacity: 0.25 }}>
+                    {" "}
+                    - #{section.element?.id}
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );

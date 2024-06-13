@@ -22,14 +22,7 @@ export class GrandpasEvaluations {
     this.calcEarningScores();
     this.calcSkillScores();
     this.calcAchievementScores();
-
-    times(4, (i) =>
-      this.scoreSubjects.push({
-        earned: false,
-        reason: `Friendship #${i + 1} [WIP]`,
-        score: NaN,
-      })
-    );
+    this.calcFriendshipScores();
 
     times(4, (i) =>
       this.scoreSubjects.push({
@@ -146,5 +139,25 @@ export class GrandpasEvaluations {
         score: NaN,
       }))
     );
+  }
+
+  private calcFriendshipScores() {
+    times(3, (i) =>
+      this.scoreSubjects.push({
+        earned: false,
+        reason: `Friendship #${i + 1} [WIP]`,
+        score: NaN,
+      })
+    );
+
+    this.scoreSubjects.push({
+      earned: this.gameSave.pets.some((pet) => pet.love >= 999),
+      score: 1,
+      reason: (
+        <>
+          having <Currency amount={5} unit="heart" /> with your pet
+        </>
+      ),
+    });
   }
 }

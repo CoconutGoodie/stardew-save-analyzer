@@ -13,6 +13,7 @@ import clsx from "clsx";
 import { sumBy } from "remeda";
 
 import styles from "./GrandpasSection.module.scss";
+import { InfoText } from "@src/component/InfoText";
 
 interface Props {
   gameSave: GameSave;
@@ -25,7 +26,7 @@ export const GrandpasEvaluationsSection = (props: Props) => {
     props.gameSave.currentDate.canonicalDay >= GHOST_RETURN_DATE.canonicalDay;
 
   const grandpaScoreTotal = sumBy(
-    props.gameSave.grandpaScoreSubjects,
+    props.gameSave.grandpasEvals.scoreSubjects,
     (subject) => (subject.earned ? subject.score : 0)
   );
 
@@ -54,7 +55,7 @@ export const GrandpasEvaluationsSection = (props: Props) => {
           />
           {Array.from({ length: 4 }).map(
             (_, i) =>
-              props.gameSave.grandpaShrineCandlesLit > i && (
+              props.gameSave.grandpasEvals.candlesLit > i && (
                 <img
                   key={i}
                   width={20}
@@ -64,16 +65,16 @@ export const GrandpasEvaluationsSection = (props: Props) => {
               )
           )}
           <div className={styles.candleObjectives}>
-            <Objective done={props.gameSave.grandpaShrineCandlesLit >= 1}>
+            <Objective done={props.gameSave.grandpasEvals.candlesLit >= 1}>
               First candle is lit.
             </Objective>
-            <Objective done={props.gameSave.grandpaShrineCandlesLit >= 2}>
+            <Objective done={props.gameSave.grandpasEvals.candlesLit >= 2}>
               Second candle is lit.
             </Objective>
-            <Objective done={props.gameSave.grandpaShrineCandlesLit >= 3}>
+            <Objective done={props.gameSave.grandpasEvals.candlesLit >= 3}>
               Third candle is lit.
             </Objective>
-            <Objective done={props.gameSave.grandpaShrineCandlesLit >= 4}>
+            <Objective done={props.gameSave.grandpasEvals.candlesLit >= 4}>
               Fourth candle is lit.
             </Objective>
           </div>
@@ -100,7 +101,7 @@ export const GrandpasEvaluationsSection = (props: Props) => {
           )}
 
           <ul>
-            {props.gameSave.grandpaScoreSubjects.map(
+            {props.gameSave.grandpasEvals.scoreSubjects.map(
               ({ earned, reason, score }, index) => (
                 <li key={index} className={clsx(!earned && styles.unearned)}>
                   <strong>+ {score}</strong> for {reason}
@@ -125,6 +126,12 @@ export const GrandpasEvaluationsSection = (props: Props) => {
           </ul>
         </div>
 
+        <InfoText>
+          <strong>Achievements</strong> do not necessarily need to be achieved
+          by <em>every player</em>, only <em>one player</em> achieving is enough
+          for the score.
+        </InfoText>
+
         <Objective className={styles.objective} done={grandpaReturned}>
           Grandpa's ghost has returned. (On{" "}
           <GameDateDisplay date={GHOST_RETURN_DATE} />)
@@ -132,11 +139,11 @@ export const GrandpasEvaluationsSection = (props: Props) => {
 
         <Objective
           className={styles.objective}
-          done={props.gameSave.grandpaShrineCandlesLit === 4}
+          done={props.gameSave.grandpasEvals.candlesLit === 4}
         >
           Grandpa's shrine got all the candles lit.{" "}
-          {props.gameSave.grandpaShrineCandlesLit !== 4 && (
-            <>— {4 - props.gameSave.grandpaShrineCandlesLit} more unlit</>
+          {props.gameSave.grandpasEvals.candlesLit !== 4 && (
+            <>— {4 - props.gameSave.grandpasEvals.candlesLit} more unlit</>
           )}
         </Objective>
       </div>

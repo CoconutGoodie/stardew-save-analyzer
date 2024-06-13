@@ -14,6 +14,7 @@ import { isKeyOf, thru } from "@src/util/utilities";
 import { ReactNode } from "react";
 import { entries, firstBy, keys, mapToObj, times } from "remeda";
 import { Farmer } from "./Farmer";
+import { GrandpasEvaluations } from "@src/gamesave/GrandpasEvaluations";
 
 export class GameSave {
   public readonly gameVersion;
@@ -45,8 +46,7 @@ export class GameSave {
 
   public readonly achievements;
 
-  public readonly grandpaShrineCandlesLit;
-  public readonly grandpaScoreSubjects;
+  public readonly grandpasEvals;
 
   constructor(private saveXml: XMLNode) {
     console.log(saveXml.element);
@@ -88,8 +88,7 @@ export class GameSave {
       new Achievements(farmer, this),
     ]);
 
-    this.grandpaShrineCandlesLit = this.calcGrandpaShrineCandlesLit();
-    this.grandpaScoreSubjects = this.calcGrandpaScoreSubjects();
+    this.grandpasEvals = new GrandpasEvaluations(this, this.saveXml);
   }
 
   private calcGameVersion() {
@@ -340,135 +339,6 @@ export class GameSave {
         )
       ),
     };
-  }
-
-  private calcGrandpaShrineCandlesLit() {
-    const farmLocationXml = this.saveXml.queryAllAndFind(
-      "locations > GameLocation",
-      (node) => node.element?.getAttribute("xsi:type") === "Farm"
-    );
-
-    return farmLocationXml.query("grandpaScore").number();
-  }
-
-  // TODO: Extract into its own class
-  private calcGrandpaScoreSubjects() {
-    interface ScoreSubject {
-      earned: boolean;
-      score: number;
-      reason: ReactNode;
-    }
-
-    const scoreSubjects: ScoreSubject[] = [];
-
-    // Earnings
-    scoreSubjects.push(
-      ...[
-        [1, 50_000],
-        [1, 100_000],
-        [1, 200_000],
-        [1, 300_000],
-        [1, 500_000],
-        [2, 1_000_000],
-      ].map<ScoreSubject>(([score, earningGoal]) => ({
-        earned: this.totalGoldsEarned >= earningGoal,
-        reason: (
-          <>
-            earning at least <Currency amount={earningGoal} unit="gold" />
-          </>
-        ),
-        score,
-      }))
-    );
-
-    // Skill Levels
-    const mostSkillfulFarmer =
-      firstBy(this.getAllFarmers(), [
-        (farmer) => farmer.skillLevelTotal,
-        "desc",
-      ]) ?? this.player;
-
-    scoreSubjects.push(
-      ...[
-        [1, 30],
-        [1, 50],
-      ].map<ScoreSubject>(([score, skillLevels]) => {
-        const earned = mostSkillfulFarmer.skillLevelTotal >= skillLevels;
-        return {
-          earned,
-          reason: (
-            <>
-              reaching <strong>{skillLevels}</strong> skill levels.{" "}
-              {earned && <>({mostSkillfulFarmer.name})</>}
-            </>
-          ),
-          score,
-        };
-      })
-    );
-
-    // Achievements
-    const achievements = [
-      "masterAngler",
-      "aCompleteCollection",
-    ] as (keyof Achievements)[];
-
-    achievements.forEach((achievement) =>
-      scoreSubjects.push(
-        thru(
-          this.getAllFarmers().find(
-            (farmer) => this.achievements[farmer.name][achievement].achieved
-          ) ?? this.player,
-          (achiever) => ({
-            earned: this.achievements[achiever.name][achievement].achieved,
-            score: 1,
-            reason: (
-              <>
-                achieving{" "}
-                <AchievementDisplay
-                  title={this.achievements[achiever.name][achievement].title}
-                  achieved={
-                    this.achievements[achiever.name][achievement].achieved
-                  }
-                  inline
-                />
-              </>
-            ),
-          })
-        )
-      )
-    );
-
-    scoreSubjects.push(
-      ...["Full Shipment"].map((achi) => ({
-        earned: false,
-        reason: (
-          <>
-            achieving{" "}
-            <AchievementDisplay title={achi} achieved={false} inline /> [WIP]
-          </>
-        ),
-        score: NaN,
-      }))
-    );
-
-    times(5, (i) =>
-      scoreSubjects.push({
-        earned: false,
-        reason: `Friendship #${i + 1} [WIP]`,
-        score: NaN,
-      })
-    );
-
-    times(4, (i) =>
-      scoreSubjects.push({
-        earned: false,
-        reason: `Other #${i + 1} [WIP]`,
-        score: NaN,
-      })
-    );
-
-    return scoreSubjects;
   }
 
   public getAllFarmers() {

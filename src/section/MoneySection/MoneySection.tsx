@@ -4,6 +4,8 @@ import { Currency } from "@src/component/Currency";
 import { SummarySection } from "@src/component/SummarySection";
 import { GameSave } from "@src/gamesave/GameSave";
 
+import goldPng from "@src/assets/icon/gold.png";
+
 import styles from "./MoneySection.module.scss";
 
 interface Props {
@@ -35,6 +37,7 @@ export const MoneySection = (props: Props) => {
     <SummarySection
       id="money"
       sectionTitle="Money"
+      sectionIcon={goldPng}
       className={styles.section}
       collapsable
       allDone={allDone}

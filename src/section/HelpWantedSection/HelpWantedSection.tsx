@@ -36,6 +36,7 @@ export const HelpWantedSection = (props: Props) => {
     <SummarySection
       id="quests"
       sectionTitle={'"Help Wanted" Quests'}
+      sectionIcon={questPng}
       collapsable
       allDone={allDone}
     >

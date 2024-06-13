@@ -12,17 +12,18 @@ import logoPng from "./assets/logo.png";
 import { SummarySection } from "./component/SummarySection";
 import { LoadSaveSection } from "./section/LoadSaveSection/LoadSaveSection";
 
+import { AdventurersGuildSection } from "@src/section/AdventurersGuildSection/AdventurersGuildSection";
 import { CookingSection } from "@src/section/CookingSection/CookingSection";
 import { CraftingSection } from "@src/section/CraftingSection/CraftingSection";
 import { FarmBuildingsSection } from "@src/section/FarmBuildingsSection/FarmBuildingsSection";
 import { HelpWantedSection } from "@src/section/HelpWantedSection/HelpWantedSection";
 import { MasteriesSection } from "@src/section/MasteriesSection/MasteriesSection";
-import { AdventurersGuildSection } from "@src/section/AdventurersGuildSection/AdventurersGuildSection";
 import { MuseumSection } from "@src/section/MuseumSection/MuseumSection";
 import { QiChallengesSection } from "@src/section/QiChallengesSection/QiChallengesSection";
 import { RarecrowSection } from "@src/section/RarecrowsSection/RarecrowsSection";
 import { FishingSection } from "./section/FishingSection/FishingSection";
 import { GrandpasEvaluationsSection } from "./section/GrandpasSection/GrandpasSection";
+import { TableOfContents } from "@src/component/TableOfContents/TableOfContents";
 
 import "./style/style.scss";
 
@@ -97,6 +98,8 @@ function App() {
           </>
         ) : (
           <>
+            <TableOfContents />
+
             <OverviewSection gameSave={gameSave} />
 
             <SummarySection className="twoSections">

@@ -1,4 +1,4 @@
-import fooPng from "@src/assets/icon/sword.png";
+import swordPng from "@src/assets/icon/sword.png";
 import { AchievementDisplay } from "@src/component/AchievementDisplay";
 import { FarmerTag } from "@src/component/FarmerTag";
 import { FarmersRow } from "@src/component/FarmersRow";
@@ -53,6 +53,7 @@ export const AdventurersGuildSection = (props: Props) => {
     <SummarySection
       id="adventurers-guild"
       sectionTitle="Adventurer's Guild"
+      sectionIcon={swordPng}
       collapsable
       allDone={allDone}
     >
@@ -66,7 +67,7 @@ export const AdventurersGuildSection = (props: Props) => {
               <FarmerTag farmer={farmer} />
 
               <div className={styles.objectives}>
-                <Objective icon={<img height={16} src={fooPng} />} done>
+                <Objective icon={<img height={16} src={swordPng} />} done>
                   Reached{" "}
                   <strong>level {farmer.deepestMineLevels.mountainMine}</strong>{" "}
                   of{" "}
@@ -76,7 +77,7 @@ export const AdventurersGuildSection = (props: Props) => {
                   .
                 </Objective>
 
-                <Objective icon={<img height={16} src={fooPng} />} done>
+                <Objective icon={<img height={16} src={swordPng} />} done>
                   Reached{" "}
                   <strong>level {farmer.deepestMineLevels.skullCavern}</strong>{" "}
                   of{" "}
@@ -86,12 +87,12 @@ export const AdventurersGuildSection = (props: Props) => {
                   .
                 </Objective>
 
-                <Objective icon={<img height={16} src={fooPng} />} done>
+                <Objective icon={<img height={16} src={swordPng} />} done>
                   Killed <strong>{farmer.monsterKills.totalKills}</strong>{" "}
                   monsters in total.
                 </Objective>
 
-                <Objective icon={<img height={16} src={fooPng} />} done>
+                <Objective icon={<img height={16} src={swordPng} />} done>
                   Completed{" "}
                   <strong>
                     {

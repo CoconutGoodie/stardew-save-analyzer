@@ -43,6 +43,7 @@ export const MasteriesSection = (props: Props) => {
       spoiler
       id="skill-masteries"
       sectionTitle="Skill Masteries"
+      sectionIcon={starPng}
       collapsable
       versions={["v1.6 Introduced"]}
       allDone={allDone}

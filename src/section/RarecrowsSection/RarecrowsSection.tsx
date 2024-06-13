@@ -47,6 +47,7 @@ export const RarecrowSection = (props: Props) => {
     <SummarySection
       id="rarecrow-society"
       sectionTitle="Rarecrow Society"
+      sectionIcon={scarecrowPng}
       collapsable
       versions={["v1.4 Introduced"]}
       allDone={allDone}

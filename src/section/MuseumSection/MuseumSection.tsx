@@ -1,5 +1,6 @@
 import checkmarkPng from "@src/assets/icon/checkmark.png";
 import guntherPng from "@src/assets/sprite/museum/portrait.png";
+import prismaticPng from "@src/assets/sprite/museum/minerals/prismatic_shard.png";
 import { AchievementDisplay } from "@src/component/AchievementDisplay";
 import { ImageObjective } from "@src/component/ImageObjective";
 import { SummarySection } from "@src/component/SummarySection";
@@ -41,6 +42,7 @@ export const MuseumSection = (props: Props) => {
     <SummarySection
       id="museum"
       sectionTitle="Museum Collection"
+      sectionIcon={prismaticPng}
       collapsable
       allDone={allDone}
     >

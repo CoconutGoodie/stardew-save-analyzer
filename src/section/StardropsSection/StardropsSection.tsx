@@ -1,6 +1,7 @@
 import checkmarkPng from "@src/assets/icon/checkmark.png";
 import stardropGif from "@src/assets/stardrop.gif";
 import stardropPng from "@src/assets/stardrop.png";
+import stardropIconPng from "@src/assets/icon/stardrop.png";
 import { AchievementDisplay } from "@src/component/AchievementDisplay";
 import { FarmerTag } from "@src/component/FarmerTag";
 import { FarmersRow } from "@src/component/FarmersRow";
@@ -37,6 +38,7 @@ export const StardropsSection = (props: Props) => {
     <SummarySection
       id="stardrops"
       sectionTitle="Stardrops"
+      sectionIcon={stardropIconPng}
       collapsable
       allDone={allDone}
     >

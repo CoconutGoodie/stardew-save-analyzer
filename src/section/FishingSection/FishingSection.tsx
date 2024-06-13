@@ -67,6 +67,7 @@ export const FishingSection = (props: Props) => {
     <SummarySection
       id="fishing"
       sectionTitle="Fishing"
+      sectionIcon={barbedHookPng}
       collapsable
       allDone={allDone}
     >

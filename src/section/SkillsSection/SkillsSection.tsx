@@ -1,3 +1,4 @@
+import starPng from "@src/assets/icon/star.png";
 import { AchievementDisplay } from "@src/component/AchievementDisplay";
 import { FarmerTag } from "@src/component/FarmerTag";
 import { FarmersRow } from "@src/component/FarmersRow";
@@ -35,6 +36,7 @@ export const SkillsSection = (props: Props) => {
     <SummarySection
       id="skills"
       sectionTitle="Skills"
+      sectionIcon={starPng}
       collapsable
       allDone={allDone}
     >

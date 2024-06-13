@@ -1,4 +1,5 @@
 import boardPng from "@src/assets/sprite/special-order/qi/special_orders_board.png";
+import mrQiPng from "@src/assets/icon/mr-qi.png";
 import { ImageObjective } from "@src/component/ImageObjective";
 import { Objective } from "@src/component/Objective";
 import { SummarySection } from "@src/component/SummarySection";
@@ -34,6 +35,7 @@ export const QiChallengesSection = (props: Props) => {
     <SummarySection
       id="qi-challenges"
       sectionTitle="Mr. Qi's Challenges"
+      sectionIcon={mrQiPng}
       collapsable
       versions={["v1.5 Introduced"]}
       allDone={allDone}

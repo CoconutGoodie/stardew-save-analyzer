@@ -1,4 +1,5 @@
 import heartFilledPng from "@src/assets/icon/heart_filled.png";
+import chickenPng from "@src/assets/icon/chicken.png";
 import { Scrollbox } from "@src/component/Scrollbox";
 import { SummarySection } from "@src/component/SummarySection";
 import {
@@ -95,7 +96,9 @@ export const FarmBuildingsSection = (props: Props) => {
 
   return (
     <SummarySection
+      id="farm-buildings"
       sectionTitle="Farm Buildings"
+      sectionIcon={chickenPng}
       className={styles.section}
       collapsable
     >

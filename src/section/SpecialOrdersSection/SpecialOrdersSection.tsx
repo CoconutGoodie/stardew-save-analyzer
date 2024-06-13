@@ -39,6 +39,7 @@ export const SpecialOrdersSection = (props: Props) => {
     <SummarySection
       id="special-orders"
       sectionTitle="Special Orders"
+      sectionIcon={boardPng}
       versions={["v1.5 Introduced"]}
       collapsable
       allDone={allDone}

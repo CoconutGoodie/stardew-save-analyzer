@@ -48,7 +48,11 @@ function formatDuration(duration: number): string {
 
 export const OverviewSection = (props: Props) => {
   return (
-    <SummarySection id="overview" sectionTitle="Overview">
+    <SummarySection
+      id="overview"
+      sectionTitle="Overview"
+      sectionIcon={clockPng}
+    >
       <div className={styles.content}>
         <a href={StardewWiki.getLink("Farm_Maps", "Map_Types")} target="_blank">
           <div className={styles.farmType}>

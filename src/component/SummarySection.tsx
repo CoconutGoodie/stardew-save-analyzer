@@ -17,6 +17,7 @@ import { useSpoilersStore } from "@src/store/useSpoilersStore";
 
 type Props = ComponentProps<"section"> & {
   sectionTitle?: string;
+  sectionIcon?: string;
   versions?: string[];
   stripes?: boolean;
   collapsable?: boolean;
@@ -64,6 +65,7 @@ export const SummarySection = (props: Props) => {
       {...nativeProps}
       className={clsx(styles.section, props.stripes && styles.stripes)}
       data-done={props.allDone}
+      data-icon={props.sectionIcon}
     >
       {sectionTitle && (
         <h1 className={clsx(props.allDone && styles.allDone)}>

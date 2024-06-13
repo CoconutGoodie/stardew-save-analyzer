@@ -50,6 +50,7 @@ export const CookingSection = (props: Props) => {
     <SummarySection
       id="cooking"
       sectionTitle="Cooking"
+      sectionIcon={cookingPng}
       collapsable
       allDone={allDone}
     >

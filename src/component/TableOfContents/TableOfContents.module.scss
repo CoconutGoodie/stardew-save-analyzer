@@ -1,0 +1,112 @@
+.root {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  transform: translateX(100%);
+  box-sizing: border-box;
+  height: 100vh;
+  padding: 20px 30px;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  background: #2f2457;
+  z-index: 99999;
+  transition: transform 200ms ease-out, opacity 100ms ease-in;
+  border-left: 2px solid #75699e;
+
+  &.drew {
+    transform: none;
+  }
+
+  .tag {
+    position: absolute;
+    top: 20px;
+    left: 2px;
+    transform: translateX(-100%);
+    padding: 16px;
+    background: inherit;
+    border-radius: 20px 0 0 20px;
+    border: 2px solid #75699e;
+    border-right: none;
+    transition: padding 100ms ease-in;
+
+    &:hover {
+      padding: 16px 20px;
+    }
+  }
+
+  .close {
+    position: absolute;
+    top: 26px;
+    right: 22px;
+    background: none;
+    border: none;
+  }
+
+  h1 {
+    margin: 0;
+    margin-bottom: 18px;
+  }
+
+  .content {
+    overflow: auto;
+  }
+
+  li {
+    margin-bottom: 8px;
+
+    &[data-wip="false"] {
+      opacity: 0.15;
+
+      span:first-of-type {
+        &::before {
+          content: "[WIP] ~ ";
+        }
+      }
+    }
+
+    &[data-done="true"] {
+      color: #55e21a;
+    }
+
+    img {
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+  }
+
+  @media (width <= 500px) {
+    width: 100vw;
+    border: none;
+
+    &.drew .tag {
+      border-color: transparent;
+    }
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(#000, 0.8);
+  z-index: 100;
+  animation: fadeIn 100ms ease-in;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}

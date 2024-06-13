@@ -1,29 +1,29 @@
+import { useState } from "react";
 import { GameSave } from "./gamesave/GameSave";
-import { MoneySection } from "./section/MoneySection";
-import { OverviewSection } from "./section/OverviewSection";
-import { SkillsSection } from "./section/SkillsSection";
-import { SpecialOrdersSection } from "./section/SpecialOrdersSection";
-import { StardropsSection } from "./section/StardropsSection";
+import { MoneySection } from "./section/MoneySection/MoneySection";
+import { OverviewSection } from "./section/OverviewSection/OverviewSection";
+import { SkillsSection } from "./section/SkillsSection/SkillsSection";
+import { SpecialOrdersSection } from "./section/SpecialOrdersSection/SpecialOrdersSection";
+import { StardropsSection } from "./section/StardropsSection/StardropsSection";
 
 import questPng from "@src/assets/icon/exclamation.png";
 import logoPng from "./assets/logo.png";
 
-import { useState } from "react";
 import { SummarySection } from "./component/SummarySection";
-import { LoadSaveSection } from "./section/LoadSaveSection";
+import { LoadSaveSection } from "./section/LoadSaveSection/LoadSaveSection";
 
-import { MuseumSection } from "@src/section/MuseumSection";
-import { FishingSection } from "./section/FishingSection";
-import { GrandpasEvaluationsSection } from "./section/GrandpasSection";
+import { CookingSection } from "@src/section/CookingSection/CookingSection";
+import { CraftingSection } from "@src/section/CraftingSection/CraftingSection";
+import { FarmBuildingsSection } from "@src/section/FarmBuildingsSection/FarmBuildingsSection";
+import { HelpWantedSection } from "@src/section/HelpWantedSection/HelpWantedSection";
+import { MasteriesSection } from "@src/section/MasteriesSection/MasteriesSection";
+import { AdventurersGuildSection } from "@src/section/AdventurersGuildSection/AdventurersGuildSection";
+import { MuseumSection } from "@src/section/MuseumSection/MuseumSection";
+import { QiChallengesSection } from "@src/section/QiChallengesSection/QiChallengesSection";
+import { RarecrowSection } from "@src/section/RarecrowsSection/RarecrowsSection";
+import { FishingSection } from "./section/FishingSection/FishingSection";
+import { GrandpasEvaluationsSection } from "./section/GrandpasSection/GrandpasSection";
 
-import { CraftingSection } from "@src/section/CraftingSection";
-import { HelpWantedSection } from "@src/section/HelpWantedSection";
-import { MasteriesSection } from "@src/section/MasteriesSection";
-
-import { CookingSection } from "@src/section/CookingSection";
-import { FarmBuildingsSection } from "@src/section/FarmBuildingsSection";
-import { QiSpecialOrdersSection } from "@src/section/QiSpecialOrdersSection";
-import { RarecrowSection } from "@src/section/RarecrowsSection";
 import "./style/style.scss";
 
 function App() {
@@ -122,7 +122,7 @@ function App() {
 
             <hr />
 
-            <QiSpecialOrdersSection gameSave={gameSave} />
+            <QiChallengesSection gameSave={gameSave} />
 
             <hr />
 
@@ -139,6 +139,10 @@ function App() {
             <hr />
 
             <CookingSection gameSave={gameSave} />
+
+            <hr />
+
+            <AdventurersGuildSection gameSave={gameSave} />
 
             <hr />
 
@@ -171,14 +175,13 @@ function App() {
                 <li>"Forest Neightbors" Section</li>
                 <li>"Ginger Island" Section</li>
                 <li>"Secret Notes" Section</li>
-                <li>"Grandpa's Evaluation" Section</li>
-                <li>"Monster Hunting" Section</li>
                 <li>"Socials" Section</li>
-                <li>"Community Center" Section</li>
+                <li>"Community Center" / "Joja Membership" Section</li>
                 <li>"Perfection" Section</li>
                 <li>Tooltips Component</li>
                 <li>Table of Contents Quick Navigator</li>
                 <li>Support "Separate Wallets"</li>
+                <li>Fix main app layout</li>
                 <li>A better Footer</li>
               </ul>
             </SummarySection>

@@ -1,9 +1,9 @@
+import { Farmer } from "@src/gamesave/Farmer";
 import clsx from "clsx";
 import { PropsWithChildren } from "react";
-import { Farmer } from "../gamesave/Farmer";
 
-import femalePng from "../assets/icon/female.png";
-import malePng from "../assets/icon/male.png";
+import femalePng from "@src/assets/icon/female.png";
+import malePng from "@src/assets/icon/male.png";
 
 import styles from "./FarmerTag.module.scss";
 

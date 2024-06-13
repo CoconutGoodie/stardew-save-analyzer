@@ -1,0 +1,85 @@
+.objectives {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.monsterScrollbox {
+  margin: 10px 0;
+}
+
+.monsters {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  flex-wrap: wrap;
+  gap: 10px;
+
+  &:not(.expanded) {
+    margin-right: 16px;
+  }
+}
+
+.monsterCategory {
+  position: relative;
+  padding: 10px 16px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0.45;
+  z-index: 0;
+
+  &::before {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: "";
+    background: url("/src/assets/parchment-bg.png");
+    background-size: 100% 100%;
+    opacity: 0.85;
+    z-index: -1;
+  }
+
+  &.done {
+    opacity: 1;
+  }
+
+  .header {
+    font-family: "Stardew Valley";
+    font-size: 25px;
+    color: #743b23;
+  }
+
+  .mobs {
+    display: flex;
+    gap: 4px;
+
+    .mob {
+      flex-grow: 1;
+      padding: 4px 2px;
+      display: flex;
+      justify-content: center;
+      background: rgba(#000, 0.1);
+      border-radius: 6px;
+      img {
+        object-fit: scale-down;
+      }
+    }
+  }
+
+  .goal {
+    margin-top: 10px;
+    font-family: "Stardew Valley";
+    font-size: 22px;
+    color: #4b200e;
+  }
+}
+
+.achievements {
+  display: flex;
+  flex-direction: column;
+}
+
+.objective {
+  margin-top: 10px;
+}

@@ -1,5 +1,5 @@
-import { Currency } from "../component/Currency";
-import { StardewWiki } from "../util/StardewWiki";
+import { Currency } from "@src/component/Currency";
+import { StardewWiki } from "@src/util/StardewWiki";
 
 export const STARDROP_MAIL_FLAGS = {
   CF_Fair: (

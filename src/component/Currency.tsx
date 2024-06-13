@@ -1,9 +1,9 @@
-import goldSrc from "../assets/icon/gold.png";
-import starTokenSrc from "../assets/icon/star-token.png";
-import heartSrc from "../assets/icon/heart_filled.png";
-import qiGemSrc from "../assets/icon/qi-gem.png";
-import qiCoinSrc from "../assets/icon/qi-coin.png";
-import diamondSrc from "../assets/icon/diamond.png";
+import diamondSrc from "@src/assets/icon/diamond.png";
+import goldSrc from "@src/assets/icon/gold.png";
+import heartSrc from "@src/assets/icon/heart_filled.png";
+import qiCoinSrc from "@src/assets/icon/qi-coin.png";
+import qiGemSrc from "@src/assets/icon/qi-gem.png";
+import starTokenSrc from "@src/assets/icon/star-token.png";
 
 interface Props {
   amount: number;

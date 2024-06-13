@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import { PropsWithChildren, ReactNode } from "react";
 
-import questPng from "../assets/icon/quest.png";
-import checkmarkPng from "../assets/icon/checkmark.png";
+import checkmarkPng from "@src/assets/icon/checkmark.png";
+import questPng from "@src/assets/icon/quest.png";
 
 import styles from "./Objective.module.scss";
 

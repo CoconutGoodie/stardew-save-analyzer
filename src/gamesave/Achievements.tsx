@@ -1,10 +1,11 @@
 import { STARDEW_COOKING_RECIPES } from "@src/const/StardewCooking";
 import { STARDEW_CRAFTING_RECIPES } from "@src/const/StardewCrafting";
 import { STARDEW_ACHIEVEMENT_FISHES } from "@src/const/StardewFishes";
+import { STARDEW_ERADICATION_GOALS } from "@src/const/StardewMonsters";
 import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "@src/const/StardewMuseum";
 import { Farmer } from "@src/gamesave/Farmer";
 import { GameSave } from "@src/gamesave/GameSave";
-import { keys, sumBy, values } from "remeda";
+import { fromEntries, keys, sumBy, values } from "remeda";
 
 export class Achievements {
   public readonly greenhorn;
@@ -18,6 +19,9 @@ export class Achievements {
 
   public readonly gofer;
   public readonly aBigHelp;
+
+  public readonly theBottom;
+  public readonly protectorOfTheValley;
 
   public readonly mysteryOfTheStardrops;
 
@@ -55,6 +59,15 @@ export class Achievements {
 
     this.gofer = new QuestCompletionAchievement(farmer, "Gofer", 10);
     this.aBigHelp = new QuestCompletionAchievement(farmer, "A Big Help", 40);
+
+    this.theBottom = new Achievement(
+      "The Bottom",
+      farmer.deepestMineLevels.mountainMine >= 120
+    );
+    this.protectorOfTheValley = new EradicationAchievement(
+      farmer,
+      "Protector of the Valley"
+    );
 
     this.mysteryOfTheStardrops = new Achievement(
       "Mystery of the Stardrops",
@@ -163,5 +176,20 @@ export class DifferentCookingAchievement extends Achievement {
       .length
   ) {
     super(title, crafted >= goal);
+  }
+}
+
+export class EradicationAchievement extends Achievement {
+  constructor(
+    farmer: Farmer,
+    title: string,
+    public readonly goalsDone = fromEntries(
+      STARDEW_ERADICATION_GOALS.map((goal) => [
+        goal.category,
+        farmer.monsterKills.byEradicationGoal[goal.category] >= goal.amount,
+      ])
+    )
+  ) {
+    super(title, Object.values(goalsDone).every(Boolean));
   }
 }

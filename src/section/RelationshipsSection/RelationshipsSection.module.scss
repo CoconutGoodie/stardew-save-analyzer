@@ -1,3 +1,9 @@
+.objectives {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
 .hearts {
   display: flex;
   align-items: center;
@@ -13,8 +19,11 @@
   }
 }
 
-.relations {
+.relationsScrollbox {
   margin: 10px 0;
+}
+
+.relations {
   padding-right: 10px;
   display: flex;
   flex-direction: column;
@@ -22,7 +31,7 @@
 }
 
 .related {
-  padding: 16px;
+  padding: 10px;
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 0 10px;
@@ -38,4 +47,8 @@
     font-family: "Stardew Valley";
     font-size: 20px;
   }
+}
+
+.objective {
+  margin-top: 10px;
 }

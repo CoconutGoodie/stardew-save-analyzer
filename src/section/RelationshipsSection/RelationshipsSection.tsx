@@ -96,11 +96,9 @@ export const RelationshipsSection = (props: Props) => {
                     ),
                     (partner) =>
                       partner ? (
-                        <>
-                          Married to <strong>{partner.name}</strong>
-                        </>
+                        <strong>Married to {partner.name}</strong>
                       ) : (
-                        "Single"
+                        <strong>Single</strong>
                       )
                   )}
                 </Objective>

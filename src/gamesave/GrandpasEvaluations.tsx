@@ -25,13 +25,18 @@ export class GrandpasEvaluations {
     this.calcAchievementScores();
     this.calcFriendshipScores();
 
-    times(4, (i) =>
+    [
+      "completing The Community Center",
+      "attending The Community Center Completion Ceremony",
+      "obtaining the Skull Key",
+      "obtaining the Rusty Key",
+    ].forEach((reason) => {
       this.scoreSubjects.push({
         earned: false,
-        reason: `Other #${i + 1} [WIP]`,
         score: NaN,
-      })
-    );
+        reason,
+      });
+    });
   }
 
   private calcCandlesLit() {
@@ -85,7 +90,7 @@ export class GrandpasEvaluations {
         score,
         reason: (
           <>
-            reaching <strong>{skillLevelGoal}</strong> skill levels.{" "}
+            reaching <strong>{skillLevelGoal}</strong> skill levels{" "}
             {earned && <>({mostSkillfulFarmer.name})</>}
           </>
         ),
@@ -178,7 +183,7 @@ export class GrandpasEvaluations {
               />{" "}
               married
             </strong>{" "}
-            with at least <strong>two house upgrades</strong>.{" "}
+            with at least <strong>two house upgrades</strong>{" "}
             {earned && <>({marriedEntry.farmer.name})</>}
           </>
         ),

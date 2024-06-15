@@ -126,11 +126,11 @@ export const GrandpasEvaluationsSection = (props: Props) => {
           </ul>
         </div>
 
-        <InfoText>
+        {/* <InfoText>
           <strong>Achievements</strong> do not necessarily need to be achieved
           by <em>every player</em>, only <em>one player</em> achieving is enough
           for the score.
-        </InfoText>
+        </InfoText> */}
 
         <Objective className={styles.objective} done={grandpaReturned}>
           Grandpa's ghost has returned. (On{" "}

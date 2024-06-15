@@ -44,6 +44,7 @@ export const GrandpasEvaluationsSection = (props: Props) => {
       sectionIcon={grandpaPortraitPng}
       collapsable
       className={styles.section}
+      allDone={props.gameSave.grandpasEvals.candlesLit >= 4}
     >
       <div>
         <div className={styles.shrine}>

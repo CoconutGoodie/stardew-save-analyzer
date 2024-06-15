@@ -250,7 +250,7 @@ export class GrandpasEvaluations {
           <>
             obtaining the{" "}
             <img height={15} style={{ verticalAlign: "middle" }} src={icon} />{" "}
-            <strong>{itemName}</strong>
+            <strong>{itemName}</strong> {farmer != null && <>({farmer.name})</>}
           </>
         ),
       });

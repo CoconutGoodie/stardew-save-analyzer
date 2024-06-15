@@ -142,13 +142,39 @@ export class GrandpasEvaluations {
   }
 
   private calcFriendshipScores() {
-    times(3, (i) =>
+    this.scoreSubjects.push({
+      earned: false,
+      reason: `Friendship #1 [WIP]`,
+      score: NaN,
+    });
+
+    const most8HeartsFarmer =
+      firstBy(this.gameSave.getAllFarmers(), [
+        (farmer) =>
+          farmer.relationships
+            .filter((r) => !r.isChild)
+            .filter((r) => r.points >= 8 * 250).length,
+        "desc",
+      ]) ?? null;
+
+    [5, 10].forEach((goal) => {
+      const earned =
+        most8HeartsFarmer != null &&
+        most8HeartsFarmer.relationships
+          .filter((r) => !r.isChild)
+          .filter((r) => r.points >= 8 * 250).length >= goal;
+
       this.scoreSubjects.push({
-        earned: false,
-        reason: `Friendship #${i + 1} [WIP]`,
-        score: NaN,
-      })
-    );
+        earned,
+        score: 1,
+        reason: (
+          <>
+            having <Currency amount={5} unit="heart" /> with {goal} people{" "}
+            {earned && <>({most8HeartsFarmer.name})</>}
+          </>
+        ),
+      });
+    });
 
     this.scoreSubjects.push({
       earned: this.gameSave.pets.some((pet) => pet.love >= 999),

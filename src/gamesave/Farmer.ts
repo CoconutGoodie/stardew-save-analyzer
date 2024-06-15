@@ -486,6 +486,8 @@ export class Farmer {
     return sort(npcs, (a, b) => {
       if (a.isChild) return 1;
       if (b.isChild) return -1;
+      if (a.dateable) return -1;
+      if (b.dateable) return 1;
       return a.name.localeCompare(b.name);
     });
   }

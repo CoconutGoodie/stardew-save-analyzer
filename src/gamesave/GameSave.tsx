@@ -1,20 +1,17 @@
 import { capitalCase, lowerCase } from "case-anything";
 
-import { AchievementDisplay } from "@src/component/AchievementDisplay";
-import { Currency } from "@src/component/Currency";
 import { STARDEW_FARM_TYPES } from "@src/const/StardewFarmTypes";
 import { STARDEW_FISHES } from "@src/const/StardewFishes";
 import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "@src/const/StardewMuseum";
 import { STARDEW_RARECROW_IDS } from "@src/const/StardewRarecrows";
 import { STARDEW_SPECIAL_ORDERS } from "@src/const/StardewSpecialOrders";
 import { Achievements } from "@src/gamesave/Achievements";
+import { GrandpasEvaluations } from "@src/gamesave/GrandpasEvaluations";
 import { GameDate, GameSeason } from "@src/util/GameDate";
 import { XMLNode } from "@src/util/XMLNode";
-import { isKeyOf, thru } from "@src/util/utilities";
-import { ReactNode } from "react";
-import { entries, firstBy, keys, mapToObj, times } from "remeda";
+import { isKeyOf } from "@src/util/utilities";
+import { entries, keys, mapToObj } from "remeda";
 import { Farmer } from "./Farmer";
-import { GrandpasEvaluations } from "@src/gamesave/GrandpasEvaluations";
 
 export class GameSave {
   public readonly gameVersion;
@@ -227,8 +224,6 @@ export class GameSave {
         const buildingType = buildingNode.query("buildingType").text();
         return buildingType.toLowerCase() === "fish pond";
       });
-
-    fishPondsXml.forEach((xml) => console.log(xml.element));
 
     return fishPondsXml.map((buildingNode) => ({
       fish: STARDEW_FISHES[buildingNode.query("fishType").number()].name,

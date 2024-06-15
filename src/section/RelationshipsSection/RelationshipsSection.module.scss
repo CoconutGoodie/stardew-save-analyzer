@@ -1,0 +1,41 @@
+.hearts {
+  display: flex;
+  align-items: center;
+
+  & > span {
+    font-family: "Stardew Valley";
+    margin-left: 10px;
+    color: #ff9595;
+
+    img {
+      vertical-align: middle;
+    }
+  }
+}
+
+.relations {
+  margin: 10px 0;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.related {
+  padding: 16px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0 10px;
+  background: linear-gradient(-10deg, #55311d, #42190c);
+  border: 2px solid #663124;
+  border-radius: 10px;
+
+  & > :nth-child(1) {
+    grid-row: 1 / span 2;
+  }
+
+  & > :nth-child(2) {
+    font-family: "Stardew Valley";
+    font-size: 20px;
+  }
+}

@@ -156,6 +156,15 @@ export const MONSTER_SPRITES = new AssetRepository<string>({
   postfix: ".png",
 });
 
+export const NPC_SPRITES = new AssetRepository<string>({
+  repository: import.meta.glob("../assets/sprite/npc/*.png", {
+    import: "default",
+    eager: true,
+  }),
+  prefix: "../assets/sprite/npc/",
+  postfix: ".png",
+});
+
 /* -- Other ------------------------------------ */
 
 export const DEMO_SAVES = new AssetRepository({

@@ -100,7 +100,7 @@ export const RelationshipsSection = (props: Props) => {
                           Married to <strong>{partner.name}</strong>
                         </>
                       ) : (
-                        "Status"
+                        "Single"
                       )
                   )}
                 </Objective>

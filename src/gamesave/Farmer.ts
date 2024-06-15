@@ -55,6 +55,9 @@ export class Farmer {
   public readonly relationships;
   public readonly houseUpgradeLevel;
 
+  public readonly specialItems;
+  // public readonly bookPowers;
+
   constructor(private farmerXml: XMLNode, private saveXml?: XMLNode) {
     this.name = farmerXml.query(":scope > name").text();
     this.gender = this.calcGender();
@@ -129,6 +132,8 @@ export class Farmer {
 
     this.relationships = this.calcRelationships();
     this.houseUpgradeLevel = farmerXml.query("houseUpgradeLevel").number();
+
+    this.specialItems = this.calcSpecialItems();
   }
 
   private calcGender() {
@@ -492,5 +497,17 @@ export class Farmer {
       if (b.dateable) return 1;
       return a.name.localeCompare(b.name);
     });
+  }
+
+  private calcSpecialItems() {
+    return {
+      "Rusty Key":
+        this.farmerXml.query("hasRustyKey").boolean() ||
+        this.receivedMailFlags.includes("HasRustyKey"),
+      "Skull Key":
+        this.farmerXml.query("hasSkullKey").boolean() ||
+        this.receivedMailFlags.includes("HasSkullKey"),
+      //TODO: Others
+    };
   }
 }

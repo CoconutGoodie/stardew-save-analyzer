@@ -134,6 +134,12 @@ function App() {
 
             <hr />
 
+            <SummarySection sectionTitle="Special Items & Powers [WIP]" collapsable>
+              [WIP] Special Items & Powers here
+            </SummarySection>
+
+            <hr />
+
             <RelationshipsSection gameSave={gameSave} />
 
             <hr />

@@ -1,11 +1,14 @@
 import mermaidPendantPng from "@src/assets/icon/mermaid-pendant.png";
+import rustyKeyPng from "@src/assets/icon/rusty-key.png";
+import skullKeyPng from "@src/assets/icon/skull-key.png";
 import { AchievementDisplay } from "@src/component/AchievementDisplay";
 import { Currency } from "@src/component/Currency";
 import { Achievements } from "@src/gamesave/Achievements";
+import { Farmer } from "@src/gamesave/Farmer";
 import { GameSave } from "@src/gamesave/GameSave";
 import { XMLNode } from "@src/util/XMLNode";
 import { ReactNode } from "react";
-import { firstBy, times } from "remeda";
+import { entries, firstBy, keys, times } from "remeda";
 
 interface ScoreSubject {
   earned: boolean;
@@ -28,15 +31,15 @@ export class GrandpasEvaluations {
     [
       "completing The Community Center",
       "attending The Community Center Completion Ceremony",
-      "obtaining the Skull Key",
-      "obtaining the Rusty Key",
     ].forEach((reason) => {
       this.scoreSubjects.push({
         earned: false,
         score: NaN,
-        reason,
+        reason: reason + " [WIP]",
       });
     });
+
+    this.calcSpecialItemScores();
   }
 
   private calcCandlesLit() {
@@ -226,6 +229,31 @@ export class GrandpasEvaluations {
           having <Currency amount={5} unit="heart" /> with your pet
         </>
       ),
+    });
+  }
+
+  private calcSpecialItemScores() {
+    const farmers = this.gameSave.getAllFarmers();
+
+    const specialItems = {
+      "Rusty Key": rustyKeyPng,
+      "Skull Key": skullKeyPng,
+    } satisfies Record<keyof Farmer["specialItems"], string>;
+
+    entries.strict(specialItems).forEach(([itemName, icon]) => {
+      const farmer = farmers.find((farmer) => farmer.specialItems[itemName]);
+
+      this.scoreSubjects.push({
+        earned: farmer != null,
+        score: 1,
+        reason: (
+          <>
+            obtaining the{" "}
+            <img height={15} style={{ verticalAlign: "middle" }} src={icon} />{" "}
+            <strong>{itemName}</strong>
+          </>
+        ),
+      });
     });
   }
 }

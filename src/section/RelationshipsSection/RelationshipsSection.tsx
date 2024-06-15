@@ -1,6 +1,9 @@
 import heartEmptyPng from "@src/assets/icon/heart_empty.png";
 import heartPng from "@src/assets/icon/heart_filled.png";
 import heartHalfPng from "@src/assets/icon/heart_half.png";
+import bouquetPng from "@src/assets/icon/bouquet.png";
+import mermaidPendantPng from "@src/assets/icon/mermaid-pendant.png";
+import heartsPng from "@src/assets/icon/hearts.png";
 import { AchievementDisplay } from "@src/component/AchievementDisplay";
 import { FarmerTag } from "@src/component/FarmerTag";
 import { FarmersRow } from "@src/component/FarmersRow";
@@ -103,31 +106,68 @@ export const RelationshipsSection = (props: Props) => {
                 <div className={styles.relations}>
                   {farmer.relationships.map((related) => (
                     <div key={related.name} className={styles.related}>
-                      <a
-                        target="_blank"
-                        href={StardewWiki.getLink(related.name)}
-                      >
+                      <div className={styles.npc}>
+                        <a
+                          target="_blank"
+                          href={StardewWiki.getLink(related.name)}
+                        >
+                          <ImageObjective
+                            width={40}
+                            height={40}
+                            src={
+                              related.isChild
+                                ? NPC_SPRITES.resolve("child")
+                                : NPC_SPRITES.resolve(
+                                    related.name.toLowerCase()
+                                  )
+                            }
+                            done
+                            checkmarkInvisible
+                          />
+                        </a>
+                        <span>
+                          {related.name} {related.isChild && "(Child)"}—{" "}
+                          {related.status}
+                        </span>
+                        <Hearts
+                          count={toHearts(
+                            Math.min(related.maxPoints, related.points)
+                          )}
+                          maxCount={toHearts(related.maxPoints)}
+                        />
+                      </div>
+
+                      <div className={styles.summary}>
+                        {related.dateable && (
+                          <>
+                            {related.status === "Married" ||
+                            related.status === "Roommate" ? (
+                              <ImageObjective
+                                width={40}
+                                height={40}
+                                src={mermaidPendantPng}
+                                done
+                              />
+                            ) : (
+                              <ImageObjective
+                                width={40}
+                                height={40}
+                                src={bouquetPng}
+                                done={related.status === "Dating"}
+                              />
+                            )}
+                          </>
+                        )}
                         <ImageObjective
                           width={40}
                           height={40}
-                          src={
-                            related.isChild
-                              ? NPC_SPRITES.resolve("child")
-                              : NPC_SPRITES.resolve(related.name.toLowerCase())
+                          src={heartsPng}
+                          done={
+                            related.points >=
+                            (related.dateable ? 250 * 8 : related.maxPoints)
                           }
-                          done={related.points >= related.maxPoints}
                         />
-                      </a>
-                      <span>
-                        {related.name} {related.isChild && "(Child)"}—{" "}
-                        {related.status}
-                      </span>
-                      <Hearts
-                        count={toHearts(
-                          Math.min(related.maxPoints, related.points)
-                        )}
-                        maxCount={toHearts(related.maxPoints)}
-                      />
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -187,11 +227,11 @@ const Hearts = (props: { count: number; maxCount: number }) => {
   return (
     <div className={styles.hearts}>
       {times(fullHeartCount, (i) => (
-        <img key={"full" + i} height={14} src={heartPng} />
+        <img key={"full" + i} height={12} src={heartPng} />
       ))}
-      {hasHalfHeart && <img height={14} src={heartHalfPng} />}
+      {hasHalfHeart && <img height={12} src={heartHalfPng} />}
       {times(emptyHeartCount, (i) => (
-        <img key={"empty-" + i} height={14} src={heartEmptyPng} />
+        <img key={"empty-" + i} height={12} src={heartEmptyPng} />
       ))}
       <span>
         {props.count} / {props.maxCount}{" "}

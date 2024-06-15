@@ -32,20 +32,30 @@
 
 .related {
   padding: 10px;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 0 10px;
+  display: flex;
+  justify-content: space-between;
   background: linear-gradient(-10deg, #55311d, #42190c);
   border: 2px solid #663124;
   border-radius: 10px;
 
-  & > :nth-child(1) {
-    grid-row: 1 / span 2;
+  .npc {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0 10px;
+
+    & > :nth-child(1) {
+      grid-row: 1 / span 2;
+    }
+
+    & > :nth-child(2) {
+      font-family: "Stardew Valley";
+      font-size: 20px;
+    }
   }
 
-  & > :nth-child(2) {
-    font-family: "Stardew Valley";
-    font-size: 20px;
+  .summary {
+    display: flex;
+    gap: 5px;
   }
 }
 

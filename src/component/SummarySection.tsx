@@ -32,6 +32,7 @@ export const SummarySection = (props: Props) => {
     collapsable,
     spoiler,
     allDone,
+    sectionIcon,
     ...nativeProps
   } = props;
 

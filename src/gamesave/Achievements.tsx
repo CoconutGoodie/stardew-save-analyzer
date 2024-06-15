@@ -41,6 +41,13 @@ export class Achievements {
   public readonly sousChef;
   public readonly gourmetChef;
 
+  public readonly aNewFriend;
+  public readonly cliques;
+  public readonly networking;
+  public readonly popular;
+  public readonly bestFriends;
+  public readonly theBelovedFarmer;
+
   constructor(farmer: Farmer, gameSave: GameSave) {
     this.greenhorn = new MoneyAchievement(gameSave, "Greenhorn", 15_000);
     this.cowpoke = new MoneyAchievement(gameSave, "Cowpoke", 50_000);
@@ -112,6 +119,18 @@ export class Achievements {
       farmer,
       "Gourmet Chef",
       keys(STARDEW_COOKING_RECIPES).length
+    );
+
+    this.aNewFriend = new RelationAchievement(farmer, "A New Friend", 1, 5);
+    this.cliques = new RelationAchievement(farmer, "Cliques", 4, 5);
+    this.networking = new RelationAchievement(farmer, "Networking", 10, 5);
+    this.popular = new RelationAchievement(farmer, "Popular", 20, 5);
+    this.bestFriends = new RelationAchievement(farmer, "Best Friends", 1, 10);
+    this.theBelovedFarmer = new RelationAchievement(
+      farmer,
+      "The Beloved Farmer",
+      8,
+      10
     );
   }
 }
@@ -191,5 +210,20 @@ export class EradicationAchievement extends Achievement {
     )
   ) {
     super(title, Object.values(goalsDone).every(Boolean));
+  }
+}
+
+export class RelationAchievement extends Achievement {
+  constructor(
+    farmer: Farmer,
+    title: string,
+    public readonly goal: number,
+    public readonly minPoints: number
+  ) {
+    super(
+      title,
+      farmer.relationships.filter((r) => !r.isChild && r.points >= minPoints)
+        .length >= goal
+    );
   }
 }

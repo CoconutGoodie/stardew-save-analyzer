@@ -83,7 +83,7 @@ export const FarmBuildingsSection = (props: Props) => {
         iconSrc={FARM_BUILDING_SPRITES.resolve("pet_bowl")}
         animals={props.gameSave.pets.map((pet) => ({
           name: pet.name,
-          lovePercentage: pet.love / 2000,
+          lovePercentage: pet.love / 1000,
           wikiUrl: StardewWiki.getLink(pet.type),
           iconSrc: FARM_ANIMALS_SPRITES.resolve(
             snakeCase(pet.type) + "_" + pet.breed

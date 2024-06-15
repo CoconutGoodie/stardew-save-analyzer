@@ -1,6 +1,7 @@
 import { STARDEW_COOKING_RECIPES } from "@src/const/StardewCooking";
 import { STARDEW_MASTERY_LEVEL_EXP } from "@src/const/StardewMasteryLevels";
 import { STARDEW_ERADICATION_GOALS } from "@src/const/StardewMonsters";
+import { STARDEW_RELATABLE_NPCS } from "@src/const/StardewNpcs";
 import { STARDEW_PROFESSIONS } from "@src/const/StardewProfessions";
 import { STARDROP_MAIL_FLAGS } from "@src/const/StardewStardrops";
 import { XMLNode } from "@src/util/XMLNode";
@@ -12,6 +13,8 @@ import {
   keys,
   map,
   pipe,
+  sort,
+  sortBy,
   sum,
   sumBy,
   values,
@@ -48,6 +51,8 @@ export class Farmer {
   public readonly stardrops;
 
   public readonly rarecrowSocietyMailed;
+
+  public readonly relationships;
 
   constructor(private farmerXml: XMLNode, private saveXml?: XMLNode) {
     this.name = farmerXml.query(":scope > name").text();
@@ -120,6 +125,8 @@ export class Farmer {
 
     this.rarecrowSocietyMailed =
       this.receivedMailFlags.includes("RarecrowSociety");
+
+    this.relationships = this.calcRelationships();
   }
 
   private calcGender() {
@@ -392,5 +399,94 @@ export class Farmer {
       description,
       gathered: this.receivedMailFlags.includes(mailId),
     }));
+  }
+
+  private calcRelationships() {
+    const weddingCooldown =
+      this.saveXml?.query("countdownToWedding").number() ?? 0;
+
+    const spouse = this.farmerXml.query(":scope > spouse").text();
+
+    const npcXmls =
+      this.saveXml
+        ?.queryAll("locations > GameLocation")
+        .flatMap((locationXml) => locationXml.queryAll("characters > NPC"))
+        .filter((npcXml) => {
+          return (
+            // Either a child
+            npcXml.element?.getAttribute("xsi:type") === "Child" ||
+            // Or a known NPC
+            STARDEW_RELATABLE_NPCS[npcXml.query("name").text()]
+          );
+        }) ?? [];
+
+    const npcs = npcXmls.map((npcXml) => {
+      const npcName = npcXml.query("name").text();
+
+      return {
+        name: npcName,
+        dateable: npcXml.query("datable").boolean(),
+        isChild: npcXml.element?.getAttribute("xsi:type") === "Child",
+        isGirl:
+          npcXml.query("gender").text() === "1" ||
+          npcXml.query("gender").text() === "Female",
+        points: 0,
+        maxPoints: 2500,
+        // version < 1.3
+        status: npcXml.query("divorcedFromFarmer").boolean()
+          ? "Divorced"
+          : weddingCooldown > 0 && npcName === spouse?.slice(0, -7)
+          ? "Engaged"
+          : npcXml.query("daysMarried").number() > 0
+          ? "Married"
+          : npcXml.query("datingFarmer").boolean()
+          ? "Dating"
+          : "Friendly",
+      };
+    });
+
+    let dumpedGirls = 0;
+    let dumpedGuys = 0;
+
+    this.farmerXml
+      .queryAll("activeDialogueEvents > item")
+      .forEach((itemXml) => {
+        const key = itemXml.query("key").text();
+        const value = itemXml.query("value").number();
+        if (key === "dumped_Girls") dumpedGirls = value;
+        if (key === "dumped_Guys") dumpedGuys = value;
+      });
+
+    this.farmerXml.queryAll("friendshipData  > item").forEach((itemXml) => {
+      const npcName = itemXml.query("key").text();
+      const points = Math.max(
+        itemXml.query("value > Friendship > Points").number(),
+        itemXml.queryAll("value > ArrayOfInt > int").at(0)?.number() ?? 0
+      );
+      const npc = npcs?.find((npc) => npc.name === npcName);
+      if (!npc) return;
+
+      npc.points = points;
+
+      const status = itemXml.query("value > Friendship > Status").text();
+      npc.status = status;
+
+      const isRoommate = itemXml
+        .query("value > Friendship > RoommateMarriage")
+        .boolean();
+      if (npc.status === "Married" && isRoommate) {
+        npc.status = "Roommate";
+      }
+
+      if (npc.status === "Married" || npc.status === "Roommate") {
+        npc.maxPoints = 14 * 250;
+      }
+    });
+
+    return sort(npcs, (a, b) => {
+      if (a.isChild) return 1;
+      if (b.isChild) return -1;
+      return a.name.localeCompare(b.name);
+    });
   }
 }

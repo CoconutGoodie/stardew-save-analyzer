@@ -26,6 +26,7 @@ import { GrandpasEvaluationsSection } from "./section/GrandpasSection/GrandpasSe
 import { TableOfContents } from "@src/component/TableOfContents/TableOfContents";
 
 import "./style/style.scss";
+import { RelationshipsSection } from "@src/section/RelationshipsSection/RelationshipsSection";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
@@ -133,6 +134,10 @@ function App() {
 
             <hr />
 
+            <RelationshipsSection gameSave={gameSave} />
+
+            <hr />
+
             <FishingSection gameSave={gameSave} />
 
             <hr />
@@ -146,12 +151,6 @@ function App() {
             <hr />
 
             <AdventurersGuildSection gameSave={gameSave} />
-
-            <hr />
-
-            <SummarySection sectionTitle="Socials [WIP]" collapsable>
-              [WIP] Friendship & Spouse & Children here
-            </SummarySection>
 
             <hr />
 
@@ -179,12 +178,15 @@ function App() {
 
             <hr />
 
-            <SummarySection sectionTitle="Community Center / Joja Membership [WIP]" collapsable>
+            <SummarySection
+              sectionTitle="Community Center / Joja Membership [WIP]"
+              collapsable
+            >
               [WIP] Community Center / Joja Membership here
             </SummarySection>
 
             <hr />
-            
+
             <SummarySection sectionTitle="Secret Notes [WIP]" collapsable>
               [WIP] Secret Notes here
             </SummarySection>

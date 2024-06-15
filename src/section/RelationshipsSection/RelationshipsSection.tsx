@@ -21,6 +21,7 @@ import { useState } from "react";
 import { keys, mapToObj, times } from "remeda";
 
 import styles from "./RelationshipsSection.module.scss";
+import { thru } from "@src/util/utilities";
 
 interface Props {
   gameSave: GameSave;
@@ -87,6 +88,22 @@ export const RelationshipsSection = (props: Props) => {
                 {/* <Objective icon={<img height={16} src={heartPng} />} done>
                   Met every townsfolk.
                 </Objective> */}
+                <Objective icon={<img height={16} src={heartPng} />} done>
+                  Marital status:{" "}
+                  {thru(
+                    farmer.relationships.find(
+                      (r) => r.status === "Married" || r.status === "Roommate"
+                    ),
+                    (partner) =>
+                      partner ? (
+                        <>
+                          Married to <strong>{partner.name}</strong>
+                        </>
+                      ) : (
+                        "Status"
+                      )
+                  )}
+                </Objective>
                 <Objective icon={<img height={16} src={heartPng} />} done>
                   Has <strong>{h5.length}</strong> relationship(s) of 5+ hearts.
                   (excluding children)

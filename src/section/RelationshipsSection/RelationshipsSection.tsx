@@ -51,9 +51,9 @@ export const RelationshipsSection = (props: Props) => {
           props.gameSave.achievements[farmer.name].theBelovedFarmer,
         ],
         objectives: {
-          maxedOut:
-            farmer.relationships.filter((r) => !r.isChild).length ===
-            keys(STARDEW_RELATABLE_NPCS).length,
+          maxedOut: farmer.relationships
+            .filter((r) => !r.isChild)
+            .every((r) => r.points >= (r.dateable ? 250 * 8 : r.maxPoints)),
         },
       },
     ]),

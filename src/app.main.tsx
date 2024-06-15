@@ -1,17 +1,5 @@
-import { useState } from "react";
-import { GameSave } from "./gamesave/GameSave";
-import { MoneySection } from "./section/MoneySection/MoneySection";
-import { OverviewSection } from "./section/OverviewSection/OverviewSection";
-import { SkillsSection } from "./section/SkillsSection/SkillsSection";
-import { SpecialOrdersSection } from "./section/SpecialOrdersSection/SpecialOrdersSection";
-import { StardropsSection } from "./section/StardropsSection/StardropsSection";
-
 import questPng from "@src/assets/icon/exclamation.png";
-import logoPng from "./assets/logo.png";
-
-import { SummarySection } from "./component/SummarySection";
-import { LoadSaveSection } from "./section/LoadSaveSection/LoadSaveSection";
-
+import { TableOfContents } from "@src/component/TableOfContents/TableOfContents";
 import { AdventurersGuildSection } from "@src/section/AdventurersGuildSection/AdventurersGuildSection";
 import { CookingSection } from "@src/section/CookingSection/CookingSection";
 import { CraftingSection } from "@src/section/CraftingSection/CraftingSection";
@@ -21,12 +9,21 @@ import { MasteriesSection } from "@src/section/MasteriesSection/MasteriesSection
 import { MuseumSection } from "@src/section/MuseumSection/MuseumSection";
 import { QiChallengesSection } from "@src/section/QiChallengesSection/QiChallengesSection";
 import { RarecrowSection } from "@src/section/RarecrowsSection/RarecrowsSection";
+import { RelationshipsSection } from "@src/section/RelationshipsSection/RelationshipsSection";
+import { useState } from "react";
+import logoPng from "./assets/logo.png";
+import { SummarySection } from "./component/SummarySection";
+import { GameSave } from "./gamesave/GameSave";
 import { FishingSection } from "./section/FishingSection/FishingSection";
 import { GrandpasEvaluationsSection } from "./section/GrandpasSection/GrandpasSection";
-import { TableOfContents } from "@src/component/TableOfContents/TableOfContents";
+import { LoadSaveSection } from "./section/LoadSaveSection/LoadSaveSection";
+import { MoneySection } from "./section/MoneySection/MoneySection";
+import { OverviewSection } from "./section/OverviewSection/OverviewSection";
+import { SkillsSection } from "./section/SkillsSection/SkillsSection";
+import { SpecialOrdersSection } from "./section/SpecialOrdersSection/SpecialOrdersSection";
+import { StardropsSection } from "./section/StardropsSection/StardropsSection";
 
 import "./style/style.scss";
-import { RelationshipsSection } from "@src/section/RelationshipsSection/RelationshipsSection";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
@@ -134,7 +131,22 @@ function App() {
 
             <hr />
 
+            <SummarySection
+              sectionTitle="Special Items & Powers [WIP]"
+              collapsable
+            >
+              [WIP] Special Items & Powers here
+            </SummarySection>
+
+            <hr />
+
             <RelationshipsSection gameSave={gameSave} />
+
+            <hr />
+
+            <SummarySection sectionTitle="House & Family [WIP]" collapsable>
+              [WIP] House & Family here
+            </SummarySection>
 
             <hr />
 

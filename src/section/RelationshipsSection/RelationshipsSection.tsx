@@ -1,9 +1,9 @@
+import bouquetPng from "@src/assets/icon/bouquet.png";
 import heartEmptyPng from "@src/assets/icon/heart_empty.png";
 import heartPng from "@src/assets/icon/heart_filled.png";
 import heartHalfPng from "@src/assets/icon/heart_half.png";
-import bouquetPng from "@src/assets/icon/bouquet.png";
-import mermaidPendantPng from "@src/assets/icon/mermaid-pendant.png";
 import heartsPng from "@src/assets/icon/hearts.png";
+import mermaidPendantPng from "@src/assets/icon/mermaid-pendant.png";
 import { AchievementDisplay } from "@src/component/AchievementDisplay";
 import { FarmerTag } from "@src/component/FarmerTag";
 import { FarmersRow } from "@src/component/FarmersRow";
@@ -12,7 +12,6 @@ import { Objective } from "@src/component/Objective";
 import { Scrollbox } from "@src/component/Scrollbox";
 import { SummarySection } from "@src/component/SummarySection";
 import { NPC_SPRITES } from "@src/const/Assets";
-import { STARDEW_RELATABLE_NPCS } from "@src/const/StardewNpcs";
 import { GameSave } from "@src/gamesave/GameSave";
 import { useGoals } from "@src/hook/useGoals";
 import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
@@ -20,8 +19,9 @@ import { StardewWiki } from "@src/util/StardewWiki";
 import { useState } from "react";
 import { keys, mapToObj, times } from "remeda";
 
-import styles from "./RelationshipsSection.module.scss";
 import { thru } from "@src/util/utilities";
+import styles from "./RelationshipsSection.module.scss";
+import { STARDEW_RELATABLE_NPCS } from "@src/const/StardewNpcs";
 
 interface Props {
   gameSave: GameSave;
@@ -96,21 +96,21 @@ export const RelationshipsSection = (props: Props) => {
                     ),
                     (partner) =>
                       partner ? (
-                        <>
-                          Married to <strong>{partner.name}</strong>
-                        </>
+                        <strong>Married to {partner.name}</strong>
                       ) : (
-                        "Status"
+                        <strong>Single</strong>
                       )
                   )}
                 </Objective>
                 <Objective icon={<img height={16} src={heartPng} />} done>
-                  Has <strong>{h5.length}</strong> relationship(s) of 5+ hearts.
+                  Has 5+ hearts with <strong>{h5.length}</strong> of{" "}
+                  <strong>{keys(STARDEW_RELATABLE_NPCS).length}</strong> people
                   (excluding children)
                 </Objective>
                 <Objective icon={<img height={16} src={heartPng} />} done>
-                  Has <strong>{h10.length}</strong> relationship(s) of 10+
-                  hearts. (excluding children)
+                  Has 10+ hearts with <strong>{h10.length}</strong> of{" "}
+                  <strong>{keys(STARDEW_RELATABLE_NPCS).length}</strong> people
+                  (excluding children)
                 </Objective>
               </div>
 

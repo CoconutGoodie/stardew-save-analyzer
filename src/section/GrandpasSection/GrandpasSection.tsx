@@ -40,10 +40,11 @@ export const GrandpasEvaluationsSection = (props: Props) => {
   return (
     <SummarySection
       id="grandpas-evaluations"
-      sectionTitle="Grandpa's Evaluations"
+      sectionTitle="Grandpa's Evaluations [WIP]"
       sectionIcon={grandpaPortraitPng}
       collapsable
       className={styles.section}
+      allDone={props.gameSave.grandpasEvals.candlesLit >= 4}
     >
       <div>
         <div className={styles.shrine}>
@@ -126,11 +127,11 @@ export const GrandpasEvaluationsSection = (props: Props) => {
           </ul>
         </div>
 
-        <InfoText>
+        {/* <InfoText>
           <strong>Achievements</strong> do not necessarily need to be achieved
           by <em>every player</em>, only <em>one player</em> achieving is enough
           for the score.
-        </InfoText>
+        </InfoText> */}
 
         <Objective className={styles.objective} done={grandpaReturned}>
           Grandpa's ghost has returned. (On{" "}

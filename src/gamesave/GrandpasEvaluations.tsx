@@ -1,10 +1,14 @@
+import mermaidPendantPng from "@src/assets/icon/mermaid-pendant.png";
+import rustyKeyPng from "@src/assets/icon/rusty-key.png";
+import skullKeyPng from "@src/assets/icon/skull-key.png";
 import { AchievementDisplay } from "@src/component/AchievementDisplay";
 import { Currency } from "@src/component/Currency";
 import { Achievements } from "@src/gamesave/Achievements";
+import { Farmer } from "@src/gamesave/Farmer";
 import { GameSave } from "@src/gamesave/GameSave";
 import { XMLNode } from "@src/util/XMLNode";
 import { ReactNode } from "react";
-import { firstBy, times } from "remeda";
+import { entries, firstBy, keys, times } from "remeda";
 
 interface ScoreSubject {
   earned: boolean;
@@ -24,13 +28,18 @@ export class GrandpasEvaluations {
     this.calcAchievementScores();
     this.calcFriendshipScores();
 
-    times(4, (i) =>
+    [
+      "completing The Community Center",
+      "attending The Community Center Completion Ceremony",
+    ].forEach((reason) => {
       this.scoreSubjects.push({
         earned: false,
-        reason: `Other #${i + 1} [WIP]`,
         score: NaN,
-      })
-    );
+        reason: reason + " [WIP]",
+      });
+    });
+
+    this.calcSpecialItemScores();
   }
 
   private calcCandlesLit() {
@@ -84,7 +93,7 @@ export class GrandpasEvaluations {
         score,
         reason: (
           <>
-            reaching <strong>{skillLevelGoal}</strong> skill levels.{" "}
+            reaching <strong>{skillLevelGoal}</strong> skill levels{" "}
             {earned && <>({mostSkillfulFarmer.name})</>}
           </>
         ),
@@ -142,13 +151,75 @@ export class GrandpasEvaluations {
   }
 
   private calcFriendshipScores() {
-    times(3, (i) =>
+    {
+      const marriedEntry = firstBy(
+        this.gameSave
+          .getAllFarmers()
+          .map((farmer) => ({
+            farmer,
+            spouse: farmer.relationships.find(
+              (r) => r.status === "Married" || r.status === "Roommate"
+            )?.name,
+            houseUpgradeLevel: farmer.houseUpgradeLevel,
+          }))
+          .filter(({ spouse }) => !!spouse),
+        [({ houseUpgradeLevel }) => houseUpgradeLevel, "desc"]
+      );
+
+      const earned =
+        marriedEntry != null &&
+        marriedEntry.spouse != null &&
+        marriedEntry.houseUpgradeLevel >= 2;
+
       this.scoreSubjects.push({
-        earned: false,
-        reason: `Friendship #${i + 1} [WIP]`,
-        score: NaN,
-      })
-    );
+        earned,
+        score: 1,
+        reason: (
+          <>
+            getting{" "}
+            <strong>
+              <img
+                width={15}
+                height={15}
+                src={mermaidPendantPng}
+                style={{ verticalAlign: "middle" }}
+              />{" "}
+              married
+            </strong>{" "}
+            with at least <strong>two house upgrades</strong>{" "}
+            {earned && <>({marriedEntry.farmer.name})</>}
+          </>
+        ),
+      });
+    }
+
+    const most8HeartsFarmer =
+      firstBy(this.gameSave.getAllFarmers(), [
+        (farmer) =>
+          farmer.relationships
+            .filter((r) => !r.isChild)
+            .filter((r) => r.points >= 8 * 250).length,
+        "desc",
+      ]) ?? null;
+
+    [5, 10].forEach((goal) => {
+      const earned =
+        most8HeartsFarmer != null &&
+        most8HeartsFarmer.relationships
+          .filter((r) => !r.isChild)
+          .filter((r) => r.points >= 8 * 250).length >= goal;
+
+      this.scoreSubjects.push({
+        earned,
+        score: 1,
+        reason: (
+          <>
+            having <Currency amount={5} unit="heart" /> with {goal} people{" "}
+            {earned && <>({most8HeartsFarmer.name})</>}
+          </>
+        ),
+      });
+    });
 
     this.scoreSubjects.push({
       earned: this.gameSave.pets.some((pet) => pet.love >= 999),
@@ -158,6 +229,31 @@ export class GrandpasEvaluations {
           having <Currency amount={5} unit="heart" /> with your pet
         </>
       ),
+    });
+  }
+
+  private calcSpecialItemScores() {
+    const farmers = this.gameSave.getAllFarmers();
+
+    const specialItems = {
+      "Rusty Key": rustyKeyPng,
+      "Skull Key": skullKeyPng,
+    } satisfies Record<keyof Farmer["specialItems"], string>;
+
+    entries.strict(specialItems).forEach(([itemName, icon]) => {
+      const farmer = farmers.find((farmer) => farmer.specialItems[itemName]);
+
+      this.scoreSubjects.push({
+        earned: farmer != null,
+        score: 1,
+        reason: (
+          <>
+            obtaining the{" "}
+            <img height={15} style={{ verticalAlign: "middle" }} src={icon} />{" "}
+            <strong>{itemName}</strong> {farmer != null && <>({farmer.name})</>}
+          </>
+        ),
+      });
     });
   }
 }

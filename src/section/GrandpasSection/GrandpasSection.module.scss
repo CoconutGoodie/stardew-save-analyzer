@@ -73,7 +73,7 @@
   position: relative;
   margin-bottom: 20px;
   padding: 20px;
-  width: 900px;
+  width: fit-content;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -113,8 +113,9 @@
   }
 
   ul {
-    column-count: 2;
-    column-gap: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 
     li {
       height: 24px;
@@ -128,6 +129,6 @@
   hr {
     width: 200px !important;
     margin: 15px 10px !important;
-    border-color: #354241 !important;
+    background: #354241 !important;
   }
 }

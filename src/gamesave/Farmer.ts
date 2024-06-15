@@ -53,6 +53,7 @@ export class Farmer {
   public readonly rarecrowSocietyMailed;
 
   public readonly relationships;
+  public readonly houseUpgradeLevel;
 
   constructor(private farmerXml: XMLNode, private saveXml?: XMLNode) {
     this.name = farmerXml.query(":scope > name").text();
@@ -127,6 +128,7 @@ export class Farmer {
       this.receivedMailFlags.includes("RarecrowSociety");
 
     this.relationships = this.calcRelationships();
+    this.houseUpgradeLevel = farmerXml.query("houseUpgradeLevel").number();
   }
 
   private calcGender() {

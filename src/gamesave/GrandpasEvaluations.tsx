@@ -1,3 +1,4 @@
+import mermaidPendantPng from "@src/assets/icon/mermaid-pendant.png";
 import { AchievementDisplay } from "@src/component/AchievementDisplay";
 import { Currency } from "@src/component/Currency";
 import { Achievements } from "@src/gamesave/Achievements";
@@ -142,11 +143,47 @@ export class GrandpasEvaluations {
   }
 
   private calcFriendshipScores() {
-    this.scoreSubjects.push({
-      earned: false,
-      reason: `Friendship #1 [WIP]`,
-      score: NaN,
-    });
+    {
+      const marriedEntry = firstBy(
+        this.gameSave
+          .getAllFarmers()
+          .map((farmer) => ({
+            farmer,
+            spouse: farmer.relationships.find(
+              (r) => r.status === "Married" || r.status === "Roommate"
+            )?.name,
+            houseUpgradeLevel: farmer.houseUpgradeLevel,
+          }))
+          .filter(({ spouse }) => !!spouse),
+        [({ houseUpgradeLevel }) => houseUpgradeLevel, "desc"]
+      );
+
+      const earned =
+        marriedEntry != null &&
+        marriedEntry.spouse != null &&
+        marriedEntry.houseUpgradeLevel >= 2;
+
+      this.scoreSubjects.push({
+        earned,
+        score: 1,
+        reason: (
+          <>
+            getting{" "}
+            <strong>
+              <img
+                width={15}
+                height={15}
+                src={mermaidPendantPng}
+                style={{ verticalAlign: "middle" }}
+              />{" "}
+              married
+            </strong>{" "}
+            with at least <strong>two house upgrades</strong>.{" "}
+            {earned && <>({marriedEntry.farmer.name})</>}
+          </>
+        ),
+      });
+    }
 
     const most8HeartsFarmer =
       firstBy(this.gameSave.getAllFarmers(), [

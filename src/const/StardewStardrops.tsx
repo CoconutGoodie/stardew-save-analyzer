@@ -1,3 +1,4 @@
+import { AchievementDisplay } from "@src/component/AchievementDisplay";
 import { Currency } from "@src/component/Currency";
 import { StardewWiki } from "@src/util/StardewWiki";
 
@@ -66,18 +67,12 @@ export const STARDROP_MAIL_FLAGS = {
         Willy
       </a>{" "}
       the day after attaining the{" "}
-      <a
-        href={StardewWiki.getLink("Achievements", "Achievements_List")}
-        target="_blank"
-      >
-        Master Angler Achievement
-      </a>
-      .
+      <AchievementDisplay title="Master Angler" inline achieved />.
     </>
   ),
   museumComplete: (
     <>
-      Reward for donating all 95 items to{" "}
+      Reward for donating all <strong>95</strong> items to{" "}
       <a href={StardewWiki.getLink("Museum")} target="_blank">
         the Museum
       </a>

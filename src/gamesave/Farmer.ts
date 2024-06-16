@@ -430,6 +430,11 @@ export class Farmer {
     const npcs = npcXmls.map((npcXml) => {
       const npcName = npcXml.query("name").text();
 
+      // TODO: Parse parent, if isChild. Maybe refactor into isChildOf: Farmer["name"] ?
+      // if (npcXml.element?.getAttribute("xsi:type") === "Child") {
+      //   console.log(npcXml.element);
+      // }
+
       return {
         name: npcName,
         dateable: npcXml.query("datable").boolean(),

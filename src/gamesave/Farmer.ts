@@ -1,8 +1,8 @@
 import { STARDEW_COOKING_RECIPES } from "@src/const/StardewCooking";
 import { STARDEW_MASTERY_LEVEL_EXP } from "@src/const/StardewMasteryLevels";
 import { STARDEW_ERADICATION_GOALS } from "@src/const/StardewMonsters";
-import { STARDEW_RELATABLE_NPCS } from "@src/const/StardewNpcs";
 import { STARDEW_PROFESSIONS } from "@src/const/StardewProfessions";
+import { STARDEW_SHIPPABLES } from "@src/const/StardewShippables";
 import { STARDROP_MAIL_FLAGS } from "@src/const/StardewStardrops";
 import { GameSave } from "@src/gamesave/GameSave";
 import { XMLNode } from "@src/util/XMLNode";
@@ -12,10 +12,7 @@ import {
   fromEntries,
   intersection,
   keys,
-  map,
-  pipe,
   sort,
-  sortBy,
   sum,
   sumBy,
   values,
@@ -59,6 +56,8 @@ export class Farmer {
 
   public readonly specialItems;
   // public readonly bookPowers;
+
+  public readonly shippedItems;
 
   constructor(private farmerXml: XMLNode, private gameSave: GameSave) {
     this.name = farmerXml.query(":scope > name").text();
@@ -137,6 +136,8 @@ export class Farmer {
     this.houseUpgradeLevel = farmerXml.query("houseUpgradeLevel").number();
 
     this.specialItems = this.calcSpecialItems();
+
+    this.shippedItems = this.calcShippedItems();
   }
 
   private calcGender() {
@@ -421,11 +422,6 @@ export class Farmer {
 
     const npcsXml = this.gameSave.queryNpcsXml();
 
-    console.log(
-      npcsXml.find((xml) => xml.query(":scope > name").text() === "Sebastian")
-        ?.element
-    );
-
     const npcs = npcsXml.map((npcXml) => {
       const npcName = npcXml.query("name").text();
 
@@ -513,5 +509,18 @@ export class Farmer {
         this.receivedMailFlags.includes("HasSkullKey"),
       //TODO: Others
     };
+  }
+
+  private calcShippedItems() {
+    const shippedItemEntries = this.farmerXml
+      .queryAll("basicShipped > item")
+      .map((entryXml) => {
+        const key = entryXml.query("key > *").text();
+        const value = entryXml.query("value > *").number();
+        return [STARDEW_SHIPPABLES[key], value];
+      })
+      .filter(([key]) => !!key);
+
+    return Object.fromEntries(shippedItemEntries) as Record<string, number>;
   }
 }

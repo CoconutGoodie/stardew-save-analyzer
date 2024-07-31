@@ -3,6 +3,7 @@ import { capitalCase, lowerCase } from "case-anything";
 import { STARDEW_FARM_TYPES } from "@src/const/StardewFarmTypes";
 import { STARDEW_FISHES } from "@src/const/StardewFishes";
 import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "@src/const/StardewMuseum";
+import { STARDEW_RELATABLE_NPCS } from "@src/const/StardewNpcs";
 import { STARDEW_RARECROW_IDS } from "@src/const/StardewRarecrows";
 import { STARDEW_SPECIAL_ORDERS } from "@src/const/StardewSpecialOrders";
 import { Achievements } from "@src/gamesave/Achievements";
@@ -12,7 +13,6 @@ import { XMLNode } from "@src/util/XMLNode";
 import { isKeyOf } from "@src/util/utilities";
 import { entries, keys, mapToObj } from "remeda";
 import { Farmer } from "./Farmer";
-import { STARDEW_RELATABLE_NPCS } from "@src/const/StardewNpcs";
 
 export class GameSave {
   public readonly gameVersion;

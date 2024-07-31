@@ -10,7 +10,7 @@ import { MuseumSection } from "@src/section/MuseumSection/MuseumSection";
 import { QiChallengesSection } from "@src/section/QiChallengesSection/QiChallengesSection";
 import { RarecrowSection } from "@src/section/RarecrowsSection/RarecrowsSection";
 import { RelationshipsSection } from "@src/section/RelationshipsSection/RelationshipsSection";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import logoPng from "./assets/logo.png";
 import { SummarySection } from "./component/SummarySection";
 import { GameSave } from "./gamesave/GameSave";
@@ -27,6 +27,11 @@ import "./style/style.scss";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
+
+  useEffect(() => {
+    if (!gameSave) return;
+    console.debug("Parsed Game Save:", gameSave);
+  }, [gameSave]);
 
   return (
     <main>

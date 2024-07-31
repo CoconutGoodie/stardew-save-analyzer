@@ -63,7 +63,7 @@ export const STARDEW_ERADICATION_GOALS: EradicationGoal[] = [
   {
     category: "Mummies",
     wikiId: "Mummy",
-    amount: 60,
+    amount: 100,
     validMonsters: ["Mummy"],
   },
   {

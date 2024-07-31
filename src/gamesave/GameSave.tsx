@@ -236,27 +236,31 @@ export class GameSave {
   }
 
   private calcFarmhands() {
-    let farmhands = this.saveXml
+    let farmhandXmls = this.saveXml
       .query(":scope > farmhands")
       .transformIfPresent((farmhandsXml) =>
-        farmhandsXml
-          .queryAll(":scope > Farmer")
-          .map((farmerXml) => new Farmer(farmerXml, this.saveXml))
+        farmhandsXml.queryAll(":scope > Farmer")
       );
 
     // version < 1.6
-    if (!farmhands) {
+    if (!farmhandXmls) {
       const farmLocationXml = this.saveXml.queryAllAndFind(
         "locations > GameLocation",
         (node) => node.element?.getAttribute("xsi:type") === "Farm"
       );
 
-      farmhands = farmLocationXml.transformIfPresent((farmLocationXml) =>
-        farmLocationXml
-          .queryAll("farmhand")
-          .map((farmerXml) => new Farmer(farmerXml, this.saveXml))
+      farmhandXmls = farmLocationXml.transformIfPresent((farmLocationXml) =>
+        farmLocationXml.queryAll("farmhand")
       );
     }
+
+    const farmhands = farmhandXmls
+      ?.filter(
+        (farmhandXml) =>
+          farmhandXml.query(":scope > userID").text() !== "" &&
+          farmhandXml.query(":scope > name").text() !== ""
+      )
+      .map((farmhandXml) => new Farmer(farmhandXml, this.saveXml));
 
     return farmhands ?? [];
   }

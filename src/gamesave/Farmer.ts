@@ -4,6 +4,7 @@ import { STARDEW_ERADICATION_GOALS } from "@src/const/StardewMonsters";
 import { STARDEW_RELATABLE_NPCS } from "@src/const/StardewNpcs";
 import { STARDEW_PROFESSIONS } from "@src/const/StardewProfessions";
 import { STARDROP_MAIL_FLAGS } from "@src/const/StardewStardrops";
+import { GameSave } from "@src/gamesave/GameSave";
 import { XMLNode } from "@src/util/XMLNode";
 import { thru } from "@src/util/utilities";
 import {
@@ -52,13 +53,14 @@ export class Farmer {
 
   public readonly rarecrowSocietyMailed;
 
+  public readonly spouse;
   public readonly relationships;
   public readonly houseUpgradeLevel;
 
   public readonly specialItems;
   // public readonly bookPowers;
 
-  constructor(private farmerXml: XMLNode, private saveXml?: XMLNode) {
+  constructor(private farmerXml: XMLNode, private gameSave: GameSave) {
     this.name = farmerXml.query(":scope > name").text();
     this.gender = this.calcGender();
     this.favoriteThing = farmerXml.query(":scope > favoriteThing").text();
@@ -130,6 +132,7 @@ export class Farmer {
     this.rarecrowSocietyMailed =
       this.receivedMailFlags.includes("RarecrowSociety");
 
+    this.spouse = this.calcSpouse();
     this.relationships = this.calcRelationships();
     this.houseUpgradeLevel = farmerXml.query("houseUpgradeLevel").number();
 
@@ -319,7 +322,7 @@ export class Farmer {
 
     // version < 1.3
     if (completedQuests == null) {
-      completedQuests = this.saveXml
+      completedQuests = this.gameSave.saveXml
         ?.query("stats > questsCompleted")
         .transformIfPresent((xml) => xml.number());
     }
@@ -408,26 +411,22 @@ export class Farmer {
     }));
   }
 
+  private calcSpouse() {
+    return this.farmerXml.query(":scope > spouse").text();
+  }
+
   private calcRelationships() {
     const weddingCooldown =
-      this.saveXml?.query("countdownToWedding").number() ?? 0;
+      this.gameSave.saveXml?.query("countdownToWedding").number() ?? 0;
 
-    const spouse = this.farmerXml.query(":scope > spouse").text();
+    const npcsXml = this.gameSave.queryNpcsXml();
 
-    const npcXmls =
-      this.saveXml
-        ?.queryAll("locations > GameLocation")
-        .flatMap((locationXml) => locationXml.queryAll("characters > NPC"))
-        .filter((npcXml) => {
-          return (
-            // Either a child
-            npcXml.element?.getAttribute("xsi:type") === "Child" ||
-            // Or a known NPC
-            STARDEW_RELATABLE_NPCS[npcXml.query("name").text()]
-          );
-        }) ?? [];
+    console.log(
+      npcsXml.find((xml) => xml.query(":scope > name").text() === "Sebastian")
+        ?.element
+    );
 
-    const npcs = npcXmls.map((npcXml) => {
+    const npcs = npcsXml.map((npcXml) => {
       const npcName = npcXml.query("name").text();
 
       // TODO: Parse parent, if isChild. Maybe refactor into isChildOf: Farmer["name"] ?
@@ -447,7 +446,7 @@ export class Farmer {
         // version < 1.3
         status: npcXml.query("divorcedFromFarmer").boolean()
           ? "Divorced"
-          : weddingCooldown > 0 && npcName === spouse?.slice(0, -7)
+          : weddingCooldown > 0 && npcName === this.spouse?.slice(0, -7)
           ? "Engaged"
           : npcXml.query("daysMarried").number() > 0
           ? "Married"

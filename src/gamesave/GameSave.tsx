@@ -12,6 +12,7 @@ import { XMLNode } from "@src/util/XMLNode";
 import { isKeyOf } from "@src/util/utilities";
 import { entries, keys, mapToObj } from "remeda";
 import { Farmer } from "./Farmer";
+import { STARDEW_RELATABLE_NPCS } from "@src/const/StardewNpcs";
 
 export class GameSave {
   public readonly gameVersion;
@@ -45,7 +46,7 @@ export class GameSave {
 
   public readonly grandpasEvals;
 
-  constructor(private saveXml: XMLNode) {
+  constructor(public saveXml: XMLNode) {
     console.log(saveXml.element);
 
     this.gameVersion = this.calcGameVersion();
@@ -66,7 +67,7 @@ export class GameSave {
       .boolean();
     this.totalGoldsEarned = saveXml.query("player > totalMoneyEarned").number();
 
-    this.player = new Farmer(saveXml.query("player"), saveXml);
+    this.player = new Farmer(saveXml.query("player"), this);
     this.farmhands = this.calcFarmhands();
     this.pets = this.calcPets();
     this.stables = this.calcStables();
@@ -86,6 +87,23 @@ export class GameSave {
     ]);
 
     this.grandpasEvals = new GrandpasEvaluations(this, this.saveXml);
+  }
+
+  public queryNpcsXml() {
+    const locationsXml = this.saveXml?.queryAll("locations > GameLocation");
+
+    return (
+      locationsXml
+        .flatMap((locationXml) => locationXml.queryAll("characters > NPC"))
+        .filter((npcXml) => {
+          return (
+            // Either a child
+            npcXml.element?.getAttribute("xsi:type") === "Child" ||
+            // Or a known NPC
+            STARDEW_RELATABLE_NPCS[npcXml.query("name").text()]
+          );
+        }) ?? []
+    );
   }
 
   private calcGameVersion() {
@@ -260,7 +278,7 @@ export class GameSave {
           farmhandXml.query(":scope > userID").text() !== "" &&
           farmhandXml.query(":scope > name").text() !== ""
       )
-      .map((farmhandXml) => new Farmer(farmhandXml, this.saveXml));
+      .map((farmhandXml) => new Farmer(farmhandXml, this));
 
     return farmhands ?? [];
   }

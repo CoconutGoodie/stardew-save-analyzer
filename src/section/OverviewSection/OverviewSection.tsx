@@ -2,12 +2,13 @@ import clockPng from "@src/assets/icon/clock.png";
 import favoritePng from "@src/assets/icon/favorite-thing.png";
 import femalePng from "@src/assets/icon/female.png";
 import malePng from "@src/assets/icon/male.png";
+import mermaidPendantPng from "@src/assets/icon/mermaid-pendant.png";
 import shrineOfChallengePng from "@src/assets/icon/shrine-of-challenge.png";
 import skullAltarPng from "@src/assets/icon/skull-altar.png";
 import { Currency } from "@src/component/Currency";
 import { GameDateDisplay } from "@src/component/GameDateDisplay";
 import { SummarySection } from "@src/component/SummarySection";
-import { FARM_TYPE_SPRITES } from "@src/const/Assets";
+import { FARM_TYPE_SPRITES, NPC_SPRITES } from "@src/const/Assets";
 import { GameSave } from "@src/gamesave/GameSave";
 import { StardewWiki } from "@src/util/StardewWiki";
 import { lowerCase } from "case-anything";
@@ -143,6 +144,21 @@ export const OverviewSection = (props: Props) => {
                     <em>{formatDuration(farmer.playtime)}</em>
                   </div>
                 </li>
+                {farmer.spouse && (
+                  <li>
+                    <div>
+                      <img width={14} src={mermaidPendantPng} />
+                      <span> Married to </span>
+                      <a href={StardewWiki.getLink(farmer.spouse)}>
+                        <img
+                          width={14}
+                          src={NPC_SPRITES.resolve(farmer.spouse.toLowerCase())}
+                        />
+                        <strong> {farmer.spouse}</strong>
+                      </a>
+                    </div>
+                  </li>
+                )}
                 {farmer.qiGems > 0 && (
                   <li>
                     <div>

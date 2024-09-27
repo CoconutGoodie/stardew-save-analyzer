@@ -180,6 +180,18 @@ function App() {
 
             <hr />
 
+            <SummarySection sectionTitle="Shipping - Monoculture" collapsable>
+              [WIP]
+            </SummarySection>
+
+            <hr />
+
+            <SummarySection sectionTitle="Shipping - Polyculture" collapsable>
+              [WIP]
+            </SummarySection>
+
+            <hr />
+
             <SummarySection sectionTitle="Forest Neightbors [WIP]" collapsable>
               [WIP] Forest Neightbors & Pedro here
             </SummarySection>
@@ -259,6 +271,7 @@ function App() {
           <span>
             Site Version: <em>v{process.env.APP_VERSION}</em>
           </span>
+          <a href={"#disclaimers"}>See Disclaimers</a>
         </div>
 
         <div className="links">

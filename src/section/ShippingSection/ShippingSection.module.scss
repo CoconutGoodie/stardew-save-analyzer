@@ -1,0 +1,29 @@
+.objectives {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.shippedItemsScrollbox {
+  margin: 10px 0;
+}
+
+.shippedItems {
+  display: flex;
+  // display: grid;
+  // grid-template-columns: repeat(2, 1fr);
+  flex-wrap: wrap;
+  gap: 10px;
+
+  &:not(.expanded) {
+    margin-right: 16px;
+  }
+}
+
+.item {
+  width: 120px;
+  height: 100px;
+  background: url("/src/assets/sprite/shipping/item-background.png");
+  background-size: 100% 100%;
+  image-rendering: pixelated;
+}

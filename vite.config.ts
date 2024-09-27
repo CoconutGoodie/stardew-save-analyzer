@@ -1,7 +1,9 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import content from "@originjs/vite-plugin-content";
 import path from "node:path";
+import { defineConfig } from "vite";
+
+import content from "@originjs/vite-plugin-content";
+import react from "@vitejs/plugin-react";
+import richSvg from "vite-plugin-react-rich-svg";
 
 import PackageJSON from "./package.json";
 
@@ -9,6 +11,7 @@ import PackageJSON from "./package.json";
 export default defineConfig({
   plugins: [
     react(),
+    richSvg(),
     content({
       xml: {
         enabled: false,

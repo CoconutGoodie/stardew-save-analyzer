@@ -15,6 +15,8 @@ import { entries, keys, mapToObj } from "remeda";
 import { Farmer } from "./Farmer";
 
 export class GameSave {
+  public static compatibleVersion = "1.6.8";
+
   public readonly gameVersion;
   public readonly farmName;
   public readonly farmType;

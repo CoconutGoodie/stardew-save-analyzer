@@ -230,7 +230,6 @@ function App() {
                 <li>Tooltips Component</li>
                 <li>Support "Separate Wallets"</li>
                 <li>Fix main app layout</li>
-                <li>A better Footer</li>
               </ul>
             </SummarySection>
           </>

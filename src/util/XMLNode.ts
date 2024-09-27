@@ -21,6 +21,7 @@ export class XMLNode {
     );
   }
 
+  // TODO: Remove, why is this even a thing?
   public queryAllAndFind(
     selectors: string,
     predicate: (node: XMLNode) => boolean

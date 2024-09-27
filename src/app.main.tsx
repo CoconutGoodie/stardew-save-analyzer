@@ -10,7 +10,8 @@ import { MuseumSection } from "@src/section/MuseumSection/MuseumSection";
 import { QiChallengesSection } from "@src/section/QiChallengesSection/QiChallengesSection";
 import { RarecrowSection } from "@src/section/RarecrowsSection/RarecrowsSection";
 import { RelationshipsSection } from "@src/section/RelationshipsSection/RelationshipsSection";
-import { useState } from "react";
+import { ShippingSection } from "@src/section/ShippingSection/ShippingSection";
+import { useEffect, useState } from "react";
 import logoPng from "./assets/logo.png";
 import { SummarySection } from "./component/SummarySection";
 import { GameSave } from "./gamesave/GameSave";
@@ -23,21 +24,30 @@ import { SkillsSection } from "./section/SkillsSection/SkillsSection";
 import { SpecialOrdersSection } from "./section/SpecialOrdersSection/SpecialOrdersSection";
 import { StardropsSection } from "./section/StardropsSection/StardropsSection";
 
+import BuyMeACoffeeSvg from "@src/assets/social/buy-me-a-coffee.svg?component";
+import GithubSvg from "@src/assets/social/github.svg?component";
+import PatreonSvg from "@src/assets/social/patreon.svg?component";
+
 import "./style/style.scss";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
 
+  useEffect(() => {
+    if (!gameSave) return;
+    console.debug("Parsed Game Save:", gameSave);
+  }, [gameSave]);
+
   return (
     <main>
       <header>
         <img width={350} src={logoPng} />
-        <span>last updated for v1.6.8</span>
+        <span>last updated for v{GameSave.compatibleVersion}</span>
       </header>
 
       <div id="content">
-        <div className="disclaimers">
-          <div className="disclaimer">
+        <section id="disclaimers">
+          <div className="disclaimer" data-icon={questPng}>
             <img height={30} src={questPng} />
             <p>
               <em>Disclaimer!</em> This website is not affiliated with,
@@ -88,7 +98,7 @@ function App() {
               <span className="heart">♥</span>
             </p>
           </div>
-        </div>
+        </section>
 
         {gameSave == null ? (
           <>
@@ -166,9 +176,7 @@ function App() {
 
             <hr />
 
-            <SummarySection sectionTitle="Shipping [WIP]" collapsable>
-              [WIP] Shipping Bin Achievements here
-            </SummarySection>
+            <ShippingSection gameSave={gameSave} />
 
             <hr />
 
@@ -222,7 +230,6 @@ function App() {
                 <li>Tooltips Component</li>
                 <li>Support "Separate Wallets"</li>
                 <li>Fix main app layout</li>
-                <li>A better Footer</li>
               </ul>
             </SummarySection>
           </>
@@ -230,10 +237,44 @@ function App() {
       </div>
 
       <footer style={{ height: 200 }}>
-        <span className="site-version">Made with ♥ by iGoodie</span>
-        <span className="site-version">
-          Site Version: v{process.env.APP_VERSION}
-        </span>
+        <div className="credits">
+          <span>
+            Coded with <span style={{ color: "#f76767" }}>♥</span> by{" "}
+            <a href="https://github.com/iGoodie" target="_blank">
+              iGoodie
+            </a>
+          </span>
+          <span>
+            Designed with <span style={{ color: "#f76767" }}>♥</span> by{" "}
+            <a href="https://github.com/sedasen" target="_blank">
+              CoconutOrange
+            </a>
+          </span>
+        </div>
+
+        <div className="site-info">
+          <span>
+            Game Version: <em>v{GameSave.compatibleVersion}</em>
+          </span>
+          <span>
+            Site Version: <em>v{process.env.APP_VERSION}</em>
+          </span>
+        </div>
+
+        <div className="links">
+          <a
+            href="https://github.com/CoconutGoodie/stardew-save-analyzer"
+            target="_blank"
+          >
+            <GithubSvg />
+          </a>
+          <a href="https://buymeacoffee.com/igoodie" target="_blank">
+            <BuyMeACoffeeSvg />
+          </a>
+          <a href="https://www.patreon.com/iGoodie" target="_blank">
+            <PatreonSvg />
+          </a>
+        </div>
       </footer>
     </main>
   );

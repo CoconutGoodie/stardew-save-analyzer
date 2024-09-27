@@ -3,6 +3,7 @@ import { capitalCase, lowerCase } from "case-anything";
 import { STARDEW_FARM_TYPES } from "@src/const/StardewFarmTypes";
 import { STARDEW_FISHES } from "@src/const/StardewFishes";
 import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "@src/const/StardewMuseum";
+import { STARDEW_RELATABLE_NPCS } from "@src/const/StardewNpcs";
 import { STARDEW_RARECROW_IDS } from "@src/const/StardewRarecrows";
 import { STARDEW_SPECIAL_ORDERS } from "@src/const/StardewSpecialOrders";
 import { Achievements } from "@src/gamesave/Achievements";
@@ -14,6 +15,8 @@ import { entries, keys, mapToObj } from "remeda";
 import { Farmer } from "./Farmer";
 
 export class GameSave {
+  public static compatibleVersion = "1.6.8";
+
   public readonly gameVersion;
   public readonly farmName;
   public readonly farmType;
@@ -45,7 +48,7 @@ export class GameSave {
 
   public readonly grandpasEvals;
 
-  constructor(private saveXml: XMLNode) {
+  constructor(public saveXml: XMLNode) {
     console.log(saveXml.element);
 
     this.gameVersion = this.calcGameVersion();
@@ -66,7 +69,7 @@ export class GameSave {
       .boolean();
     this.totalGoldsEarned = saveXml.query("player > totalMoneyEarned").number();
 
-    this.player = new Farmer(saveXml.query("player"), saveXml);
+    this.player = new Farmer(saveXml.query("player"), this);
     this.farmhands = this.calcFarmhands();
     this.pets = this.calcPets();
     this.stables = this.calcStables();
@@ -86,6 +89,23 @@ export class GameSave {
     ]);
 
     this.grandpasEvals = new GrandpasEvaluations(this, this.saveXml);
+  }
+
+  public queryNpcsXml() {
+    const locationsXml = this.saveXml?.queryAll("locations > GameLocation");
+
+    return (
+      locationsXml
+        .flatMap((locationXml) => locationXml.queryAll("characters > NPC"))
+        .filter((npcXml) => {
+          return (
+            // Either a child
+            npcXml.element?.getAttribute("xsi:type") === "Child" ||
+            // Or a known NPC
+            STARDEW_RELATABLE_NPCS[npcXml.query("name").text()]
+          );
+        }) ?? []
+    );
   }
 
   private calcGameVersion() {
@@ -236,27 +256,31 @@ export class GameSave {
   }
 
   private calcFarmhands() {
-    let farmhands = this.saveXml
+    let farmhandXmls = this.saveXml
       .query(":scope > farmhands")
       .transformIfPresent((farmhandsXml) =>
-        farmhandsXml
-          .queryAll(":scope > Farmer")
-          .map((farmerXml) => new Farmer(farmerXml, this.saveXml))
+        farmhandsXml.queryAll(":scope > Farmer")
       );
 
     // version < 1.6
-    if (!farmhands) {
+    if (!farmhandXmls) {
       const farmLocationXml = this.saveXml.queryAllAndFind(
         "locations > GameLocation",
         (node) => node.element?.getAttribute("xsi:type") === "Farm"
       );
 
-      farmhands = farmLocationXml.transformIfPresent((farmLocationXml) =>
-        farmLocationXml
-          .queryAll("farmhand")
-          .map((farmerXml) => new Farmer(farmerXml, this.saveXml))
+      farmhandXmls = farmLocationXml.transformIfPresent((farmLocationXml) =>
+        farmLocationXml.queryAll("farmhand")
       );
     }
+
+    const farmhands = farmhandXmls
+      ?.filter(
+        (farmhandXml) =>
+          farmhandXml.query(":scope > userID").text() !== "" &&
+          farmhandXml.query(":scope > name").text() !== ""
+      )
+      .map((farmhandXml) => new Farmer(farmhandXml, this));
 
     return farmhands ?? [];
   }

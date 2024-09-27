@@ -22,6 +22,7 @@ import { keys, mapToObj, times } from "remeda";
 import { thru } from "@src/util/utilities";
 import styles from "./RelationshipsSection.module.scss";
 import { STARDEW_RELATABLE_NPCS } from "@src/const/StardewNpcs";
+import { InfoText } from "@src/component/InfoText";
 
 interface Props {
   gameSave: GameSave;
@@ -190,6 +191,10 @@ export const RelationshipsSection = (props: Props) => {
                 </div>
               </Scrollbox>
 
+              <InfoText>
+                <strong>8-heart</strong> is considered max for dateable folk.
+              </InfoText>
+
               <div>
                 <AchievementDisplay
                   title={farmerAchievements.aNewFriend.title}
@@ -223,9 +228,6 @@ export const RelationshipsSection = (props: Props) => {
                   >
                     Reached max heart with every townsfolk.
                   </Objective>
-                  <span style={{ opacity: 0.4 }}>
-                    (8-heart is considered max for dateable ones)
-                  </span>
                 </div>
               </div>
             </div>

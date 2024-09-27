@@ -121,8 +121,13 @@ export const AdventurersGuildSection = (props: Props) => {
                       goal.amount;
 
                     return (
-                      <div
+                      <a
                         key={goal.category}
+                        target="_blank"
+                        href={StardewWiki.getLink(
+                          "Adventurer's Guild",
+                          goal.wikiId
+                        )}
                         className={clsx(
                           styles.monsterCategory,
                           goalDone && styles.done
@@ -149,7 +154,7 @@ export const AdventurersGuildSection = (props: Props) => {
                           {farmer.monsterKills.byEradicationGoal[goal.category]}
                           /{goal.amount} Killed
                         </Objective>
-                      </div>
+                      </a>
                     );
                   })}
                 </div>

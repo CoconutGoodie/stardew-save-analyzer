@@ -12,6 +12,12 @@ import { Objective } from "@src/component/Objective";
 import binPng from "@src/assets/sprite/shipping/bin.png";
 
 import styles from "./ShippingSection.module.scss";
+import clsx from "clsx";
+import { STARDEW_SHIPPABLES } from "@src/const/StardewShippables";
+import { ImageObjective } from "@src/component/ImageObjective";
+import { SHIPPABLE_SPRITES } from "@src/const/Assets";
+import { snakeCase } from "case-anything";
+import { StardewWiki } from "@src/util/StardewWiki";
 
 interface Props {
   gameSave: GameSave;
@@ -78,11 +84,30 @@ export const ShippingSection = (props: Props) => {
                 onExpanded={setExpanded}
                 className={styles.shippedItemsScrollbox}
               >
-                <div className={styles.shippedItems}>
-                  <img width={100} src={binPng} />
+                <div
+                  className={clsx(
+                    styles.shippedItems,
+                    expanded && styles.expanded
+                  )}
+                >
+                  <div className={styles.bin}>100%</div>
 
-                  {times(20, (i) => (
-                    <div className={styles.item}>{i}</div>
+                  {entries(STARDEW_SHIPPABLES).map(([id, shippableName]) => (
+                    <div className={styles.shippedItem}>
+                      <a
+                        href={StardewWiki.getLink(shippableName)}
+                        target="_blank"
+                      >
+                        <ImageObjective
+                          height={40}
+                          src={SHIPPABLE_SPRITES.resolve(
+                            snakeCase(shippableName.replace(/-/g, " "))
+                          )}
+                          title={shippableName}
+                          done
+                        />
+                      </a>
+                    </div>
                   ))}
                 </div>
               </Scrollbox>

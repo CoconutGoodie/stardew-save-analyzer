@@ -165,6 +165,15 @@ export const NPC_SPRITES = new AssetRepository<string>({
   postfix: ".png",
 });
 
+export const SHIPPABLE_SPRITES = new AssetRepository<string>({
+  repository: import.meta.glob("../assets/sprite/shipping/shippable/*.png", {
+    import: "default",
+    eager: true,
+  }),
+  prefix: "../assets/sprite/shipping/shippable/",
+  postfix: ".png",
+});
+
 /* -- Other ------------------------------------ */
 
 export const DEMO_SAVES = new AssetRepository({

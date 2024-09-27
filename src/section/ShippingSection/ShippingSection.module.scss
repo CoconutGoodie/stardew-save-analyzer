@@ -9,21 +9,40 @@
 }
 
 .shippedItems {
-  display: flex;
-  // display: grid;
-  // grid-template-columns: repeat(2, 1fr);
-  flex-wrap: wrap;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
   gap: 10px;
+  border-radius: 6px;
+
+  background: url("/src/assets/sprite/shipping/item-background.png");
+  background-size: 32px;
 
   &:not(.expanded) {
     margin-right: 16px;
   }
+
+  .bin {
+    grid-row: span 3;
+    grid-column: span 2;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: url("/src/assets/sprite/shipping/bin-open.png");
+    background-size: 100% 100%;
+    image-rendering: pixelated;
+    font-size: 45px;
+    font-family: "Stardew Valley";
+    color: rgb(217, 255, 128);
+    text-shadow: 4px 4px #060216, 0 0 4px #060216, 0 0 10px #1c1050;
+  }
 }
 
-.item {
-  width: 120px;
-  height: 100px;
-  background: url("/src/assets/sprite/shipping/item-background.png");
-  background-size: 100% 100%;
-  image-rendering: pixelated;
+.shippedItem {
+  padding: 2px;
+  display: flex;
+  background: rgba(#5f4848, 0.2);
+  border-radius: 4px;
 }

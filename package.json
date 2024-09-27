@@ -1,7 +1,7 @@
 {
   "name": "stardew-save-analyzer",
   "private": true,
-  "version": "0.6.3-alpha",
+  "version": "0.6.4-alpha",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -105,6 +105,7 @@ export class GrandpasEvaluations {
     const achievementGoals = [
       "masterAngler",
       "aCompleteCollection",
+      "fullShipment"
     ] as (keyof Achievements)[];
 
     achievementGoals.forEach((achievementGoal) => {
@@ -134,20 +135,6 @@ export class GrandpasEvaluations {
         ),
       });
     });
-
-    // TODO: Yeet
-    this.scoreSubjects.push(
-      ...["Full Shipment"].map((achi) => ({
-        earned: false,
-        reason: (
-          <>
-            achieving{" "}
-            <AchievementDisplay title={achi} achieved={false} inline /> [WIP]
-          </>
-        ),
-        score: NaN,
-      }))
-    );
   }
 
   private calcFriendshipScores() {

@@ -21,6 +21,7 @@ import { ImageObjective } from "@src/component/ImageObjective";
 import { SHIPPABLE_SPRITES } from "@src/const/Assets";
 import { snakeCase } from "case-anything";
 import { StardewWiki } from "@src/util/StardewWiki";
+import { AchievementDisplay } from "@src/component/AchievementDisplay";
 
 interface Props {
   gameSave: GameSave;
@@ -38,19 +39,9 @@ export const ShippingSection = (props: Props) => {
   const { allDone, goals } = useGoals({
     individuals: mapToObj(farmers, (farmer) => [
       farmer.name,
-      {},
-      // {
-      //   achievements: [
-      //     props.gameSave.achievements[farmer.name].theBottom,
-      //     props.gameSave.achievements[farmer.name].protectorOfTheValley,
-      //   ],
-      //   objectives: {
-      //     gainAccessToGuild: {
-      //       current: farmer.monsterKills.totalKills,
-      //       goal: 1000,
-      //     },
-      //   },
-      // },
+      {
+        achievements: [props.gameSave.achievements[farmer.name].fullShipment],
+      },
     ]),
   });
 
@@ -64,6 +55,16 @@ export const ShippingSection = (props: Props) => {
     >
       <FarmersRow>
         {farmers.map((farmer) => {
+          const farmerAchievements = props.gameSave.achievements[farmer.name];
+
+          const totalCount = keys(STARDEW_SHIPPABLES).length;
+
+          const shippedCount = values(STARDEW_SHIPPABLES).filter(
+            (shippableName) => farmer.shippedItems[shippableName] > 0
+          ).length;
+
+          const completePercentage = shippedCount / totalCount;
+
           return (
             <div key={farmer.name}>
               <FarmerTag farmer={farmer} />
@@ -93,12 +94,18 @@ export const ShippingSection = (props: Props) => {
                     expanded && styles.expanded
                   )}
                 >
-                  <div className={styles.bin}>100%</div>
+                  <div className={styles.bin}>
+                    {Math.floor(completePercentage * 100)}%
+                  </div>
 
-                  {[
-                    ...entries(STARDEW_SHIPPABLES),
-                  ].map(([id, shippableName]) => (
-                    <div key={id} className={styles.shippedItem}>
+                  {entries(STARDEW_SHIPPABLES).map(([id, shippableName]) => (
+                    <div
+                      key={id}
+                      className={clsx(
+                        styles.shippedItem,
+                        !farmer.shippedItems[shippableName] && styles.notShipped
+                      )}
+                    >
                       <a
                         href={StardewWiki.getLink(shippableName)}
                         target="_blank"
@@ -109,8 +116,7 @@ export const ShippingSection = (props: Props) => {
                             snakeCase(shippableName.replace(/-/g, " "))
                           )}
                           title={shippableName}
-                          title={snakeCase(shippableName.replace(/-/g, " "))}
-                          done
+                          done={farmer.shippedItems[shippableName] > 0}
                         />
                       </a>
                     </div>
@@ -118,9 +124,21 @@ export const ShippingSection = (props: Props) => {
                 </div>
               </Scrollbox>
 
-              {/* <div>
-                <pre>{JSON.stringify(farmer.shippedItems, null, 2)}</pre>
-              </div> */}
+              <div className={styles.achievements}>
+                <AchievementDisplay
+                  title={farmerAchievements.fullShipment.title}
+                  description={"ship every item"}
+                  achieved={farmerAchievements.fullShipment.achieved}
+                >
+                  {!farmerAchievements.fullShipment.achieved && (
+                    <>
+                      {" "}
+                      — Shipped <strong>{shippedCount}</strong> out of{" "}
+                      <strong>{totalCount}</strong>
+                    </>
+                  )}
+                </AchievementDisplay>
+              </div>
             </div>
           );
         })}

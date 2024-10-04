@@ -41,8 +41,15 @@
 }
 
 .shippedItem {
+  aspect-ratio: 1;
   padding: 2px;
   display: flex;
-  background: rgba(#5f4848, 0.2);
+  align-items: center;
+  justify-content: center;
+  background: rgba(#7a5757, 0.5);
   border-radius: 4px;
+
+  &.notShipped {
+    background: rgba(#5f4848, 0.2) !important;
+  }
 }

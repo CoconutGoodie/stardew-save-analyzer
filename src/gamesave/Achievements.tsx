@@ -3,9 +3,10 @@ import { STARDEW_CRAFTING_RECIPES } from "@src/const/StardewCrafting";
 import { STARDEW_ACHIEVEMENT_FISHES } from "@src/const/StardewFishes";
 import { STARDEW_ERADICATION_GOALS } from "@src/const/StardewMonsters";
 import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "@src/const/StardewMuseum";
+import { STARDEW_SHIPPABLES } from "@src/const/StardewShippables";
 import { Farmer } from "@src/gamesave/Farmer";
 import { GameSave } from "@src/gamesave/GameSave";
-import { fromEntries, keys, sumBy, values } from "remeda";
+import { entries, fromEntries, keys, sumBy, values } from "remeda";
 
 export class Achievements {
   public readonly greenhorn;
@@ -47,6 +48,10 @@ export class Achievements {
   public readonly popular;
   public readonly bestFriends;
   public readonly theBelovedFarmer;
+
+  public readonly fullShipment;
+  // public readonly monoculture;
+  // public readonly polyculture;
 
   constructor(farmer: Farmer, gameSave: GameSave) {
     this.greenhorn = new MoneyAchievement(gameSave, "Greenhorn", 15_000);
@@ -131,6 +136,13 @@ export class Achievements {
       "The Beloved Farmer",
       8,
       10
+    );
+
+    this.fullShipment = new Achievement(
+      "Full Shipment",
+      entries(STARDEW_SHIPPABLES).every(
+        ([id, shippableName]) => farmer.shippedItems[shippableName] > 0
+      )
     );
   }
 }

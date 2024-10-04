@@ -60,7 +60,7 @@ export const STARDEW_SHIPPABLES: Record<PropertyKey, string> = {
   346: "Beer",
   348: "Wine",
   350: "Juice",
-  372: "Clam",
+  // 372: "Clam", // 1.6: Clam moved from Items Shipped to Fishing collection.
   376: "Poppy",
   378: "Copper Ore",
   380: "Iron Ore",

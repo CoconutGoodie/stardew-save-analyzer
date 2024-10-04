@@ -13,7 +13,10 @@ import binPng from "@src/assets/sprite/shipping/bin.png";
 
 import styles from "./ShippingSection.module.scss";
 import clsx from "clsx";
-import { STARDEW_SHIPPABLES } from "@src/const/StardewShippables";
+import {
+  STARDEW_SHIPPABLE_MONOCROPS,
+  STARDEW_SHIPPABLES,
+} from "@src/const/StardewShippables";
 import { ImageObjective } from "@src/component/ImageObjective";
 import { SHIPPABLE_SPRITES } from "@src/const/Assets";
 import { snakeCase } from "case-anything";
@@ -92,8 +95,10 @@ export const ShippingSection = (props: Props) => {
                 >
                   <div className={styles.bin}>100%</div>
 
-                  {entries(STARDEW_SHIPPABLES).map(([id, shippableName]) => (
-                    <div className={styles.shippedItem}>
+                  {[
+                    ...entries(STARDEW_SHIPPABLES),
+                  ].map(([id, shippableName]) => (
+                    <div key={id} className={styles.shippedItem}>
                       <a
                         href={StardewWiki.getLink(shippableName)}
                         target="_blank"
@@ -104,6 +109,7 @@ export const ShippingSection = (props: Props) => {
                             snakeCase(shippableName.replace(/-/g, " "))
                           )}
                           title={shippableName}
+                          title={snakeCase(shippableName.replace(/-/g, " "))}
                           done
                         />
                       </a>

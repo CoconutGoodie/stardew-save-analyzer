@@ -512,15 +512,29 @@ export class Farmer {
   }
 
   private calcShippedItems() {
+    type ShippableEntry = {
+      name?: string;
+      amount: number;
+    };
+
     const shippedItemEntries = this.farmerXml
       .queryAll("basicShipped > item")
       .map((entryXml) => {
         const key = entryXml.query("key > *").text();
         const value = entryXml.query("value > *").number();
-        return [STARDEW_SHIPPABLES[key], value];
+        return [
+          key,
+          {
+            name: STARDEW_SHIPPABLES[key],
+            amount: value,
+          } satisfies ShippableEntry,
+        ];
       })
       .filter(([key]) => !!key);
 
-    return Object.fromEntries(shippedItemEntries) as Record<string, number>;
+    return Object.fromEntries(shippedItemEntries) as Record<
+      PropertyKey,
+      ShippableEntry
+    >;
   }
 }

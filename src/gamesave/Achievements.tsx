@@ -3,10 +3,14 @@ import { STARDEW_CRAFTING_RECIPES } from "@src/const/StardewCrafting";
 import { STARDEW_ACHIEVEMENT_FISHES } from "@src/const/StardewFishes";
 import { STARDEW_ERADICATION_GOALS } from "@src/const/StardewMonsters";
 import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "@src/const/StardewMuseum";
-import { STARDEW_SHIPPABLES } from "@src/const/StardewShippables";
+import {
+  STARDEW_SHIPPABLE_POLYCROPS,
+  STARDEW_SHIPPABLES,
+} from "@src/const/StardewShippables";
 import { Farmer } from "@src/gamesave/Farmer";
 import { GameSave } from "@src/gamesave/GameSave";
-import { entries, fromEntries, keys, sumBy, values } from "remeda";
+import { reduceIterator } from "@src/util/iterator.utils";
+import { entries, fromEntries, keys, map, sumBy, values } from "remeda";
 
 export class Achievements {
   public readonly greenhorn;
@@ -50,8 +54,8 @@ export class Achievements {
   public readonly theBelovedFarmer;
 
   public readonly fullShipment;
+  public readonly polyculture;
   // public readonly monoculture;
-  // public readonly polyculture;
 
   constructor(farmer: Farmer, gameSave: GameSave) {
     this.greenhorn = new MoneyAchievement(gameSave, "Greenhorn", 15_000);
@@ -140,8 +144,17 @@ export class Achievements {
 
     this.fullShipment = new Achievement(
       "Full Shipment",
-      entries(STARDEW_SHIPPABLES).every(
-        ([id, shippableName]) => farmer.shippedItems[shippableName] > 0
+      keys(STARDEW_SHIPPABLES).every(
+        (shippableId) => farmer.shippedItems[shippableId].amount > 0
+      )
+    );
+
+    this.polyculture = new Achievement(
+      "Polyculture",
+      reduceIterator(
+        STARDEW_SHIPPABLE_POLYCROPS.keys(),
+        (shippableId) => farmer.shippedItems[shippableId].amount >= 15,
+        false
       )
     );
   }

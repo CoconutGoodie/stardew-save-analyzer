@@ -59,11 +59,13 @@ export const ShippingSection = (props: Props) => {
 
           const totalCount = keys(STARDEW_SHIPPABLES).length;
 
-          const shippedCount = values(STARDEW_SHIPPABLES).filter(
-            (shippableName) => farmer.shippedItems[shippableName] > 0
+          const shippedCount = keys(STARDEW_SHIPPABLES).filter(
+            (shippableId) => farmer.shippedItems[shippableId]?.amount > 0
           ).length;
 
           const completePercentage = shippedCount / totalCount;
+
+          console.log(farmer.shippedItems);
 
           return (
             <div key={farmer.name}>
@@ -77,8 +79,11 @@ export const ShippingSection = (props: Props) => {
                 </Objective>
                 <Objective icon={<img height={16} src={binPng} />} done>
                   Shipped{" "}
-                  <strong>{sum(values(farmer.shippedItems))} items</strong> in
-                  total.
+                  <strong>
+                    {sum(values(farmer.shippedItems).map((s) => s.amount))}{" "}
+                    items
+                  </strong>{" "}
+                  in total.
                 </Objective>
               </div>
 
@@ -103,7 +108,7 @@ export const ShippingSection = (props: Props) => {
                       key={id}
                       className={clsx(
                         styles.shippedItem,
-                        !farmer.shippedItems[shippableName] && styles.notShipped
+                        !farmer.shippedItems[id] && styles.notShipped
                       )}
                     >
                       <a
@@ -116,7 +121,7 @@ export const ShippingSection = (props: Props) => {
                             snakeCase(shippableName.replace(/-/g, " "))
                           )}
                           title={shippableName}
-                          done={farmer.shippedItems[shippableName] > 0}
+                          done={farmer.shippedItems[id]?.amount > 0}
                         />
                       </a>
                     </div>

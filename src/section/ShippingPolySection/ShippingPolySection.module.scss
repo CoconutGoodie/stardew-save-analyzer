@@ -1,0 +1,41 @@
+.objectives {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.shippedItemsScrollbox {
+  margin: 10px 0;
+}
+
+.shippedItems {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  // gap: 8px;
+
+  background: url("/src/assets/sprite/shipping/item-background.png");
+  background-size: 32px;
+}
+
+.shippedItem {
+  // width: 100%;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 2px solid #000;
+  border-radius: 16px;
+
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+
+  & > img {
+    width: 30px;
+  }
+
+  & > progress {
+    flex-grow: 1;
+  }
+}

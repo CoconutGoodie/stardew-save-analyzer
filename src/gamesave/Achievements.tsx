@@ -145,7 +145,7 @@ export class Achievements {
     this.fullShipment = new Achievement(
       "Full Shipment",
       keys(STARDEW_SHIPPABLES).every(
-        (shippableId) => farmer.shippedItems[shippableId].amount > 0
+        (shippableId) => farmer.shippedItems[shippableId]?.amount > 0
       )
     );
 
@@ -153,7 +153,7 @@ export class Achievements {
       "Polyculture",
       reduceIterator(
         STARDEW_SHIPPABLE_POLYCROPS.keys(),
-        (shippableId) => farmer.shippedItems[shippableId].amount >= 15,
+        (shippableId) => farmer.shippedItems[shippableId]?.amount >= 15,
         false
       )
     );

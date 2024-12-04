@@ -10,9 +10,14 @@ import styles from "./ShippingPolySection.module.scss";
 import { Objective } from "@src/component/Objective";
 import { Scrollbox } from "@src/component/Scrollbox";
 import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
-import { values } from "remeda";
+import { keys, mapToObj, sum, times, values } from "remeda";
 import { SHIPPABLE_SPRITES } from "@src/const/Assets";
 import { snakeCase } from "case-anything";
+import { ImageObjective } from "@src/component/ImageObjective";
+import { StardewWiki } from "@src/util/StardewWiki";
+import clsx from "clsx";
+import { useGoals } from "@src/hook/useGoals";
+import { AchievementDisplay } from "@src/component/AchievementDisplay";
 
 interface Props {
   gameSave: GameSave;
@@ -27,23 +32,46 @@ export const ShippingPolySection = (props: Props) => {
 
   const farmers = props.gameSave.getAllFarmers();
 
+  const { allDone, goals } = useGoals({
+    individuals: mapToObj(farmers, (farmer) => [
+      farmer.name,
+      {
+        achievements: [props.gameSave.achievements[farmer.name].polyculture],
+      },
+    ]),
+  });
+
+  const renderProgress = (amount: number) => {
+    return (
+      <div className={styles.progress}>
+        {times(Math.min(15, amount), (i) => (
+          <div key={"filled" + i} data-filled />
+        ))}
+        {times(Math.max(0, 15 - amount), (i) => (
+          <div key={"normal" + i} />
+        ))}
+      </div>
+    );
+  };
+
   return (
     <SummarySection
       id="shipping-polyculture"
       sectionTitle="Shipping - Polyculture"
       sectionIcon={binPng}
       collapsable
-      // allDone={allDone}
+      allDone={allDone}
     >
       <FarmersRow>
         {farmers.map((farmer) => {
-          console.log(farmer.shippedItems);
+          const farmerAchievements = props.gameSave.achievements[farmer.name];
+
           return (
             <div key={farmer.name}>
               <FarmerTag farmer={farmer} />
 
               <div className={styles.objectives}>
-                {/* <Objective icon={<img height={16} src={binPng} />} done>
+                <Objective icon={<img height={16} src={binPng} />} done>
                   Shipped{" "}
                   <strong>{keys(farmer.shippedItems).length} different</strong>{" "}
                   items.
@@ -55,7 +83,7 @@ export const ShippingPolySection = (props: Props) => {
                     items
                   </strong>{" "}
                   in total.
-                </Objective> */}
+                </Objective>
               </div>
 
               <Scrollbox
@@ -64,7 +92,12 @@ export const ShippingPolySection = (props: Props) => {
                 onExpanded={setExpanded}
                 className={styles.shippedItemsScrollbox}
               >
-                <div className={styles.shippedItems}>
+                <div
+                  className={clsx(
+                    styles.shippedItems,
+                    expanded && styles.expanded
+                  )}
+                >
                   {[...STARDEW_SHIPPABLE_POLYCROPS.values()]
                     .map(
                       (shippableId) =>
@@ -74,22 +107,54 @@ export const ShippingPolySection = (props: Props) => {
                       <div
                         key={shippableId.toString()}
                         className={styles.shippedItem}
+                        data-done={
+                          farmer.shippedItems[shippableId]?.amount >= 15
+                        }
                       >
-                        {/* {shippableId.toString()} -
-                        {JSON.stringify(farmer.shippedItems[shippableId])} */}
-                        <img
-                          src={SHIPPABLE_SPRITES.resolve(
-                            snakeCase(shippable.name?.replace(/-/g, " ") ?? "")
-                          )}
-                        />
-                        <progress
-                          value={farmer.shippedItems[shippableId].amount}
-                          max={15}
-                        />
+                        <a
+                          href={StardewWiki.getLink(shippable.name ?? "")}
+                          target="_blank"
+                        >
+                          <ImageObjective
+                            height={54}
+                            src={SHIPPABLE_SPRITES.resolve(
+                              snakeCase(
+                                shippable.name?.replace(/-/g, " ") ?? ""
+                              )
+                            )}
+                            title={shippable.name}
+                            done={
+                              farmer.shippedItems[shippableId]?.amount >= 15
+                            }
+                          />
+                        </a>
+                        {renderProgress(
+                          farmer.shippedItems[shippableId]?.amount
+                        )}
+                        <span>
+                          <em>{shippable.name} Shipped:</em>{" "}
+                          {farmer.shippedItems[shippableId]?.amount} / 15
+                        </span>
                       </div>
                     ))}
                 </div>
               </Scrollbox>
+
+              <div className={styles.achievements}>
+                <AchievementDisplay
+                  title={farmerAchievements.polyculture.title}
+                  description={"ship 15 of each crop"}
+                  achieved={farmerAchievements.polyculture.achieved}
+                >
+                  {!farmerAchievements.fullShipment.achieved && (
+                    <>
+                      {/* {" "}
+                      — Shipped <strong>{shippedCount}</strong> out of{" "}
+                      <strong>{totalCount}</strong> */}
+                    </>
+                  )}
+                </AchievementDisplay>
+              </div>
             </div>
           );
         })}

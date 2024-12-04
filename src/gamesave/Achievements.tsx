@@ -153,7 +153,8 @@ export class Achievements {
       "Polyculture",
       reduceIterator(
         STARDEW_SHIPPABLE_POLYCROPS.keys(),
-        (shippableId) => farmer.shippedItems[shippableId]?.amount >= 15,
+        (shippableId, achieved) =>
+          achieved && farmer.shippedItems[shippableId]?.amount >= 15,
         false
       )
     );

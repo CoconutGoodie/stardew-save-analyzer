@@ -18,6 +18,7 @@ import { StardewWiki } from "@src/util/StardewWiki";
 import clsx from "clsx";
 import { useGoals } from "@src/hook/useGoals";
 import { AchievementDisplay } from "@src/component/AchievementDisplay";
+import { reduceIterator } from "@src/util/iterator.utils";
 
 interface Props {
   gameSave: GameSave;
@@ -66,23 +67,53 @@ export const ShippingPolySection = (props: Props) => {
         {farmers.map((farmer) => {
           const farmerAchievements = props.gameSave.achievements[farmer.name];
 
+          const totalCount = STARDEW_SHIPPABLE_POLYCROPS.size;
+
+          const shippedCount = reduceIterator(
+            STARDEW_SHIPPABLE_POLYCROPS.values(),
+            (shippableId, count) => {
+              if (farmer.shippedItems[shippableId]?.amount >= 15) {
+                return count + 1;
+              }
+              return count;
+            },
+            0
+          );
+
+          const shippedDistinctCount = reduceIterator(
+            STARDEW_SHIPPABLE_POLYCROPS.values(),
+            (shippableId, count) => {
+              if (farmer.shippedItems[shippableId]?.amount >= 1) {
+                return count + 1;
+              }
+              return count;
+            },
+            0
+          );
+
+          const shippedCropCount = reduceIterator(
+            STARDEW_SHIPPABLE_POLYCROPS.values(),
+            (shippableId, count) => {
+              if (farmer.shippedItems[shippableId]?.amount >= 1) {
+                return count + farmer.shippedItems[shippableId].amount;
+              }
+              return count;
+            },
+            0
+          );
+
           return (
             <div key={farmer.name}>
               <FarmerTag farmer={farmer} />
 
               <div className={styles.objectives}>
                 <Objective icon={<img height={16} src={binPng} />} done>
-                  Shipped{" "}
-                  <strong>{keys(farmer.shippedItems).length} different</strong>{" "}
-                  items.
+                  Shipped <strong>{shippedDistinctCount} different</strong>{" "}
+                  crops under Polycrop Category.
                 </Objective>
                 <Objective icon={<img height={16} src={binPng} />} done>
-                  Shipped{" "}
-                  <strong>
-                    {sum(values(farmer.shippedItems).map((s) => s.amount))}{" "}
-                    items
-                  </strong>{" "}
-                  in total.
+                  Shipped <strong>{shippedCropCount} crops</strong> in total
+                  under Polycrop Category.
                 </Objective>
               </div>
 
@@ -146,11 +177,11 @@ export const ShippingPolySection = (props: Props) => {
                   description={"ship 15 of each crop"}
                   achieved={farmerAchievements.polyculture.achieved}
                 >
-                  {!farmerAchievements.fullShipment.achieved && (
+                  {!farmerAchievements.polyculture.achieved && (
                     <>
-                      {/* {" "}
+                      {" "}
                       — Shipped <strong>{shippedCount}</strong> out of{" "}
-                      <strong>{totalCount}</strong> */}
+                      <strong>{totalCount}</strong> crops
                     </>
                   )}
                 </AchievementDisplay>

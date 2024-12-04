@@ -27,9 +27,7 @@ interface Props {
 export const CookingSection = (props: Props) => {
   const [expanded, setExpanded] = useState(false);
 
-  const { registerScrollableRef: addScrollableRef } = useSyncedScrollbar([
-    expanded,
-  ]);
+  const { registerScrollableRef } = useSyncedScrollbar([expanded]);
 
   const farmers = props.gameSave.getAllFarmers();
 
@@ -85,7 +83,7 @@ export const CookingSection = (props: Props) => {
               </div>
 
               <Scrollbox
-                scrollRef={addScrollableRef}
+                scrollRef={registerScrollableRef}
                 expanded={expanded}
                 onExpanded={setExpanded}
                 className={styles.recipesScrollbox}

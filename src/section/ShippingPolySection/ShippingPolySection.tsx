@@ -1,24 +1,27 @@
-import { SummarySection } from "@src/component/SummarySection";
 import binPng from "@src/assets/sprite/shipping/bin.png";
-import { GameSave } from "@src/gamesave/GameSave";
+import { AchievementDisplay } from "@src/component/AchievementDisplay";
 import { FarmersRow } from "@src/component/FarmersRow";
-import { useState } from "react";
-import { STARDEW_SHIPPABLE_POLYCROPS } from "@src/const/StardewShippables";
 import { FarmerTag } from "@src/component/FarmerTag";
-
-import styles from "./ShippingPolySection.module.scss";
+import { ImageObjective } from "@src/component/ImageObjective";
 import { Objective } from "@src/component/Objective";
 import { Scrollbox } from "@src/component/Scrollbox";
-import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
-import { keys, mapToObj, sum, times, values } from "remeda";
+import { SummarySection } from "@src/component/SummarySection";
 import { SHIPPABLE_SPRITES } from "@src/const/Assets";
-import { snakeCase } from "case-anything";
-import { ImageObjective } from "@src/component/ImageObjective";
-import { StardewWiki } from "@src/util/StardewWiki";
-import clsx from "clsx";
+import {
+  STARDEW_SHIPPABLE_POLYCROPS,
+  STARDEW_SHIPPABLES,
+} from "@src/const/StardewShippables";
+import { GameSave } from "@src/gamesave/GameSave";
 import { useGoals } from "@src/hook/useGoals";
-import { AchievementDisplay } from "@src/component/AchievementDisplay";
-import { reduceIterator } from "@src/util/iterator.utils";
+import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
+import { mapIterator, reduceIterator } from "@src/util/iterator.utils";
+import { StardewWiki } from "@src/util/StardewWiki";
+import { snakeCase } from "case-anything";
+import clsx from "clsx";
+import { useState } from "react";
+import { mapToObj, times } from "remeda";
+
+import styles from "./ShippingPolySection.module.scss";
 
 interface Props {
   gameSave: GameSave;
@@ -27,9 +30,7 @@ interface Props {
 export const ShippingPolySection = (props: Props) => {
   const [expanded, setExpanded] = useState(false);
 
-  const { registerScrollableRef: addScrollableRef } = useSyncedScrollbar([
-    expanded,
-  ]);
+  const { registerScrollableRef } = useSyncedScrollbar([expanded]);
 
   const farmers = props.gameSave.getAllFarmers();
 
@@ -109,16 +110,16 @@ export const ShippingPolySection = (props: Props) => {
               <div className={styles.objectives}>
                 <Objective icon={<img height={16} src={binPng} />} done>
                   Shipped <strong>{shippedDistinctCount} different</strong>{" "}
-                  crops under Polycrop Category.
+                  crops under Polyculture Category.
                 </Objective>
                 <Objective icon={<img height={16} src={binPng} />} done>
                   Shipped <strong>{shippedCropCount} crops</strong> in total
-                  under Polycrop Category.
+                  under Polyculture Category.
                 </Objective>
               </div>
 
               <Scrollbox
-                scrollRef={addScrollableRef}
+                scrollRef={registerScrollableRef}
                 expanded={expanded}
                 onExpanded={setExpanded}
                 className={styles.shippedItemsScrollbox}
@@ -129,45 +130,44 @@ export const ShippingPolySection = (props: Props) => {
                     expanded && styles.expanded
                   )}
                 >
-                  {[...STARDEW_SHIPPABLE_POLYCROPS.values()]
-                    .map(
-                      (shippableId) =>
-                        [shippableId, farmer.shippedItems[shippableId]] as const
-                    )
-                    .map(([shippableId, shippable]) => (
-                      <div
-                        key={shippableId.toString()}
-                        className={styles.shippedItem}
-                        data-done={
-                          farmer.shippedItems[shippableId]?.amount >= 15
-                        }
-                      >
-                        <a
-                          href={StardewWiki.getLink(shippable.name ?? "")}
-                          target="_blank"
+                  {mapIterator(
+                    STARDEW_SHIPPABLE_POLYCROPS.values(),
+                    (shippableId) => {
+                      const shippableName = STARDEW_SHIPPABLES[shippableId];
+                      const shipped = farmer.shippedItems[shippableId];
+
+                      return (
+                        <div
+                          key={shippableId.toString()}
+                          className={styles.shippedItem}
+                          data-done={
+                            farmer.shippedItems[shippableId]?.amount >= 15
+                          }
                         >
-                          <ImageObjective
-                            height={54}
-                            src={SHIPPABLE_SPRITES.resolve(
-                              snakeCase(
-                                shippable.name?.replace(/-/g, " ") ?? ""
-                              )
-                            )}
-                            title={shippable.name}
-                            done={
-                              farmer.shippedItems[shippableId]?.amount >= 15
-                            }
-                          />
-                        </a>
-                        {renderProgress(
-                          farmer.shippedItems[shippableId]?.amount
-                        )}
-                        <span>
-                          <em>{shippable.name} Shipped:</em>{" "}
-                          {farmer.shippedItems[shippableId]?.amount} / 15
-                        </span>
-                      </div>
-                    ))}
+                          <a
+                            href={StardewWiki.getLink(shippableName)}
+                            target="_blank"
+                          >
+                            <ImageObjective
+                              height={54}
+                              src={SHIPPABLE_SPRITES.resolve(
+                                snakeCase(
+                                  shippableName.replace(/-/g, " ") ?? ""
+                                )
+                              )}
+                              title={shippableName}
+                              done={shipped?.amount >= 15}
+                            />
+                          </a>
+                          {renderProgress(shipped?.amount ?? 0)}
+                          <span>
+                            <em>{shippableName} Shipped:</em> {shipped?.amount ?? 0} /
+                            15
+                          </span>
+                        </div>
+                      );
+                    }
+                  )}
                 </div>
               </Scrollbox>
 

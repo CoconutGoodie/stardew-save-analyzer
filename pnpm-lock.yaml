@@ -14,6 +14,9 @@ importers:
       clsx:
         specifier: ^2.1.0
         version: 2.1.0
+      color-scales:
+        specifier: ^3.0.2
+        version: 3.0.2
       immer:
         specifier: ^10.1.1
         version: 10.1.1
@@ -848,6 +851,9 @@ packages:
 
   color-name@1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
+
+  color-scales@3.0.2:
+    resolution: {integrity: sha512-AwX0kUE1Ps6Gv0b8if20DAfgchAs5HRmr+ulBbP4anqcBqUevaj8S9OWVFlYynsfuvB9GF1oSpCWOVNtox7aRA==}
 
   commander@7.2.0:
     resolution: {integrity: sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==}
@@ -2739,6 +2745,8 @@ snapshots:
   color-name@1.1.3: {}
 
   color-name@1.1.4: {}
+
+  color-scales@3.0.2: {}
 
   commander@7.2.0: {}
 

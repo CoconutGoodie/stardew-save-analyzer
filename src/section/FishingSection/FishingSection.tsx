@@ -35,9 +35,7 @@ export const FishingSection = (props: Props) => {
   const [compact, setCompact] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
-  const { registerScrollableRef: addScrollableRef } = useSyncedScrollbar([
-    expanded,
-  ]);
+  const { registerScrollableRef } = useSyncedScrollbar([expanded]);
 
   const farmers = props.gameSave.getAllFarmers();
 
@@ -96,7 +94,7 @@ export const FishingSection = (props: Props) => {
               </Objective>
 
               <Scrollbox
-                scrollRef={addScrollableRef}
+                scrollRef={registerScrollableRef}
                 expanded={expanded}
                 onExpanded={setExpanded}
                 className={styles.categoriesScrollbox}

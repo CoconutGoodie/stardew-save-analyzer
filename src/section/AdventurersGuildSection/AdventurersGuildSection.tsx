@@ -9,14 +9,14 @@ import { useGoals } from "@src/hook/useGoals";
 import { StardewWiki } from "@src/util/StardewWiki";
 import { mapToObj, values } from "remeda";
 
-import styles from "./AdventurersGuildSection.module.scss";
-import { STARDEW_ERADICATION_GOALS } from "@src/const/StardewMonsters";
-import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
-import { useState } from "react";
 import { Scrollbox } from "@src/component/Scrollbox";
 import { MONSTER_SPRITES } from "@src/const/Assets";
+import { STARDEW_ERADICATION_GOALS } from "@src/const/StardewMonsters";
+import { useSyncedScrollbar } from "@src/hook/useSyncedScrollbar";
 import { snakeCase } from "case-anything";
 import clsx from "clsx";
+import { useState } from "react";
+import styles from "./AdventurersGuildSection.module.scss";
 
 interface Props {
   gameSave: GameSave;
@@ -25,9 +25,7 @@ interface Props {
 export const AdventurersGuildSection = (props: Props) => {
   const [expanded, setExpanded] = useState(false);
 
-  const { registerScrollableRef: addScrollableRef } = useSyncedScrollbar([
-    expanded,
-  ]);
+  const { registerScrollableRef } = useSyncedScrollbar([expanded]);
 
   const farmers = props.gameSave.getAllFarmers();
 
@@ -107,7 +105,7 @@ export const AdventurersGuildSection = (props: Props) => {
               </div>
 
               <Scrollbox
-                scrollRef={addScrollableRef}
+                scrollRef={registerScrollableRef}
                 expanded={expanded}
                 onExpanded={setExpanded}
                 className={styles.monsterScrollbox}

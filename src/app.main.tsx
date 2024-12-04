@@ -30,6 +30,7 @@ import PatreonSvg from "@src/assets/social/patreon.svg?component";
 
 import "./style/style.scss";
 import { ShippingPolySection } from "@src/section/ShippingPolySection/ShippingPolySection";
+import { ShippingMonoSection } from "@src/section/ShippingMonoSection/ShippingMonoSection";
 
 function App() {
   const [gameSave, setGameSave] = useState<GameSave>();
@@ -185,9 +186,7 @@ function App() {
 
             <hr />
 
-            <SummarySection sectionTitle="Shipping - Monoculture" collapsable>
-              [WIP]
-            </SummarySection>
+            <ShippingMonoSection gameSave={gameSave} />
 
             <hr />
 

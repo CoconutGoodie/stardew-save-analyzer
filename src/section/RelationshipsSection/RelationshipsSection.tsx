@@ -35,9 +35,7 @@ function toHearts(points: number) {
 export const RelationshipsSection = (props: Props) => {
   const [expanded, setExpanded] = useState(false);
 
-  const { registerScrollableRef: addScrollableRef } = useSyncedScrollbar([
-    expanded,
-  ]);
+  const { registerScrollableRef } = useSyncedScrollbar([expanded]);
 
   const farmers = props.gameSave.getAllFarmers();
 
@@ -116,7 +114,7 @@ export const RelationshipsSection = (props: Props) => {
               </div>
 
               <Scrollbox
-                scrollRef={addScrollableRef}
+                scrollRef={registerScrollableRef}
                 expanded={expanded}
                 onExpanded={setExpanded}
                 className={styles.relationsScrollbox}

@@ -103,7 +103,30 @@ export const LoadSaveSection = (props: Props) => {
       <hr />
 
       <SummarySection sectionTitle="Instructions" collapsable>
-        [WIP] Instructions and FAQ here
+        <ol className={styles.instructions}>
+          <li>Foo bar baz</li>
+          <li>Foo bar baz</li>
+          <li>Foo bar baz</li>
+          <li>Foo bar baz</li>
+        </ol>
+
+        <div>
+          Default save file locations are:
+          <ul>
+            <li>
+              Windows: <code>%AppData%\StardewValley\Saves\</code>
+            </li>
+            <li>
+              Mac OSX & Linux: <code>~/.config/StardewValley/Saves/</code>
+            </li>
+            <li>
+              Proton Steam (Ubuntu):{" "}
+              <code>
+                ~/.steam/debian-installation/steamapps/compatdata/413150/pfx/drive_c/users/steamuser/AppData/Roaming/StardewValley/Saves/
+              </code>
+            </li>
+          </ul>
+        </div>
       </SummarySection>
     </>
   );

@@ -80,3 +80,19 @@
     color: #f5c47c;
   }
 }
+
+.instructions {
+  margin-left: 20px;
+
+  li {
+    margin-bottom: 8px;
+    padding: 0;
+    list-style-image: unset;
+
+    &::marker {
+      font-family: "Stardew Valley";
+      font-size: 30px;
+      color: #fff28f;
+    }
+  }
+}

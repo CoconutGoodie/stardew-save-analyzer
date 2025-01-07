@@ -38,6 +38,7 @@ export class GameSave {
   // public readonly slimeHutches;
 
   public readonly rarecrowsPlaced;
+  public readonly allRarecrows;
 
   public readonly specialOrders;
   public readonly qiSpecialOrders;
@@ -77,6 +78,7 @@ export class GameSave {
     this.fishPonds = this.calcFishPonds();
 
     this.rarecrowsPlaced = this.calcRarecrowsPlaced();
+    this.allRarecrows = this.calcAllRarecrows();
 
     this.specialOrders = this.calcSpecialOrders();
     this.qiSpecialOrders = this.calcQiSpecialOrders();
@@ -299,6 +301,41 @@ export class GameSave {
       .map((objectNode) => objectNode.query("itemId").text())
       .reduce((counts, rarecrowId) => {
         counts[rarecrowId]++;
+        return counts;
+      }, placedRarecrows);
+  }
+
+  private calcAllRarecrows() {
+    const placedRarecrows = mapToObj(STARDEW_RARECROW_IDS, (id) => [id, 0]);
+
+    const storedRarecrows = this.saveXml
+      .queryAll("item > value > Object")
+      .filter(
+        (buildingNode) => {
+          return buildingNode.element?.getAttribute("xsi:type") === "Chest"
+        }
+      )
+      .flatMap((chestNode) => {
+        const items = chestNode.queryAll("items");
+        if (items.length === 0) {
+          return [];
+        } else {
+          return chestNode.queryAll("items > Item")
+            .filter(
+              (objectNode) =>
+                objectNode.query("name").text() === "Rarecrow"
+            )
+        }
+      })
+      .map((objectNode) => objectNode.query("itemId").text())
+      .reduce((counts, rarecrowId) => {
+        counts[rarecrowId]++;
+        return counts;
+      }, placedRarecrows);        
+
+    return Object.entries(storedRarecrows)
+      .reduce((counts, [rarecrowId]) => {
+        counts[rarecrowId] += this.rarecrowsPlaced[rarecrowId];
         return counts;
       }, placedRarecrows);
   }

@@ -22,8 +22,9 @@ export const RarecrowSection = (props: Props) => {
   const allCollected =
     // Either everyone got the letter
     farmers.every((farmer) => farmer.rarecrowSocietyMailed) ||
-    // Or at least 1 of each Rarecrow is currently placed down across the Valley
-    values(props.gameSave.rarecrowsPlaced).every((v) => v > 0);
+    // Or at least 1 of each Rarecrow is either currently placed down across the Valley
+    // Or currently inside a chest across the Valley
+    values(props.gameSave.allRarecrows).every((v) => v > 0);
 
   const totalPlaced = sum(values(props.gameSave.rarecrowsPlaced));
 
@@ -89,7 +90,7 @@ export const RarecrowSection = (props: Props) => {
           >
             <ImageObjective
               done={
-                allCollected || props.gameSave.rarecrowsPlaced[rarecrowId] > 0
+                allCollected || props.gameSave.allRarecrows[rarecrowId] > 0
               }
               height={100}
               title={`Rarecrow #${index + 1}`}
@@ -149,7 +150,7 @@ export const RarecrowSection = (props: Props) => {
               {" "}
               — Completed{" "}
               {
-                values(props.gameSave.rarecrowsPlaced).filter((x) => x > 0)
+                values(props.gameSave.allRarecrows).filter((x) => x > 0)
                   .length
               }{" "}
               out of {STARDEW_RARECROW_IDS.length}

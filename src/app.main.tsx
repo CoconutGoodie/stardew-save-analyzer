@@ -64,6 +64,10 @@ function App() {
               .{"\n"}It is an independent, open-source, fan-made tool crafted by{" "}
               <a target="_blank" href="https://github.com/iGoodie">
                 iGoodie
+              </a>{" "}
+              and{" "}
+              <a target="_blank" href="https://github.com/sedasen">
+                CoconutOrange
               </a>
               . Its aim is to provide players with helpful resources and
               utilities, purely out of my passion for the game.
@@ -112,10 +116,13 @@ function App() {
 
             <OverviewSection gameSave={gameSave} />
 
-            <SummarySection className="twoSections">
-              <MoneySection gameSave={gameSave} />
-              <FarmBuildingsSection gameSave={gameSave} />
-            </SummarySection>
+            <hr />
+
+            <MoneySection gameSave={gameSave} />
+
+            <hr />
+
+            <FarmBuildingsSection gameSave={gameSave} />
 
             <hr />
 

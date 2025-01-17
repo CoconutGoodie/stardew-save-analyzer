@@ -15,6 +15,12 @@
   gap: 20px;
 }
 
+.buildings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
 .building {
   display: grid;
   grid-template-columns: 70px 1fr;

@@ -31,7 +31,7 @@ export const FarmBuildingsSection = (props: Props) => {
     ) +
     sum(props.gameSave.fishPonds.map((pond) => pond.count));
 
-  const partsJsx = [
+  const buildingJsx = [
     ...props.gameSave.animalBuildings.map((building, index) => (
       <BuildingPart
         key={`building-${index}`}
@@ -111,7 +111,7 @@ export const FarmBuildingsSection = (props: Props) => {
         expanded={expanded}
         onExpanded={setExpanded}
       >
-        {partsJsx}
+        <div className={styles.buildings}>{buildingJsx}{buildingJsx}</div>
       </Scrollbox>
     </SummarySection>
   );

@@ -199,6 +199,10 @@
 .twoSections {
   display: flex;
   gap: 80px;
+
+  & > :nth-child(1) {
+    flex-shrink: 0;
+  }
 }
 
 .specialOrders {

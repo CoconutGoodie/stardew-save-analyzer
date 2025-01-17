@@ -84,9 +84,15 @@ export const FarmBuildingsSection = (props: Props) => {
         animals={props.gameSave.pets.map((pet) => ({
           name: pet.name,
           lovePercentage: pet.love / 1000,
-          wikiUrl: StardewWiki.getLink(pet.type),
+          //Website doesn't redirect /Turtle to /Animals#Turtle
+          wikiUrl: pet.type == "Turtle"
+            ? "https://stardewvalleywiki.com/Animals#Turtle" 
+            : StardewWiki.getLink(pet.type),
+          //Turtles don't have a breed
           iconSrc: FARM_ANIMALS_SPRITES.resolve(
-            snakeCase(pet.type) + "_" + pet.breed
+            pet.type == "Turtle"
+            ? "turtle"
+            : snakeCase(pet.type) + "_" + pet.breed
           ),
           iconHeight: 50,
         }))}

@@ -51,10 +51,12 @@ export const FarmBuildingsSection = (props: Props) => {
     ...props.gameSave.fishPonds.map((pond, index) => (
       <BuildingPart
         key={`pond-${index}`}
-        name={`${pond.fish} Pond`}
+        name={`${pond.fish ?? "Empty"} Pond`}
         capacity={pond.capacity}
         iconSrc={FARM_BUILDING_SPRITES.resolve("fish_pond")}
-        emptyIconSrc={FISH_SPRITES.resolve(snakeCase(pond.fish))}
+        emptyIconSrc={
+          pond.fish == null ? "" : FISH_SPRITES.resolve(snakeCase(pond.fish))
+        }
         animals={times(pond.count, () => ({
           iconHeight: 40,
           iconSrc: FISH_SPRITES.resolve(snakeCase(pond.fish)),
@@ -148,7 +150,7 @@ const BuildingPart = (props: {
       <div>
         <div className={styles.info}>
           <span>{props.name}</span>
-          {props.capacity && (
+          {props.capacity != null && (
             <span>
               ({props.animals.length} / {props.capacity})
             </span>

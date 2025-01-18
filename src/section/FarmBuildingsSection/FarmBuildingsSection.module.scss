@@ -9,6 +9,7 @@
   margin: 10px 0;
   padding: 20px;
   background: linear-gradient(-10deg, #110c24, #060216);
+  background-attachment: fixed;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -17,34 +18,31 @@
 
 .buildings {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  // grid-template-columns: 1fr 1fr;
+  gap: 24px 48px;
 }
 
 .building {
   display: grid;
-  grid-template-columns: 70px 1fr;
+  grid-template-columns: 100px 1fr;
   align-items: center;
   gap: 24px;
 
-  &:not(:last-child) {
-    padding-bottom: 20px;
-    border-bottom: 1px solid #130c30;
+  & > :nth-child(1) {
+    align-self: flex-start;
   }
 
   .info {
-    align-self: flex-start;
+    margin-bottom: 4px;
     display: flex;
-    flex-direction: column;
-    text-align: center;
-    gap: 5px;
+    align-items: center;
+    gap: 10px;
     font-family: "Stardew Valley";
-    font-size: 16px;
-    text-align: center;
+    font-size: 25px;
 
-    & > :nth-child(3) {
+    & > :nth-child(2) {
       color: #f9b446;
-      font-size: 14px;
+      font-size: 16px;
     }
   }
 }

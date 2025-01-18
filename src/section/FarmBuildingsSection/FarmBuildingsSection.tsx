@@ -85,14 +85,15 @@ export const FarmBuildingsSection = (props: Props) => {
           name: pet.name,
           lovePercentage: pet.love / 1000,
           //Website doesn't redirect /Turtle to /Animals#Turtle
-          wikiUrl: pet.type == "Turtle"
-            ? "https://stardewvalleywiki.com/Animals#Turtle" 
-            : StardewWiki.getLink(pet.type),
+          wikiUrl:
+            pet.type == "Turtle"
+              ? "https://stardewvalleywiki.com/Animals#Turtle"
+              : StardewWiki.getLink(pet.type),
           //Turtles don't have a breed
           iconSrc: FARM_ANIMALS_SPRITES.resolve(
             pet.type == "Turtle"
-            ? "turtle"
-            : snakeCase(pet.type) + "_" + pet.breed
+              ? "turtle"
+              : snakeCase(pet.type) + "_" + pet.breed
           ),
           iconHeight: 50,
         }))}
@@ -109,6 +110,8 @@ export const FarmBuildingsSection = (props: Props) => {
       collapsable
     >
       <div>
+        {/* TODO: Use bullets used in other sections for consistency */}
+        {/* TODO: Add more statics */}
         <strong>{props.gameSave.farmName} Farm</strong> is home to{" "}
         <strong>{totalAnimalCount}</strong> animal(s).
       </div>
@@ -117,7 +120,7 @@ export const FarmBuildingsSection = (props: Props) => {
         expanded={expanded}
         onExpanded={setExpanded}
       >
-        <div className={styles.buildings}>{buildingJsx}{buildingJsx}</div>
+        <div className={styles.buildings}>{buildingJsx}</div>
       </Scrollbox>
     </SummarySection>
   );
@@ -140,48 +143,52 @@ const BuildingPart = (props: {
 }) => {
   return (
     <div key="pets" className={styles.building}>
-      <div className={styles.info}>
-        <img width={70} src={props.iconSrc} />
-        <span>{props.name}</span>
-        {props.capacity && (
-          <span>
-            {props.animals.length} / {props.capacity}
-          </span>
-        )}
-      </div>
-      <div className={styles.animals}>
-        {props.animals.map((animal, i) => (
-          <a
-            key={animal.name + "_" + i}
-            target="_blank"
-            href={animal.wikiUrl}
-            className={styles.animal}
-          >
-            {animal.name && <span>{animal.name}</span>}
-            <img height={animal.iconHeight} src={animal.iconSrc} />
-            {animal.lovePercentage != null && (
-              <span>
-                <img height={12} src={heartFilledPng} />{" "}
-                {Math.floor(animal.lovePercentage * 100)}%
-              </span>
-            )}
-          </a>
-        ))}
+      <img width="100%" src={props.iconSrc} />
 
-        {props.capacity != null &&
-          times(Math.max(0, props.capacity - props.animals.length), (i) => (
-            <div
-              key={"empty-" + i}
-              className={clsx(styles.animal, styles.empty)}
+      <div>
+        <div className={styles.info}>
+          <span>{props.name}</span>
+          {props.capacity && (
+            <span>
+              ({props.animals.length} / {props.capacity})
+            </span>
+          )}
+        </div>
+
+        <div className={styles.animals}>
+          {props.animals.map((animal, i) => (
+            <a
+              key={animal.name + "_" + i}
+              target="_blank"
+              href={animal.wikiUrl}
+              className={styles.animal}
             >
-              <img
-                height={32}
-                src={
-                  props.emptyIconSrc ?? FARM_ANIMALS_SPRITES.resolve("empty")
-                }
-              />
-            </div>
+              {animal.name && <span>{animal.name}</span>}
+              <img height={animal.iconHeight} src={animal.iconSrc} />
+              {animal.lovePercentage != null && (
+                <span>
+                  <img height={12} src={heartFilledPng} />{" "}
+                  {Math.floor(animal.lovePercentage * 100)}%
+                </span>
+              )}
+            </a>
           ))}
+
+          {props.capacity != null &&
+            times(Math.max(0, props.capacity - props.animals.length), (i) => (
+              <div
+                key={"empty-" + i}
+                className={clsx(styles.animal, styles.empty)}
+              >
+                <img
+                  height={32}
+                  src={
+                    props.emptyIconSrc ?? FARM_ANIMALS_SPRITES.resolve("empty")
+                  }
+                />
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );

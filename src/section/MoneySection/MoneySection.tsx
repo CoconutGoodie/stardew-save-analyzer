@@ -33,6 +33,8 @@ export const MoneySection = (props: Props) => {
     },
   });
 
+  // TODO: Add separate wallets spot. And show individual farmers
+
   return (
     <SummarySection
       id="money"

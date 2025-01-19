@@ -5,12 +5,28 @@
   overflow-x: auto;
 
   &[data-has-scrollbars="true"] {
-    padding-bottom: 28px;
+    padding-bottom: 36px;
   }
 
   & > * {
     width: 500px;
     min-width: 500px;
     max-width: 500px;
+  }
+
+  // TODO: Replace with something better
+  &::-webkit-scrollbar {
+    height: 12px;
+
+    &-track {
+      background: #130d29;
+      border-radius: 5px;
+    }
+
+    &-thumb {
+      background: linear-gradient(to right, #808080, #a7a7a7);
+      background: linear-gradient(to right, #b34628, #9c3013);
+      border-radius: 5px;
+    }
   }
 }

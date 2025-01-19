@@ -86,18 +86,24 @@ export const HelpWantedSection = (props: Props) => {
               </InfoText>
 
               <div className={styles.achievements}>
-                {farmerGoals.achievements!.map((achievement) => (
-                  <AchievementDisplay
-                    key={achievement.title}
-                    title={achievement.title}
-                    description={`complete ${achievement.goal} help requests`}
-                    achieved={farmer.totalCompletedQuests >= 10}
-                  >
-                    {!achievement.achieved && (
-                      <> — Helped {achievement.completed} out of 10</>
-                    )}
-                  </AchievementDisplay>
-                ))}
+                {goals.individuals[farmer.name].achievements.map(
+                  (achievement) => (
+                    <AchievementDisplay
+                      key={achievement.title}
+                      title={achievement.title}
+                      description={`complete ${achievement.goal} help requests`}
+                      achieved={achievement.achieved}
+                    >
+                      {!achievement.achieved && (
+                        <>
+                          {" "}
+                          — Helped {achievement.completed} out of{" "}
+                          {achievement.goal}
+                        </>
+                      )}
+                    </AchievementDisplay>
+                  )
+                )}
               </div>
             </div>
           );

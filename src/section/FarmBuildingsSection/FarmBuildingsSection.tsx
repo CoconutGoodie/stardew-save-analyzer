@@ -165,8 +165,8 @@ const BuildingPart = (props: {
               href={animal.wikiUrl}
               className={styles.animal}
             >
-              {animal.name && <span>{animal.name}</span>}
               <img height={animal.iconHeight} src={animal.iconSrc} />
+              {animal.name && <span>{animal.name}</span>}
               {animal.lovePercentage != null && (
                 <span>
                   <img height={12} src={heartFilledPng} />{" "}

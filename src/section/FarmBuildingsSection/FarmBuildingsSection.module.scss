@@ -74,8 +74,11 @@
     object-fit: contain;
   }
 
-  & > :nth-child(3) {
+  & > :nth-child(2) {
     margin-top: 5px;
+  }
+
+  & > :nth-child(3) {
     color: #dd5f36;
   }
 

@@ -1,0 +1,99 @@
+@use "~frontend/style/base/mixin" as mixin;
+
+.section {
+  min-width: 600px;
+}
+
+.stats {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.scrollbox {
+  --height: 250px;
+  margin: 10px 0;
+  padding: 20px;
+  background: linear-gradient(-10deg, #110c24, #060216);
+  background-attachment: fixed;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.buildings {
+  display: grid;
+  // grid-template-columns: 1fr 1fr;
+  gap: 24px 48px;
+}
+
+.building {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  align-items: center;
+  gap: 24px;
+
+  &:not(:last-child) {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #1c1731;
+  }
+
+  & > :nth-child(1) {
+    align-self: flex-start;
+  }
+
+  .info {
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: "Stardew Valley";
+    font-size: 25px;
+
+    & > :nth-child(2) {
+      color: #f9b446;
+      font-size: 16px;
+    }
+  }
+}
+
+.animals {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.animal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: "Stardew Valley";
+  font-size: 16px;
+  text-align: center;
+
+  &.empty {
+    opacity: 0.25;
+  }
+
+  & > img {
+    object-fit: contain;
+  }
+
+  & > :nth-child(2) {
+    margin-top: 5px;
+  }
+
+  & > :nth-child(3) {
+    color: #dd5f36;
+  }
+
+  &:hover {
+    text-decoration: unset;
+
+    &:not(.empty) > img {
+      @include mixin.shadowOutline(2);
+    }
+  }
+}

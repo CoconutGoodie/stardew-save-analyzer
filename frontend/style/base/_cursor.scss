@@ -1,0 +1,33 @@
+@mixin cursorDefault() {
+  cursor: url("~frontend/assets/cursor/default.png") 1 1, auto;
+}
+
+@mixin cursorPointer() {
+  cursor: url("~frontend/assets/cursor/pointer.png") 1 1, auto;
+}
+
+#root {
+  @include cursorDefault();
+}
+
+a,
+button,
+label:has(input[type="file"]) {
+  &:hover {
+    @include cursorPointer();
+  }
+}
+
+::-webkit-scrollbar {
+  &-corner {
+    @include cursorPointer();
+  }
+
+  &-track {
+    @include cursorPointer();
+  }
+
+  &-thumb {
+    @include cursorPointer();
+  }
+}

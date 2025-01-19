@@ -20,7 +20,7 @@ export const QiChallengesSection = (props: Props) => {
   const { goals, allDone } = useGoals({
     global: {
       objectives: {
-        walnutRoomDiscovered: true, // TODO
+        walnutRoomDiscovered: false, // TODO
         orderCompletion: {
           current: props.gameSave.qiSpecialOrders.filter(
             (order) => order.completed

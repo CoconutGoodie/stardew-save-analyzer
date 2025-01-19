@@ -1,6 +1,6 @@
-@import "vendor/normalize";
+@forward "vendor/normalize";
 
-@import "base/base";
-@import "base/scrollbar";
-@import "base/typography";
-@import "base/cursor";
+@forward "base/base";
+@forward "base/scrollbar";
+@forward "base/typography";
+@forward "base/cursor";

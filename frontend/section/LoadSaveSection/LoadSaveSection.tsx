@@ -1,42 +1,20 @@
-import clockPng from "~frontend/assets/icon/clock.png";
+import { useState } from "react";
+import { FileUploader as _FileUploader } from "react-drag-drop-files";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { DEMO_SAVES } from "~frontend/const/Assets";
 import { GameSave } from "~frontend/gamesave/GameSave";
 import { XMLNode } from "~frontend/util/XMLNode";
-import { useState } from "react";
-import { FileUploader } from "react-drag-drop-files";
-import type FileUploaderSrc from "react-drag-drop-files/dist/src/FileUploader";
+
+import clockPng from "~frontend/assets/icon/clock.png";
 
 import styles from "./LoadSaveSection.module.scss";
 
-const FileUploaderTyped: typeof FileUploaderSrc = FileUploader;
+// XXX Workaround: react-drag-drop-files exports malformed types
+import type FileUploaderSrc from "react-drag-drop-files/dist/src/FileUploader";
+const FileUploader: typeof FileUploaderSrc = _FileUploader;
 
 interface Props {
   onSelected: (gameSave: GameSave) => void;
-}
-
-function parseXML(raw: string): XMLDocument {
-  return new DOMParser().parseFromString(raw, "text/xml");
-}
-
-async function parseXMLFromFile(file: File) {
-  return new Promise<XMLDocument>((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      try {
-        resolve(parseXML(reader.result as string));
-      } catch (error) {
-        reject(error);
-      }
-    };
-
-    reader.onerror = () => {
-      reject(new Error("Error occurred while reading the file."));
-    };
-
-    reader.readAsText(file);
-  });
 }
 
 export const LoadSaveSection = (props: Props) => {
@@ -46,8 +24,7 @@ export const LoadSaveSection = (props: Props) => {
   const loadDemo = async (version: string) => {
     setLoading(true);
     const raw = await DEMO_SAVES.resolve(version)();
-    const xml = parseXML(raw ?? "");
-    const saveXml = new XMLNode(xml.documentElement);
+    const saveXml = XMLNode.fromText(raw ?? "");
     props.onSelected(new GameSave(saveXml));
     setLoading(false);
   };
@@ -56,8 +33,7 @@ export const LoadSaveSection = (props: Props) => {
     if (Array.isArray(file)) return;
 
     setLoading(true);
-    const xml = await parseXMLFromFile(file);
-    const saveXml = new XMLNode(xml.documentElement);
+    const saveXml = await XMLNode.fromFile(file);
     props.onSelected(new GameSave(saveXml));
     setLoading(false);
   };
@@ -65,7 +41,7 @@ export const LoadSaveSection = (props: Props) => {
   return (
     <>
       <SummarySection>
-        <FileUploaderTyped
+        <FileUploader
           classes={styles.fileUpload}
           multiple={false}
           handleChange={uploadFile}
@@ -77,7 +53,7 @@ export const LoadSaveSection = (props: Props) => {
           ) : (
             <div>Upload your own save file</div>
           )}
-        </FileUploaderTyped>
+        </FileUploader>
 
         <span className={styles.or}>OR</span>
 

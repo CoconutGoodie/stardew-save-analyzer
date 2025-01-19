@@ -1,4 +1,4 @@
-@use "src/style/base/breakpoints" as *;
+@use "/frontend/style/base/breakpoints" as *;
 
 .fileUpload {
   width: 100%;
@@ -13,7 +13,7 @@
   color: #fff28f;
   background: none;
 
-  & + input {
+  input[type="file"] {
     display: none;
   }
 }

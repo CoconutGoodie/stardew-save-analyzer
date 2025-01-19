@@ -1,12 +1,12 @@
 import { PropsWithChildren } from "react";
-import { GameSave } from "~frontend/gamesave/GameSave";
 import { KnownElements } from "~frontend/const/KnownElements";
+import { GameSave } from "~frontend/gamesave/GameSave";
 
+import questPng from "~frontend/assets/icon/exclamation.png";
+import logoPng from "~frontend/assets/logo.png";
 import BuyMeACoffeeSvg from "~frontend/assets/social/buy-me-a-coffee.svg?component";
 import GithubSvg from "~frontend/assets/social/github.svg?component";
 import PatreonSvg from "~frontend/assets/social/patreon.svg?component";
-import logoPng from "~frontend/assets/logo.png";
-import questPng from "~frontend/assets/icon/exclamation.png";
 
 import styles from "./MainLayout.module.scss";
 

@@ -1,3 +1,9 @@
+import { LoadSaveSection } from "~frontend/section/LoadSaveSection/LoadSaveSection";
+
 export default function IndexPage() {
-  return <div></div>;
+  return (
+    <>
+      <LoadSaveSection onSelected={() => {}} />
+    </>
+  );
 }

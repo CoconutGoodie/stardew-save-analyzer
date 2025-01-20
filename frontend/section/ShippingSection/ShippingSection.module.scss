@@ -27,7 +27,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: url("/src/assets/sprite/shipping/bin-open.png");
+    background: url("/frontend/assets/sprite/shipping/bin-open.png");
     background-size: 100% 100%;
     image-rendering: pixelated;
     font-size: 45px;
@@ -46,7 +46,7 @@
   background: rgba(#7a5757, 0.5);
   border-radius: 4px;
 
-  background: url("/src/assets/sprite/shipping/item-background.png");
+  background: url("/frontend/assets/sprite/shipping/item-background.png");
   background-size: 32px;
 
   &.notShipped {

@@ -1,0 +1,177 @@
+import { useEffect } from "react";
+import { navigate } from "vike/client/router";
+import { useGameSaveStore } from "~frontend/store/useGameSaveStore";
+
+import { SummarySection } from "~frontend/component/SummarySection";
+import { TableOfContents } from "~frontend/component/TableOfContents/TableOfContents";
+import { AdventurersGuildSection } from "~frontend/section/AdventurersGuildSection/AdventurersGuildSection";
+import { CookingSection } from "~frontend/section/CookingSection/CookingSection";
+import { CraftingSection } from "~frontend/section/CraftingSection/CraftingSection";
+import { FarmBuildingsSection } from "~frontend/section/FarmBuildingsSection/FarmBuildingsSection";
+import { FishingSection } from "~frontend/section/FishingSection/FishingSection";
+import { GrandpasEvaluationsSection } from "~frontend/section/GrandpasSection/GrandpasSection";
+import { HelpWantedSection } from "~frontend/section/HelpWantedSection/HelpWantedSection";
+import { MasteriesSection } from "~frontend/section/MasteriesSection/MasteriesSection";
+import { MoneySection } from "~frontend/section/MoneySection/MoneySection";
+import { MuseumSection } from "~frontend/section/MuseumSection/MuseumSection";
+import { OverviewSection } from "~frontend/section/OverviewSection/OverviewSection";
+import { QiChallengesSection } from "~frontend/section/QiChallengesSection/QiChallengesSection";
+import { RarecrowSection } from "~frontend/section/RarecrowsSection/RarecrowsSection";
+import { RelationshipsSection } from "~frontend/section/RelationshipsSection/RelationshipsSection";
+import { ShippingSection } from "~frontend/section/ShippingSection/ShippingSection";
+import { SkillsSection } from "~frontend/section/SkillsSection/SkillsSection";
+import { SpecialOrdersSection } from "~frontend/section/SpecialOrdersSection/SpecialOrdersSection";
+import { StardropsSection } from "~frontend/section/StardropsSection/StardropsSection";
+import { ShippingPolySection } from "~frontend/section/ShippingPolySection/ShippingPolySection";
+import { ShippingMonoSection } from "~frontend/section/ShippingMonoSection/ShippingMonoSection";
+
+export default function AnalyzePage() {
+  const { gameSave } = useGameSaveStore();
+
+  useEffect(() => {
+    if (!gameSave) {
+      navigate("/");
+    }
+  }, []);
+
+  if (!gameSave) return <h1>Checking for Game Save...</h1>;
+
+  return (
+    <>
+      <TableOfContents />
+
+      <OverviewSection gameSave={gameSave} />
+
+      <hr />
+
+      <MoneySection gameSave={gameSave} />
+
+      <hr />
+
+      <FarmBuildingsSection gameSave={gameSave} />
+
+      <hr />
+
+      <SkillsSection gameSave={gameSave} />
+
+      <hr />
+
+      <MasteriesSection gameSave={gameSave} />
+
+      <hr />
+
+      <HelpWantedSection gameSave={gameSave} />
+
+      <hr />
+
+      <SpecialOrdersSection gameSave={gameSave} />
+
+      <hr />
+
+      <QiChallengesSection gameSave={gameSave} />
+
+      <hr />
+
+      <RarecrowSection gameSave={gameSave} />
+
+      <hr />
+
+      <SummarySection sectionTitle="Special Items & Powers [WIP]" collapsable>
+        [WIP] Special Items & Powers here
+      </SummarySection>
+
+      <hr />
+
+      <RelationshipsSection gameSave={gameSave} />
+
+      <hr />
+
+      <SummarySection sectionTitle="House & Family [WIP]" collapsable>
+        [WIP] House & Family here
+      </SummarySection>
+
+      <hr />
+
+      <FishingSection gameSave={gameSave} />
+
+      <hr />
+
+      <CraftingSection gameSave={gameSave} />
+
+      <hr />
+
+      <CookingSection gameSave={gameSave} />
+
+      <hr />
+
+      <AdventurersGuildSection gameSave={gameSave} />
+
+      <hr />
+
+      <ShippingSection gameSave={gameSave} />
+
+      <hr />
+
+      <ShippingPolySection gameSave={gameSave} />
+
+      <hr />
+
+      <ShippingMonoSection gameSave={gameSave} />
+
+      <hr />
+
+      <SummarySection sectionTitle="Forest Neightbors [WIP]" collapsable>
+        [WIP] Forest Neightbors & Pedro here
+      </SummarySection>
+
+      <hr />
+
+      <StardropsSection gameSave={gameSave} />
+
+      <hr />
+
+      <MuseumSection gameSave={gameSave} />
+
+      <hr />
+
+      <GrandpasEvaluationsSection gameSave={gameSave} />
+
+      <hr />
+
+      <SummarySection
+        sectionTitle="Community Center / Joja Membership [WIP]"
+        collapsable
+      >
+        [WIP] Community Center / Joja Membership here
+      </SummarySection>
+
+      <hr />
+
+      <SummarySection sectionTitle="Secret Notes [WIP]" collapsable>
+        [WIP] Secret Notes here
+      </SummarySection>
+
+      <hr />
+
+      <SummarySection sectionTitle="Ginger Island [WIP]" collapsable>
+        [WIP] Ginger Island here
+      </SummarySection>
+
+      <hr />
+
+      <SummarySection sectionTitle="Perfection Tracker [WIP]" collapsable>
+        [WIP] Perfection Tracker Analysis here
+      </SummarySection>
+
+      <hr />
+
+      <SummarySection sectionTitle="Todo List">
+        <ul>
+          <li>Tooltips Component</li>
+          <li>Support "Separate Wallets"</li>
+          <li>Fix main app layout</li>
+        </ul>
+      </SummarySection>
+    </>
+  );
+}

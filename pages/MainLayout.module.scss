@@ -19,6 +19,18 @@
   color: #ceb07e;
   z-index: 0;
 
+  a {
+    display: flex;
+
+    &:hover {
+      filter: brightness(1.2);
+    }
+    
+    &:active {
+      filter: brightness(0.8);
+    }
+  }
+
   &::before {
     content: "";
     position: absolute;

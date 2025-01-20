@@ -18,7 +18,9 @@ export function MainLayout(props: Props) {
   return (
     <main className={styles.main}>
       <header className={styles.header}>
-        <img width={350} src={logoPng} />
+        <a href="/">
+          <img width={350} src={logoPng} />
+        </a>
         <span>last updated for v{GameSave.compatibleVersion}</span>
       </header>
 

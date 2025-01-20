@@ -63,8 +63,6 @@ export const ShippingSection = (props: Props) => {
 
           const completePercentage = shippedCount / totalCount;
 
-          console.log(farmer.shippedItems);
-
           return (
             <div key={farmer.name}>
               <FarmerTag farmer={farmer} />

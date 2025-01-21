@@ -158,8 +158,8 @@ export default function AnalyzePage() {
 
       <hr />
 
-      <SummarySection sectionTitle="Ginger Island [WIP]" collapsable>
-        [WIP] Ginger Island here
+      <SummarySection sectionTitle="Ginger Island Upgrades [WIP]" collapsable>
+        [WIP] Ginger Island Upgrades here
       </SummarySection>
 
       <hr />
@@ -172,7 +172,6 @@ export default function AnalyzePage() {
 
       <SummarySection sectionTitle="Todo List">
         <ul>
-          <li>Tooltips Component</li>
           <li>Support "Separate Wallets"</li>
           <li>Fix main app layout</li>
         </ul>

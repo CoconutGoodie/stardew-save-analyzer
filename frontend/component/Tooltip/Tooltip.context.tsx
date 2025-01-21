@@ -20,19 +20,21 @@ export const { Provider: TooltipProvider, useContext: useTooltip } =
 
     const [open, setOpen] = useState(props.openInitially);
 
+    const padding = 10;
+
     const data = useFloating({
       placement: placement ?? "top",
       open,
       onOpenChange: setOpen,
       whileElementsMounted: autoUpdate,
       middleware: [
-        offset(5),
+        offset(padding),
         flip({
           crossAxis: placement.includes("-"),
           fallbackAxisSideDirection: "start",
-          padding: 5,
+          padding,
         }),
-        shift({ padding: 5 }),
+        shift({ padding }),
       ],
     });
 

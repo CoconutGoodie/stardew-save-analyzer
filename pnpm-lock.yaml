@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@floating-ui/react':
+        specifier: ^0.27.3
+        version: 0.27.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@nestjs/common':
         specifier: ^10.4.15
         version: 10.4.15(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -38,6 +41,9 @@ importers:
       react:
         specifier: ^18.3.1
         version: 18.3.1
+      react-compound-composer:
+        specifier: ^1.5.1
+        version: 1.5.1
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
@@ -538,6 +544,27 @@ packages:
 
   '@fastify/deepmerge@2.0.1':
     resolution: {integrity: sha512-hx+wJQr9Ph1hY/dyzY0SxqjumMyqZDlIF6oe71dpRKDHUg7dFQfjG94qqwQ274XRjmUrwKiYadex8XplNHx3CA==}
+
+  '@floating-ui/core@1.6.9':
+    resolution: {integrity: sha512-uMXCuQ3BItDUbAMhIXw7UPXRfAlOAvZzdK9BWpE60MCn+Svt3aLn9jsPTi/WNGlRUu2uI0v5S7JiIUsbsvh3fw==}
+
+  '@floating-ui/dom@1.6.13':
+    resolution: {integrity: sha512-umqzocjDgNRGTuO7Q8CU32dkHkECqI8ZdMZ5Swb6QAM0t5rnlrN3lGo1hdpscRd3WS8T6DKYK4ephgIH9iRh3w==}
+
+  '@floating-ui/react-dom@2.1.2':
+    resolution: {integrity: sha512-06okr5cgPzMNBy+Ycse2A6udMi4bqwW/zgBF/rwjcNqWkyr82Mcg8b0vjX8OJpZFy/FKjJmw6wV7t44kK6kW7A==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+
+  '@floating-ui/react@0.27.3':
+    resolution: {integrity: sha512-CLHnes3ixIFFKVQDdICjel8muhFLOBdQH7fgtHNPY8UbCNqbeKZ262G7K66lGQOUQWWnYocf7ZbUsLJgGfsLHg==}
+    peerDependencies:
+      react: '>=17.0.0'
+      react-dom: '>=17.0.0'
+
+  '@floating-ui/utils@0.2.9':
+    resolution: {integrity: sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg==}
 
   '@humanwhocodes/config-array@0.13.0':
     resolution: {integrity: sha512-DZLEEqFWQFiyK6h5YIeynKx7JlvCYWL0cImfSRXZ9l4Sg2efkFGTuFf6vzXjK1cq6IYkU+Eg/JizXw+TD2vRNw==}
@@ -2296,6 +2323,9 @@ packages:
     resolution: {integrity: sha512-8zGqypfENjCIqGhgXToC8aB2r7YrBX+AQAfIPs/Mlk+BtPTztOvTS01NRW/3Eh60J+a48lt8qsCzirQ6loCVfA==}
     engines: {node: '>= 0.8'}
 
+  react-compound-composer@1.5.1:
+    resolution: {integrity: sha512-83UTHYRDd6LZcyajzGfM/hCUhxuX9dUJPCfAh5O5Ij72beSr8OA8KQ1RlEe47TW2e5g+1Xz9ZKMYJZPRCAMpkQ==}
+
   react-dom@18.3.1:
     resolution: {integrity: sha512-5m4nQKp+rZRb09LNH59GM4BxTh9251/ylbKIbpe7TpGxfJ+9kv6BLkLBXIjjspbgbnIBNqlI23tRnTWT0snUIw==}
     peerDependencies:
@@ -2563,6 +2593,9 @@ packages:
     resolution: {integrity: sha512-OoohrmuUlBs8B8o6MB2Aevn+pRIH9zDALSR+6hhqVfa6fRwG/Qw9VUMSMW9VNg2CFc/MTIfabtdOVl9ODIJjpw==}
     engines: {node: '>=14.0.0'}
     hasBin: true
+
+  tabbable@6.2.0:
+    resolution: {integrity: sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==}
 
   text-table@0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
@@ -3125,6 +3158,31 @@ snapshots:
   '@eslint/js@8.57.1': {}
 
   '@fastify/deepmerge@2.0.1': {}
+
+  '@floating-ui/core@1.6.9':
+    dependencies:
+      '@floating-ui/utils': 0.2.9
+
+  '@floating-ui/dom@1.6.13':
+    dependencies:
+      '@floating-ui/core': 1.6.9
+      '@floating-ui/utils': 0.2.9
+
+  '@floating-ui/react-dom@2.1.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@floating-ui/dom': 1.6.13
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
+  '@floating-ui/react@0.27.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@floating-ui/react-dom': 2.1.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@floating-ui/utils': 0.2.9
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      tabbable: 6.2.0
+
+  '@floating-ui/utils@0.2.9': {}
 
   '@humanwhocodes/config-array@0.13.0':
     dependencies:
@@ -5038,6 +5096,10 @@ snapshots:
       iconv-lite: 0.4.24
       unpipe: 1.0.0
 
+  react-compound-composer@1.5.1:
+    dependencies:
+      react: 18.3.1
+
   react-dom@18.3.1(react@18.3.1):
     dependencies:
       loose-envify: 1.4.0
@@ -5407,6 +5469,8 @@ snapshots:
       css-what: 6.1.0
       csso: 5.0.5
       picocolors: 1.1.1
+
+  tabbable@6.2.0: {}
 
   text-table@0.2.0: {}
 

@@ -9,6 +9,7 @@ import { CookingSection } from "~frontend/section/CookingSection/CookingSection"
 import { CraftingSection } from "~frontend/section/CraftingSection/CraftingSection";
 import { FarmBuildingsSection } from "~frontend/section/FarmBuildingsSection/FarmBuildingsSection";
 import { FishingSection } from "~frontend/section/FishingSection/FishingSection";
+import { GoldenWalnutsSection } from "~frontend/section/GoldenWalnutsSection/GoldenWalnutsSection";
 import { GrandpasEvaluationsSection } from "~frontend/section/GrandpasSection/GrandpasSection";
 import { HelpWantedSection } from "~frontend/section/HelpWantedSection/HelpWantedSection";
 import { MasteriesSection } from "~frontend/section/MasteriesSection/MasteriesSection";
@@ -18,12 +19,12 @@ import { OverviewSection } from "~frontend/section/OverviewSection/OverviewSecti
 import { QiChallengesSection } from "~frontend/section/QiChallengesSection/QiChallengesSection";
 import { RarecrowSection } from "~frontend/section/RarecrowsSection/RarecrowsSection";
 import { RelationshipsSection } from "~frontend/section/RelationshipsSection/RelationshipsSection";
+import { ShippingMonoSection } from "~frontend/section/ShippingMonoSection/ShippingMonoSection";
+import { ShippingPolySection } from "~frontend/section/ShippingPolySection/ShippingPolySection";
 import { ShippingSection } from "~frontend/section/ShippingSection/ShippingSection";
 import { SkillsSection } from "~frontend/section/SkillsSection/SkillsSection";
 import { SpecialOrdersSection } from "~frontend/section/SpecialOrdersSection/SpecialOrdersSection";
 import { StardropsSection } from "~frontend/section/StardropsSection/StardropsSection";
-import { ShippingPolySection } from "~frontend/section/ShippingPolySection/ShippingPolySection";
-import { ShippingMonoSection } from "~frontend/section/ShippingMonoSection/ShippingMonoSection";
 
 export default function AnalyzePage() {
   const { gameSave } = useGameSaveStore();
@@ -150,6 +151,10 @@ export default function AnalyzePage() {
       <SummarySection sectionTitle="Secret Notes [WIP]" collapsable>
         [WIP] Secret Notes here
       </SummarySection>
+
+      <hr />
+
+      <GoldenWalnutsSection gameSave={gameSave} />
 
       <hr />
 

@@ -1,3 +1,5 @@
+@use "sass:color";
+
 .section {
   display: flex;
   flex-direction: column;
@@ -13,12 +15,13 @@
   display: grid;
   grid-template-columns: repeat(10, $fontSize);
   align-items: center;
-  background: darken($color: $accent, $amount: 15);
+  background: color.adjust($accent, $lightness: -15%, $space: hsl);
   border: 3px solid $accent;
   border-radius: 8px;
   font-family: "Stardew Valley";
-  color: lighten($color: $accent, $amount: 35);
-  box-shadow: inset -2px 2px 0px 0px rgba(#000, 0.25),
+  color: color.adjust($accent, $lightness: 35%, $space: hsl);
+  box-shadow:
+    inset -2px 2px 0px 0px rgba(#000, 0.25),
     inset 2px -2px 0px 0px rgba(#000, 0.25);
 
   .currency {
@@ -37,7 +40,8 @@
     outline-offset: -2px;
     border-radius: 8px;
     font-size: $fontSize;
-    box-shadow: inset -4px 4px 0px 0px rgba(#000, 0.125),
+    box-shadow:
+      inset -4px 4px 0px 0px rgba(#000, 0.125),
       inset 2px -2px 0px 0px rgba(#000, 0.25);
   }
 }

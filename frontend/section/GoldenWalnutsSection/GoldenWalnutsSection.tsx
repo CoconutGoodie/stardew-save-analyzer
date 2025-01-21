@@ -41,7 +41,10 @@ export function GoldenWalnutsSection(props: Props) {
             </Tooltip.Trigger>
 
             <Tooltip.Content>
-              <p>Hello there!</p>
+              <img src={goldenWalnutPng} />
+              <p>
+                I am the tooltip for <strong>Walnut#{i}</strong>
+              </p>
             </Tooltip.Content>
           </Tooltip.Root>
         ))}

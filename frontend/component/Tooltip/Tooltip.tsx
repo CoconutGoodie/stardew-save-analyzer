@@ -1,32 +1,20 @@
-import {
-  autoUpdate,
-  flip,
-  FloatingPortal,
-  offset,
-  Placement,
-  shift,
-  useDismiss,
-  useFloating,
-  useFocus,
-  useHover,
-  useInteractions,
-  useMergeRefs,
-  useRole,
-} from "@floating-ui/react";
+import { FloatingPortal, Placement, useMergeRefs } from "@floating-ui/react";
 import {
   cloneElement,
   ComponentProps,
   forwardRef,
   isValidElement,
   PropsWithChildren,
-  useState,
 } from "react";
-import { compoundBuilder, contextBuilder } from "react-compound-composer";
+import { compoundBuilder } from "react-compound-composer";
 import { createPortal } from "react-dom";
 import {
   TooltipProvider,
   useTooltip,
 } from "~frontend/component/Tooltip/Tooltip.context";
+
+import clsx from "clsx";
+import styles from "./Tooltip.module.scss";
 
 export interface RootProps extends PropsWithChildren {
   openInitially?: boolean;
@@ -70,7 +58,7 @@ export const Tooltip = compoundBuilder({
     ),
 
     Content: forwardRef<HTMLDivElement, ComponentProps<"div">>(
-      ({ style, ...props }, propRef) => {
+      ({ style, className, ...props }, propRef) => {
         const tooltip = useTooltip();
 
         const ref = useMergeRefs([tooltip.context.refs.setFloating, propRef]);
@@ -81,6 +69,7 @@ export const Tooltip = compoundBuilder({
           <FloatingPortal id="tooltip-content">
             <div
               ref={ref}
+              className={clsx(styles.tooltipContent, className)}
               style={{ ...tooltip.context.floatingStyles, ...style }}
               {...tooltip.getFloatingProps(props)}
             />

@@ -62,7 +62,10 @@ export const SpecialOrdersSection = (props: Props) => {
           {props.gameSave.specialOrders.map((order) => (
             <a
               key={order.title}
-              href={StardewWiki.getLink("Quests", order.title)}
+              href={StardewWiki.getLink(
+                "Quests",
+                order.title.replaceAll("!", "")
+              )}
               target="_blank"
             >
               <ImageObjective

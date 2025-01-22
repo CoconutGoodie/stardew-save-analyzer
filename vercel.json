@@ -3,14 +3,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "dist/server/index.mjs",
+      "src": "server/main.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "src": "dist/server/index.mjs",
+      "dest": "server/main.ts",
       "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"]
     }
   ]

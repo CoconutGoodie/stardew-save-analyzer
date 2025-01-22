@@ -1,0 +1,37 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  &.incomplete {
+    filter: brightness(0.4);
+    opacity: 0.8;
+
+    .icon {
+      overflow: hidden;
+      
+      & > img {
+        animation: hover 800ms alternate linear infinite;
+      }
+    }
+  }
+
+  & > * {
+    vertical-align: middle;
+  }
+
+  .icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@keyframes hover {
+  from {
+    transform: scale(1.4);
+  }
+  to {
+    transform: scale(1);
+  }
+}

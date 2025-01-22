@@ -1,0 +1,56 @@
+@use "breakpoints";
+@use "cursor";
+
+#root {
+  min-height: 100vh;
+  color: #d4ccbc;
+  background-color: #060216;
+  overflow-x: auto;
+}
+
+html,
+body {
+  scroll-behavior: smooth;
+}
+
+hr {
+  width: 50vw;
+  height: 1px;
+  margin: -25px -20px;
+  border: none;
+  background: linear-gradient(
+    to right,
+    rgba(#1f183b, 0.4) 0%,
+    #1f183b 10%,
+    transparent
+  );
+}
+
+img {
+  image-rendering: pixelated;
+}
+
+a {
+  color: unset;
+  text-decoration: unset;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+ul,
+li {
+  margin-top: 0;
+  margin-bottom: 0;
+  padding-left: 25px;
+  list-style-image: url("/frontend/assets/icon/list-bullet.png");
+
+  & li {
+    padding: 0;
+
+    &::marker {
+      font-size: 18px;
+    }
+  }
+}

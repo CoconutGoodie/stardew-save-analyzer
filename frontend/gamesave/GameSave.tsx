@@ -14,8 +14,9 @@ import { GrandpasEvaluations } from "~frontend/gamesave/GrandpasEvaluations";
 import { GameDate, GameSeason } from "~frontend/util/GameDate";
 import { XMLNode } from "~frontend/util/XMLNode";
 import { isKeyOf } from "~frontend/util/utilities";
-import { entries, keys, mapToObj } from "remeda";
+import { entries, fromEntries, keys, mapToObj } from "remeda";
 import { Farmer } from "./Farmer";
+import { STARDEW_GOLDEN_WALNUTS_ALL } from "~frontend/const/StardewGoldenWalnuts";
 
 export class GameSave {
   public static compatibleVersion = "1.6.8";
@@ -384,21 +385,28 @@ export class GameSave {
       calculatedTotal++;
     }
 
-    const collectedOnes = this.saveXml.queryAll("collectedNutTracker > string");
+    const collectedOnes = this.saveXml
+      .queryAll("collectedNutTracker > string")
+      .map((xml) => xml.text());
 
-    const limitedDrops = this.saveXml
-      .queryAll("limitedNutDrops > item")
-      .map((itemXml) => {
-        return [
-          itemXml.query("key > *").text(),
-          itemXml.query("key > *").text(),
-        ];
-      });
+    for (const collected of collectedOnes) {
+      collection[collected] = STARDEW_GOLDEN_WALNUTS_ALL[collected].quantity;
+      calculatedTotal += STARDEW_GOLDEN_WALNUTS_ALL[collected].quantity;
+    }
+
+    this.saveXml.queryAll("limitedNutDrops > item").forEach((itemXml) => {
+      const key = itemXml.query("key > *").text();
+      const value = itemXml.query("value > *").number();
+
+      collection[key] = STARDEW_GOLDEN_WALNUTS_ALL[key].quantity;
+      calculatedTotal += value;
+    });
 
     return {
       gameTotal,
       calculatedTotal,
       collection,
+      parrotUsed,
     };
   }
 

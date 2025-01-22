@@ -23,8 +23,6 @@ interface Props {
 }
 
 export function GoldenWalnutsSection(props: Props) {
-  console.log(props.gameSave.goldenWalnuts);
-
   const { goldenWalnuts } = props.gameSave;
 
   const { allDone, goals } = useGoals({
@@ -45,16 +43,6 @@ export function GoldenWalnutsSection(props: Props) {
         },
       },
     },
-    // individuals: mapToObj(farmers, (farmer) => [
-    //   farmer.name,
-    //   {
-    //     achievements: [
-    //       props.gameSave.achievements[farmer.name].diy,
-    //       props.gameSave.achievements[farmer.name].artisan,
-    //       props.gameSave.achievements[farmer.name].craftMaster,
-    //     ],
-    //   },
-    // ]),
   });
 
   return (

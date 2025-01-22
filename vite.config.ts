@@ -12,78 +12,80 @@ import richSvg from "vite-plugin-react-rich-svg";
 import PackageJSON from "./package.json";
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  buildSteps: [
-    {
-      name: "client",
+export default defineConfig(({ mode }) => {
+  return {
+    buildSteps: [
+      {
+        name: "client",
+      },
+      {
+        name: "server",
+        config: {
+          build: { ssr: true },
+        },
+      },
+    ],
+    ssr: {
+      external: ["reflect-metadata"],
     },
-    {
-      name: "server",
-      config: {
-        build: { ssr: true },
+    css: {
+      // TODO:
+      // postcss: {
+      //   plugins: [autoprefixer()],
+      // },
+      preprocessorOptions: {
+        scss: {
+          api: "modern-compiler",
+        },
       },
     },
-  ],
-  ssr: {
-    external: ["reflect-metadata"],
-  },
-  css: {
-    // TODO:
-    // postcss: {
-    //   plugins: [autoprefixer()],
-    // },
-    preprocessorOptions: {
-      scss: {
-        api: "modern-compiler",
+    esbuild: false,
+    plugins: [
+      {
+        ...swc({
+          jsc: {
+            // baseUrl: join(__dirname, "./src"),
+            paths: {
+              "*": ["*"],
+            },
+            transform: {
+              decoratorMetadata: true,
+              legacyDecorator: true,
+            },
+            target: "es2017",
+          },
+        }),
+        enforce: "pre",
       },
-    },
-  },
-  esbuild: false,
-  plugins: [
-    {
-      ...swc({
-        jsc: {
-          // baseUrl: join(__dirname, "./src"),
-          paths: {
-            "*": ["*"],
+      vavite({
+        handlerEntry: "/server/main.ts",
+        serveClientAssetsInDev: true,
+      }),
+      react(),
+      vike({ disableAutoFullBuild: true }),
+      mode === "development" && patchCssModules(),
+      richSvg(),
+      content({
+        xml: {
+          enabled: false,
+          xml2jsOptions: {
+            trim: true,
+            // attrkey: "$attr",
+            // explicitArray: false,
+            preserveChildrenOrder: true,
           },
-          transform: {
-            decoratorMetadata: true,
-            legacyDecorator: true,
-          },
-          target: "es2017",
         },
       }),
-      enforce: "pre",
+    ],
+    define: {
+      "process.env.APP_VERSION": JSON.stringify(PackageJSON.version),
     },
-    vavite({
-      handlerEntry: "/server/main.ts",
-      serveClientAssetsInDev: true,
-    }),
-    react(),
-    vike({ disableAutoFullBuild: true }),
-    patchCssModules(),
-    richSvg(),
-    content({
-      xml: {
-        enabled: false,
-        xml2jsOptions: {
-          trim: true,
-          // attrkey: "$attr",
-          // explicitArray: false,
-          preserveChildrenOrder: true,
-        },
+    resolve: {
+      alias: {
+        "~common/": path.resolve(__dirname, "./common"),
+        "~frontend/": path.resolve(__dirname, "./frontend"),
+        "~server/": path.resolve(__dirname, "./server"),
       },
-    }),
-  ],
-  define: {
-    "process.env.APP_VERSION": JSON.stringify(PackageJSON.version),
-  },
-  resolve: {
-    alias: {
-      "~common/": path.resolve(__dirname, "./common"),
-      "~frontend/": path.resolve(__dirname, "./frontend"),
-      "~server/": path.resolve(__dirname, "./server"),
     },
-  },
+  };
 });

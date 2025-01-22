@@ -22,7 +22,9 @@ export const Objective = (props: Props) => {
       )}
     >
       {props.icon ?? (
-        <img width={14} src={props.done ? checkmarkPng : questPng} />
+        <div className={styles.icon}>
+          <img width={14} src={props.done ? checkmarkPng : questPng} />
+        </div>
       )}
       <span>{props.children}</span>
     </div>

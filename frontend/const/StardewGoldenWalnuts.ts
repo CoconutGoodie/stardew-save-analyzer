@@ -12,7 +12,6 @@ interface GoldenWalnutInfo {
   id: string;
   quantity: number;
   howToFind: string;
-  details?: string[];
 }
 
 export const STARDEW_GOLDEN_WALNUTS: Record<
@@ -285,7 +284,164 @@ export const STARDEW_GOLDEN_WALNUTS: Record<
     },
   ],
 
-  [WalnutDiscoveryLocation.ISLAND_WEST]: [],
+  [WalnutDiscoveryLocation.ISLAND_WEST]: [
+    {
+      id: "IslandFarming",
+      quantity: 5,
+      howToFind:
+        "Each crop harvested on the Ginger Island farm, either by hand or with an Iridium Scythe, have a 5% chance of yielding a Golden Walnut, up to a total of 5. Only crops that do not regrow and do not require a Scythe to harvest will give Golden Walnuts.",
+    },
+    {
+      id: "IslandGourmand1",
+      quantity: 5,
+      howToFind:
+        "After the farmhouse is repaired, the player may talk to the Gourmand Frog. The frog then asks the player to grow a Melon, a Wheat, and a Garlic, in that order. When a crop is mature, leave it unharvested and talk to the frog again to show him the crop. The reward is 5 golden walnuts per crop. Harvest each crop after receiving its reward. The three crops yield a total of 15 walnuts.\n\nNote: All three crops may be planted at any time, together or separately, but they must be presented to the frog in order one at a time and each crop can be harvested only after the frog has seen it and rewarded the player.",
+    },
+    {
+      id: "IslandGourmand2",
+      quantity: 5,
+      howToFind:
+        "After the farmhouse is repaired, the player may talk to the Gourmand Frog. The frog then asks the player to grow a Melon, a Wheat, and a Garlic, in that order. When a crop is mature, leave it unharvested and talk to the frog again to show him the crop. The reward is 5 golden walnuts per crop. Harvest each crop after receiving its reward. The three crops yield a total of 15 walnuts.\n\nNote: All three crops may be planted at any time, together or separately, but they must be presented to the frog in order one at a time and each crop can be harvested only after the frog has seen it and rewarded the player.",
+    },
+    {
+      id: "IslandGourmand3",
+      quantity: 5,
+      howToFind:
+        "After the farmhouse is repaired, the player may talk to the Gourmand Frog. The frog then asks the player to grow a Melon, a Wheat, and a Garlic, in that order. When a crop is mature, leave it unharvested and talk to the frog again to show him the crop. The reward is 5 golden walnuts per crop. Harvest each crop after receiving its reward. The three crops yield a total of 15 walnuts.\n\nNote: All three crops may be planted at any time, together or separately, but they must be presented to the frog in order one at a time and each crop can be harvested only after the frog has seen it and rewarded the player.",
+    },
+    {
+      id: "Island_W_BuriedTreasureNut2",
+      quantity: 1,
+      howToFind:
+        "Go south from the farm to the southeast corner of the beach where there is a curved palm tree on the eastern cliff. Dig in the corner tile where the eastern cliff meets the northern cliff adjacent to it. (Digging will produce nothing if the journal scrap has not yet been read.)",
+    },
+    {
+      id: "MusselStone",
+      quantity: 5,
+      howToFind:
+        "Mining the Mussel Nodes has a 10% chance of yielding a walnut, up to a total of 5.",
+    },
+    {
+      id: "Bush_CaptainRoom_2_4",
+      quantity: 1,
+      howToFind:
+        "Locate the shipwreck at the southwest side of the beach south of the farm. Find the hidden path at the wreck's west corner and follow it into the ship. There is a walnut on a plant inside.",
+    },
+    {
+      id: "SandDuggy",
+      quantity: 1,
+      howToFind:
+        'Locate the mole at the southeast side of the beach south of Birdie\'s hut. Lock it into a single hole by covering the other three holes with placeable objects. Then "whack the mole" by hitting it with the Axe, Pickaxe, or Watering Can to receive a golden walnut. The placeable objects can then be removed. Alternatively, an upgraded Watering Can can be used to whack the mole without covering the other holes.',
+    },
+    {
+      id: "Buried_IslandWest_62_76",
+      quantity: 1,
+      howToFind:
+        "Find the blue starfish triangle as depicted in the image on the beach south of the farm. Dig up the center.",
+    },
+    {
+      id: "Buried_IslandWest_43_74",
+      quantity: 1,
+      howToFind:
+        "Find the starfish diamond as depicted in the image near the tide pools. It may be partially covered by a large rock. Dig up the center.",
+    },
+    {
+      id: "Buried_IslandWest_30_75",
+      quantity: 1,
+      howToFind:
+        "Find the X marked in the sand in the tide pools. Dig up the center.",
+    },
+    {
+      id: "Buried_IslandWest_21_81",
+      quantity: 1,
+      howToFind:
+        "Find a diamond of indents in the sand to the bottom-left of the tide pools, near the ocean. Dig up the center.",
+    },
+    {
+      id: "Bush_IslandWest_38_56",
+      quantity: 1,
+      howToFind:
+        "A walnut is found behind a coconut tree by the pond west of the farm.",
+    },
+    {
+      id: "Birdie",
+      quantity: 5,
+      howToFind:
+        "Complete The Pirate's Wife Quest to receive 5 walnuts as part of the reward.",
+    },
+    {
+      id: "Island_W_BuriedTreasureNut",
+      quantity: 1,
+      howToFind:
+        "Dig in the sand north of Birdie's Hut to find a Quality Bobber and 1 Golden Walnut. (Digging will produce nothing if the journal scrap has not yet been read.)",
+    },
+    {
+      id: "Bush_IslandWest_25_30",
+      quantity: 1,
+      howToFind:
+        "Walk up the western coast towards Qi's Walnut Room to find a walnut bush to the bottom-right near a cliff.",
+    },
+    {
+      id: "Bush_IslandWest_15_3",
+      quantity: 1,
+      howToFind:
+        "Walk up past Qi's Walnut Room through the ocean water to find a walnut bush.",
+    },
+    {
+      id: "TigerSlimeNut",
+      quantity: 1,
+      howToFind:
+        "Killing the slimes in the Tiger Slime Grove can yield up to one walnut.",
+    },
+    {
+      id: "Bush_IslandWest_31_24",
+      quantity: 1,
+      howToFind:
+        "A walnut is found behind a mahogany tree in the Tiger Slime Grove.",
+    },
+    {
+      id: "Buried_IslandWest_39_24",
+      quantity: 1,
+      howToFind:
+        "Find a circle of grass in the Tiger Slime Grove, likely hidden behind a Mahogany Tree. Dig up the center.",
+    },
+    {
+      id: "Bush_IslandWest_54_18",
+      quantity: 1,
+      howToFind:
+        "From the farm's Parrot Express station, proceed west over the bridge across the river and find a walnut bush partially hidden by the southern wall.",
+    },
+    {
+      id: "IslandWestCavePuzzle",
+      quantity: 3,
+      howToFind:
+        "Complete the Simon Says puzzle in the cave north of Tiger Slime Grove to receive 3 walnuts.",
+    },
+    {
+      id: "Bush_IslandWest_64_30",
+      quantity: 1,
+      howToFind:
+        "Go east from the Tiger Slime Grove and follow the cliff edge, destroying any rocks or weeds along the way. At the end of the path is a walnut bush.",
+    },
+    {
+      id: "Buried_IslandWest_88_14",
+      quantity: 1,
+      howToFind:
+        "Dig the center of the diamond-shaped pebbles to the east of the farm's Parrot Express station.",
+    },
+    {
+      id: "Bush_IslandWest_104_3",
+      quantity: 1,
+      howToFind:
+        "East of the farm's Parrot Express station, follow the hidden path that jogs eastward and northward. At its ultimate extent is a walnut bush.",
+    },
+    {
+      id: "Bush_IslandWest_75_29",
+      quantity: 1,
+      howToFind:
+        "South of the farm's Parrot Express station, go south along the cliff and bend eastward overlooking the farmhouse, to the walnut bush.",
+    },
+  ],
 };
 
 export const STARDEW_GOLDEN_WALNUTS_ALL = pipe(

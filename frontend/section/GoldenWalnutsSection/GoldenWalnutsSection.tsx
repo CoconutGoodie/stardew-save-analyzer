@@ -70,6 +70,9 @@ export function GoldenWalnutsSection(props: Props) {
       <div className={styles.locations}>
         {entries(STARDEW_GOLDEN_WALNUTS).map(([locationId, walnuts]) => {
           const maxObtainable = sum(walnuts.map((w) => w.quantity));
+          const obtained = sum(
+            walnuts.map((w) => goldenWalnuts.collection[w.id] ?? 0)
+          );
 
           let locationWalnutId = 1;
 
@@ -77,8 +80,12 @@ export function GoldenWalnutsSection(props: Props) {
             <div key={locationId} className={styles.location}>
               <h1>
                 {capitalCase(locationId.replaceAll("_", " "))}{" "}
-                <span>(X / {maxObtainable})</span>
-                <img src={checkmarkPng} height={14} />
+                <span>
+                  ({obtained} / {maxObtainable})
+                </span>
+                {obtained >= maxObtainable && (
+                  <img src={checkmarkPng} height={14} />
+                )}
               </h1>
 
               <div className={styles.walnuts}>
@@ -94,14 +101,8 @@ export function GoldenWalnutsSection(props: Props) {
                           target="_blank"
                         >
                           <ImageObjective
-                            // TODO: Yeet after debugging
-                            style={
-                              walnut.id == null
-                                ? { background: "red" }
-                                : undefined
-                            }
                             done={
-                              goldenWalnuts.collection[walnut.id ?? ""] <=
+                              goldenWalnuts.collection[walnut.id] <=
                               walnut.quantity
                             }
                             src={goldenWalnutPng}
@@ -111,11 +112,6 @@ export function GoldenWalnutsSection(props: Props) {
                       </Tooltip.Trigger>
 
                       <Tooltip.Content className={styles.walnutTooltip}>
-                        {/* <img
-                          src={GOLDEN_WALNUT_HINT_SPRITES.resolve(
-                            `${snakeCase(locationId)}_${walnutIndex + 1}`
-                          )}
-                        /> */}
                         <img
                           src={GOLDEN_WALNUT_HINT_SPRITES.resolve(walnut.id)}
                         />
@@ -126,7 +122,6 @@ export function GoldenWalnutsSection(props: Props) {
                             {locationWalnutId++}
                           </h1>
                           <p>{walnut.howToFind}</p>
-                          <h6>{walnut.id}</h6>
                         </div>
                       </Tooltip.Content>
                     </Tooltip.Root>

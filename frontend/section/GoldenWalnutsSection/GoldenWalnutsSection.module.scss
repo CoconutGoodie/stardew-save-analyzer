@@ -36,7 +36,7 @@
 
 .walnuts {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 10px;
 }
 
@@ -68,6 +68,7 @@
     & > p {
       margin: 0;
       color: hsl(21, 80%, 23%);
+      white-space: break-spaces;
     }
 
     .details {

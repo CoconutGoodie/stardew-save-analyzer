@@ -1,11 +1,12 @@
 import path from "node:path";
 import { defineConfig } from "vite";
 
+import content from "@originjs/vite-plugin-content";
+import react from "@vitejs/plugin-react";
 import { swc } from "rollup-plugin-swc3";
 import { vavite } from "vavite";
 import vike from "vike/plugin";
-import content from "@originjs/vite-plugin-content";
-import react from "@vitejs/plugin-react";
+import { patchCssModules } from "vite-css-modules";
 import richSvg from "vite-plugin-react-rich-svg";
 
 import PackageJSON from "./package.json";
@@ -61,6 +62,7 @@ export default defineConfig({
     }),
     react(),
     vike({ disableAutoFullBuild: true }),
+    patchCssModules(),
     richSvg(),
     content({
       xml: {

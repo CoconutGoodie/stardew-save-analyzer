@@ -27,8 +27,6 @@ interface Props {
 export function GoldenWalnutsSection(props: Props) {
   const { goldenWalnuts } = props.gameSave;
 
-  console.log(goldenWalnuts.parrotUsed);
-
   const { allDone, goals } = useGoals({
     global: {
       objectives: {

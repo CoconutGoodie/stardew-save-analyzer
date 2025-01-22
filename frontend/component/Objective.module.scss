@@ -8,6 +8,8 @@
     opacity: 0.8;
 
     .icon {
+      overflow: hidden;
+      
       & > img {
         animation: hover 800ms alternate linear infinite;
       }

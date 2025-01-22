@@ -17,10 +17,17 @@ interface Props {
 }
 
 export const QiChallengesSection = (props: Props) => {
+  const { goldenWalnuts } = props.gameSave;
+
   const { goals, allDone } = useGoals({
     global: {
       objectives: {
-        walnutRoomDiscovered: false, // TODO
+        gainAccessToQisWalnutRoom: {
+          current: goldenWalnuts.parrotUsed
+            ? 100
+            : goldenWalnuts.calculatedTotal,
+          goal: 100,
+        },
         orderCompletion: {
           current: props.gameSave.qiSpecialOrders.filter(
             (order) => order.completed
@@ -48,7 +55,8 @@ export const QiChallengesSection = (props: Props) => {
           <img
             height={108}
             className={clsx(
-              !goals.global.objectives.walnutRoomDiscovered && styles.incomplete
+              goals.global.objectiveStatus.gainAccessToQisWalnutRoom !=
+                "done" && styles.incomplete
             )}
             src={boardPng}
           />
@@ -73,10 +81,18 @@ export const QiChallengesSection = (props: Props) => {
       </div>
 
       <Objective
-        done={goals.global.objectives.walnutRoomDiscovered}
         className={styles.objective}
+        done={goals.global.objectiveStatus.gainAccessToQisWalnutRoom === "done"}
       >
-        "Qi's Walnut Room" is discovered. [WIP]
+        Gained access to "Mr. Qi's Walnut Room".{" "}
+        {goals.global.objectiveStatus.gainAccessToQisWalnutRoom !== "done" && (
+          <>
+            —{" "}
+            {goals.global.objectives.gainAccessToQisWalnutRoom.goal -
+              goals.global.objectives.gainAccessToQisWalnutRoom.current}{" "}
+            more Golden Walnut(s) needed
+          </>
+        )}
       </Objective>
 
       <Objective

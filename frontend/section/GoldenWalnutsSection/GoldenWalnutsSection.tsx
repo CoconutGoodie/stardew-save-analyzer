@@ -11,12 +11,14 @@ import { GameSave } from "~frontend/gamesave/GameSave";
 
 import checkmarkPng from "~frontend/assets/icon/checkmark.png";
 import goldenWalnutPng from "~frontend/assets/icon/golden-walnut.png";
+import goldenParrotPng from "~frontend/assets/icon/golden-parrot.png";
 
 import { GOLDEN_WALNUT_HINT_SPRITES } from "~frontend/const/Assets";
 import { useGoals } from "~frontend/hook/useGoals";
 import { StardewWiki } from "~frontend/util/StardewWiki";
 import styles from "./GoldenWalnutsSection.module.scss";
 import { Objective } from "~frontend/component/Objective";
+import { Currency } from "~frontend/component/Currency";
 
 interface Props {
   gameSave: GameSave;
@@ -25,25 +27,42 @@ interface Props {
 export function GoldenWalnutsSection(props: Props) {
   const { goldenWalnuts } = props.gameSave;
 
+  console.log(goldenWalnuts.parrotUsed);
+
   const { allDone, goals } = useGoals({
     global: {
       objectives: {
         visitGingerIsland: true, // TODO
         gainAccessToQisWalnutRoom: {
-          current: goldenWalnuts.calculatedTotal,
+          current: goldenWalnuts.parrotUsed
+            ? 100
+            : goldenWalnuts.calculatedTotal,
           goal: 100,
         },
         queenOfSauceAvailable: {
-          current: goldenWalnuts.calculatedTotal,
+          current: goldenWalnuts.parrotUsed
+            ? 100
+            : goldenWalnuts.calculatedTotal,
           goal: 100,
         },
         collectEveryNut: {
-          current: goldenWalnuts.calculatedTotal,
+          current: goldenWalnuts.parrotUsed
+            ? STARDEW_GOLDEN_WALNUTS_COUNT
+            : goldenWalnuts.calculatedTotal,
           goal: STARDEW_GOLDEN_WALNUTS_COUNT,
         },
       },
     },
   });
+
+  const goldenParrotJsx = (
+    <a
+      href={StardewWiki.getLink("Golden_Walnut", "Golden_Joja_Parrot")}
+      target="_blank"
+    >
+      Golden Parrot
+    </a>
+  );
 
   return (
     <SummarySection
@@ -51,10 +70,36 @@ export function GoldenWalnutsSection(props: Props) {
       sectionTitle="Golden Walnuts"
       sectionIcon={goldenWalnutPng}
       versions={["v1.5 Introduced"]}
-      // className={styles.section}
       collapsable
       allDone={allDone}
     >
+      <div className={styles.goldenParrot}>
+        <img src={goldenParrotPng} height={50} />
+        {goals.global.objectiveStatus.collectEveryNut === "done" ? (
+          goldenWalnuts.parrotUsed ? (
+            <p>{goldenParrotJsx} was paid to fetch any Golden Walnuts.</p>
+          ) : (
+            <p>
+              {goldenParrotJsx} was <strong>NOT</strong> paid to fetch any
+              Golden Walnuts.
+            </p>
+          )
+        ) : (
+          <p>
+            {goldenParrotJsx} will charge{" "}
+            <Currency
+              unit="gold"
+              amount={
+                10_000 *
+                (STARDEW_GOLDEN_WALNUTS_COUNT -
+                  goals.global.objectives.collectEveryNut.current)
+              }
+            />{" "}
+            to fetch remaining Golden Walnuts.
+          </p>
+        )}
+      </div>
+
       <div className={styles.locations}>
         {entries(STARDEW_GOLDEN_WALNUTS).map(([locationId, walnuts]) => {
           const maxObtainable = sum(walnuts.map((w) => w.quantity));
@@ -125,7 +170,7 @@ export function GoldenWalnutsSection(props: Props) {
         className={styles.objective}
         done={goals.global.objectiveStatus.gainAccessToQisWalnutRoom === "done"}
       >
-        Gain access to "Mr. Qi's Walnut Room".{" "}
+        Gained access to "Mr. Qi's Walnut Room".{" "}
         {goals.global.objectiveStatus.gainAccessToQisWalnutRoom !== "done" && (
           <>
             —{" "}
@@ -140,7 +185,7 @@ export function GoldenWalnutsSection(props: Props) {
         className={styles.objective}
         done={goals.global.objectiveStatus.gainAccessToQisWalnutRoom === "done"}
       >
-        Unlock "Queen of Sauce Cookbook" trade in the Bookseller.{" "}
+        Unlocked "Queen of Sauce Cookbook" trade in the Bookseller.{" "}
         {goals.global.objectiveStatus.queenOfSauceAvailable !== "done" && (
           <>
             —{" "}
@@ -155,7 +200,7 @@ export function GoldenWalnutsSection(props: Props) {
         className={styles.objective}
         done={goals.global.objectiveStatus.gainAccessToQisWalnutRoom === "done"}
       >
-        Collect every Golden Walnut.{" "}
+        Collected every Golden Walnut.{" "}
         {goals.global.objectiveStatus.collectEveryNut !== "done" && (
           <>
             —{" "}

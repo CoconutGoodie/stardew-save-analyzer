@@ -5,7 +5,7 @@
   flex-direction: column;
   align-content: start;
   flex-wrap: wrap;
-  gap: 28px 46px;
+  gap: 28px;
 }
 
 .location {
@@ -81,6 +81,31 @@
         font-size: 20px;
         color: #2e1304;
       }
+    }
+  }
+}
+
+.goldenParrot {
+  margin-bottom: 20px;
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-radius: 12px;
+  color: #ddb5a0;
+  font-size: 18px;
+  background: linear-gradient(to right, rgba(#ad5326, 0.08), rgba(#d48117, 0));
+
+  & > p {
+    margin: 0;
+
+    & > strong {
+      font-weight: 700;
+    }
+
+    & > a {
+      font-weight: 700;
+      color: rgb(248, 250, 112);
     }
   }
 }

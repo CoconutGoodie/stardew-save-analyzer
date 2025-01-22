@@ -7,7 +7,7 @@
     "dev": "vite optimize --force && vavite serve",
     "format": "prettier --loglevel warn --write \"{common,frontend,server,pages}/**/*.{tsx,ts,jsx,js}\"",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "build": "vavite build",
+    "build": "pnpm i && vavite build",
     "start": "cross-env NODE_ENV=production node dist/server/index.mjs"
   },
   "files": [
@@ -43,6 +43,7 @@
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "@vitejs/plugin-react": "^4.3.4",
+    "cross-env": "^7.0.3",
     "eslint": "^8.57.1",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^4.6.2",

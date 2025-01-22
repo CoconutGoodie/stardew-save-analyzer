@@ -1,5 +1,51 @@
+.locations {
+  max-height: 533px;
+  display: flex;
+  flex-direction: column;
+  align-content: start;
+  flex-wrap: wrap;
+  gap: 28px 46px;
+}
+
+.location {
+  padding: 20px;
+  background: linear-gradient(
+    to bottom,
+    rgba(#ad5326, 0.08),
+    rgba(#d48117, 0.08)
+  );
+  border-radius: 12px;
+
+  & > h1 {
+    margin: 0;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 600;
+  }
+}
+
 .walnuts {
   display: grid;
-  grid-template-columns: repeat(26, 1fr);
-  margin-bottom: 20px;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+}
+
+.walnutTooltip {
+  max-width: 50ch;
+  display: flex;
+  align-items: start;
+  gap: 10px;
+
+  & > img {
+    margin: 4px;
+    height: 150px;
+    box-shadow:
+      0 0 0 2px #b14e05,
+      0 0 0 4px #fa9305,
+      0 0 0 6px #853605;
+  }
+
+  & > p {
+    margin: 0;
+  }
 }

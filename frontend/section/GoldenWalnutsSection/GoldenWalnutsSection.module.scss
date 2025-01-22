@@ -1,4 +1,5 @@
 .locations {
+  margin-bottom: 20px;
   max-height: 533px;
   display: flex;
   flex-direction: column;
@@ -81,4 +82,8 @@
       }
     }
   }
+}
+
+.objective {
+  margin-top: 7px;
 }

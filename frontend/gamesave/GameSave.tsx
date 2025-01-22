@@ -2,7 +2,10 @@ import { capitalCase, lowerCase } from "case-anything";
 
 import { STARDEW_FARM_TYPES } from "~frontend/const/StardewFarmTypes";
 import { STARDEW_FISHES } from "~frontend/const/StardewFishes";
-import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "~frontend/const/StardewMuseum";
+import {
+  STARDEW_ARTIFACTS,
+  STARDEW_MINERALS,
+} from "~frontend/const/StardewMuseum";
 import { STARDEW_RELATABLE_NPCS } from "~frontend/const/StardewNpcs";
 import { STARDEW_RARECROW_IDS } from "~frontend/const/StardewRarecrows";
 import { STARDEW_SPECIAL_ORDERS } from "~frontend/const/StardewSpecialOrders";
@@ -35,13 +38,15 @@ export class GameSave {
   public readonly stables;
   public readonly animalBuildings;
   public readonly fishPonds;
-  // public readonly slimeHutches;
+  // TODO: public readonly slimeHutches;
 
   public readonly rarecrowsPlaced;
   public readonly allRarecrows;
 
   public readonly specialOrders;
   public readonly qiSpecialOrders;
+
+  public readonly goldenWalnuts;
 
   public readonly museumPieces;
 
@@ -82,6 +87,8 @@ export class GameSave {
 
     this.specialOrders = this.calcSpecialOrders();
     this.qiSpecialOrders = this.calcQiSpecialOrders();
+
+    this.goldenWalnuts = this.calcGoldenWalnuts();
 
     this.museumPieces = this.calcMuseumPieces();
 
@@ -362,6 +369,37 @@ export class GameSave {
         completed: completedOrders.includes(orderId),
       };
     });
+  }
+
+  private calcGoldenWalnuts() {
+    const collection: Record<string, number> = {};
+
+    const parrotUsed = this.saveXml.query("activatedGoldenParrot").boolean();
+
+    const gameTotal = this.saveXml.query("goldenWalnutsFound").number();
+    let calculatedTotal = 0;
+
+    if (this.saveXml.query("goldenCoconutCracked").boolean()) {
+      collection["GoldenCoconut"] = 1;
+      calculatedTotal++;
+    }
+
+    const collectedOnes = this.saveXml.queryAll("collectedNutTracker > string");
+
+    const limitedDrops = this.saveXml
+      .queryAll("limitedNutDrops > item")
+      .map((itemXml) => {
+        return [
+          itemXml.query("key > *").text(),
+          itemXml.query("key > *").text(),
+        ];
+      });
+
+    return {
+      gameTotal,
+      calculatedTotal,
+      collection,
+    };
   }
 
   private calcMuseumPieces() {

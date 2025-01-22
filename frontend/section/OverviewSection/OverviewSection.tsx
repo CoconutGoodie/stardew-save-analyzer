@@ -134,7 +134,7 @@ export const OverviewSection = (props: Props) => {
                 </li>
                 <li>
                   <div>
-                    Favorite: "<img width={14} src={favoritePng} />{" "}
+                    <img width={14} src={favoritePng} /> Favorite: "
                     <em>{farmer.favoriteThing}</em>"
                   </div>
                 </li>

@@ -174,6 +174,7 @@ export default function AnalyzePage() {
         <ul>
           <li>Support "Separate Wallets"</li>
           <li>Fix main app layout</li>
+          <li>Add Tooltips to all sections</li>
         </ul>
       </SummarySection>
     </>

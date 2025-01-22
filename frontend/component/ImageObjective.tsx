@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { ComponentProps } from "react";
+import { ComponentProps, forwardRef } from "react";
 
 import checkmarkPng from "~frontend/assets/icon/checkmark-outlined.png";
 
@@ -10,17 +10,24 @@ interface Props extends ComponentProps<"img"> {
   checkmarkInvisible?: boolean;
 }
 
-export const ImageObjective = (props: Props) => {
-  const { done, checkmarkInvisible, ...otherProps } = props;
-  return (
-    <div className={styles.wrapper}>
-      <img
-        {...otherProps}
-        className={clsx(props.className, styles.objective, done && styles.done)}
-      />
-      {done && !checkmarkInvisible && (
-        <img className={styles.checkmark} src={checkmarkPng} />
-      )}
-    </div>
-  );
-};
+export const ImageObjective = forwardRef<HTMLDivElement, Props>(
+  (props, ref) => {
+    const { done, checkmarkInvisible, ...otherProps } = props;
+
+    return (
+      <div ref={ref} className={styles.wrapper}>
+        <img
+          {...otherProps}
+          className={clsx(
+            props.className,
+            styles.objective,
+            done && styles.done
+          )}
+        />
+        {done && !checkmarkInvisible && (
+          <img className={styles.checkmark} src={checkmarkPng} />
+        )}
+      </div>
+    );
+  }
+);

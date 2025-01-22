@@ -2,7 +2,10 @@ import { capitalCase, lowerCase } from "case-anything";
 
 import { STARDEW_FARM_TYPES } from "~frontend/const/StardewFarmTypes";
 import { STARDEW_FISHES } from "~frontend/const/StardewFishes";
-import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "~frontend/const/StardewMuseum";
+import {
+  STARDEW_ARTIFACTS,
+  STARDEW_MINERALS,
+} from "~frontend/const/StardewMuseum";
 import { STARDEW_RELATABLE_NPCS } from "~frontend/const/StardewNpcs";
 import { STARDEW_RARECROW_IDS } from "~frontend/const/StardewRarecrows";
 import { STARDEW_SPECIAL_ORDERS } from "~frontend/const/StardewSpecialOrders";
@@ -11,8 +14,9 @@ import { GrandpasEvaluations } from "~frontend/gamesave/GrandpasEvaluations";
 import { GameDate, GameSeason } from "~frontend/util/GameDate";
 import { XMLNode } from "~frontend/util/XMLNode";
 import { isKeyOf } from "~frontend/util/utilities";
-import { entries, keys, mapToObj } from "remeda";
+import { clamp, entries, fromEntries, keys, mapToObj } from "remeda";
 import { Farmer } from "./Farmer";
+import { STARDEW_GOLDEN_WALNUTS_ALL } from "~frontend/const/StardewGoldenWalnuts";
 
 export class GameSave {
   public static compatibleVersion = "1.6.8";
@@ -35,13 +39,15 @@ export class GameSave {
   public readonly stables;
   public readonly animalBuildings;
   public readonly fishPonds;
-  // public readonly slimeHutches;
+  // TODO: public readonly slimeHutches;
 
   public readonly rarecrowsPlaced;
   public readonly allRarecrows;
 
   public readonly specialOrders;
   public readonly qiSpecialOrders;
+
+  public readonly goldenWalnuts;
 
   public readonly museumPieces;
 
@@ -82,6 +88,8 @@ export class GameSave {
 
     this.specialOrders = this.calcSpecialOrders();
     this.qiSpecialOrders = this.calcQiSpecialOrders();
+
+    this.goldenWalnuts = this.calcGoldenWalnuts();
 
     this.museumPieces = this.calcMuseumPieces();
 
@@ -362,6 +370,48 @@ export class GameSave {
         completed: completedOrders.includes(orderId),
       };
     });
+  }
+
+  private calcGoldenWalnuts() {
+    const collection: Record<string, number> = {};
+
+    const parrotUsed = this.saveXml.query("activatedGoldenParrot").boolean();
+
+    const gameTotal = this.saveXml.query("goldenWalnutsFound").number();
+    let calculatedTotal = 0;
+
+    if (this.saveXml.query("goldenCoconutCracked").boolean()) {
+      collection["GoldenCoconut"] = 1;
+      calculatedTotal++;
+    }
+
+    this.saveXml
+      .queryAll("collectedNutTracker > string")
+      .map((xml) => xml.text())
+      .forEach((collected) => {
+        collection[collected] = STARDEW_GOLDEN_WALNUTS_ALL[collected].quantity;
+        calculatedTotal += STARDEW_GOLDEN_WALNUTS_ALL[collected].quantity;
+      });
+
+    this.saveXml.queryAll("limitedNutDrops > item").forEach((itemXml) => {
+      const key = itemXml.query("key > *").text();
+      const value = itemXml.query("value > *").number();
+
+      const collectedValue = clamp(value, {
+        min: 0,
+        max: STARDEW_GOLDEN_WALNUTS_ALL[key].quantity,
+      });
+
+      collection[key] = collectedValue;
+      calculatedTotal += collectedValue;
+    });
+
+    return {
+      gameTotal,
+      calculatedTotal,
+      collection,
+      parrotUsed,
+    };
   }
 
   private calcMuseumPieces() {

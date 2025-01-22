@@ -174,6 +174,15 @@ export const SHIPPABLE_SPRITES = new AssetRepository<string>({
   postfix: ".png",
 });
 
+export const GOLDEN_WALNUT_HINT_SPRITES = new AssetRepository<string>({
+  repository: import.meta.glob("../assets/sprite/walnut-hint/*.png", {
+    import: "default",
+    eager: true,
+  }),
+  prefix: "../assets/sprite/walnut-hint/",
+  postfix: ".png",
+});
+
 /* -- Other ------------------------------------ */
 
 export const DEMO_SAVES = new AssetRepository({

@@ -18,6 +18,7 @@ import { useSpoilersStore } from "~frontend/store/useSpoilersStore";
 type Props = ComponentProps<"section"> & {
   sectionTitle?: string;
   sectionIcon?: string;
+  // TODO: turn into "tags"; { name: string, color: string }[]
   versions?: string[];
   stripes?: boolean;
   collapsable?: boolean;

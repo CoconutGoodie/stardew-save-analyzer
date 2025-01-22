@@ -5,7 +5,10 @@ import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
 import { ImageObjective } from "~frontend/component/ImageObjective";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { ARTIFACT_SPRITES, MINERAL_SPRITES } from "~frontend/const/Assets";
-import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "~frontend/const/StardewMuseum";
+import {
+  STARDEW_ARTIFACTS,
+  STARDEW_MINERALS,
+} from "~frontend/const/StardewMuseum";
 import { GameSave } from "~frontend/gamesave/GameSave";
 import { useGoals } from "~frontend/hook/useGoals";
 import { StardewWiki } from "~frontend/util/StardewWiki";
@@ -13,6 +16,7 @@ import { snakeCase } from "case-anything";
 import { entries, keys } from "remeda";
 
 import styles from "./MuseumSection.module.scss";
+import { Tooltip } from "~frontend/component/Tooltip/Tooltip";
 
 interface Props {
   gameSave: GameSave;
@@ -74,7 +78,8 @@ export const MuseumSection = (props: Props) => {
             .
           </li>
           <li>
-            In total, <strong>{totalDonated}</strong> items were donated to the{" "}
+            In total, <strong>{totalDonated}</strong> out of{" "}
+            <strong>{maxDonateCount}</strong> item(s) were donated to the{" "}
             <a href={StardewWiki.getLink("Museum")} target="_blank">
               Museum Collection
             </a>
@@ -99,20 +104,30 @@ export const MuseumSection = (props: Props) => {
           <div className={styles.items}>
             {entries(STARDEW_MINERALS).map(([mineralId, mineral]) => (
               <div key={mineralId} className={styles.item}>
-                <a
-                  href={StardewWiki.getLink(mineral.title.replace(/\s+/g, "_"))}
-                  target="_blank"
-                >
-                  <ImageObjective
-                    title={mineral.title}
-                    src={MINERAL_SPRITES.resolve(
-                      snakeCase(mineral.title).replace(/\(\)/g, "")
-                    )}
-                    done={props.gameSave.museumPieces.minerals.has(mineralId)}
-                    width={36}
-                    height={36}
-                  />
-                </a>
+                <Tooltip.Root>
+                  <Tooltip.Trigger>
+                    <a
+                      href={StardewWiki.getLink(
+                        mineral.title.replace(/\s+/g, "_")
+                      )}
+                      target="_blank"
+                    >
+                      <ImageObjective
+                        title={"Click to open in Wiki"}
+                        src={MINERAL_SPRITES.resolve(
+                          snakeCase(mineral.title).replace(/\(\)/g, "")
+                        )}
+                        done={props.gameSave.museumPieces.minerals.has(
+                          mineralId
+                        )}
+                        width={36}
+                        height={36}
+                      />
+                    </a>
+                  </Tooltip.Trigger>
+
+                  <Tooltip.Content>{mineral.title}</Tooltip.Content>
+                </Tooltip.Root>
               </div>
             ))}
           </div>
@@ -133,22 +148,30 @@ export const MuseumSection = (props: Props) => {
           <div className={styles.items}>
             {entries(STARDEW_ARTIFACTS).map(([artifactId, artifact]) => (
               <div key={artifactId} className={styles.item}>
-                <a
-                  href={StardewWiki.getLink(
-                    artifact.title.replace(/\s+/g, "_")
-                  )}
-                  target="_blank"
-                >
-                  <ImageObjective
-                    title={artifact.title}
-                    src={ARTIFACT_SPRITES.resolve(
-                      snakeCase(artifact.title).replace(/\(\)/g, "")
-                    )}
-                    done={props.gameSave.museumPieces.artifacts.has(artifactId)}
-                    width={36}
-                    height={36}
-                  />
-                </a>
+                <Tooltip.Root>
+                  <Tooltip.Trigger>
+                    <a
+                      href={StardewWiki.getLink(
+                        artifact.title.replace(/\s+/g, "_")
+                      )}
+                      target="_blank"
+                    >
+                      <ImageObjective
+                        title={"Click to open in Wiki"}
+                        src={ARTIFACT_SPRITES.resolve(
+                          snakeCase(artifact.title).replace(/\(\)/g, "")
+                        )}
+                        done={props.gameSave.museumPieces.artifacts.has(
+                          artifactId
+                        )}
+                        width={36}
+                        height={36}
+                      />
+                    </a>
+                  </Tooltip.Trigger>
+
+                  <Tooltip.Content>{artifact.title}</Tooltip.Content>
+                </Tooltip.Root>
               </div>
             ))}
           </div>
@@ -162,7 +185,7 @@ export const MuseumSection = (props: Props) => {
           description="donate 40 items"
         >
           {!playerAchievements.treasureTrove.achieved && (
-            <> — Donated {totalDonated} out of 40</>
+            <> — {40 - totalDonated} more left</>
           )}
         </AchievementDisplay>
 
@@ -172,10 +195,7 @@ export const MuseumSection = (props: Props) => {
           description="complete the whole collection"
         >
           {!playerAchievements.aCompleteCollection.achieved && (
-            <>
-              {" "}
-              — Donated {totalDonated} out of {maxDonateCount}
-            </>
+            <> — {maxDonateCount - totalDonated} more left</>
           )}
         </AchievementDisplay>
       </div>

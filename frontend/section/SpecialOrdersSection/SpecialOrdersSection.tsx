@@ -11,6 +11,7 @@ import { StardewWiki } from "~frontend/util/StardewWiki";
 import clsx from "clsx";
 
 import styles from "./SpecialOrdersSection.module.scss";
+import { Tooltip } from "~frontend/component/Tooltip/Tooltip";
 
 interface Props {
   gameSave: GameSave;
@@ -55,6 +56,7 @@ export const SpecialOrdersSection = (props: Props) => {
               !goals.global.objectives.orderCompletion && styles.incomplete
             )}
             src={boardPng}
+            title="Click to open in Wiki"
           />
         </a>
 
@@ -68,12 +70,18 @@ export const SpecialOrdersSection = (props: Props) => {
               )}
               target="_blank"
             >
-              <ImageObjective
-                done={order.completed}
-                width={42}
-                title={order.title}
-                src={SPECIAL_ORDER_SPRITES.resolve(order.npc)}
-              />
+              <Tooltip.Root>
+                <Tooltip.Trigger>
+                  <ImageObjective
+                    done={order.completed}
+                    width={42}
+                    title="Click to open in Wiki"
+                    src={SPECIAL_ORDER_SPRITES.resolve(order.npc)}
+                  />
+                </Tooltip.Trigger>
+
+                <Tooltip.Content>{order.title}</Tooltip.Content>
+              </Tooltip.Root>
             </a>
           ))}
         </div>

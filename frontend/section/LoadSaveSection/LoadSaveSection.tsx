@@ -41,6 +41,8 @@ export const LoadSaveSection = (props: Props) => {
   return (
     <>
       <SummarySection>
+        {/* TODO: This library warns with the following. Prolly need to rewrite at some point */}
+        {/* Warning: React does not recognize the `overRide` prop on a DOM element. */}
         <FileUploader
           classes={styles.fileUpload}
           multiple={false}

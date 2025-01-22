@@ -7,8 +7,10 @@ enum WalnutDiscoveryLocation {
 }
 
 interface GoldenWalnutInfo {
+  id?: string;
   quantity: number;
   howToFind: string;
+  details?: string[];
 }
 
 export const STARDEW_GOLDEN_WALNUTS = {
@@ -85,7 +87,145 @@ export const STARDEW_GOLDEN_WALNUTS = {
     },
   ],
 
-  [WalnutDiscoveryLocation.ISLAND_NORTH]: [],
+  [WalnutDiscoveryLocation.ISLAND_NORTH]: [
+    {
+      quantity: 1,
+      howToFind:
+        "Atop the stairs at the Island North entrance, turn west and dig at the center of stone circle.",
+    },
+    {
+      quantity: 1,
+      howToFind:
+        "Atop the stairs at the Island North entrance, turn west into the hidden passage to reach a grove with a walnut bush.",
+    },
+    {
+      quantity: 1,
+      howToFind:
+        "Atop the stairs at the Island North entrance, move northeast to the grassy area and dig at the center of a circle of flowers.",
+    },
+    {
+      quantity: 1,
+      howToFind:
+        "Atop the stairs at the Island North entrance, go northeast to the circle of flowers in the grassy area, then turn east and move onward to another grassy area. Dig at the center of the circle of stones.",
+    },
+    {
+      quantity: 1,
+      howToFind:
+        "Southeast of the Island Field Office, find the patch of sand with unusual texture and dig for the buried golden walnut.",
+    },
+    {
+      quantity: 1,
+      howToFind:
+        "Up the north steps of the dig site, dig at the center of the stone circle.",
+    },
+    {
+      quantity: 1,
+      howToFind:
+        "Up the north steps of the dig site and west across the bridge, there is a walnut plant.",
+    },
+    {
+      quantity: 2,
+      howToFind:
+        "Up the north steps of the dig site and east through the hidden passage in the cliff, the path emerges to a bridge eastward and two walnut plants beyond it.",
+    },
+    {
+      quantity: 6,
+      howToFind:
+        "Complete the Large Animal collection at the Island Field Office.",
+    },
+    {
+      quantity: 3,
+      howToFind: "Complete the Snake collection at the Island Field Office.",
+    },
+    {
+      quantity: 1,
+      howToFind: "Donate a Mummified Frog to the Island Field Office.",
+    },
+    {
+      quantity: 1,
+      howToFind: "Donate a Mummified Bat to the Island Field Office.",
+    },
+    {
+      quantity: 1,
+      howToFind:
+        "Finish Purple Flowers Island Survey to get 1 walnut. The correct number is 22.",
+    },
+    {
+      quantity: 1,
+      howToFind:
+        "Finish Purple Starfish Island Survey to get 1 walnut. The correct number is 18.",
+    },
+    {
+      quantity: 1,
+      howToFind:
+        "Southeast of the Volcano Dungeon's entrance, find the walnut plant hidden by a tree.",
+    },
+    {
+      quantity: 1,
+      howToFind:
+        "Eastward from the Volcano Dungeon entrance, dig in the sand circled by two bushes and an arc of stones.",
+    },
+    {
+      quantity: 1,
+      howToFind:
+        "Northeast of the Volcano Dungeon entrance, there is a curved tree protruding high from the side of the Volcano. The walnut hidden in that tree can be knocked down using a slingshot.",
+    },
+    {
+      quantity: 1,
+      howToFind:
+        "Southwest of the Volcano Dungeon's entrance is a curved palm tree growing out of the cliff's side. Dig the tile that is visible just inside the loop of the palm tree. (Digging will produce nothing if the journal scrap has not yet been read.)",
+    },
+    {
+      quantity: 1,
+      howToFind:
+        "Dig at the center of the circle of stones at the extreme northwest of the map, a location where Leo sometimes stands.",
+    },
+    {
+      quantity: 1,
+      howToFind:
+        "At the extreme northwest of the map, west of the volcano, proceed west along the wall and a notch north through the hidden passage westward. There is a walnut in the secluded bush.",
+    },
+    {
+      quantity: 2,
+      howToFind:
+        "When at the river of lava at the entrance of the Volcano Dungeon, use a Watering Can to make a long path westward. Extend the path southward to the landing near the river's end. Exit the volcano south into an open area with two bushes.",
+    },
+    {
+      id: "VolcanoMining",
+      quantity: 5,
+      howToFind:
+        "While in the Volcano Dungeon, 5 Golden Walnuts can be obtained by breaking rocks.",
+    },
+    {
+      id: "VolcanoMonsterDrop",
+      quantity: 5,
+      howToFind:
+        "While in the Volcano Dungeon, 5 Golden Walnuts can be obtained by killing enemies.",
+    },
+    {
+      id: "VolcanoBarrel",
+      quantity: 5,
+      howToFind:
+        "While in the Volcano Dungeon, 5 Golden Walnuts can be obtained by breaking metal crates.",
+    },
+    {
+      id: "VolcanoNormalChest",
+      quantity: 1,
+      howToFind:
+        "While in the Volcano Dungeon, 1 Golden Walnuts can be obtained by opening common chest.",
+    },
+    {
+      id: "VolcanoRareChest",
+      quantity: 1,
+      howToFind:
+        "While in the Volcano Dungeon, 1 Golden Walnuts can be obtained by opening rare chest.",
+    },
+    {
+      quantity: 2,
+      howToFind:
+        "Reach the Forge. There is a walnut plant both at the forge's entrance and at its exit.",
+    },
+  ],
 
   [WalnutDiscoveryLocation.ISLAND_WEST]: [],
 } satisfies Record<WalnutDiscoveryLocation, GoldenWalnutInfo[]>;

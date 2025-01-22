@@ -35,7 +35,7 @@
 
 .walnuts {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(7, 1fr);
   gap: 10px;
 }
 
@@ -48,7 +48,8 @@
     float: left;
     margin: 4px;
     margin-right: 18px;
-    width: 150px;
+    height: 150px;
+    image-rendering: auto;
     box-shadow:
       0 0 0 2px #b14e05,
       0 0 0 4px #fa9305,
@@ -66,6 +67,18 @@
     & > p {
       margin: 0;
       color: hsl(21, 80%, 23%);
+    }
+
+    .details {
+      margin-top: 20px;
+      float: left;
+
+      & > h2 {
+        margin: 0;
+        margin-bottom: 5px;
+        font-size: 20px;
+        color: #2e1304;
+      }
     }
   }
 }

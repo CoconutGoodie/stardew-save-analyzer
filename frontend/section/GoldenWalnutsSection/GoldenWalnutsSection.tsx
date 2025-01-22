@@ -32,6 +32,8 @@ export function GoldenWalnutsSection(props: Props) {
         {entries(STARDEW_GOLDEN_WALNUTS).map(([locationId, walnuts]) => {
           const maxObtainable = sum(walnuts.map((w) => w.quantity));
 
+          let locationWalnutId = 1;
+
           return (
             <div key={locationId} className={styles.location}>
               <h1>
@@ -70,7 +72,7 @@ export function GoldenWalnutsSection(props: Props) {
                           <h1>
                             Golden Walnut -{" "}
                             {capitalCase(locationId.replaceAll("_", " "))} #
-                            {i + 1}
+                            {locationWalnutId++}
                           </h1>
                           <p>{walnut.howToFind}</p>
                         </div>

@@ -1,17 +1,15 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
   "builds": [
     {
-      "src": "server/main.ts",
+      "src": "dist/server/index.mjs",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "server/main.ts",
-      "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"]
+      "dest": "dist/server/index.mjs"
     }
   ]
 }

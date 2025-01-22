@@ -8,7 +8,7 @@
     "format": "prettier --loglevel warn --write \"{common,frontend,server,pages}/**/*.{tsx,ts,jsx,js}\"",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "build": "pnpm i && vavite build",
-    "start": "cross-env NODE_ENV=production node dist/server/index.mjs"
+    "start": "cross-env NODE_ENV=production HOST=0.0.0.0 node dist/server/index.mjs"
   },
   "files": [
     "dist"

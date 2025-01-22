@@ -19,8 +19,17 @@
   & > h1 {
     margin: 0;
     margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
     font-size: 24px;
     font-weight: 600;
+    color: #d49d82;
+
+    & > span {
+      font-size: 16px;
+      color: #d8794a;
+    }
   }
 }
 
@@ -31,21 +40,32 @@
 }
 
 .walnutTooltip {
+  min-width: 45ch;
   max-width: 50ch;
-  display: flex;
   align-items: start;
-  gap: 10px;
 
   & > img {
+    float: left;
     margin: 4px;
-    height: 150px;
+    margin-right: 18px;
+    width: 150px;
     box-shadow:
       0 0 0 2px #b14e05,
       0 0 0 4px #fa9305,
       0 0 0 6px #853605;
   }
 
-  & > p {
-    margin: 0;
+  & > div {
+    & > h1 {
+      margin: 0;
+      margin-bottom: 5px;
+      font-size: 20px;
+      color: #2e1304;
+    }
+
+    & > p {
+      margin: 0;
+      color: hsl(21, 80%, 23%);
+    }
   }
 }

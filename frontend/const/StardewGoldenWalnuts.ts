@@ -52,9 +52,40 @@ export const STARDEW_GOLDEN_WALNUTS = {
     },
   ],
 
-  [WalnutDiscoveryLocation.ISLAND_NORTH]: [],
+  [WalnutDiscoveryLocation.ISLAND_SOUTH]: [
+    {
+      quantity: 1,
+      howToFind:
+        "Go up the stairs to Island North, immediately turn east, then go south through a hidden route behind a tree to access the walnut bush visible on the upper cliff in Island South. Note that the Parrot Hint considers this walnut as being hidden in Island North.",
+    },
+    {
+      quantity: 1,
+      howToFind:
+        "Go to the Island Southeast, accessible after the beach resort is built. The first time the player fishes in the starfish-shaped tide pool will yield a golden walnut.",
+    },
+    {
+      quantity: 1,
+      howToFind:
+        "Go to the Island Southeast, which is accessible after the beach resort is built. Find a diamond of yellow starfish and dig up the center.",
+    },
+    {
+      quantity: 5,
+      howToFind:
+        "On a rainy day, go to the Island Southeast, which is accessible after the Beach Resort is built. There will be a mermaid on a rock and a set of five rocks on the beach. Place a Flute Block under each set of stones on the shore, then tune them based on the number of stones above them. A large stone symbolizes 5, while a small stone symbolizes 1 (solution here). Once the blocks have been tuned correctly, run past them from left to right.",
+    },
+    {
+      quantity: 3,
+      howToFind:
+        "On a non-rainy night after 8 PM on an even day, go to the Pirate Cove, which is accessible after the beach resort is built. Winning a round of darts will yield a prize of a walnut up to 3 times.",
+    },
+    {
+      quantity: 1,
+      howToFind:
+        "Go to the Pirate Cove, which is accessible after the beach resort is built. Dig up the patch of exposed sand among the barrels east of the water.",
+    },
+  ],
 
-  [WalnutDiscoveryLocation.ISLAND_SOUTH]: [],
+  [WalnutDiscoveryLocation.ISLAND_NORTH]: [],
 
   [WalnutDiscoveryLocation.ISLAND_WEST]: [],
 } satisfies Record<WalnutDiscoveryLocation, GoldenWalnutInfo[]>;

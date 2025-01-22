@@ -1,5 +1,5 @@
 import { capitalCase, snakeCase } from "case-anything";
-import { entries, times } from "remeda";
+import { entries, sum, times } from "remeda";
 import { ImageObjective } from "~frontend/component/ImageObjective";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { Tooltip } from "~frontend/component/Tooltip/Tooltip";
@@ -7,6 +7,7 @@ import { STARDEW_GOLDEN_WALNUTS } from "~frontend/const/StardewGoldenWalnuts";
 import { GameSave } from "~frontend/gamesave/GameSave";
 
 import goldenWalnutPng from "~frontend/assets/icon/golden-walnut.png";
+import checkmarkPng from "~frontend/assets/icon/checkmark.png";
 
 import styles from "./GoldenWalnutsSection.module.scss";
 import { GOLDEN_WALNUT_HINT_SPRITES } from "~frontend/const/Assets";
@@ -29,9 +30,15 @@ export function GoldenWalnutsSection(props: Props) {
     >
       <div className={styles.locations}>
         {entries(STARDEW_GOLDEN_WALNUTS).map(([locationId, walnuts]) => {
+          const maxObtainable = sum(walnuts.map((w) => w.quantity));
+
           return (
             <div key={locationId} className={styles.location}>
-              <h1>{capitalCase(locationId.replaceAll("_", " "))} (X / N)</h1>
+              <h1>
+                {capitalCase(locationId.replaceAll("_", " "))}{" "}
+                <span>(X / {maxObtainable})</span>
+                <img src={checkmarkPng} height={14} />
+              </h1>
 
               <div className={styles.walnuts}>
                 {walnuts.map((walnut, walnutIndex) =>
@@ -59,7 +66,14 @@ export function GoldenWalnutsSection(props: Props) {
                             `${snakeCase(locationId)}_${walnutIndex + 1}`
                           )}
                         />
-                        <p>{walnut.howToFind}</p>
+                        <div>
+                          <h1>
+                            Golden Walnut -{" "}
+                            {capitalCase(locationId.replaceAll("_", " "))} #
+                            {i + 1}
+                          </h1>
+                          <p>{walnut.howToFind}</p>
+                        </div>
                       </Tooltip.Content>
                     </Tooltip.Root>
                   ))

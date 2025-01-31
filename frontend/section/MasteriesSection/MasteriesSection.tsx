@@ -28,7 +28,9 @@ export const MasteriesSection = (props: Props) => {
       farmer.name,
       {
         objectives: {
-          accessToCave: farmer.skillLevelTotal === 50,
+          accessToCave: values(farmer.skills).every(
+            (skill) => skill.level >= 10
+          ),
           perksClaimed: farmer.masteries.perks,
           maxLevelReached:
             farmer.masteries.currentLevel >=

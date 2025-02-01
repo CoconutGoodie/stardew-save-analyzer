@@ -1,11 +1,3 @@
-import clockPng from "~frontend/assets/icon/clock.png";
-import goldPng from "~frontend/assets/icon/gold.png";
-import favoritePng from "~frontend/assets/icon/favorite-thing.png";
-import femalePng from "~frontend/assets/icon/female.png";
-import malePng from "~frontend/assets/icon/male.png";
-import mermaidPendantPng from "~frontend/assets/icon/mermaid-pendant.png";
-import shrineOfChallengePng from "~frontend/assets/icon/shrine-of-challenge.png";
-import skullAltarPng from "~frontend/assets/icon/skull-altar.png";
 import { Currency } from "~frontend/component/Currency";
 import { GameDateDisplay } from "~frontend/component/GameDateDisplay";
 import { SummarySection } from "~frontend/component/SummarySection";
@@ -15,6 +7,17 @@ import { StardewWiki } from "~frontend/util/StardewWiki";
 import { lowerCase } from "case-anything";
 import clsx from "clsx";
 import { Fragment } from "react/jsx-runtime";
+
+import clockPng from "~frontend/assets/icon/clock.png";
+import goldPng from "~frontend/assets/icon/gold.png";
+import favoritePng from "~frontend/assets/icon/favorite-thing.png";
+import femalePng from "~frontend/assets/icon/female.png";
+import malePng from "~frontend/assets/icon/male.png";
+import mermaidPendantPng from "~frontend/assets/icon/mermaid-pendant.png";
+import shrineOfChallengePng from "~frontend/assets/icon/shrine-of-challenge.png";
+import skullAltarPng from "~frontend/assets/icon/skull-altar.png";
+import goldClockActivePng from "~frontend/assets/icon/gold-clock-active.png";
+import goldClockInactivePng from "~frontend/assets/icon/gold-clock-inactive.png";
 
 import styles from "./OverviewSection.module.scss";
 
@@ -99,6 +102,29 @@ export const OverviewSection = (props: Props) => {
                 .
               </div>
             </li>
+            {props.gameSave.goldClock.isBuilt && (
+              <li>
+                <div>
+                  <img
+                    width={18}
+                    src={
+                      props.gameSave.goldClock.active
+                        ? goldClockActivePng
+                        : goldClockInactivePng
+                    }
+                  />{" "}
+                  Gold Clock is{" "}
+                  <strong
+                    className={clsx(
+                      props.gameSave.goldClock.active && styles.goldClockActive
+                    )}
+                  >
+                    {props.gameSave.goldClock.active ? "active" : "inactive"}
+                  </strong>
+                  .
+                </div>
+              </li>
+            )}
             {props.gameSave.mineShrineActive && (
               <li>
                 <div>

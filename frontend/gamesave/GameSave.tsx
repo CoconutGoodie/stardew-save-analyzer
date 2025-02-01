@@ -32,6 +32,8 @@ export class GameSave {
 
   public readonly separateWallets;
 
+  public readonly goldClock;
+
   public readonly player;
   public readonly farmhands;
   public readonly pets;
@@ -73,6 +75,8 @@ export class GameSave {
     this.separateWallets = saveXml
       .query("player > useSeparateWallets")
       .boolean();
+
+    this.goldClock = this.calcGoldClock();
 
     this.player = new Farmer(saveXml.query("player"), this);
     this.farmhands = this.calcFarmhands();
@@ -261,6 +265,26 @@ export class GameSave {
         .query("goldenAnimalCracker > *")
         .boolean(),
     }));
+  }
+
+  private calcGoldClock() {
+    const farmLocationXml = this.saveXml.queryAllAndFind(
+      "locations > GameLocation",
+      (node) => node.element?.getAttribute("xsi:type") === "Farm"
+    );
+
+    const goldClockXml = farmLocationXml
+      .queryAll("Building")
+      .find(
+        (buildingXml) =>
+          buildingXml.query("buildingType").text().toLowerCase() ===
+          "gold clock"
+      );
+
+    return {
+      isBuilt: goldClockXml != null,
+      active: goldClockXml?.query("magical").boolean(),
+    };
   }
 
   private calcFarmhands() {

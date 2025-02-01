@@ -114,7 +114,7 @@ export const SummarySection = (props: Props) => {
       <div
         ref={wrapperRef}
         className={clsx(
-          styles.wrapper,
+          styles.body,
           !expanded && styles.expanded,
           markedAsSpoiler && styles.spoiler,
           props.className

@@ -10,7 +10,11 @@ $collapsedHeight: 150px;
     opacity: 1;
   }
 
-  .wrapper {
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
     &.expanded {
       height: $collapsedHeight;
       overflow: hidden;

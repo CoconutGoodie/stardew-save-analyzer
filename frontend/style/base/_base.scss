@@ -43,8 +43,9 @@ ul,
 li {
   margin-top: 0;
   margin-bottom: 0;
-  padding-left: 25px;
+  padding-left: 18px;
   list-style-image: url("/frontend/assets/icon/list-bullet.png");
+  list-style-position: outside;
 
   & li {
     padding: 0;

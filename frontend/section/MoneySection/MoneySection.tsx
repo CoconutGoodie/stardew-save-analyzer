@@ -9,6 +9,7 @@ import goldPng from "~frontend/assets/icon/gold.png";
 import styles from "./MoneySection.module.scss";
 import { mapToObj, prop, sum } from "remeda";
 import { thru } from "~frontend/util/utilities";
+import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
 
 interface Props {
   gameSave: GameSave;
@@ -38,6 +39,10 @@ export const MoneySection = (props: Props) => {
   });
 
   if (props.gameSave.separateWallets) {
+    farmers.forEach((farmer) => {
+      console.log(farmer.money);
+    });
+
     // TODO: Add separate wallets spot. And show individual farmers
     return (
       <SummarySection
@@ -66,14 +71,15 @@ export const MoneySection = (props: Props) => {
       id="money"
       sectionTitle="Money"
       sectionIcon={goldPng}
-      className={styles.section}
       collapsable
       allDone={allDone}
     >
-      <div>
-        In total, <strong>{props.gameSave.farmName} Farm</strong> has earned{" "}
-        <Currency amount={totalMoneyEarned} />
-      </div>
+      <SectionPart.Statistics>
+        <>
+          In total, <strong>{props.gameSave.farmName} Farm</strong> has earned{" "}
+          <Currency amount={totalMoneyEarned} />
+        </>
+      </SectionPart.Statistics>
 
       <div className={styles.money}>
         <span className={styles.currency}>G</span>

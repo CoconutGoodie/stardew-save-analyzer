@@ -16,6 +16,7 @@ import { sum, times } from "remeda";
 
 import styles from "./FarmBuildingsSection.module.scss";
 import { Objective } from "~frontend/component/Objective";
+import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
 
 interface Props {
   gameSave: GameSave;
@@ -112,16 +113,16 @@ export const FarmBuildingsSection = (props: Props) => {
       className={styles.section}
       collapsable
     >
-      <div className={styles.stats}>
-        <Objective done icon={<img height={16} src={chickenPng} />}>
+      <SectionPart.Statistics>
+        <>
           <strong>{props.gameSave.farmName} Farm</strong> has{" "}
           <strong>{buildingJsx.length}</strong> farm building(s) in total.
-        </Objective>
-        <Objective done icon={<img height={16} src={chickenPng} />}>
+        </>
+        <>
           <strong>{props.gameSave.farmName} Farm</strong> is home to{" "}
           <strong>{totalAnimalCount}</strong> animal(s).
-        </Objective>
-      </div>
+        </>
+      </SectionPart.Statistics>
       <Scrollbox
         scrollClassName={styles.scrollbox}
         expanded={expanded}

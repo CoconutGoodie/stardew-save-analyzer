@@ -194,31 +194,16 @@ export const RelationshipsSection = (props: Props) => {
               </InfoText>
 
               <div>
-                <AchievementDisplay
-                  title={farmerAchievements.aNewFriend.title}
-                  achieved={farmerAchievements.aNewFriend.achieved}
-                  description={`reach a ${farmerAchievements.aNewFriend.minPoints}-heart friend level with ${farmerAchievements.aNewFriend.goal}`}
-                />
-                <AchievementDisplay
-                  title={farmerAchievements.cliques.title}
-                  achieved={farmerAchievements.cliques.achieved}
-                  description={`reach a ${farmerAchievements.cliques.minPoints}-heart friend level with ${farmerAchievements.cliques.goal}`}
-                />
-                <AchievementDisplay
-                  title={farmerAchievements.networking.title}
-                  achieved={farmerAchievements.networking.achieved}
-                  description={`reach a ${farmerAchievements.networking.minPoints}-heart friend level with ${farmerAchievements.networking.goal}`}
-                />
-                <AchievementDisplay
-                  title={farmerAchievements.bestFriends.title}
-                  achieved={farmerAchievements.bestFriends.achieved}
-                  description={`reach a ${farmerAchievements.bestFriends.minPoints}-heart friend level with ${farmerAchievements.bestFriends.goal}`}
-                />
-                <AchievementDisplay
-                  title={farmerAchievements.theBelovedFarmer.title}
-                  achieved={farmerAchievements.theBelovedFarmer.achieved}
-                  description={`reach a ${farmerAchievements.theBelovedFarmer.minPoints}-heart friend level with ${farmerAchievements.theBelovedFarmer.goal}`}
-                />
+                {goals.individuals[farmer.name].achievements.map(
+                  (achievement) => (
+                    <AchievementDisplay
+                      key={achievement.title}
+                      title={achievement.title}
+                      achieved={achievement.achieved}
+                      description={`reach a ${achievement.minHearts}-heart friend level with ${achievement.goal}`}
+                    />
+                  )
+                )}
                 <div>
                   <Objective
                     className={styles.objective}

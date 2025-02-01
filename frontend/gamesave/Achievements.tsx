@@ -2,7 +2,10 @@ import { STARDEW_COOKING_RECIPES } from "~frontend/const/StardewCooking";
 import { STARDEW_CRAFTING_RECIPES } from "~frontend/const/StardewCrafting";
 import { STARDEW_ACHIEVEMENT_FISHES } from "~frontend/const/StardewFishes";
 import { STARDEW_ERADICATION_GOALS } from "~frontend/const/StardewMonsters";
-import { STARDEW_ARTIFACTS, STARDEW_MINERALS } from "~frontend/const/StardewMuseum";
+import {
+  STARDEW_ARTIFACTS,
+  STARDEW_MINERALS,
+} from "~frontend/const/StardewMuseum";
 import {
   STARDEW_SHIPPABLE_MONOCROPS,
   STARDEW_SHIPPABLE_POLYCROPS,
@@ -182,7 +185,11 @@ export class Achievement {
 }
 
 export class MoneyAchievement extends Achievement {
-  constructor(gameSave: GameSave, title: string, public readonly goal: number) {
+  constructor(
+    gameSave: GameSave,
+    title: string,
+    public readonly goal: number
+  ) {
     super(title, gameSave.totalGoldsEarned >= goal);
   }
 }
@@ -255,12 +262,13 @@ export class RelationAchievement extends Achievement {
     farmer: Farmer,
     title: string,
     public readonly goal: number,
-    public readonly minPoints: number
+    public readonly minHearts: number
   ) {
     super(
       title,
-      farmer.relationships.filter((r) => !r.isChild && r.points >= minPoints)
-        .length >= goal
+      farmer.relationships.filter(
+        (r) => !r.isChild && r.points >= minHearts * 250
+      ).length >= goal
     );
   }
 }

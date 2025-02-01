@@ -1,4 +1,5 @@
 import clockPng from "~frontend/assets/icon/clock.png";
+import goldPng from "~frontend/assets/icon/gold.png";
 import favoritePng from "~frontend/assets/icon/favorite-thing.png";
 import femalePng from "~frontend/assets/icon/female.png";
 import malePng from "~frontend/assets/icon/male.png";
@@ -87,6 +88,15 @@ export const OverviewSection = (props: Props) => {
               <div>
                 <img width={18} src={clockPng} />{" "}
                 <em>{formatDuration(props.gameSave.playtime)}</em>
+              </div>
+            </li>
+            <li>
+              <div>
+                <img width={18} src={goldPng} /> Wallets are{" "}
+                <strong>
+                  {props.gameSave.separateWallets ? "separated" : "shared"}
+                </strong>
+                .
               </div>
             </li>
             {props.gameSave.mineShrineActive && (

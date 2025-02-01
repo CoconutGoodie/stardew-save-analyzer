@@ -62,11 +62,31 @@ export class Achievements {
   public readonly monoculture;
 
   constructor(farmer: Farmer, gameSave: GameSave) {
-    this.greenhorn = new MoneyAchievement(gameSave, "Greenhorn", 15_000);
-    this.cowpoke = new MoneyAchievement(gameSave, "Cowpoke", 50_000);
-    this.homesteader = new MoneyAchievement(gameSave, "Homesteader", 250_000);
-    this.millionaire = new MoneyAchievement(gameSave, "Millionaire", 1_000_000);
-    this.legend = new MoneyAchievement(gameSave, "Legend", 10_000_000);
+    this.greenhorn = new MoneyAchievement(
+      gameSave.separateWallets ? farmer : gameSave.player,
+      "Greenhorn",
+      15_000
+    );
+    this.cowpoke = new MoneyAchievement(
+      gameSave.separateWallets ? farmer : gameSave.player,
+      "Cowpoke",
+      50_000
+    );
+    this.homesteader = new MoneyAchievement(
+      gameSave.separateWallets ? farmer : gameSave.player,
+      "Homesteader",
+      250_000
+    );
+    this.millionaire = new MoneyAchievement(
+      gameSave.separateWallets ? farmer : gameSave.player,
+      "Millionaire",
+      1_000_000
+    );
+    this.legend = new MoneyAchievement(
+      gameSave.separateWallets ? farmer : gameSave.player,
+      "Legend",
+      10_000_000
+    );
 
     this.singularTalent = new Achievement(
       "Singular Talent",
@@ -186,11 +206,11 @@ export class Achievement {
 
 export class MoneyAchievement extends Achievement {
   constructor(
-    gameSave: GameSave,
+    farmer: Farmer,
     title: string,
     public readonly goal: number
   ) {
-    super(title, gameSave.totalGoldsEarned >= goal);
+    super(title, farmer.totalMoneyEarned >= goal);
   }
 }
 

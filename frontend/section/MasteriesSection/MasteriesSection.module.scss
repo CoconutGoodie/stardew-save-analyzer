@@ -1,6 +1,7 @@
 .levelInfo {
   position: relative;
   margin-bottom: 14px;
+  margin-left: 10px;
   display: flex;
   align-items: flex-end;
   gap: 5px;
@@ -67,6 +68,7 @@
 }
 
 .perks {
+  margin-left: 10px;
   width: fit-content;
   margin-bottom: 15px;
   display: flex;

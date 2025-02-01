@@ -57,7 +57,7 @@ export const Currency = (props: Props) => {
   return (
     <span
       style={{
-        verticalAlign: "middle",
+        verticalAlign: "text-bottom",
         height: "18px",
         display: "inline-flex",
         alignItems: "center",

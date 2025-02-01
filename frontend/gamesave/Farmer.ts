@@ -24,6 +24,9 @@ export class Farmer {
   public readonly favoriteThing;
   public readonly playtime;
 
+  public readonly money;
+  public readonly totalMoneyEarned;
+
   public readonly qiGems;
   public readonly qiCoins;
 
@@ -59,7 +62,10 @@ export class Farmer {
 
   public readonly shippedItems;
 
-  constructor(private farmerXml: XMLNode, private gameSave: GameSave) {
+  constructor(
+    private farmerXml: XMLNode,
+    private gameSave: GameSave
+  ) {
     this.name = farmerXml.query(":scope > name").text();
     this.gender = this.calcGender();
     this.favoriteThing = farmerXml.query(":scope > favoriteThing").text();
@@ -67,6 +73,11 @@ export class Farmer {
 
     this.qiGems = farmerXml.query(":scope > qiGems").number();
     this.qiCoins = farmerXml.query(":scope > clubCoins").number();
+
+    this.money = farmerXml.query(":scope > money").number();
+    this.totalMoneyEarned = farmerXml
+      .query(":scope > totalMoneyEarned")
+      .number();
 
     this.skills = {
       farming: {
@@ -140,6 +151,10 @@ export class Farmer {
     this.shippedItems = this.calcShippedItems();
   }
 
+  public getAchievements() {
+    return this.gameSave.achievements[this.name];
+  }
+
   private calcGender() {
     let gender = this.farmerXml
       .query(":scope > gender")
@@ -147,8 +162,8 @@ export class Farmer {
         genderXml.text() === "Male"
           ? ("Male" as const)
           : genderXml.text() === "Female"
-          ? ("Female" as const)
-          : null
+            ? ("Female" as const)
+            : null
       );
 
     // version < 1.6
@@ -443,12 +458,12 @@ export class Farmer {
         status: npcXml.query("divorcedFromFarmer").boolean()
           ? "Divorced"
           : weddingCooldown > 0 && npcName === this.spouse?.slice(0, -7)
-          ? "Engaged"
-          : npcXml.query("daysMarried").number() > 0
-          ? "Married"
-          : npcXml.query("datingFarmer").boolean()
-          ? "Dating"
-          : "Friendly",
+            ? "Engaged"
+            : npcXml.query("daysMarried").number() > 0
+              ? "Married"
+              : npcXml.query("datingFarmer").boolean()
+                ? "Dating"
+                : "Friendly",
       };
     });
 

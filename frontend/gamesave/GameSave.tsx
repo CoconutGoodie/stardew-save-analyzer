@@ -31,7 +31,6 @@ export class GameSave {
   public readonly skullShrineActive;
 
   public readonly separateWallets;
-  public readonly totalGoldsEarned;
 
   public readonly player;
   public readonly farmhands;
@@ -74,7 +73,6 @@ export class GameSave {
     this.separateWallets = saveXml
       .query("player > useSeparateWallets")
       .boolean();
-    this.totalGoldsEarned = saveXml.query("player > totalMoneyEarned").number();
 
     this.player = new Farmer(saveXml.query("player"), this);
     this.farmhands = this.calcFarmhands();

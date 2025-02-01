@@ -105,7 +105,7 @@ export const GrandpasEvaluationsSection = (props: Props) => {
             {props.gameSave.grandpasEvals.scoreSubjects.map(
               ({ earned, reason, score }, index) => (
                 <li key={index} className={clsx(!earned && styles.unearned)}>
-                  <strong>+ {score}</strong> for {reason}
+                  <strong>+{score}</strong> for {reason}
                   {earned && (
                     <>
                       {" "}

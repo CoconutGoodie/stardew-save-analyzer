@@ -2,20 +2,21 @@ import { Achievement } from "~frontend/gamesave/Achievements";
 import { isKeyOf } from "~frontend/util/utilities";
 import { entries, isPlainObject, mapValues, values } from "remeda";
 
-type ObjectiveValue =
+export type ObjectiveValue =
   | boolean
   | { current: number; goal: number }
   | { [x: string]: ObjectiveValue };
 
-interface Objectives {
+export interface Objectives {
   [name: PropertyKey]: ObjectiveValue;
 }
 
-interface Goals<O extends Objectives, A extends Achievement[]> {
+export interface Goals<O extends Objectives, A extends Achievement[]> {
   achievements: A;
   objectives: O;
 }
 
+// TODO: Split into useObjectives and useAchievements
 export function useGoals<
   const GO extends Objectives,
   const GA extends Achievement[],

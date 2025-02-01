@@ -1,7 +1,7 @@
 import cookingPng from "~frontend/assets/icon/cooking.png";
 import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
 import { FarmerTag } from "~frontend/component/FarmerTag";
-import { FarmersRow } from "~frontend/component/FarmersRow";
+import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { ImageObjective } from "~frontend/component/ImageObjective";
 import { Objective } from "~frontend/component/Objective";
 import { Scrollbox } from "~frontend/component/Scrollbox";

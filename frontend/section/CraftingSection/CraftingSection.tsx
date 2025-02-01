@@ -1,7 +1,7 @@
 import craftingPng from "~frontend/assets/icon/crafting.png";
 import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
 import { FarmerTag } from "~frontend/component/FarmerTag";
-import { FarmersRow } from "~frontend/component/FarmersRow";
+import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { ImageObjective } from "~frontend/component/ImageObjective";
 import { InfoText } from "~frontend/component/InfoText";
 import { Objective } from "~frontend/component/Objective";

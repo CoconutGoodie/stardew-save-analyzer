@@ -1,7 +1,7 @@
 import starPng from "~frontend/assets/icon/star.png";
 import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
 import { FarmerTag } from "~frontend/component/FarmerTag";
-import { FarmersRow } from "~frontend/component/FarmersRow";
+import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { PROFESSION_SPRITES, SKILL_SPRITES } from "~frontend/const/Assets";
 import { GameSave } from "~frontend/gamesave/GameSave";

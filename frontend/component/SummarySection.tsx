@@ -73,18 +73,22 @@ export const SummarySection = (props: Props) => {
         <h1 className={clsx(props.allDone && styles.allDone)}>
           {nativeProps.id && <a href={`#${nativeProps.id}`}>#</a>}
 
-          <img src={props.sectionIcon} height={26}/>
+          <img src={props.sectionIcon} height={26} />
 
           <span>{sectionTitle}</span>
 
-          {props.allDone && <img height={14} src={checkmarkPng} />}
+          {props.allDone && (
+            <img height={14} src={checkmarkPng} className={styles.checkmark} />
+          )}
 
           {(props.versions || props.spoiler) && (
             <span className={styles.versions}>
               {props.versions?.map((version) => (
                 <span key={version}>{version}</span>
               ))}
-              {props.spoiler && <span className={styles.spoiler}>Possible Spoilers</span>}
+              {props.spoiler && (
+                <span className={styles.spoiler}>Possible Spoilers</span>
+              )}
             </span>
           )}
 

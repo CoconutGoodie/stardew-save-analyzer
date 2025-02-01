@@ -2,7 +2,7 @@ import bulletinBoardPng from "~frontend/assets/sprite/help-wanted/bulletin-board
 import questPng from "~frontend/assets/sprite/help-wanted/quest.png";
 import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
 import { FarmerTag } from "~frontend/component/FarmerTag";
-import { FarmersRow } from "~frontend/component/FarmersRow";
+import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { InfoText } from "~frontend/component/InfoText";
 import { Objective } from "~frontend/component/Objective";
 import { SummarySection } from "~frontend/component/SummarySection";

@@ -1,7 +1,9 @@
 import { Children, PropsWithChildren, ReactNode } from "react";
 import { Objective } from "~frontend/component/Objective";
+import { Achievement } from "~frontend/gamesave/Achievements";
 
 import styles from "./SectionPart.module.scss";
+import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
 
 export const SectionPart = {
   Statistics(props: PropsWithChildren<{ icon?: ReactNode }>) {
@@ -19,6 +21,23 @@ export const SectionPart = {
           </li>
         ))}
       </ul>
+    );
+  },
+
+  Achievements: (props: { achievements: Achievement[] }) => {
+    return (
+      <div className={styles.achievements}>
+        {props.achievements.map((achievement) => (
+          <AchievementDisplay
+            key={achievement.title}
+            title={achievement.title}
+            achieved={achievement.achieved}
+            description={achievement.description}
+          >
+            {!achievement.achieved && <>— {achievement.achieveHint?.()}</>}
+          </AchievementDisplay>
+        ))}
+      </div>
     );
   },
 };

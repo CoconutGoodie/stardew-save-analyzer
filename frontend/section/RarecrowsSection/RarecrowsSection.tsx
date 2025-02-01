@@ -11,6 +11,7 @@ import { StardewWiki } from "~frontend/util/StardewWiki";
 import { mapToObj, sum, values } from "remeda";
 
 import styles from "./RarecrowsSection.module.scss";
+import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
 
 interface Props {
   gameSave: GameSave;
@@ -53,7 +54,22 @@ export const RarecrowSection = (props: Props) => {
       versions={["v1.4 Introduced"]}
       allDone={allDone}
     >
-      <div className={styles.objectives}>
+      <SectionPart.Statistics>
+        <>
+          In total, <strong>{totalPlaced}</strong> Rarecrow(s) are placed all
+          across the Valley.
+        </>
+        <>
+          Placed{" "}
+          <strong>
+            {values(props.gameSave.rarecrowsPlaced).filter((x) => x > 0).length}
+          </strong>{" "}
+          of <strong>{STARDEW_RARECROW_IDS.length}</strong> different
+          Rarecrow(s) all across the Valley.
+        </>
+      </SectionPart.Statistics>
+
+      {/* <div className={styles.objectives}>
         <Objective done icon={<img src={scarecrowPng} />}>
           In total, <strong>{totalPlaced}</strong> Rarecrow(s) are placed all
           across the Valley.
@@ -66,7 +82,7 @@ export const RarecrowSection = (props: Props) => {
           of <strong>{STARDEW_RARECROW_IDS.length}</strong> different
           Rarecrow(s) all across the Valley.
         </Objective>
-      </div>
+      </div> */}
 
       <div className={styles.rarecrows}>
         <a target="_blank" href={StardewWiki.getLink("Scarecrow")}>
@@ -89,9 +105,7 @@ export const RarecrowSection = (props: Props) => {
             href={StardewWiki.getLink("Scarecrow", "Rarecrows")}
           >
             <ImageObjective
-              done={
-                allCollected || props.gameSave.allRarecrows[rarecrowId] > 0
-              }
+              done={allCollected || props.gameSave.allRarecrows[rarecrowId] > 0}
               height={100}
               title={`Rarecrow #${index + 1}`}
               src={RARECROW_SPRITES.resolve(`rarecrow_${index + 1}`)}
@@ -150,8 +164,7 @@ export const RarecrowSection = (props: Props) => {
               {" "}
               — Completed{" "}
               {
-                values(props.gameSave.allRarecrows).filter((x) => x > 0)
-                  .length
+                values(props.gameSave.allRarecrows).filter((x) => x > 0).length
               }{" "}
               out of {STARDEW_RARECROW_IDS.length}
             </>

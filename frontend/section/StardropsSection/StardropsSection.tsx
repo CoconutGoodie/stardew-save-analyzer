@@ -4,7 +4,7 @@ import stardropPng from "~frontend/assets/stardrop.png";
 import stardropIconPng from "~frontend/assets/icon/stardrop.png";
 import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
 import { FarmerTag } from "~frontend/component/FarmerTag";
-import { FarmersRow } from "~frontend/component/FarmersRow";
+import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { Objective } from "~frontend/component/Objective";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { GameSave } from "~frontend/gamesave/GameSave";

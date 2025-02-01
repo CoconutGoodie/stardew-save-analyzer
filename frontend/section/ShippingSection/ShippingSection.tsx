@@ -4,7 +4,7 @@ import miniShippingBinPng from "~frontend/assets/icon/mini-shipping-bin.png";
 import { useState } from "react";
 import { useSyncedScrollbar } from "~frontend/hook/useSyncedScrollbar";
 import { useGoals } from "~frontend/hook/useGoals";
-import { FarmersRow } from "~frontend/component/FarmersRow";
+import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { FarmerTag } from "~frontend/component/FarmerTag";
 import { entries, keys, mapToObj, sum, times, values } from "remeda";
 import { Scrollbox } from "~frontend/component/Scrollbox";

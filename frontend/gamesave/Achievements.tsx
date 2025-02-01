@@ -15,6 +15,8 @@ import { Farmer } from "~frontend/gamesave/Farmer";
 import { GameSave } from "~frontend/gamesave/GameSave";
 import { reduceIterator } from "~frontend/util/iterator.utils";
 import { fromEntries, keys, sumBy, values } from "remeda";
+import { ReactNode } from "react";
+import { Currency } from "~frontend/component/Currency";
 
 export class Achievements {
   public readonly greenhorn;
@@ -90,10 +92,12 @@ export class Achievements {
 
     this.singularTalent = new Achievement(
       "Singular Talent",
+      <></>,
       values(farmer.skills).some((skill) => skill.level >= 10)
     );
     this.masterOfTheFiveWays = new Achievement(
       "Master of the Five Ways",
+      <></>,
       values(farmer.skills).every((skill) => skill.level >= 10)
     );
 
@@ -102,6 +106,7 @@ export class Achievements {
 
     this.theBottom = new Achievement(
       "The Bottom",
+      <></>,
       farmer.deepestMineLevels.mountainMine >= 120
     );
     this.protectorOfTheValley = new EradicationAchievement(
@@ -111,11 +116,13 @@ export class Achievements {
 
     this.mysteryOfTheStardrops = new Achievement(
       "Mystery of the Stardrops",
+      <></>,
       farmer.stardrops.every((stardrop) => stardrop.gathered)
     );
 
     this.motherCatch = new Achievement(
       "Mother Catch",
+      <></>,
       sumBy(farmer.caughtFish, (v) => v.amount) >= 100
     );
     this.fisherman = new DifferentFishAchievement(farmer, "Fisherman", 10);
@@ -128,12 +135,14 @@ export class Achievements {
 
     this.treasureTrove = new Achievement(
       "Treasure Trove",
+      <></>,
       gameSave.museumPieces.minerals.size +
         gameSave.museumPieces.artifacts.size >=
         40
     );
     this.aCompleteCollection = new Achievement(
       "A Complete Collection",
+      <></>,
       gameSave.museumPieces.minerals.size === keys(STARDEW_MINERALS).length &&
         gameSave.museumPieces.artifacts.size === keys(STARDEW_ARTIFACTS).length
     );
@@ -168,6 +177,7 @@ export class Achievements {
 
     this.fullShipment = new Achievement(
       "Full Shipment",
+      <></>,
       keys(STARDEW_SHIPPABLES).every(
         (shippableId) => farmer.shippedItems[shippableId]?.amount > 0
       )
@@ -175,6 +185,7 @@ export class Achievements {
 
     this.polyculture = new Achievement(
       "Polyculture",
+      <></>,
       reduceIterator(
         STARDEW_SHIPPABLE_POLYCROPS.keys(),
         (shippableId, achieved) =>
@@ -185,6 +196,7 @@ export class Achievements {
 
     this.monoculture = new Achievement(
       "Monoculture",
+      <></>,
       reduceIterator(
         STARDEW_SHIPPABLE_MONOCROPS.keys(),
         (shippableId, achieved) =>
@@ -200,7 +212,9 @@ export class Achievements {
 export class Achievement {
   constructor(
     public readonly title: string,
-    public readonly achieved: boolean
+    public readonly description: ReactNode,
+    public readonly achieved: boolean,
+    public readonly achieveHint?: () => ReactNode
   ) {}
 }
 
@@ -210,7 +224,19 @@ export class MoneyAchievement extends Achievement {
     title: string,
     public readonly goal: number
   ) {
-    super(title, farmer.totalMoneyEarned >= goal);
+    super(
+      title,
+      <>
+        earn <Currency amount={goal} />
+      </>,
+      farmer.totalMoneyEarned >= goal,
+      () => (
+        <>
+          <Currency amount={goal - farmer.totalMoneyEarned} unit="gold" /> more
+          to go
+        </>
+      )
+    );
   }
 }
 
@@ -221,7 +247,7 @@ export class QuestCompletionAchievement extends Achievement {
     public readonly goal: number,
     public readonly completed = farmer.totalCompletedQuests
   ) {
-    super(title, completed >= goal);
+    super(title, <></>, completed >= goal);
   }
 }
 
@@ -234,7 +260,7 @@ export class DifferentFishAchievement extends Achievement {
       (v) => v.amount > 0 && STARDEW_ACHIEVEMENT_FISHES.has(v.fishId)
     ).length
   ) {
-    super(title, caught >= goal);
+    super(title, <></>, caught >= goal);
   }
 }
 
@@ -246,7 +272,7 @@ export class DifferentCraftAchievement extends Achievement {
     public readonly crafted = values(farmer.craftedRecipes).filter((v) => v > 0)
       .length
   ) {
-    super(title, crafted >= goal);
+    super(title, <></>, crafted >= goal);
   }
 }
 
@@ -258,7 +284,7 @@ export class DifferentCookingAchievement extends Achievement {
     public readonly crafted = values(farmer.cookedRecipes).filter((v) => v > 0)
       .length
   ) {
-    super(title, crafted >= goal);
+    super(title, <></>, crafted >= goal);
   }
 }
 
@@ -273,7 +299,7 @@ export class EradicationAchievement extends Achievement {
       ])
     )
   ) {
-    super(title, Object.values(goalsDone).every(Boolean));
+    super(title, <></>, Object.values(goalsDone).every(Boolean));
   }
 }
 
@@ -286,6 +312,7 @@ export class RelationAchievement extends Achievement {
   ) {
     super(
       title,
+      <></>,
       farmer.relationships.filter(
         (r) => !r.isChild && r.points >= minHearts * 250
       ).length >= goal

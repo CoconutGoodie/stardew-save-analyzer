@@ -21,7 +21,7 @@ export const MoneySection = (props: Props) => {
   const { goals, allDone } = useGoals({
     global: {
       objectives: {
-        builtGoldenClock: false, // TODO
+        builtGoldenClock: true, // TODO
       },
     },
     individuals: mapToObj(farmers, (farmer) => [
@@ -76,8 +76,8 @@ export const MoneySection = (props: Props) => {
     >
       <SectionPart.Statistics>
         <>
-          In total, <strong>{props.gameSave.farmName} Farm</strong> has earned{" "}
-          <Currency amount={totalMoneyEarned} />
+          <strong>{props.gameSave.farmName} Farm</strong> has earned{" "}
+          <Currency amount={totalMoneyEarned} /> in total.
         </>
       </SectionPart.Statistics>
 
@@ -90,7 +90,13 @@ export const MoneySection = (props: Props) => {
         ))}
       </div>
 
-      <div className={styles.achievements}>
+      <SectionPart.Achievements
+        achievements={
+          goals.individuals[props.gameSave.player.name].achievements
+        }
+      />
+
+      {/* <div className={styles.achievements}>
         {goals.individuals[props.gameSave.player.name].achievements.map(
           (achievement) => {
             return (
@@ -118,7 +124,7 @@ export const MoneySection = (props: Props) => {
             );
           }
         )}
-      </div>
+      </div> */}
     </SummarySection>
   );
 };

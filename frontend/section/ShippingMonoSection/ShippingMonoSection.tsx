@@ -1,5 +1,5 @@
 import binPng from "~frontend/assets/sprite/shipping/bin.png";
-import { FarmersRow } from "~frontend/component/FarmersRow";
+import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { Objective } from "~frontend/component/Objective";
 import { SummarySection } from "~frontend/component/SummarySection";
 import {

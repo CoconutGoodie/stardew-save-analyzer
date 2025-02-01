@@ -1,6 +1,6 @@
 import starPng from "~frontend/assets/sprite/skill/mastery/mastery_star.png";
 import { FarmerTag } from "~frontend/component/FarmerTag";
-import { FarmersRow } from "~frontend/component/FarmersRow";
+import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { ImageObjective } from "~frontend/component/ImageObjective";
 import { Objective } from "~frontend/component/Objective";
 import { SummarySection } from "~frontend/component/SummarySection";

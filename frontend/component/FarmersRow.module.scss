@@ -3,6 +3,7 @@
   flex-wrap: nowrap;
   gap: 30px;
   overflow-x: auto;
+  will-change: scroll-position; // <-- Here to fix layerization lags
 
   &[data-has-scrollbars="true"] {
     padding-bottom: 36px;

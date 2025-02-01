@@ -12,9 +12,9 @@ export const SectionPart = {
         {Children.map(props.children, (child) => (
           <li>
             {props.icon ? (
-              <ObjectiveOLD done icon={props.icon}>
-                {child}
-              </ObjectiveOLD>
+              <>
+                {props.icon} {child}
+              </>
             ) : (
               child
             )}

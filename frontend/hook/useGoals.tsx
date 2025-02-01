@@ -1,5 +1,5 @@
 import { DependencyList, ReactNode, useMemo } from "react";
-import { pick } from "remeda";
+import { filter, flat, map, pick, pipe } from "remeda";
 import { Achievement } from "~frontend/gamesave/Achievements";
 import { Farmer } from "~frontend/gamesave/Farmer";
 
@@ -66,19 +66,25 @@ export function useGoals<T extends UseGoalsOptions>(
 ) {
   const goals = useMemo(factory, depts);
 
-  const achievementsDone = (goals.global?.achievements ?? []).reduce(
-    (done, achievement) => {
-      return done || achievement.achieved;
-    },
-    true
+  const everyAchievement = pipe(
+    [goals.global?.achievements, goals.individuals?.map((i) => i.achievements)],
+    flat(2),
+    filter((x) => x != null)
   );
 
-  const objectivesDone = (goals.global?.achievements ?? []).reduce(
-    (done, achievement) => {
-      return done || achievement.achieved;
-    },
-    true
+  const everyObjective = pipe(
+    [goals.global?.objectives, goals.individuals?.map((i) => i.objectives)],
+    flat(2),
+    filter((x) => x != null)
   );
+
+  const achievementsDone = everyAchievement.reduce((done, achievement) => {
+    return done && achievement.achieved;
+  }, true);
+
+  const objectivesDone = everyObjective.reduce((done, objective) => {
+    return done && isObjectiveDone(objective);
+  }, true);
 
   return {
     allDone: achievementsDone && objectivesDone,

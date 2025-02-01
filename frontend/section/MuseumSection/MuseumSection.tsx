@@ -10,7 +10,7 @@ import {
   STARDEW_MINERALS,
 } from "~frontend/const/StardewMuseum";
 import { GameSave } from "~frontend/gamesave/GameSave";
-import { useGoals } from "~frontend/hook/useGoals";
+import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
 import { StardewWiki } from "~frontend/util/StardewWiki";
 import { snakeCase } from "case-anything";
 import { entries, keys } from "remeda";
@@ -33,7 +33,7 @@ export const MuseumSection = (props: Props) => {
   const playerAchievements =
     props.gameSave.achievements[props.gameSave.player.name];
 
-  const { allDone } = useGoals({
+  const { allDone } = useGoals_OLD({
     global: {
       achievements: [
         playerAchievements.treasureTrove,

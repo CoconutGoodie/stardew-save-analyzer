@@ -17,7 +17,7 @@ export interface Goals<O extends Objectives, A extends Achievement[]> {
 }
 
 // TODO: Split into useObjectives and useAchievements
-export function useGoals<
+export function useGoals_OLD<
   const GO extends Objectives,
   const GA extends Achievement[],
   const IO extends Objectives,

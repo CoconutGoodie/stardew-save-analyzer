@@ -14,10 +14,10 @@ import goldenWalnutPng from "~frontend/assets/icon/golden-walnut.png";
 import goldenParrotPng from "~frontend/assets/icon/golden-parrot.png";
 
 import { GOLDEN_WALNUT_HINT_SPRITES } from "~frontend/const/Assets";
-import { useGoals } from "~frontend/hook/useGoals";
+import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
 import { StardewWiki } from "~frontend/util/StardewWiki";
 import styles from "./GoldenWalnutsSection.module.scss";
-import { Objective } from "~frontend/component/Objective";
+import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import { Currency } from "~frontend/component/Currency";
 
 interface Props {
@@ -27,7 +27,7 @@ interface Props {
 export function GoldenWalnutsSection(props: Props) {
   const { goldenWalnuts } = props.gameSave;
 
-  const { allDone, goals } = useGoals({
+  const { allDone, goals } = useGoals_OLD({
     global: {
       objectives: {
         visitGingerIsland: true, // TODO
@@ -164,7 +164,7 @@ export function GoldenWalnutsSection(props: Props) {
         })}
       </div>
 
-      <Objective
+      <ObjectiveOLD
         className={styles.objective}
         done={goals.global.objectiveStatus.gainAccessToQisWalnutRoom === "done"}
       >
@@ -177,9 +177,9 @@ export function GoldenWalnutsSection(props: Props) {
             more needed
           </>
         )}
-      </Objective>
+      </ObjectiveOLD>
 
-      <Objective
+      <ObjectiveOLD
         className={styles.objective}
         done={goals.global.objectiveStatus.gainAccessToQisWalnutRoom === "done"}
       >
@@ -192,9 +192,9 @@ export function GoldenWalnutsSection(props: Props) {
             more needed
           </>
         )}
-      </Objective>
+      </ObjectiveOLD>
 
-      <Objective
+      <ObjectiveOLD
         className={styles.objective}
         done={goals.global.objectiveStatus.gainAccessToQisWalnutRoom === "done"}
       >
@@ -207,7 +207,7 @@ export function GoldenWalnutsSection(props: Props) {
             more needed
           </>
         )}
-      </Objective>
+      </ObjectiveOLD>
     </SummarySection>
   );
 }

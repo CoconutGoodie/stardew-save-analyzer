@@ -8,12 +8,12 @@ import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
 import { FarmerTag } from "~frontend/component/FarmerTag";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { ImageObjective } from "~frontend/component/ImageObjective";
-import { Objective } from "~frontend/component/Objective";
+import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import { Scrollbox } from "~frontend/component/Scrollbox";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { NPC_SPRITES } from "~frontend/const/Assets";
 import { GameSave } from "~frontend/gamesave/GameSave";
-import { useGoals } from "~frontend/hook/useGoals";
+import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
 import { useSyncedScrollbar } from "~frontend/hook/useSyncedScrollbar";
 import { StardewWiki } from "~frontend/util/StardewWiki";
 import { useState } from "react";
@@ -39,7 +39,7 @@ export const RelationshipsSection = (props: Props) => {
 
   const farmers = props.gameSave.getAllFarmers();
 
-  const { allDone, goals } = useGoals({
+  const { allDone, goals } = useGoals_OLD({
     individuals: mapToObj(farmers, (farmer) => [
       farmer.name,
       {
@@ -87,7 +87,7 @@ export const RelationshipsSection = (props: Props) => {
                 {/* <Objective icon={<img height={16} src={heartPng} />} done>
                   Met every townsfolk.
                 </Objective> */}
-                <Objective icon={<img height={16} src={heartPng} />} done>
+                <ObjectiveOLD icon={<img height={16} src={heartPng} />} done>
                   Marital status:{" "}
                   {thru(
                     farmer.relationships.find(
@@ -100,17 +100,17 @@ export const RelationshipsSection = (props: Props) => {
                         <strong>Single</strong>
                       )
                   )}
-                </Objective>
-                <Objective icon={<img height={16} src={heartPng} />} done>
+                </ObjectiveOLD>
+                <ObjectiveOLD icon={<img height={16} src={heartPng} />} done>
                   Has 5+ hearts with <strong>{h5.length}</strong> of{" "}
                   <strong>{keys(STARDEW_RELATABLE_NPCS).length}</strong> people
                   (excluding children)
-                </Objective>
-                <Objective icon={<img height={16} src={heartPng} />} done>
+                </ObjectiveOLD>
+                <ObjectiveOLD icon={<img height={16} src={heartPng} />} done>
                   Has 10+ hearts with <strong>{h10.length}</strong> of{" "}
                   <strong>{keys(STARDEW_RELATABLE_NPCS).length}</strong> people
                   (excluding children)
-                </Objective>
+                </ObjectiveOLD>
               </div>
 
               <Scrollbox
@@ -205,12 +205,12 @@ export const RelationshipsSection = (props: Props) => {
                   )
                 )}
                 <div>
-                  <Objective
+                  <ObjectiveOLD
                     className={styles.objective}
                     done={farmerGoals.objectives.maxedOut}
                   >
                     Reached max heart with every townsfolk.
-                  </Objective>
+                  </ObjectiveOLD>
                 </div>
               </div>
             </div>

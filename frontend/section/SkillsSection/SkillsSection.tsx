@@ -5,7 +5,7 @@ import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { PROFESSION_SPRITES, SKILL_SPRITES } from "~frontend/const/Assets";
 import { GameSave } from "~frontend/gamesave/GameSave";
-import { useGoals } from "~frontend/hook/useGoals";
+import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
 import { StardewWiki } from "~frontend/util/StardewWiki";
 import { thru } from "~frontend/util/utilities";
 import { capitalCase, lowerCase } from "case-anything";
@@ -20,7 +20,7 @@ interface Props {
 export const SkillsSection = (props: Props) => {
   const farmers = props.gameSave.getAllFarmers();
 
-  const { allDone } = useGoals({
+  const { allDone } = useGoals_OLD({
     individuals: mapToObj(farmers, (farmer) => [
       farmer.name,
       {

@@ -1,13 +1,13 @@
 import binPng from "~frontend/assets/sprite/shipping/bin.png";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
-import { Objective } from "~frontend/component/Objective";
+import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import { SummarySection } from "~frontend/component/SummarySection";
 import {
   STARDEW_SHIPPABLE_MONOCROPS,
   STARDEW_SHIPPABLES,
 } from "~frontend/const/StardewShippables";
 import { GameSave } from "~frontend/gamesave/GameSave";
-import { useGoals } from "~frontend/hook/useGoals";
+import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
 import { useSyncedScrollbar } from "~frontend/hook/useSyncedScrollbar";
 import { mapIterator, reduceIterator } from "~frontend/util/iterator.utils";
 import { useState } from "react";
@@ -38,7 +38,7 @@ export const ShippingMonoSection = (props: Props) => {
 
   const farmers = props.gameSave.getAllFarmers();
 
-  const { allDone, goals } = useGoals({
+  const { allDone, goals } = useGoals_OLD({
     individuals: mapToObj(farmers, (farmer) => [
       farmer.name,
       {
@@ -99,18 +99,18 @@ export const ShippingMonoSection = (props: Props) => {
 
               <div className={styles.objectives}>
                 {mostSoldCrop != null && (
-                  <Objective icon={<img height={16} src={binPng} />} done>
+                  <ObjectiveOLD icon={<img height={16} src={binPng} />} done>
                     Shipped <strong>{mostSoldCrop.name}</strong> at most.
-                  </Objective>
+                  </ObjectiveOLD>
                 )}
-                <Objective icon={<img height={16} src={binPng} />} done>
+                <ObjectiveOLD icon={<img height={16} src={binPng} />} done>
                   Shipped <strong>{shippedDistinctCount} different</strong>{" "}
                   crops under Monoculture Category.
-                </Objective>
-                <Objective icon={<img height={16} src={binPng} />} done>
+                </ObjectiveOLD>
+                <ObjectiveOLD icon={<img height={16} src={binPng} />} done>
                   Shipped <strong>{shippedCropCount} crops</strong> in total
                   under Monoculture Category.
-                </Objective>
+                </ObjectiveOLD>
               </div>
 
               <div className={styles.showcase}>

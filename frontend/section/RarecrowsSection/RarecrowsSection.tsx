@@ -1,12 +1,12 @@
 import scarecrowPng from "~frontend/assets/icon/scarecrow.png";
 import { ImageObjective } from "~frontend/component/ImageObjective";
 import { InfoText } from "~frontend/component/InfoText";
-import { Objective } from "~frontend/component/Objective";
+import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { RARECROW_SPRITES } from "~frontend/const/Assets";
 import { STARDEW_RARECROW_IDS } from "~frontend/const/StardewRarecrows";
 import { GameSave } from "~frontend/gamesave/GameSave";
-import { useGoals } from "~frontend/hook/useGoals";
+import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
 import { StardewWiki } from "~frontend/util/StardewWiki";
 import { mapToObj, sum, values } from "remeda";
 
@@ -29,7 +29,7 @@ export const RarecrowSection = (props: Props) => {
 
   const totalPlaced = sum(values(props.gameSave.rarecrowsPlaced));
 
-  const { goals, allDone } = useGoals({
+  const { goals, allDone } = useGoals_OLD({
     global: {
       objectives: {
         allCollected,
@@ -150,7 +150,7 @@ export const RarecrowSection = (props: Props) => {
       </InfoText>
 
       <div className={styles.objectives}>
-        <Objective done={allCollected}>
+        <ObjectiveOLD done={allCollected}>
           Every{" "}
           <a
             target="_blank"
@@ -169,9 +169,9 @@ export const RarecrowSection = (props: Props) => {
               out of {STARDEW_RARECROW_IDS.length}
             </>
           )}
-        </Objective>
+        </ObjectiveOLD>
         {props.gameSave.getAllFarmers().map((farmer) => (
-          <Objective
+          <ObjectiveOLD
             key={farmer.name}
             done={goals.individuals[farmer.name].objectives.mailReceived}
           >
@@ -183,7 +183,7 @@ export const RarecrowSection = (props: Props) => {
               <strong>Z.C. Rarecrow Society</strong>
             </a>
             .
-          </Objective>
+          </ObjectiveOLD>
         ))}
       </div>
     </SummarySection>

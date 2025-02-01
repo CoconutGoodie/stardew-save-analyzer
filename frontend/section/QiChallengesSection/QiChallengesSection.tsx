@@ -1,11 +1,11 @@
 import boardPng from "~frontend/assets/sprite/special-order/qi/special_orders_board.png";
 import mrQiPng from "~frontend/assets/icon/mr-qi.png";
 import { ImageObjective } from "~frontend/component/ImageObjective";
-import { Objective } from "~frontend/component/Objective";
+import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { QI_SPECIAL_ORDER_SPRITES } from "~frontend/const/Assets";
 import { GameSave } from "~frontend/gamesave/GameSave";
-import { useGoals } from "~frontend/hook/useGoals";
+import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
 import { StardewWiki } from "~frontend/util/StardewWiki";
 import { snakeCase } from "case-anything";
 import clsx from "clsx";
@@ -19,7 +19,7 @@ interface Props {
 export const QiChallengesSection = (props: Props) => {
   const { goldenWalnuts } = props.gameSave;
 
-  const { goals, allDone } = useGoals({
+  const { goals, allDone } = useGoals_OLD({
     global: {
       objectives: {
         gainAccessToQisWalnutRoom: {
@@ -80,7 +80,7 @@ export const QiChallengesSection = (props: Props) => {
         </div>
       </div>
 
-      <Objective
+      <ObjectiveOLD
         className={styles.objective}
         done={goals.global.objectiveStatus.gainAccessToQisWalnutRoom === "done"}
       >
@@ -93,9 +93,9 @@ export const QiChallengesSection = (props: Props) => {
             more Golden Walnut(s) needed
           </>
         )}
-      </Objective>
+      </ObjectiveOLD>
 
-      <Objective
+      <ObjectiveOLD
         done={goals.global.objectiveStatus.orderCompletion === "done"}
         className={styles.objective}
       >
@@ -107,7 +107,7 @@ export const QiChallengesSection = (props: Props) => {
             {goals.global.objectives.orderCompletion.goal}
           </span>
         )}
-      </Objective>
+      </ObjectiveOLD>
     </SummarySection>
   );
 };

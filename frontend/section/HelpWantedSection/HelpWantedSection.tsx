@@ -4,10 +4,10 @@ import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
 import { FarmerTag } from "~frontend/component/FarmerTag";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { InfoText } from "~frontend/component/InfoText";
-import { Objective } from "~frontend/component/Objective";
+import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { GameSave } from "~frontend/gamesave/GameSave";
-import { useGoals } from "~frontend/hook/useGoals";
+import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
 import { StardewWiki } from "~frontend/util/StardewWiki";
 import { mapToObj, times } from "remeda";
 
@@ -20,7 +20,7 @@ interface Props {
 export const HelpWantedSection = (props: Props) => {
   const farmers = props.gameSave.getAllFarmers();
 
-  const { goals, allDone } = useGoals({
+  const { goals, allDone } = useGoals_OLD({
     individuals: mapToObj(farmers, (farmer) => [
       farmer.name,
       {
@@ -49,15 +49,15 @@ export const HelpWantedSection = (props: Props) => {
               <FarmerTag farmer={farmer} />
 
               <div className={styles.stats}>
-                <Objective done icon={<img height={16} src={questPng} />}>
+                <ObjectiveOLD done icon={<img height={16} src={questPng} />}>
                   Completed <strong>{farmer.totalCompletedQuests}</strong>{" "}
                   quests in total.
-                </Objective>
+                </ObjectiveOLD>
 
-                <Objective done icon={<img height={16} src={questPng} />}>
+                <ObjectiveOLD done icon={<img height={16} src={questPng} />}>
                   Fulfilled <strong>{farmer.billboardCompletedQuests}</strong>{" "}
                   "Help Wanted" quest(s) off <strong>Bulletin Board</strong>.
-                </Objective>
+                </ObjectiveOLD>
               </div>
 
               <div className={styles.info}>

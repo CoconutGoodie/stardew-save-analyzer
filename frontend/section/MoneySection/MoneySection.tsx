@@ -1,4 +1,4 @@
-import { useGoals } from "~frontend/hook/useGoals";
+import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
 import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
 import { Currency } from "~frontend/component/Currency";
 import { SummarySection } from "~frontend/component/SummarySection";
@@ -18,7 +18,7 @@ interface Props {
 export const MoneySection = (props: Props) => {
   const farmers = props.gameSave.getAllFarmers();
 
-  const { goals, allDone } = useGoals({
+  const { goals, allDone } = useGoals_OLD({
     global: {
       objectives: {
         builtGoldenClock: true, // TODO

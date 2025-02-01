@@ -3,13 +3,13 @@ import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
 import { FarmerTag } from "~frontend/component/FarmerTag";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { ImageObjective } from "~frontend/component/ImageObjective";
-import { Objective } from "~frontend/component/Objective";
+import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import { Scrollbox } from "~frontend/component/Scrollbox";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { STARDEW_COOKING_RECIPES } from "~frontend/const/StardewCooking";
 import { STARDEW_CRAFTING_RECIPES } from "~frontend/const/StardewCrafting";
 import { GameSave } from "~frontend/gamesave/GameSave";
-import { useGoals } from "~frontend/hook/useGoals";
+import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
 import { useSyncedScrollbar } from "~frontend/hook/useSyncedScrollbar";
 import { StardewWiki } from "~frontend/util/StardewWiki";
 import { snakeCase } from "case-anything";
@@ -31,7 +31,7 @@ export const CookingSection = (props: Props) => {
 
   const farmers = props.gameSave.getAllFarmers();
 
-  const { allDone } = useGoals({
+  const { allDone } = useGoals_OLD({
     individuals: mapToObj(farmers, (farmer) => [
       farmer.name,
       {
@@ -69,17 +69,17 @@ export const CookingSection = (props: Props) => {
               <FarmerTag farmer={farmer} />
 
               <div className={styles.objectives}>
-                <Objective icon={<img height={16} src={cookingPng} />} done>
+                <ObjectiveOLD icon={<img height={16} src={cookingPng} />} done>
                   Unlocked <strong>{totalUnlocked}</strong> of{" "}
                   <strong>{keys(STARDEW_COOKING_RECIPES).length}</strong>{" "}
                   cooking recipes.
-                </Objective>
+                </ObjectiveOLD>
 
-                <Objective icon={<img height={16} src={cookingPng} />} done>
+                <ObjectiveOLD icon={<img height={16} src={cookingPng} />} done>
                   Cooked <strong>{totalCooked}</strong> of{" "}
                   <strong>{keys(STARDEW_COOKING_RECIPES).length}</strong>{" "}
                   different recipes.
-                </Objective>
+                </ObjectiveOLD>
               </div>
 
               <Scrollbox

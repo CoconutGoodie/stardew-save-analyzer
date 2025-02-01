@@ -2,10 +2,10 @@ import swordPng from "~frontend/assets/icon/sword.png";
 import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
 import { FarmerTag } from "~frontend/component/FarmerTag";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
-import { Objective } from "~frontend/component/Objective";
+import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { GameSave } from "~frontend/gamesave/GameSave";
-import { useGoals } from "~frontend/hook/useGoals";
+import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
 import { StardewWiki } from "~frontend/util/StardewWiki";
 import { mapToObj, values } from "remeda";
 
@@ -29,7 +29,7 @@ export const AdventurersGuildSection = (props: Props) => {
 
   const farmers = props.gameSave.getAllFarmers();
 
-  const { allDone, goals } = useGoals({
+  const { allDone, goals } = useGoals_OLD({
     individuals: mapToObj(farmers, (farmer) => [
       farmer.name,
       {
@@ -65,7 +65,7 @@ export const AdventurersGuildSection = (props: Props) => {
               <FarmerTag farmer={farmer} />
 
               <div className={styles.objectives}>
-                <Objective icon={<img height={16} src={swordPng} />} done>
+                <ObjectiveOLD icon={<img height={16} src={swordPng} />} done>
                   Reached{" "}
                   <strong>level {farmer.deepestMineLevels.mountainMine}</strong>{" "}
                   of{" "}
@@ -73,9 +73,9 @@ export const AdventurersGuildSection = (props: Props) => {
                     The Mines
                   </a>
                   .
-                </Objective>
+                </ObjectiveOLD>
 
-                <Objective icon={<img height={16} src={swordPng} />} done>
+                <ObjectiveOLD icon={<img height={16} src={swordPng} />} done>
                   Reached{" "}
                   <strong>level {farmer.deepestMineLevels.skullCavern}</strong>{" "}
                   of{" "}
@@ -83,14 +83,14 @@ export const AdventurersGuildSection = (props: Props) => {
                     Skull Cavern
                   </a>
                   .
-                </Objective>
+                </ObjectiveOLD>
 
-                <Objective icon={<img height={16} src={swordPng} />} done>
+                <ObjectiveOLD icon={<img height={16} src={swordPng} />} done>
                   Killed <strong>{farmer.monsterKills.totalKills}</strong>{" "}
                   monsters in total.
-                </Objective>
+                </ObjectiveOLD>
 
-                <Objective icon={<img height={16} src={swordPng} />} done>
+                <ObjectiveOLD icon={<img height={16} src={swordPng} />} done>
                   Completed{" "}
                   <strong>
                     {
@@ -101,7 +101,7 @@ export const AdventurersGuildSection = (props: Props) => {
                   </strong>{" "}
                   of <strong>{STARDEW_ERADICATION_GOALS.length}</strong> Monster
                   Eradication goals.
-                </Objective>
+                </ObjectiveOLD>
               </div>
 
               <Scrollbox
@@ -148,10 +148,10 @@ export const AdventurersGuildSection = (props: Props) => {
                             </div>
                           ))}
                         </div>
-                        <Objective className={styles.goal} done={goalDone}>
+                        <ObjectiveOLD className={styles.goal} done={goalDone}>
                           {farmer.monsterKills.byEradicationGoal[goal.category]}
                           /{goal.amount} Killed
-                        </Objective>
+                        </ObjectiveOLD>
                       </a>
                     );
                   })}
@@ -169,7 +169,7 @@ export const AdventurersGuildSection = (props: Props) => {
                   achieved={farmerAchievements.protectorOfTheValley.achieved}
                   description="complete Monster Eradication Goals"
                 />
-                <Objective
+                <ObjectiveOLD
                   className={styles.objective}
                   done={
                     farmerGoals.objectiveStatus.gainAccessToGuild === "done"
@@ -191,7 +191,7 @@ export const AdventurersGuildSection = (props: Props) => {
                       more monsters.
                     </>
                   )}
-                </Objective>
+                </ObjectiveOLD>
               </div>
             </div>
           );

@@ -14,6 +14,7 @@ module.exports = {
     "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/no-unused-vars": "off",
     "react/jsx-key": ["error", { checkFragmentShorthand: true }],
+    "react-hooks/exhaustive-deps": "off",
     "react-refresh/only-export-components": [
       "warn",
       { allowConstantExport: true },

@@ -1,5 +1,5 @@
 import { Children, PropsWithChildren, ReactNode } from "react";
-import { Objective } from "~frontend/component/Objective";
+import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import { Achievement } from "~frontend/gamesave/Achievements";
 
 import styles from "./SectionPart.module.scss";
@@ -12,9 +12,9 @@ export const SectionPart = {
         {Children.map(props.children, (child) => (
           <li>
             {props.icon ? (
-              <Objective done icon={props.icon}>
+              <ObjectiveOLD done icon={props.icon}>
                 {child}
-              </Objective>
+              </ObjectiveOLD>
             ) : (
               child
             )}

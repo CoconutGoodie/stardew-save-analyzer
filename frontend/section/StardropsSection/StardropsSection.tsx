@@ -5,10 +5,10 @@ import stardropIconPng from "~frontend/assets/icon/stardrop.png";
 import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
 import { FarmerTag } from "~frontend/component/FarmerTag";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
-import { Objective } from "~frontend/component/Objective";
+import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { GameSave } from "~frontend/gamesave/GameSave";
-import { useGoals } from "~frontend/hook/useGoals";
+import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
 import { StardewWiki } from "~frontend/util/StardewWiki";
 import { thru } from "~frontend/util/utilities";
 import clsx from "clsx";
@@ -23,7 +23,7 @@ interface Props {
 export const StardropsSection = (props: Props) => {
   const farmers = props.gameSave.getAllFarmers();
 
-  const { allDone } = useGoals({
+  const { allDone } = useGoals_OLD({
     individuals: mapToObj(farmers, (farmer) => [
       farmer.name,
       {
@@ -54,7 +54,7 @@ export const StardropsSection = (props: Props) => {
 
               <div className={styles.stardropList}>
                 {farmer.stardrops.map((stardrop, index) => (
-                  <Objective
+                  <ObjectiveOLD
                     key={index}
                     done={stardrop.gathered}
                     className={clsx(
@@ -81,7 +81,7 @@ export const StardropsSection = (props: Props) => {
                         <img width={14} src={checkmarkPng} />
                       )}
                     </div>
-                  </Objective>
+                  </ObjectiveOLD>
                 ))}
               </div>
 

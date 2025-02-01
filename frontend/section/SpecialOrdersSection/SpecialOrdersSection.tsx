@@ -1,11 +1,11 @@
 import boardPng from "~frontend/assets/sprite/special-order/special_order_board.png";
 import { GameDateDisplay } from "~frontend/component/GameDateDisplay";
 import { ImageObjective } from "~frontend/component/ImageObjective";
-import { Objective } from "~frontend/component/Objective";
+import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { SPECIAL_ORDER_SPRITES } from "~frontend/const/Assets";
 import { GameSave } from "~frontend/gamesave/GameSave";
-import { useGoals } from "~frontend/hook/useGoals";
+import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
 import { GameDate, GameSeason } from "~frontend/util/GameDate";
 import { StardewWiki } from "~frontend/util/StardewWiki";
 import clsx from "clsx";
@@ -20,7 +20,7 @@ interface Props {
 const BOARD_BUILD_DATE = new GameDate(2, GameSeason.Fall, 1);
 
 export const SpecialOrdersSection = (props: Props) => {
-  const { goals, allDone } = useGoals({
+  const { goals, allDone } = useGoals_OLD({
     global: {
       objectives: {
         boardBuilt:
@@ -87,15 +87,15 @@ export const SpecialOrdersSection = (props: Props) => {
         </div>
       </div>
 
-      <Objective
+      <ObjectiveOLD
         done={goals.global.objectives.boardBuilt}
         className={styles.objective}
       >
         "Special Orders Board" has been built. (On{" "}
         <GameDateDisplay date={BOARD_BUILD_DATE} /> )
-      </Objective>
+      </ObjectiveOLD>
 
-      <Objective
+      <ObjectiveOLD
         done={goals.global.objectiveStatus.orderCompletion === "done"}
         className={styles.objective}
       >
@@ -107,7 +107,7 @@ export const SpecialOrdersSection = (props: Props) => {
             {goals.global.objectives.orderCompletion.goal}
           </span>
         )}
-      </Objective>
+      </ObjectiveOLD>
     </SummarySection>
   );
 };

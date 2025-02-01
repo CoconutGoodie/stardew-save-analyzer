@@ -1,16 +1,16 @@
+import { capitalCase } from "case-anything";
+import { entries, values } from "remeda";
 import starPng from "~frontend/assets/sprite/skill/mastery/mastery_star.png";
 import { FarmerTag } from "~frontend/component/FarmerTag";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { ImageObjective } from "~frontend/component/ImageObjective";
-import { Objective } from "~frontend/component/Objective";
+import { Objective } from "~frontend/component/Objective/Objective";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { PERK_SPRITES } from "~frontend/const/Assets";
 import { STARDEW_MASTERY_LEVEL_EXP } from "~frontend/const/StardewMasteryLevels";
 import { GameSave } from "~frontend/gamesave/GameSave";
 import { useGoals } from "~frontend/hook/useGoals";
 import { StardewWiki } from "~frontend/util/StardewWiki";
-import { capitalCase } from "case-anything";
-import { keys, mapToObj, values } from "remeda";
 
 import styles from "./MasteriesSection.module.scss";
 
@@ -23,22 +23,47 @@ const FORMAT = new Intl.NumberFormat("en-US");
 export const MasteriesSection = (props: Props) => {
   const farmers = props.gameSave.getAllFarmers();
 
-  const { goals, allDone } = useGoals({
-    individuals: mapToObj(farmers, (farmer) => [
-      farmer.name,
-      {
-        objectives: {
-          accessToCave: values(farmer.skills).every(
-            (skill) => skill.level >= 10
+  const goals = useGoals(() => ({
+    individuals: farmers.map((farmer) => ({
+      farmer,
+      objectives: [
+        {
+          type: "triggerable",
+          triggered: values(farmer.skills).every((skill) => skill.level >= 10),
+          description: (
+            <>
+              Gained access to{" "}
+              <a href={StardewWiki.getLink("Mastery_Cave")} target="_blank">
+                <strong>Mastery Cave</strong>
+              </a>
+              .
+            </>
           ),
-          perksClaimed: farmer.masteries.perks,
-          maxLevelReached:
-            farmer.masteries.currentLevel >=
-            STARDEW_MASTERY_LEVEL_EXP.length - 1,
+          hint: () => (
+            <>
+              {values(farmer.skills).filter((skill) => skill.level < 10).length}{" "}
+              more Skills to max.
+            </>
+          ),
         },
-      },
-    ]),
-  });
+        {
+          type: "progressive",
+          current: farmer.masteries.currentLevel,
+          goal: STARDEW_MASTERY_LEVEL_EXP.length - 1,
+          description: <>Reached maximum Mastery level.</>,
+          hint: ({ goal, current }) => <>{goal - current} more left.</>,
+        },
+        {
+          type: "progressive",
+          current: values(farmer.masteries.perks).filter((claimed) => claimed)
+            .length,
+          goal: values(farmer.masteries.perks).length,
+          description: <>Every Mastery perk is claimed.</>,
+          hint: ({ goal, current }) => <>{goal - current} more left.</>,
+        },
+      ],
+    })),
+  }));
 
   return (
     <SummarySection
@@ -48,7 +73,7 @@ export const MasteriesSection = (props: Props) => {
       sectionIcon={starPng}
       collapsable
       versions={["v1.6 Introduced"]}
-      allDone={allDone}
+      allDone={goals.allDone}
     >
       <FarmersRow>
         {farmers.map((farmer) => {
@@ -56,8 +81,6 @@ export const MasteriesSection = (props: Props) => {
             farmer.masteries.currentLevel >= 5
               ? 1
               : farmer.masteries.currentExp / farmer.masteries.tnl;
-
-          const farmerGoals = goals.individuals[farmer.name];
 
           return (
             <div key={farmer.name}>
@@ -86,42 +109,28 @@ export const MasteriesSection = (props: Props) => {
               </div>
 
               <div className={styles.perks}>
-                {keys.strict(farmer.masteries.perks).map((perkName) => (
-                  <a
-                    key={perkName}
-                    href={StardewWiki.getLink("Mastery_Cave", "Masteries")}
-                    target="_blank"
-                    title={capitalCase(perkName)}
-                  >
-                    <ImageObjective
-                      done={farmerGoals.objectives.perksClaimed[perkName]}
-                      height={150}
-                      src={PERK_SPRITES.resolve(perkName)}
-                    />
-                  </a>
-                ))}
+                {entries
+                  .strict(farmer.masteries.perks)
+                  .map(([perkName, claimed]) => (
+                    <a
+                      key={perkName}
+                      href={StardewWiki.getLink("Mastery_Cave", "Masteries")}
+                      target="_blank"
+                      title={capitalCase(perkName)}
+                    >
+                      <ImageObjective
+                        done={claimed}
+                        height={150}
+                        src={PERK_SPRITES.resolve(perkName)}
+                      />
+                    </a>
+                  ))}
               </div>
 
               <div className={styles.objectives}>
-                <Objective done={farmerGoals.objectives.accessToCave}>
-                  Gained access to{" "}
-                  <a href={StardewWiki.getLink("Mastery_Cave")} target="_blank">
-                    <strong>Mastery Cave</strong>
-                  </a>
-                  .
-                </Objective>
-
-                <Objective done={farmerGoals.objectives.maxLevelReached}>
-                  Reached maximum Mastery level.
-                </Objective>
-
-                <Objective
-                  done={values(farmerGoals.objectives.perksClaimed).every(
-                    (claimed) => claimed
-                  )}
-                >
-                  Every Mastery perk is claimed.
-                </Objective>
+                {goals.farmerGoals(farmer).objectives.map((objective, i) => (
+                  <Objective key={i} objective={objective} />
+                ))}
               </div>
             </div>
           );

@@ -29,6 +29,7 @@
     "react-dom": "^18.3.1",
     "react-drag-drop-files": "^2.4.0",
     "remeda": "^1.61.0",
+    "ts-toolbelt": "^9.6.0",
     "usehooks-ts": "^3.1.0",
     "vike": "^0.4.218",
     "vike-react": "^0.5.11",

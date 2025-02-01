@@ -15,7 +15,7 @@ import { useState } from "react";
 import { sum, times } from "remeda";
 
 import styles from "./FarmBuildingsSection.module.scss";
-import { Objective } from "~frontend/component/Objective";
+import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
 
 interface Props {

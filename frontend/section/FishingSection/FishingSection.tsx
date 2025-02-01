@@ -5,7 +5,7 @@ import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
 import { FarmerTag } from "~frontend/component/FarmerTag";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { ImageObjective } from "~frontend/component/ImageObjective";
-import { Objective } from "~frontend/component/Objective";
+import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import { Scrollbox } from "~frontend/component/Scrollbox";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { FISH_COVER_SPRITES, FISH_SPRITES } from "~frontend/const/Assets";
@@ -15,7 +15,7 @@ import {
   STARDEW_FISHES_BY_CATEGORIES,
 } from "~frontend/const/StardewFishes";
 import { GameSave } from "~frontend/gamesave/GameSave";
-import { useGoals } from "~frontend/hook/useGoals";
+import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
 import { useSyncedScrollbar } from "~frontend/hook/useSyncedScrollbar";
 import { StardewWiki } from "~frontend/util/StardewWiki";
 import { thru } from "~frontend/util/utilities";
@@ -41,7 +41,7 @@ export const FishingSection = (props: Props) => {
 
   const maxBobberCount = 1 + Math.floor(keys(STARDEW_FISHES).length / 2);
 
-  const { allDone } = useGoals({
+  const { allDone } = useGoals_OLD({
     individuals: mapToObj(farmers, (farmer) => [
       farmer.name,
       {
@@ -81,17 +81,17 @@ export const FishingSection = (props: Props) => {
             <div key={farmer.name} className={styles.farmer}>
               <FarmerTag farmer={farmer} />
 
-              <Objective icon={<img width={16} src={barbedHookPng} />} done>
+              <ObjectiveOLD icon={<img width={16} src={barbedHookPng} />} done>
                 Caught <strong>{caughtFishCount}</strong> fish in total.
-              </Objective>
-              <Objective icon={<img width={16} src={barbedHookPng} />} done>
+              </ObjectiveOLD>
+              <ObjectiveOLD icon={<img width={16} src={barbedHookPng} />} done>
                 Caught <strong>{caughtTypeCount}</strong> different fish in
                 total.
-              </Objective>
-              <Objective icon={<img width={16} src={barbedHookPng} />} done>
+              </ObjectiveOLD>
+              <ObjectiveOLD icon={<img width={16} src={barbedHookPng} />} done>
                 Unlocked <strong>{farmer.unlockedBobberCount}</strong> bobber
                 style(s).
-              </Objective>
+              </ObjectiveOLD>
 
               <Scrollbox
                 scrollRef={registerScrollableRef}
@@ -277,7 +277,7 @@ export const FishingSection = (props: Props) => {
                 )
               )}
 
-              <Objective
+              <ObjectiveOLD
                 className={styles.objective}
                 done={farmer.unlockedBobberCount >= maxBobberCount}
               >
@@ -296,7 +296,7 @@ export const FishingSection = (props: Props) => {
                     {maxBobberCount}
                   </>
                 )}
-              </Objective>
+              </ObjectiveOLD>
             </div>
           );
         })}

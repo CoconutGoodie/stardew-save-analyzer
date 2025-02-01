@@ -3,12 +3,12 @@ import { GameSave } from "~frontend/gamesave/GameSave";
 import miniShippingBinPng from "~frontend/assets/icon/mini-shipping-bin.png";
 import { useState } from "react";
 import { useSyncedScrollbar } from "~frontend/hook/useSyncedScrollbar";
-import { useGoals } from "~frontend/hook/useGoals";
+import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { FarmerTag } from "~frontend/component/FarmerTag";
 import { entries, keys, mapToObj, sum, times, values } from "remeda";
 import { Scrollbox } from "~frontend/component/Scrollbox";
-import { Objective } from "~frontend/component/Objective";
+import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import binPng from "~frontend/assets/sprite/shipping/bin.png";
 
 import styles from "./ShippingSection.module.scss";
@@ -34,7 +34,7 @@ export const ShippingSection = (props: Props) => {
 
   const farmers = props.gameSave.getAllFarmers();
 
-  const { allDone, goals } = useGoals({
+  const { allDone, goals } = useGoals_OLD({
     individuals: mapToObj(farmers, (farmer) => [
       farmer.name,
       {
@@ -68,19 +68,19 @@ export const ShippingSection = (props: Props) => {
               <FarmerTag farmer={farmer} />
 
               <div className={styles.objectives}>
-                <Objective icon={<img height={16} src={binPng} />} done>
+                <ObjectiveOLD icon={<img height={16} src={binPng} />} done>
                   Shipped{" "}
                   <strong>{keys(farmer.shippedItems).length} different</strong>{" "}
                   items.
-                </Objective>
-                <Objective icon={<img height={16} src={binPng} />} done>
+                </ObjectiveOLD>
+                <ObjectiveOLD icon={<img height={16} src={binPng} />} done>
                   Shipped{" "}
                   <strong>
                     {sum(values(farmer.shippedItems).map((s) => s.amount))}{" "}
                     items
                   </strong>{" "}
                   in total.
-                </Objective>
+                </ObjectiveOLD>
               </div>
 
               <Scrollbox

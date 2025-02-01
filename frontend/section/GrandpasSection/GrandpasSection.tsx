@@ -5,7 +5,7 @@ import grandpaPortraitPng from "~frontend/assets/sprite/grandpa/portrait.png";
 import shrinePng from "~frontend/assets/sprite/grandpa/shrine.png";
 import { Currency } from "~frontend/component/Currency";
 import { GameDateDisplay } from "~frontend/component/GameDateDisplay";
-import { Objective } from "~frontend/component/Objective";
+import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { GameSave } from "~frontend/gamesave/GameSave";
 import { GameDate, GameSeason } from "~frontend/util/GameDate";
@@ -66,18 +66,18 @@ export const GrandpasEvaluationsSection = (props: Props) => {
               )
           )}
           <div className={styles.candleObjectives}>
-            <Objective done={props.gameSave.grandpasEvals.candlesLit >= 1}>
+            <ObjectiveOLD done={props.gameSave.grandpasEvals.candlesLit >= 1}>
               First candle is lit.
-            </Objective>
-            <Objective done={props.gameSave.grandpasEvals.candlesLit >= 2}>
+            </ObjectiveOLD>
+            <ObjectiveOLD done={props.gameSave.grandpasEvals.candlesLit >= 2}>
               Second candle is lit.
-            </Objective>
-            <Objective done={props.gameSave.grandpasEvals.candlesLit >= 3}>
+            </ObjectiveOLD>
+            <ObjectiveOLD done={props.gameSave.grandpasEvals.candlesLit >= 3}>
               Third candle is lit.
-            </Objective>
-            <Objective done={props.gameSave.grandpasEvals.candlesLit >= 4}>
+            </ObjectiveOLD>
+            <ObjectiveOLD done={props.gameSave.grandpasEvals.candlesLit >= 4}>
               Fourth candle is lit.
-            </Objective>
+            </ObjectiveOLD>
           </div>
         </div>
         <div className={styles.eval}>
@@ -133,12 +133,12 @@ export const GrandpasEvaluationsSection = (props: Props) => {
           for the score.
         </InfoText> */}
 
-        <Objective className={styles.objective} done={grandpaReturned}>
+        <ObjectiveOLD className={styles.objective} done={grandpaReturned}>
           Grandpa's ghost has returned. (On{" "}
           <GameDateDisplay date={GHOST_RETURN_DATE} />)
-        </Objective>
+        </ObjectiveOLD>
 
-        <Objective
+        <ObjectiveOLD
           className={styles.objective}
           done={props.gameSave.grandpasEvals.candlesLit === 4}
         >
@@ -146,7 +146,7 @@ export const GrandpasEvaluationsSection = (props: Props) => {
           {props.gameSave.grandpasEvals.candlesLit !== 4 && (
             <>— {4 - props.gameSave.grandpasEvals.candlesLit} more unlit</>
           )}
-        </Objective>
+        </ObjectiveOLD>
       </div>
     </SummarySection>
   );

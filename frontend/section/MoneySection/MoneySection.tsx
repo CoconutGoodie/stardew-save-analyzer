@@ -1,15 +1,13 @@
-import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
-import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
+import { sum } from "remeda";
 import { Currency } from "~frontend/component/Currency";
+import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { GameSave } from "~frontend/gamesave/GameSave";
 
 import goldPng from "~frontend/assets/icon/gold.png";
 
+import { useGoals } from "~frontend/hook/useGoals";
 import styles from "./MoneySection.module.scss";
-import { mapToObj, prop, sum } from "remeda";
-import { thru } from "~frontend/util/utilities";
-import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
 
 interface Props {
   gameSave: GameSave;
@@ -18,25 +16,27 @@ interface Props {
 export const MoneySection = (props: Props) => {
   const farmers = props.gameSave.getAllFarmers();
 
-  const { goals, allDone } = useGoals_OLD({
+  const goals = useGoals(() => ({
     global: {
-      objectives: {
-        builtGoldenClock: true, // TODO
-      },
+      objectives: [
+        {
+          type: "triggerable",
+          triggered: true, // TODO
+          description: "Gold Clock", //TODO
+        },
+      ],
     },
-    individuals: mapToObj(farmers, (farmer) => [
-      farmer.name,
-      {
-        achievements: thru(farmer.getAchievements(), (achievements) => [
-          achievements.greenhorn,
-          achievements.cowpoke,
-          achievements.homesteader,
-          achievements.millionaire,
-          achievements.legend,
-        ]),
-      },
-    ]),
-  });
+    individuals: props.gameSave.getAllFarmers().map((farmer) => ({
+      farmer,
+      achievements: [
+        farmer.getAchievements().greenhorn,
+        farmer.getAchievements().cowpoke,
+        farmer.getAchievements().homesteader,
+        farmer.getAchievements().millionaire,
+        farmer.getAchievements().legend,
+      ],
+    })),
+  }));
 
   if (props.gameSave.separateWallets) {
     farmers.forEach((farmer) => {
@@ -51,7 +51,7 @@ export const MoneySection = (props: Props) => {
         sectionIcon={goldPng}
         className={styles.section}
         collapsable
-        allDone={allDone}
+        allDone={goals.allDone}
       >
         <p>[WIP] Separate Wallets Support</p>
       </SummarySection>
@@ -72,7 +72,7 @@ export const MoneySection = (props: Props) => {
       sectionTitle="Money"
       sectionIcon={goldPng}
       collapsable
-      allDone={allDone}
+      allDone={goals.allDone}
     >
       <SectionPart.Statistics>
         <>
@@ -91,40 +91,8 @@ export const MoneySection = (props: Props) => {
       </div>
 
       <SectionPart.Achievements
-        achievements={
-          goals.individuals[props.gameSave.player.name].achievements
-        }
+        achievements={goals.farmerGoals(props.gameSave.player).achievements}
       />
-
-      {/* <div className={styles.achievements}>
-        {goals.individuals[props.gameSave.player.name].achievements.map(
-          (achievement) => {
-            return (
-              <AchievementDisplay
-                key={achievement.title}
-                title={achievement.title}
-                achieved={achievement.achieved}
-                description={
-                  <>
-                    earn <Currency amount={achievement.goal} />
-                  </>
-                }
-              >
-                {!achievement.achieved && (
-                  <span>
-                    —{" "}
-                    <Currency
-                      amount={achievement.goal - totalMoneyEarned}
-                      unit="gold"
-                    />{" "}
-                    more to go
-                  </span>
-                )}
-              </AchievementDisplay>
-            );
-          }
-        )}
-      </div> */}
     </SummarySection>
   );
 };

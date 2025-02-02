@@ -75,7 +75,7 @@ export function GoldenWalnutsSection(props: Props) {
         <img src={goldenParrotPng} height={50} />
         {goals.global.objectiveStatus.collectEveryNut === "done" ? (
           goldenWalnuts.parrotUsed ? (
-            <p>{goldenParrotJsx} was paid to fetch any Golden Walnuts.</p>
+            <p>{goldenParrotJsx} was paid to fetch remaining Golden Walnuts.</p>
           ) : (
             <p>
               {goldenParrotJsx} was <strong>NOT</strong> paid to fetch any

@@ -2,5 +2,5 @@ import { Config } from "vike/types";
 
 export const config = {
   prerender: false,
-  ssr: true,
+  ssr: false,
 } satisfies Config;

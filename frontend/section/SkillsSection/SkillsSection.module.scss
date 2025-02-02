@@ -1,4 +1,6 @@
-.farmer {
+.skills {
+  display: flex;
+  flex-direction: column;
 }
 
 .skillRow {
@@ -30,7 +32,8 @@
       background: #9b1e40;
       border: 2px solid #86175e;
       border-radius: 5px;
-      box-shadow: inset -2px 2px 0px 0px rgba(#fff, 0.25),
+      box-shadow:
+        inset -2px 2px 0px 0px rgba(#fff, 0.25),
         inset 2px -2px 0px 0px rgba(#000, 0.25);
     }
 
@@ -43,7 +46,8 @@
       background: #ffa600;
       border: 2px solid #ca6551;
       border-radius: 5px;
-      box-shadow: inset -2px 2px 0px 0px rgba(#fff, 0.25),
+      box-shadow:
+        inset -2px 2px 0px 0px rgba(#fff, 0.25),
         inset 1px -1px 0px 0px rgba(#000, 0.25);
 
       & > a {

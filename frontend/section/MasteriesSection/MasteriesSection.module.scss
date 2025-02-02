@@ -1,6 +1,5 @@
 .levelInfo {
   position: relative;
-  margin-bottom: 14px;
   margin-left: 10px;
   display: flex;
   align-items: flex-end;
@@ -15,8 +14,11 @@
     text-align: center;
     line-height: 40px;
     color: #d0ffe6;
-    text-shadow: 2px 2px 0px #18683d, -2px -2px 0px #18683d,
-      -2px 2px 0px #18683d, 2px -2px 0px #18683d;
+    text-shadow:
+      2px 2px 0px #18683d,
+      -2px -2px 0px #18683d,
+      -2px 2px 0px #18683d,
+      2px -2px 0px #18683d;
   }
 
   .exp {
@@ -70,7 +72,6 @@
 .perks {
   margin-left: 10px;
   width: fit-content;
-  margin-bottom: 15px;
   display: flex;
   gap: 10px;
 
@@ -79,10 +80,4 @@
       border-radius: 10px;
     }
   }
-}
-
-.objectives {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
 }

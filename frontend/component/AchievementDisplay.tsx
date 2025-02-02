@@ -37,7 +37,7 @@ export const AchievementDisplay = (props: Props) => {
           {props.title}
         </a>
 
-        {props.description && <span>({props.description})</span>}
+        {props.description && <span> ({props.description})</span>}
 
         {props.children}
       </div>

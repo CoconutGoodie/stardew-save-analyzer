@@ -61,9 +61,9 @@ export default defineConfig(({ mode }) => {
         handlerEntry: "/server/main.ts",
         serveClientAssetsInDev: true,
       }),
+      mode === "development" && patchCssModules(),
       react(),
       vike({ disableAutoFullBuild: true }),
-      mode === "development" && patchCssModules(),
       richSvg(),
       content({
         xml: {

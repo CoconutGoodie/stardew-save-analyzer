@@ -4,6 +4,8 @@ import { Achievement } from "~frontend/gamesave/Achievements";
 import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
 import styles from "./SectionPart.module.scss";
 import clsx from "clsx";
+import { ObjectiveSummary } from "~frontend/hook/useGoals";
+import { Objective } from "~frontend/component/Objective/Objective";
 
 export const SectionPart = {
   Statistics(
@@ -33,7 +35,7 @@ export const SectionPart = {
     );
   },
 
-  Achievements: (props: { achievements: Achievement[] }) => {
+  Achievements(props: { achievements: Achievement[] }) {
     return (
       <div className={styles.achievements}>
         {props.achievements.map((achievement) => (
@@ -43,8 +45,20 @@ export const SectionPart = {
             achieved={achievement.achieved}
             description={achievement.description}
           >
-            {!achievement.achieved && <>— {achievement.achieveHint?.()}</>}
+            {!achievement.achieved && achievement.achieveHint && (
+              <>— {achievement.achieveHint()}</>
+            )}
           </AchievementDisplay>
+        ))}
+      </div>
+    );
+  },
+
+  Objectives(props: { objectives: ObjectiveSummary[] }) {
+    return (
+      <div className={styles.objectives}>
+        {props.objectives.map((objective, i) => (
+          <Objective key={i} objective={objective} />
         ))}
       </div>
     );

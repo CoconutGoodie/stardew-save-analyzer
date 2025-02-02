@@ -92,13 +92,13 @@ export class Achievements {
 
     this.singularTalent = new Achievement(
       "Singular Talent",
-      <></>,
+      <>reach Level 10 in a skill</>,
       values(farmer.skills).some((skill) => skill.level >= 10)
     );
     this.masterOfTheFiveWays = new Achievement(
       "Master of the Five Ways",
-      <></>,
-      values(farmer.skills).every((skill) => skill.level >= 10)
+      <>reach Level 10 in every skill</>,
+      values(farmer.skills).every((skill) => skill.level >= 10),
     );
 
     this.gofer = new QuestCompletionAchievement(farmer, "Gofer", 10);

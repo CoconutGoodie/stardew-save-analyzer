@@ -13,6 +13,7 @@ import { useGoals } from "~frontend/hook/useGoals";
 import { StardewWiki } from "~frontend/util/StardewWiki";
 
 import styles from "./MasteriesSection.module.scss";
+import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
 
 interface Props {
   gameSave: GameSave;
@@ -127,11 +128,9 @@ export const MasteriesSection = (props: Props) => {
                   ))}
               </div>
 
-              <div className={styles.objectives}>
-                {goals.farmerGoals(farmer).objectives.map((objective, i) => (
-                  <Objective key={i} objective={objective} />
-                ))}
-              </div>
+              <SectionPart.Objectives
+                objectives={goals.farmerGoals(farmer).objectives}
+              />
             </div>
           );
         })}

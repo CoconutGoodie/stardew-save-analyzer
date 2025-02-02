@@ -1,6 +1,6 @@
 import scarecrowPng from "~frontend/assets/icon/scarecrow.png";
 import { ImageObjective } from "~frontend/component/ImageObjective";
-import { InfoText } from "~frontend/component/InfoText";
+import { InfoText } from "~frontend/component/InfoText/InfoText";
 import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { RARECROW_SPRITES } from "~frontend/const/Assets";

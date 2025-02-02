@@ -13,7 +13,7 @@ import clsx from "clsx";
 import { sumBy } from "remeda";
 
 import styles from "./GrandpasSection.module.scss";
-import { InfoText } from "~frontend/component/InfoText";
+import { InfoText } from "~frontend/component/InfoText/InfoText";
 
 interface Props {
   gameSave: GameSave;

@@ -1,18 +1,14 @@
-// .text {
-//   margin-bottom: 15px;
-// }
-
-.stats {
-  margin-bottom: 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
+@use "/frontend/style/base/mixin" as mixin;
 
 .info {
-  margin-bottom: 15px;
   display: flex;
   gap: 20px;
+
+  .bulletinBoard {
+    &:hover {
+      @include mixin.shadowOutline(2, #fff);
+    }
+  }
 
   .requestsDone {
     display: flex;

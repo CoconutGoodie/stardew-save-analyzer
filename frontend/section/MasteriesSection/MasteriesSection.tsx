@@ -4,7 +4,7 @@ import starPng from "~frontend/assets/sprite/skill/mastery/mastery_star.png";
 import { FarmerTag } from "~frontend/component/FarmerTag";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { ImageObjective } from "~frontend/component/ImageObjective";
-import { Objective } from "~frontend/component/Objective/Objective";
+import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { PERK_SPRITES } from "~frontend/const/Assets";
 import { STARDEW_MASTERY_LEVEL_EXP } from "~frontend/const/StardewMasteryLevels";
@@ -13,7 +13,6 @@ import { useGoals } from "~frontend/hook/useGoals";
 import { StardewWiki } from "~frontend/util/StardewWiki";
 
 import styles from "./MasteriesSection.module.scss";
-import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
 
 interface Props {
   gameSave: GameSave;

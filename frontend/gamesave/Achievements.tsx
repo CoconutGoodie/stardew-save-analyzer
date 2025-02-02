@@ -98,7 +98,7 @@ export class Achievements {
     this.masterOfTheFiveWays = new Achievement(
       "Master of the Five Ways",
       <>reach Level 10 in every skill</>,
-      values(farmer.skills).every((skill) => skill.level >= 10),
+      values(farmer.skills).every((skill) => skill.level >= 10)
     );
 
     this.gofer = new QuestCompletionAchievement(farmer, "Gofer", 10);
@@ -247,7 +247,11 @@ export class QuestCompletionAchievement extends Achievement {
     public readonly goal: number,
     public readonly completed = farmer.totalCompletedQuests
   ) {
-    super(title, <></>, completed >= goal);
+    super(title, <>complete {goal} help requests</>, completed >= goal, () => (
+      <>
+        Helped {completed} out of {goal}
+      </>
+    ));
   }
 }
 

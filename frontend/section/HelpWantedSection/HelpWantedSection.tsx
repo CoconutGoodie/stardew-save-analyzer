@@ -3,7 +3,7 @@ import questPng from "~frontend/assets/sprite/help-wanted/quest.png";
 import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
 import { FarmerTag } from "~frontend/component/FarmerTag";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
-import { InfoText } from "~frontend/component/InfoText";
+import { InfoText } from "~frontend/component/InfoText/InfoText";
 import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import { SummarySection } from "~frontend/component/SummarySection";
 import { GameSave } from "~frontend/gamesave/GameSave";
@@ -12,6 +12,8 @@ import { StardewWiki } from "~frontend/util/StardewWiki";
 import { mapToObj, times } from "remeda";
 
 import styles from "./HelpWantedSection.module.scss";
+import { useGoals } from "~frontend/hook/useGoals";
+import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
 
 interface Props {
   gameSave: GameSave;
@@ -20,17 +22,15 @@ interface Props {
 export const HelpWantedSection = (props: Props) => {
   const farmers = props.gameSave.getAllFarmers();
 
-  const { goals, allDone } = useGoals_OLD({
-    individuals: mapToObj(farmers, (farmer) => [
-      farmer.name,
-      {
-        achievements: [
-          props.gameSave.achievements[farmer.name].gofer,
-          props.gameSave.achievements[farmer.name].aBigHelp,
-        ],
-      },
-    ]),
-  });
+  const goals = useGoals(() => ({
+    individuals: props.gameSave.getAllFarmers().map((farmer) => ({
+      farmer,
+      achievements: [
+        farmer.getAchievements().gofer,
+        farmer.getAchievements().aBigHelp,
+      ],
+    })),
+  }));
 
   return (
     <SummarySection
@@ -38,34 +38,33 @@ export const HelpWantedSection = (props: Props) => {
       sectionTitle={'"Help Wanted" Quests'}
       sectionIcon={questPng}
       collapsable
-      allDone={allDone}
+      allDone={goals.allDone}
     >
       <FarmersRow>
         {farmers.map((farmer) => {
-          const farmerGoals = goals.individuals[farmer.name];
-
           return (
             <div key={farmer.name}>
               <FarmerTag farmer={farmer} />
 
-              <div className={styles.stats}>
-                <ObjectiveOLD done icon={<img height={16} src={questPng} />}>
+              <SectionPart.Statistics>
+                <>
                   Completed <strong>{farmer.totalCompletedQuests}</strong>{" "}
                   quests in total.
-                </ObjectiveOLD>
+                </>
 
-                <ObjectiveOLD done icon={<img height={16} src={questPng} />}>
+                <>
                   Fulfilled <strong>{farmer.billboardCompletedQuests}</strong>{" "}
                   "Help Wanted" quest(s) off <strong>Bulletin Board</strong>.
-                </ObjectiveOLD>
-              </div>
+                </>
+              </SectionPart.Statistics>
 
               <div className={styles.info}>
                 <a
                   target="_blank"
+                  className={styles.bulletinBoard}
                   href={StardewWiki.getLink("Quests", "Help_Wanted_Quests")}
                 >
-                  <img height={80} src={bulletinBoardPng} />
+                  <img height={85} src={bulletinBoardPng} />
                 </a>
 
                 <div className={styles.requestsDone}>
@@ -85,7 +84,11 @@ export const HelpWantedSection = (props: Props) => {
                 specifically mentioned.
               </InfoText>
 
-              <div className={styles.achievements}>
+              <SectionPart.Achievements
+                achievements={goals.farmerGoals(farmer).achievements}
+              />
+
+              {/* <div className={styles.achievements}>
                 {goals.individuals[farmer.name].achievements.map(
                   (achievement) => (
                     <AchievementDisplay
@@ -104,7 +107,7 @@ export const HelpWantedSection = (props: Props) => {
                     </AchievementDisplay>
                   )
                 )}
-              </div>
+              </div> */}
             </div>
           );
         })}

@@ -22,7 +22,7 @@ import { keys, mapToObj, times } from "remeda";
 import { thru } from "~frontend/util/utilities";
 import styles from "./RelationshipsSection.module.scss";
 import { STARDEW_RELATABLE_NPCS } from "~frontend/const/StardewNpcs";
-import { InfoText } from "~frontend/component/InfoText";
+import { InfoText } from "~frontend/component/InfoText/InfoText";
 
 interface Props {
   gameSave: GameSave;

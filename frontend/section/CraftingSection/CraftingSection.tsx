@@ -3,7 +3,7 @@ import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
 import { FarmerTag } from "~frontend/component/FarmerTag";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { ImageObjective } from "~frontend/component/ImageObjective";
-import { InfoText } from "~frontend/component/InfoText";
+import { InfoText } from "~frontend/component/InfoText/InfoText";
 import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import { Scrollbox } from "~frontend/component/Scrollbox";
 import { SummarySection } from "~frontend/component/SummarySection";

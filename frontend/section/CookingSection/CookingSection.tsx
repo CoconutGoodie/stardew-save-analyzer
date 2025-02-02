@@ -1,11 +1,11 @@
 import cookingPng from "~frontend/assets/icon/cooking.png";
-import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
-import { FarmerTag } from "~frontend/component/FarmerTag";
+import { AchievementDisplay } from "~frontend/component/AchievementDisplay/AchievementDisplay";
+import { FarmerTag } from "~frontend/component/FarmerTag/FarmerTag";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
-import { ImageObjective } from "~frontend/component/ImageObjective";
+import { ImageObjective } from "~frontend/component/ImageObjective/ImageObjective";
 import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
-import { Scrollbox } from "~frontend/component/Scrollbox";
-import { SummarySection } from "~frontend/component/SummarySection";
+import { Scrollbox } from "~frontend/component/Scrollbox/Scrollbox";
+import { Section } from "~frontend/component/Section/Section";
 import { STARDEW_COOKING_RECIPES } from "~frontend/const/StardewCooking";
 import { STARDEW_CRAFTING_RECIPES } from "~frontend/const/StardewCrafting";
 import { GameSave } from "~frontend/gamesave/GameSave";
@@ -45,7 +45,7 @@ export const CookingSection = (props: Props) => {
   });
 
   return (
-    <SummarySection
+    <Section
       id="cooking"
       sectionTitle="Cooking"
       sectionIcon={cookingPng}
@@ -146,6 +146,6 @@ export const CookingSection = (props: Props) => {
           );
         })}
       </FarmersRow>
-    </SummarySection>
+    </Section>
   );
 };

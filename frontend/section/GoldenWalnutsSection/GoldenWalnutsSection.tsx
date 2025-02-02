@@ -1,7 +1,7 @@
 import { capitalCase, snakeCase } from "case-anything";
 import { entries, sum, times } from "remeda";
-import { ImageObjective } from "~frontend/component/ImageObjective";
-import { SummarySection } from "~frontend/component/SummarySection";
+import { ImageObjective } from "~frontend/component/ImageObjective/ImageObjective";
+import { Section } from "~frontend/component/Section/Section";
 import { Tooltip } from "~frontend/component/Tooltip/Tooltip";
 import {
   STARDEW_GOLDEN_WALNUTS,
@@ -18,7 +18,7 @@ import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
 import { StardewWiki } from "~frontend/util/StardewWiki";
 import styles from "./GoldenWalnutsSection.module.scss";
 import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
-import { Currency } from "~frontend/component/Currency";
+import { Currency } from "~frontend/component/Currency/Currency";
 
 interface Props {
   gameSave: GameSave;
@@ -63,7 +63,7 @@ export function GoldenWalnutsSection(props: Props) {
   );
 
   return (
-    <SummarySection
+    <Section
       id="golden-walnuts"
       sectionTitle="Golden Walnuts"
       sectionIcon={goldenWalnutPng}
@@ -208,6 +208,6 @@ export function GoldenWalnutsSection(props: Props) {
           </>
         )}
       </ObjectiveOLD>
-    </SummarySection>
+    </Section>
   );
 }

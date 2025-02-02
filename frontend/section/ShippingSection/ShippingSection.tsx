@@ -1,13 +1,13 @@
-import { SummarySection } from "~frontend/component/SummarySection";
+import { Section } from "~frontend/component/Section/Section";
 import { GameSave } from "~frontend/gamesave/GameSave";
 import miniShippingBinPng from "~frontend/assets/icon/mini-shipping-bin.png";
 import { useState } from "react";
 import { useSyncedScrollbar } from "~frontend/hook/useSyncedScrollbar";
 import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
-import { FarmerTag } from "~frontend/component/FarmerTag";
+import { FarmerTag } from "~frontend/component/FarmerTag/FarmerTag";
 import { entries, keys, mapToObj, sum, times, values } from "remeda";
-import { Scrollbox } from "~frontend/component/Scrollbox";
+import { Scrollbox } from "~frontend/component/Scrollbox/Scrollbox";
 import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import binPng from "~frontend/assets/sprite/shipping/bin.png";
 
@@ -17,11 +17,11 @@ import {
   STARDEW_SHIPPABLE_MONOCROPS,
   STARDEW_SHIPPABLES,
 } from "~frontend/const/StardewShippables";
-import { ImageObjective } from "~frontend/component/ImageObjective";
+import { ImageObjective } from "~frontend/component/ImageObjective/ImageObjective";
 import { SHIPPABLE_SPRITES } from "~frontend/const/Assets";
 import { snakeCase } from "case-anything";
 import { StardewWiki } from "~frontend/util/StardewWiki";
-import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
+import { AchievementDisplay } from "~frontend/component/AchievementDisplay/AchievementDisplay";
 
 interface Props {
   gameSave: GameSave;
@@ -44,7 +44,7 @@ export const ShippingSection = (props: Props) => {
   });
 
   return (
-    <SummarySection
+    <Section
       id="shipping"
       sectionTitle="Shipping - Full Shipment"
       sectionIcon={binPng}
@@ -144,6 +144,6 @@ export const ShippingSection = (props: Props) => {
           );
         })}
       </FarmersRow>
-    </SummarySection>
+    </Section>
   );
 };

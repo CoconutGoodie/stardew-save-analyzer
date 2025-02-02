@@ -1,5 +1,5 @@
-import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
-import { Currency } from "~frontend/component/Currency";
+import { AchievementDisplay } from "~frontend/component/AchievementDisplay/AchievementDisplay";
+import { Currency } from "~frontend/component/Currency/Currency";
 import { StardewWiki } from "~frontend/util/StardewWiki";
 
 export const STARDROP_MAIL_FLAGS = {

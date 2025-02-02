@@ -1,6 +1,6 @@
-import { Currency } from "~frontend/component/Currency";
-import { GameDateDisplay } from "~frontend/component/GameDateDisplay";
-import { SummarySection } from "~frontend/component/SummarySection";
+import { Currency } from "~frontend/component/Currency/Currency";
+import { GameDateDisplay } from "~frontend/component/GameDateDisplay/GameDateDisplay";
+import { Section } from "~frontend/component/Section/Section";
 import { FARM_TYPE_SPRITES, NPC_SPRITES } from "~frontend/const/Assets";
 import { GameSave } from "~frontend/gamesave/GameSave";
 import { StardewWiki } from "~frontend/util/StardewWiki";
@@ -21,7 +21,7 @@ import goldClockInactivePng from "~frontend/assets/icon/gold-clock-inactive.png"
 
 import styles from "./OverviewSection.module.scss";
 import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
-import { FarmerTag } from "~frontend/component/FarmerTag";
+import { FarmerTag } from "~frontend/component/FarmerTag/FarmerTag";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 
 interface Props {
@@ -56,7 +56,7 @@ function formatDuration(duration: number): string {
 
 export const OverviewSection = (props: Props) => {
   return (
-    <SummarySection
+    <Section
       id="overview"
       sectionTitle="Overview"
       sectionIcon={clockPng}
@@ -209,6 +209,6 @@ export const OverviewSection = (props: Props) => {
           ))}
         </FarmersRow>
       </div>
-    </SummarySection>
+    </Section>
   );
 };

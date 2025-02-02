@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FileUploader as _FileUploader } from "react-drag-drop-files";
-import { SummarySection } from "~frontend/component/SummarySection";
+import { Section } from "~frontend/component/Section/Section";
 import { DEMO_SAVES } from "~frontend/const/Assets";
 import { GameSave } from "~frontend/gamesave/GameSave";
 import { XMLNode } from "~frontend/util/XMLNode";
@@ -40,7 +40,7 @@ export const LoadSaveSection = (props: Props) => {
 
   return (
     <>
-      <SummarySection>
+      <Section>
         {/* TODO: This library warns with the following. Prolly need to rewrite at some point */}
         {/* Warning: React does not recognize the `overRide` prop on a DOM element. */}
         <FileUploader
@@ -76,11 +76,11 @@ export const LoadSaveSection = (props: Props) => {
             <span>Loading...</span>
           </div>
         )}
-      </SummarySection>
+      </Section>
 
       <hr />
 
-      <SummarySection sectionTitle="Instructions" collapsable>
+      <Section sectionTitle="Instructions" collapsable>
         <ol className={styles.instructions}>
           <li>Foo bar baz</li>
           <li>Foo bar baz</li>
@@ -105,7 +105,7 @@ export const LoadSaveSection = (props: Props) => {
             </li>
           </ul>
         </div>
-      </SummarySection>
+      </Section>
     </>
   );
 };

@@ -1,19 +1,13 @@
-import {
-  ComponentProps,
-  ComponentRef,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
 import { clsx } from "clsx";
-import styles from "./SummarySection.module.scss";
-
-import chevronRightSvg from "~frontend/assets/icon/chevron-right.svg";
-import eyeOpenSvg from "~frontend/assets/icon/eye-open.svg";
-import eyeClosedSvg from "~frontend/assets/icon/eye-closed.svg";
-import checkmarkPng from "~frontend/assets/icon/checkmark.png";
+import { ComponentProps, ComponentRef, useRef, useState } from "react";
 import { useResizeObserver } from "usehooks-ts";
+import checkmarkPng from "~frontend/assets/icon/checkmark.png";
+import chevronRightSvg from "~frontend/assets/icon/chevron-right.svg";
+import eyeClosedSvg from "~frontend/assets/icon/eye-closed.svg";
+import eyeOpenSvg from "~frontend/assets/icon/eye-open.svg";
 import { useSpoilersStore } from "~frontend/store/useSpoilersStore";
+
+import styles from "./Section.module.scss";
 
 type Props = ComponentProps<"section"> & {
   sectionTitle?: string;
@@ -26,7 +20,7 @@ type Props = ComponentProps<"section"> & {
   allDone?: boolean;
 };
 
-export const SummarySection = (props: Props) => {
+export const Section = (props: Props) => {
   const {
     sectionTitle,
     stripes,

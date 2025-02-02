@@ -1,13 +1,13 @@
 import barbedHookPng from "~frontend/assets/icon/barbed_hook.png";
 import checkmarkPng from "~frontend/assets/icon/checkmark.png";
 import questPng from "~frontend/assets/icon/quest.png";
-import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
-import { FarmerTag } from "~frontend/component/FarmerTag";
+import { AchievementDisplay } from "~frontend/component/AchievementDisplay/AchievementDisplay";
+import { FarmerTag } from "~frontend/component/FarmerTag/FarmerTag";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
-import { ImageObjective } from "~frontend/component/ImageObjective";
+import { ImageObjective } from "~frontend/component/ImageObjective/ImageObjective";
 import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
-import { Scrollbox } from "~frontend/component/Scrollbox";
-import { SummarySection } from "~frontend/component/SummarySection";
+import { Scrollbox } from "~frontend/component/Scrollbox/Scrollbox";
+import { Section } from "~frontend/component/Section/Section";
 import { FISH_COVER_SPRITES, FISH_SPRITES } from "~frontend/const/Assets";
 import {
   FishCategory,
@@ -62,7 +62,7 @@ export const FishingSection = (props: Props) => {
   });
 
   return (
-    <SummarySection
+    <Section
       id="fishing"
       sectionTitle="Fishing"
       sectionIcon={barbedHookPng}
@@ -301,6 +301,6 @@ export const FishingSection = (props: Props) => {
           );
         })}
       </FarmersRow>
-    </SummarySection>
+    </Section>
   );
 };

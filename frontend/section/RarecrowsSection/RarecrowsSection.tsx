@@ -1,8 +1,8 @@
 import scarecrowPng from "~frontend/assets/icon/scarecrow.png";
-import { ImageObjective } from "~frontend/component/ImageObjective";
+import { ImageObjective } from "~frontend/component/ImageObjective/ImageObjective";
 import { InfoText } from "~frontend/component/InfoText/InfoText";
 import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
-import { SummarySection } from "~frontend/component/SummarySection";
+import { Section } from "~frontend/component/Section/Section";
 import { RARECROW_SPRITES } from "~frontend/const/Assets";
 import { STARDEW_RARECROW_IDS } from "~frontend/const/StardewRarecrows";
 import { GameSave } from "~frontend/gamesave/GameSave";
@@ -46,7 +46,7 @@ export const RarecrowSection = (props: Props) => {
   });
 
   return (
-    <SummarySection
+    <Section
       id="rarecrow-society"
       sectionTitle="Rarecrow Society"
       sectionIcon={scarecrowPng}
@@ -186,6 +186,6 @@ export const RarecrowSection = (props: Props) => {
           </ObjectiveOLD>
         ))}
       </div>
-    </SummarySection>
+    </Section>
   );
 };

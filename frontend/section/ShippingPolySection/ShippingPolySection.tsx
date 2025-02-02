@@ -1,11 +1,11 @@
 import binPng from "~frontend/assets/sprite/shipping/bin.png";
-import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
+import { AchievementDisplay } from "~frontend/component/AchievementDisplay/AchievementDisplay";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
-import { FarmerTag } from "~frontend/component/FarmerTag";
-import { ImageObjective } from "~frontend/component/ImageObjective";
+import { FarmerTag } from "~frontend/component/FarmerTag/FarmerTag";
+import { ImageObjective } from "~frontend/component/ImageObjective/ImageObjective";
 import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
-import { Scrollbox } from "~frontend/component/Scrollbox";
-import { SummarySection } from "~frontend/component/SummarySection";
+import { Scrollbox } from "~frontend/component/Scrollbox/Scrollbox";
+import { Section } from "~frontend/component/Section/Section";
 import { SHIPPABLE_SPRITES } from "~frontend/const/Assets";
 import {
   STARDEW_SHIPPABLE_POLYCROPS,
@@ -57,7 +57,7 @@ export const ShippingPolySection = (props: Props) => {
   };
 
   return (
-    <SummarySection
+    <Section
       id="shipping-polyculture"
       sectionTitle="Shipping - Polyculture"
       sectionIcon={binPng}
@@ -190,6 +190,6 @@ export const ShippingPolySection = (props: Props) => {
           );
         })}
       </FarmersRow>
-    </SummarySection>
+    </Section>
   );
 };

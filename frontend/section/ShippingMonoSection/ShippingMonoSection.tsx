@@ -1,7 +1,7 @@
 import binPng from "~frontend/assets/sprite/shipping/bin.png";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
-import { SummarySection } from "~frontend/component/SummarySection";
+import { Section } from "~frontend/component/Section/Section";
 import {
   STARDEW_SHIPPABLE_MONOCROPS,
   STARDEW_SHIPPABLES,
@@ -15,15 +15,15 @@ import { mapToObj } from "remeda";
 import starPng from "~frontend/assets/sprite/skill/mastery/mastery_star.png";
 
 import styles from "./ShippingMonoSection.module.scss";
-import { ImageObjective } from "~frontend/component/ImageObjective";
+import { ImageObjective } from "~frontend/component/ImageObjective/ImageObjective";
 import { ACHIEVEMENT_SPRITES, SHIPPABLE_SPRITES } from "~frontend/const/Assets";
 import { snakeCase } from "case-anything";
-import { Scrollbox } from "~frontend/component/Scrollbox";
+import { Scrollbox } from "~frontend/component/Scrollbox/Scrollbox";
 import clsx from "clsx";
 import { StardewWiki } from "~frontend/util/StardewWiki";
-import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
+import { AchievementDisplay } from "~frontend/component/AchievementDisplay/AchievementDisplay";
 import ColorScale from "color-scales";
-import { FarmerTag } from "~frontend/component/FarmerTag";
+import { FarmerTag } from "~frontend/component/FarmerTag/FarmerTag";
 
 interface Props {
   gameSave: GameSave;
@@ -48,7 +48,7 @@ export const ShippingMonoSection = (props: Props) => {
   });
 
   return (
-    <SummarySection
+    <Section
       id="shipping-monoculture"
       sectionTitle="Shipping - Monoculture"
       sectionIcon={binPng}
@@ -234,6 +234,6 @@ export const ShippingMonoSection = (props: Props) => {
           );
         })}
       </FarmersRow>
-    </SummarySection>
+    </Section>
   );
 };

@@ -1,8 +1,8 @@
 import boardPng from "~frontend/assets/sprite/special-order/special_order_board.png";
-import { GameDateDisplay } from "~frontend/component/GameDateDisplay";
-import { ImageObjective } from "~frontend/component/ImageObjective";
+import { GameDateDisplay } from "~frontend/component/GameDateDisplay/GameDateDisplay";
+import { ImageObjective } from "~frontend/component/ImageObjective/ImageObjective";
 import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
-import { SummarySection } from "~frontend/component/SummarySection";
+import { Section } from "~frontend/component/Section/Section";
 import { SPECIAL_ORDER_SPRITES } from "~frontend/const/Assets";
 import { GameSave } from "~frontend/gamesave/GameSave";
 import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
@@ -37,7 +37,7 @@ export const SpecialOrdersSection = (props: Props) => {
   });
 
   return (
-    <SummarySection
+    <Section
       id="special-orders"
       sectionTitle="Special Orders"
       sectionIcon={boardPng}
@@ -108,6 +108,6 @@ export const SpecialOrdersSection = (props: Props) => {
           </span>
         )}
       </ObjectiveOLD>
-    </SummarySection>
+    </Section>
   );
 };

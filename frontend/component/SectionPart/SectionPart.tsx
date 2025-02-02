@@ -1,7 +1,7 @@
 import { Children, PropsWithChildren, ReactNode } from "react";
 import { Achievement } from "~frontend/gamesave/Achievements";
 
-import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
+import { AchievementDisplay } from "~frontend/component/AchievementDisplay/AchievementDisplay";
 import styles from "./SectionPart.module.scss";
 import clsx from "clsx";
 import { ObjectiveSummary } from "~frontend/hook/useGoals";

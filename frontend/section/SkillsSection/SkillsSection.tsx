@@ -1,8 +1,8 @@
 import starPng from "~frontend/assets/icon/star.png";
-import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
-import { FarmerTag } from "~frontend/component/FarmerTag";
+import { AchievementDisplay } from "~frontend/component/AchievementDisplay/AchievementDisplay";
+import { FarmerTag } from "~frontend/component/FarmerTag/FarmerTag";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
-import { SummarySection } from "~frontend/component/SummarySection";
+import { Section } from "~frontend/component/Section/Section";
 import { PROFESSION_SPRITES, SKILL_SPRITES } from "~frontend/const/Assets";
 import { GameSave } from "~frontend/gamesave/GameSave";
 import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
@@ -33,7 +33,7 @@ export const SkillsSection = (props: Props) => {
   }));
 
   return (
-    <SummarySection
+    <Section
       id="skills"
       sectionTitle="Skills"
       sectionIcon={starPng}
@@ -117,6 +117,6 @@ export const SkillsSection = (props: Props) => {
           </div>
         ))}
       </FarmersRow>
-    </SummarySection>
+    </Section>
   );
 };

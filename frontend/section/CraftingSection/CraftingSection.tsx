@@ -1,12 +1,12 @@
 import craftingPng from "~frontend/assets/icon/crafting.png";
-import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
-import { FarmerTag } from "~frontend/component/FarmerTag";
+import { AchievementDisplay } from "~frontend/component/AchievementDisplay/AchievementDisplay";
+import { FarmerTag } from "~frontend/component/FarmerTag/FarmerTag";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
-import { ImageObjective } from "~frontend/component/ImageObjective";
+import { ImageObjective } from "~frontend/component/ImageObjective/ImageObjective";
 import { InfoText } from "~frontend/component/InfoText/InfoText";
 import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
-import { Scrollbox } from "~frontend/component/Scrollbox";
-import { SummarySection } from "~frontend/component/SummarySection";
+import { Scrollbox } from "~frontend/component/Scrollbox/Scrollbox";
+import { Section } from "~frontend/component/Section/Section";
 import { STARDEW_CRAFTING_RECIPES } from "~frontend/const/StardewCrafting";
 import { GameSave } from "~frontend/gamesave/GameSave";
 import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
@@ -45,7 +45,7 @@ export const CraftingSection = (props: Props) => {
   });
 
   return (
-    <SummarySection
+    <Section
       id="crafting"
       sectionTitle="Crafting"
       sectionIcon={craftingPng}
@@ -178,6 +178,6 @@ export const CraftingSection = (props: Props) => {
           );
         })}
       </FarmersRow>
-    </SummarySection>
+    </Section>
   );
 };

@@ -5,6 +5,8 @@ import qiCoinSrc from "~frontend/assets/icon/qi-coin.png";
 import qiGemSrc from "~frontend/assets/icon/qi-gem.png";
 import starTokenSrc from "~frontend/assets/icon/star-token.png";
 
+import styles from "./Currency.module.scss";
+
 interface Props {
   amount: number;
   unit?: keyof typeof UNITS;
@@ -45,7 +47,7 @@ const UNITS = {
     title: "Diamond",
     iconSrc: diamondSrc,
     color: "#59F4FF",
-    suffix: (amount: number) => " " + (amount === 1 ? "diamond" : "diamond"),
+    suffix: (amount: number) => " " + (amount === 1 ? "diamond" : "diamonds"),
   },
 };
 
@@ -55,24 +57,9 @@ export const Currency = (props: Props) => {
   const unit = UNITS[props.unit ?? "gold"];
 
   return (
-    <span
-      style={{
-        verticalAlign: "text-bottom",
-        height: "18px",
-        display: "inline-flex",
-        alignItems: "center",
-        gap: 3,
-      }}
-    >
-      <img height={16} src={unit.iconSrc} alt={"Unit"} title={unit.title} />
-      <span
-        style={{
-          color: unit.color,
-          fontWeight: 600,
-          fontSize: 14,
-          lineHeight: "18px",
-        }}
-      >
+    <span className={styles.currency}>
+      <img height={16} src={unit.iconSrc} alt={"Unit"} title={unit.title} />{" "}
+      <span style={{ color: unit.color }}>
         {FORMAT.format(props.amount)}
         {unit.suffix?.(props.amount)}
       </span>

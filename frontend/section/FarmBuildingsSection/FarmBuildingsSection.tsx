@@ -1,7 +1,7 @@
 import heartFilledPng from "~frontend/assets/icon/heart_filled.png";
 import chickenPng from "~frontend/assets/icon/chicken.png";
-import { Scrollbox } from "~frontend/component/Scrollbox";
-import { SummarySection } from "~frontend/component/SummarySection";
+import { Scrollbox } from "~frontend/component/Scrollbox/Scrollbox";
+import { Section } from "~frontend/component/Section/Section";
 import {
   FARM_ANIMALS_SPRITES,
   FARM_BUILDING_SPRITES,
@@ -106,7 +106,7 @@ export const FarmBuildingsSection = (props: Props) => {
   ].filter((jsx) => !!jsx);
 
   return (
-    <SummarySection
+    <Section
       id="farm-buildings"
       sectionTitle="Farm Buildings"
       sectionIcon={chickenPng}
@@ -130,7 +130,7 @@ export const FarmBuildingsSection = (props: Props) => {
       >
         <div className={styles.buildings}>{buildingJsx}</div>
       </Scrollbox>
-    </SummarySection>
+    </Section>
   );
 };
 

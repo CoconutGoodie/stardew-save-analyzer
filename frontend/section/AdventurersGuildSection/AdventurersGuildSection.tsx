@@ -1,15 +1,15 @@
 import swordPng from "~frontend/assets/icon/sword.png";
-import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
-import { FarmerTag } from "~frontend/component/FarmerTag";
+import { AchievementDisplay } from "~frontend/component/AchievementDisplay/AchievementDisplay";
+import { FarmerTag } from "~frontend/component/FarmerTag/FarmerTag";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
-import { SummarySection } from "~frontend/component/SummarySection";
+import { Section } from "~frontend/component/Section/Section";
 import { GameSave } from "~frontend/gamesave/GameSave";
 import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
 import { StardewWiki } from "~frontend/util/StardewWiki";
 import { mapToObj, values } from "remeda";
 
-import { Scrollbox } from "~frontend/component/Scrollbox";
+import { Scrollbox } from "~frontend/component/Scrollbox/Scrollbox";
 import { MONSTER_SPRITES } from "~frontend/const/Assets";
 import { STARDEW_ERADICATION_GOALS } from "~frontend/const/StardewMonsters";
 import { useSyncedScrollbar } from "~frontend/hook/useSyncedScrollbar";
@@ -48,7 +48,7 @@ export const AdventurersGuildSection = (props: Props) => {
   });
 
   return (
-    <SummarySection
+    <Section
       id="adventurers-guild"
       sectionTitle="Adventurer's Guild"
       sectionIcon={swordPng}
@@ -197,6 +197,6 @@ export const AdventurersGuildSection = (props: Props) => {
           );
         })}
       </FarmersRow>
-    </SummarySection>
+    </Section>
   );
 };

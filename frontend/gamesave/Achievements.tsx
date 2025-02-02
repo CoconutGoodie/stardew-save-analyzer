@@ -16,7 +16,7 @@ import { GameSave } from "~frontend/gamesave/GameSave";
 import { reduceIterator } from "~frontend/util/iterator.utils";
 import { fromEntries, keys, sumBy, values } from "remeda";
 import { ReactNode } from "react";
-import { Currency } from "~frontend/component/Currency";
+import { Currency } from "~frontend/component/Currency/Currency";
 
 export class Achievements {
   public readonly greenhorn;

@@ -1,8 +1,8 @@
 import mermaidPendantPng from "~frontend/assets/icon/mermaid-pendant.png";
 import rustyKeyPng from "~frontend/assets/icon/rusty-key.png";
 import skullKeyPng from "~frontend/assets/icon/skull-key.png";
-import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
-import { Currency } from "~frontend/component/Currency";
+import { AchievementDisplay } from "~frontend/component/AchievementDisplay/AchievementDisplay";
+import { Currency } from "~frontend/component/Currency/Currency";
 import { Achievements } from "~frontend/gamesave/Achievements";
 import { Farmer } from "~frontend/gamesave/Farmer";
 import { GameSave } from "~frontend/gamesave/GameSave";

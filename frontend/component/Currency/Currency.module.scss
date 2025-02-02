@@ -1,0 +1,14 @@
+.currency {
+  vertical-align: text-bottom;
+  height: 18px;
+  display: inline-flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 3px;
+
+  & > :nth-child(2) {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 18px;
+  }
+}

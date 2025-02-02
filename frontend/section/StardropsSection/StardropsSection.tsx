@@ -2,11 +2,11 @@ import checkmarkPng from "~frontend/assets/icon/checkmark.png";
 import stardropGif from "~frontend/assets/stardrop.gif";
 import stardropPng from "~frontend/assets/stardrop.png";
 import stardropIconPng from "~frontend/assets/icon/stardrop.png";
-import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
-import { FarmerTag } from "~frontend/component/FarmerTag";
+import { AchievementDisplay } from "~frontend/component/AchievementDisplay/AchievementDisplay";
+import { FarmerTag } from "~frontend/component/FarmerTag/FarmerTag";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
-import { SummarySection } from "~frontend/component/SummarySection";
+import { Section } from "~frontend/component/Section/Section";
 import { GameSave } from "~frontend/gamesave/GameSave";
 import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
 import { StardewWiki } from "~frontend/util/StardewWiki";
@@ -35,7 +35,7 @@ export const StardropsSection = (props: Props) => {
   });
 
   return (
-    <SummarySection
+    <Section
       id="stardrops"
       sectionTitle="Stardrops"
       sectionIcon={stardropIconPng}
@@ -110,6 +110,6 @@ export const StardropsSection = (props: Props) => {
           );
         })}
       </FarmersRow>
-    </SummarySection>
+    </Section>
   );
 };

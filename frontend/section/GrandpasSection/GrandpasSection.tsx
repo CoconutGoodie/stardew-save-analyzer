@@ -3,10 +3,10 @@ import candleFirePng from "~frontend/assets/sprite/grandpa/candle-fire.gif";
 import grandpaGhostPng from "~frontend/assets/sprite/grandpa/ghost.png";
 import grandpaPortraitPng from "~frontend/assets/sprite/grandpa/portrait.png";
 import shrinePng from "~frontend/assets/sprite/grandpa/shrine.png";
-import { Currency } from "~frontend/component/Currency";
-import { GameDateDisplay } from "~frontend/component/GameDateDisplay";
+import { Currency } from "~frontend/component/Currency/Currency";
+import { GameDateDisplay } from "~frontend/component/GameDateDisplay/GameDateDisplay";
 import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
-import { SummarySection } from "~frontend/component/SummarySection";
+import { Section } from "~frontend/component/Section/Section";
 import { GameSave } from "~frontend/gamesave/GameSave";
 import { GameDate, GameSeason } from "~frontend/util/GameDate";
 import clsx from "clsx";
@@ -38,7 +38,7 @@ export const GrandpasEvaluationsSection = (props: Props) => {
   })();
 
   return (
-    <SummarySection
+    <Section
       id="grandpas-evaluations"
       sectionTitle="Grandpa's Evaluations [WIP]"
       sectionIcon={grandpaPortraitPng}
@@ -148,6 +148,6 @@ export const GrandpasEvaluationsSection = (props: Props) => {
           )}
         </ObjectiveOLD>
       </div>
-    </SummarySection>
+    </Section>
   );
 };

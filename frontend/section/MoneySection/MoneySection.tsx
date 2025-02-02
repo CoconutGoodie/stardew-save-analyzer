@@ -1,7 +1,7 @@
 import { sum } from "remeda";
-import { Currency } from "~frontend/component/Currency";
+import { Currency } from "~frontend/component/Currency/Currency";
 import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
-import { SummarySection } from "~frontend/component/SummarySection";
+import { Section } from "~frontend/component/Section/Section";
 import { GameSave } from "~frontend/gamesave/GameSave";
 
 import goldPng from "~frontend/assets/icon/gold.png";
@@ -45,7 +45,7 @@ export const MoneySection = (props: Props) => {
 
     // TODO: Add separate wallets spot. And show individual farmers
     return (
-      <SummarySection
+      <Section
         id="money"
         sectionTitle="Money"
         sectionIcon={goldPng}
@@ -54,7 +54,7 @@ export const MoneySection = (props: Props) => {
         allDone={goals.allDone}
       >
         <p>[WIP] Separate Wallets Support</p>
-      </SummarySection>
+      </Section>
     );
   }
 
@@ -67,7 +67,7 @@ export const MoneySection = (props: Props) => {
   const totalDigits = currentMoney.toString().padStart(9, " ").split("");
 
   return (
-    <SummarySection
+    <Section
       id="money"
       sectionTitle="Money"
       sectionIcon={goldPng}
@@ -93,6 +93,6 @@ export const MoneySection = (props: Props) => {
       <SectionPart.Achievements
         achievements={goals.farmerGoals(props.gameSave.player).achievements}
       />
-    </SummarySection>
+    </Section>
   );
 };

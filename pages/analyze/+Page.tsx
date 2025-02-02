@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { navigate } from "vike/client/router";
 import { useGameSaveStore } from "~frontend/store/useGameSaveStore";
 
-import { SummarySection } from "~frontend/component/SummarySection";
+import { Section } from "~frontend/component/Section/Section";
 import { TableOfContents } from "~frontend/component/TableOfContents/TableOfContents";
 import { AdventurersGuildSection } from "~frontend/section/AdventurersGuildSection/AdventurersGuildSection";
 import { CookingSection } from "~frontend/section/CookingSection/CookingSection";
@@ -77,9 +77,9 @@ export default function AnalyzePage() {
 
       <hr />
 
-      <SummarySection sectionTitle="Special Items & Powers [WIP]" collapsable>
+      <Section sectionTitle="Special Items & Powers [WIP]" collapsable>
         [WIP] Special Items & Powers here
-      </SummarySection>
+      </Section>
 
       <hr />
 
@@ -87,9 +87,9 @@ export default function AnalyzePage() {
 
       <hr />
 
-      <SummarySection sectionTitle="House & Family [WIP]" collapsable>
+      <Section sectionTitle="House & Family [WIP]" collapsable>
         [WIP] House & Family here
-      </SummarySection>
+      </Section>
 
       <hr />
 
@@ -121,9 +121,9 @@ export default function AnalyzePage() {
 
       <hr />
 
-      <SummarySection sectionTitle="Forest Neightbors [WIP]" collapsable>
+      <Section sectionTitle="Forest Neightbors [WIP]" collapsable>
         [WIP] Forest Neightbors & Pedro here
-      </SummarySection>
+      </Section>
 
       <hr />
 
@@ -139,18 +139,18 @@ export default function AnalyzePage() {
 
       <hr />
 
-      <SummarySection
+      <Section
         sectionTitle="Community Center / Joja Membership [WIP]"
         collapsable
       >
         [WIP] Community Center / Joja Membership here
-      </SummarySection>
+      </Section>
 
       <hr />
 
-      <SummarySection sectionTitle="Secret Notes [WIP]" collapsable>
+      <Section sectionTitle="Secret Notes [WIP]" collapsable>
         [WIP] Secret Notes here
-      </SummarySection>
+      </Section>
 
       <hr />
 
@@ -158,25 +158,25 @@ export default function AnalyzePage() {
 
       <hr />
 
-      <SummarySection sectionTitle="Ginger Island Upgrades [WIP]" collapsable>
+      <Section sectionTitle="Ginger Island Upgrades [WIP]" collapsable>
         [WIP] Ginger Island Upgrades here
-      </SummarySection>
+      </Section>
 
       <hr />
 
-      <SummarySection sectionTitle="Perfection Tracker [WIP]" collapsable>
+      <Section sectionTitle="Perfection Tracker [WIP]" collapsable>
         [WIP] Perfection Tracker Analysis here
-      </SummarySection>
+      </Section>
 
       <hr />
 
-      <SummarySection sectionTitle="Todo List">
+      <Section sectionTitle="Todo List">
         <ul>
           <li>Support "Separate Wallets"</li>
           <li>Fix main app layout</li>
           <li>Add Tooltips to all sections</li>
         </ul>
-      </SummarySection>
+      </Section>
     </>
   );
 }

@@ -1,11 +1,11 @@
 import { capitalCase } from "case-anything";
 import { entries, values } from "remeda";
 import starPng from "~frontend/assets/sprite/skill/mastery/mastery_star.png";
-import { FarmerTag } from "~frontend/component/FarmerTag";
+import { FarmerTag } from "~frontend/component/FarmerTag/FarmerTag";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
-import { ImageObjective } from "~frontend/component/ImageObjective";
+import { ImageObjective } from "~frontend/component/ImageObjective/ImageObjective";
 import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
-import { SummarySection } from "~frontend/component/SummarySection";
+import { Section } from "~frontend/component/Section/Section";
 import { PERK_SPRITES } from "~frontend/const/Assets";
 import { STARDEW_MASTERY_LEVEL_EXP } from "~frontend/const/StardewMasteryLevels";
 import { GameSave } from "~frontend/gamesave/GameSave";
@@ -66,7 +66,7 @@ export const MasteriesSection = (props: Props) => {
   }));
 
   return (
-    <SummarySection
+    <Section
       spoiler
       id="skill-masteries"
       sectionTitle="Skill Masteries"
@@ -134,6 +134,6 @@ export const MasteriesSection = (props: Props) => {
           );
         })}
       </FarmersRow>
-    </SummarySection>
+    </Section>
   );
 };

@@ -1,9 +1,9 @@
 import checkmarkPng from "~frontend/assets/icon/checkmark.png";
 import guntherPng from "~frontend/assets/sprite/museum/portrait.png";
 import prismaticPng from "~frontend/assets/sprite/museum/minerals/prismatic_shard.png";
-import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
-import { ImageObjective } from "~frontend/component/ImageObjective";
-import { SummarySection } from "~frontend/component/SummarySection";
+import { AchievementDisplay } from "~frontend/component/AchievementDisplay/AchievementDisplay";
+import { ImageObjective } from "~frontend/component/ImageObjective/ImageObjective";
+import { Section } from "~frontend/component/Section/Section";
 import { ARTIFACT_SPRITES, MINERAL_SPRITES } from "~frontend/const/Assets";
 import {
   STARDEW_ARTIFACTS,
@@ -43,7 +43,7 @@ export const MuseumSection = (props: Props) => {
   });
 
   return (
-    <SummarySection
+    <Section
       id="museum"
       sectionTitle="Museum Collection"
       sectionIcon={prismaticPng}
@@ -199,6 +199,6 @@ export const MuseumSection = (props: Props) => {
           )}
         </AchievementDisplay>
       </div>
-    </SummarySection>
+    </Section>
   );
 };

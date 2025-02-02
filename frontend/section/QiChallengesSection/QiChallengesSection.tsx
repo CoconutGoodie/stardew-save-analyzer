@@ -1,8 +1,8 @@
 import boardPng from "~frontend/assets/sprite/special-order/qi/special_orders_board.png";
 import mrQiPng from "~frontend/assets/icon/mr-qi.png";
-import { ImageObjective } from "~frontend/component/ImageObjective";
+import { ImageObjective } from "~frontend/component/ImageObjective/ImageObjective";
 import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
-import { SummarySection } from "~frontend/component/SummarySection";
+import { Section } from "~frontend/component/Section/Section";
 import { QI_SPECIAL_ORDER_SPRITES } from "~frontend/const/Assets";
 import { GameSave } from "~frontend/gamesave/GameSave";
 import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
@@ -39,7 +39,7 @@ export const QiChallengesSection = (props: Props) => {
   });
 
   return (
-    <SummarySection
+    <Section
       id="qi-challenges"
       sectionTitle="Mr. Qi's Challenges"
       sectionIcon={mrQiPng}
@@ -108,6 +108,6 @@ export const QiChallengesSection = (props: Props) => {
           </span>
         )}
       </ObjectiveOLD>
-    </SummarySection>
+    </Section>
   );
 };

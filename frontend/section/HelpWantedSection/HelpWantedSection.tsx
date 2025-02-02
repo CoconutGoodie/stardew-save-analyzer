@@ -1,11 +1,11 @@
 import bulletinBoardPng from "~frontend/assets/sprite/help-wanted/bulletin-board.png";
 import questPng from "~frontend/assets/sprite/help-wanted/quest.png";
-import { AchievementDisplay } from "~frontend/component/AchievementDisplay";
-import { FarmerTag } from "~frontend/component/FarmerTag";
+import { AchievementDisplay } from "~frontend/component/AchievementDisplay/AchievementDisplay";
+import { FarmerTag } from "~frontend/component/FarmerTag/FarmerTag";
 import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 import { InfoText } from "~frontend/component/InfoText/InfoText";
 import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
-import { SummarySection } from "~frontend/component/SummarySection";
+import { Section } from "~frontend/component/Section/Section";
 import { GameSave } from "~frontend/gamesave/GameSave";
 import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
 import { StardewWiki } from "~frontend/util/StardewWiki";
@@ -33,7 +33,7 @@ export const HelpWantedSection = (props: Props) => {
   }));
 
   return (
-    <SummarySection
+    <Section
       id="quests"
       sectionTitle={'"Help Wanted" Quests'}
       sectionIcon={questPng}
@@ -112,6 +112,6 @@ export const HelpWantedSection = (props: Props) => {
           );
         })}
       </FarmersRow>
-    </SummarySection>
+    </Section>
   );
 };

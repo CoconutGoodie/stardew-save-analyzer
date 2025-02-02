@@ -20,6 +20,9 @@ import goldClockActivePng from "~frontend/assets/icon/gold-clock-active.png";
 import goldClockInactivePng from "~frontend/assets/icon/gold-clock-inactive.png";
 
 import styles from "./OverviewSection.module.scss";
+import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
+import { FarmerTag } from "~frontend/component/FarmerTag";
+import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 
 interface Props {
   gameSave: GameSave;
@@ -73,149 +76,138 @@ export const OverviewSection = (props: Props) => {
 
         <div className={styles.column}>
           <h1>{props.gameSave.farmName} Farm</h1>
-          <ul>
-            <li>
-              <div>
-                Game Version:{" "}
-                <span className={styles.gameVersion}>
-                  v{props.gameSave.gameVersion}
-                </span>
-              </div>
-            </li>
-            <li>
-              <div>
-                Today is <GameDateDisplay date={props.gameSave.currentDate} />
-              </div>
-            </li>
-            <li>
-              <div>
-                <img width={18} src={clockPng} />{" "}
-                <em>{formatDuration(props.gameSave.playtime)}</em>
-              </div>
-            </li>
-            <li>
-              <div>
-                <img width={18} src={goldPng} /> Wallets are{" "}
-                <strong>
-                  {props.gameSave.separateWallets ? "separated" : "shared"}
+          <SectionPart.Statistics>
+            <>
+              Game Version:{" "}
+              <span className={styles.gameVersion}>
+                v{props.gameSave.gameVersion}
+              </span>
+            </>
+
+            <>
+              Today is <GameDateDisplay date={props.gameSave.currentDate} />
+            </>
+
+            <>
+              <img width={18} src={clockPng} />{" "}
+              <strong>{formatDuration(props.gameSave.playtime)}</strong> has
+              been spent in this save.
+            </>
+
+            <>
+              <img width={18} src={goldPng} /> Wallets are{" "}
+              <strong>
+                {props.gameSave.separateWallets ? "separated" : "shared"}
+              </strong>
+              .
+            </>
+
+            {props.gameSave.goldClock.isBuilt && (
+              <>
+                <img
+                  width={18}
+                  src={
+                    props.gameSave.goldClock.active
+                      ? goldClockActivePng
+                      : goldClockInactivePng
+                  }
+                />{" "}
+                Gold Clock is{" "}
+                <strong
+                  className={clsx(
+                    props.gameSave.goldClock.active && styles.goldClockActive
+                  )}
+                >
+                  {props.gameSave.goldClock.active ? "active" : "inactive"}
                 </strong>
                 .
-              </div>
-            </li>
-            {props.gameSave.goldClock.isBuilt && (
-              <li>
-                <div>
-                  <img
-                    width={18}
-                    src={
-                      props.gameSave.goldClock.active
-                        ? goldClockActivePng
-                        : goldClockInactivePng
-                    }
-                  />{" "}
-                  Gold Clock is{" "}
-                  <strong
-                    className={clsx(
-                      props.gameSave.goldClock.active && styles.goldClockActive
-                    )}
-                  >
-                    {props.gameSave.goldClock.active ? "active" : "inactive"}
-                  </strong>
-                  .
-                </div>
-              </li>
+              </>
             )}
+
             {props.gameSave.mineShrineActive && (
-              <li>
-                <div>
-                  <img width={18} src={shrineOfChallengePng} />{" "}
-                  <span>
-                    Shrine of Challenge:{" "}
-                    <strong className={styles.mineActive}>active</strong>.
-                  </span>
-                </div>
-              </li>
+              <>
+                <img width={18} src={shrineOfChallengePng} />{" "}
+                <span>
+                  Shrine of Challenge is{" "}
+                  <strong className={styles.mineActive}>active</strong>.
+                </span>
+              </>
             )}
+
             {props.gameSave.skullShrineActive && (
-              <li>
-                <div>
-                  <img width={18} src={skullAltarPng} />{" "}
-                  <span>
-                    Skull Shrine:{" "}
-                    <strong className={styles.skullActive}>active</strong>.
-                  </span>
-                </div>
-              </li>
+              <>
+                <img width={18} src={skullAltarPng} />{" "}
+                <span>
+                  Skull Shrine is{" "}
+                  <strong className={styles.skullActive}>active</strong>.
+                </span>
+              </>
             )}
-          </ul>
+          </SectionPart.Statistics>
         </div>
 
         <div className={styles.divider} />
 
-        {props.gameSave.getAllFarmers().map((farmer, i, farmers) => (
-          <Fragment key={farmer.name}>
-            <div className={clsx(styles.column, styles.farmer)}>
-              <h1>
-                <img
-                  height={20}
-                  src={farmer.gender === "Female" ? femalePng : malePng}
-                />{" "}
-                {farmer.name}
-              </h1>
-              <ul>
-                <li>
-                  {farmer === props.gameSave.player
-                    ? "Owner of the Farm"
-                    : "Farmhand"}
-                </li>
-                <li>
-                  <div>
+        <FarmersRow>
+          {props.gameSave.getAllFarmers().map((farmer) => (
+            <Fragment key={farmer.name}>
+              <div className={clsx(styles.column, styles.farmer)}>
+                <FarmerTag farmer={farmer} />
+
+                <SectionPart.Statistics>
+                  <>
+                    {farmer === props.gameSave.player
+                      ? "Owner of the Farm"
+                      : "Farmhand"}
+                  </>
+
+                  <>
                     <img width={14} src={favoritePng} /> Favorite: "
                     <em>{farmer.favoriteThing}</em>"
-                  </div>
-                </li>
-                <li>
-                  <div>
+                  </>
+
+                  <>
                     <img width={14} src={clockPng} />{" "}
-                    <em>{formatDuration(farmer.playtime)}</em>
-                  </div>
-                </li>
-                {farmer.spouse && (
-                  <li>
-                    <div>
+                    <strong>{formatDuration(farmer.playtime)}</strong> has been
+                    spent in this save.
+                  </>
+
+                  {farmer.spouse && (
+                    <>
                       <img width={14} src={mermaidPendantPng} />
                       <span> Married to </span>
-                      <a href={StardewWiki.getLink(farmer.spouse)}>
+                      <a
+                        className={styles.spause}
+                        href={StardewWiki.getLink(farmer.spouse)}
+                      >
                         <img
                           width={14}
                           src={NPC_SPRITES.resolve(farmer.spouse.toLowerCase())}
                         />
                         <strong> {farmer.spouse}</strong>
                       </a>
-                    </div>
-                  </li>
-                )}
-                {farmer.qiGems > 0 && (
-                  <li>
-                    <div>
+                    </>
+                  )}
+
+                  {farmer.qiGems > 0 && (
+                    <>
                       Qi Gems: <Currency amount={farmer.qiGems} unit="qiGems" />
-                    </div>
-                  </li>
-                )}
-                {farmer.qiCoins > 0 && (
-                  <li>
-                    <div>
+                    </>
+                  )}
+
+                  {farmer.qiCoins > 0 && (
+                    <>
                       Qi Coins:{" "}
                       <Currency amount={farmer.qiCoins} unit="qiCoins" />
-                    </div>
-                  </li>
-                )}
-              </ul>
-            </div>
+                    </>
+                  )}
+                </SectionPart.Statistics>
+              </div>
 
-            {i !== farmers.length - 1 && <div className={styles.divider} />}
-          </Fragment>
-        ))}
+              {/* {i !== farmers.length - 1 && <div className={styles.divider} />} */}
+            </Fragment>
+          ))}
+        </FarmersRow>
       </div>
     </SummarySection>
   );

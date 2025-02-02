@@ -19,8 +19,13 @@
   gap: 5px;
 
   &.farmer {
-    // width: 300px;
     width: fit-content;
+    max-width: 250px;
+    min-width: unset;
+
+    li > img {
+      vertical-align: middle;
+    }
   }
 
   & > h1 {
@@ -30,25 +35,8 @@
     color: #f9b446;
   }
 
-  & > span,
-  li > div {
-    display: inline;
-
-    & > img {
-      vertical-align: middle;
-    }
-
-    .goldClockActive {
-      color: #f29837;
-    }
-
-    .mineActive {
-      color: #5f9cff;
-    }
-
-    .skullActive {
-      color: #e06098;
-    }
+  li > img {
+    vertical-align: text-bottom;
   }
 
   .gameVersion {
@@ -59,6 +47,24 @@
     outline: 2px solid #5a421c;
     font-weight: 600;
     color: #5a421c;
+  }
+
+  .goldClockActive {
+    color: #f29837;
+  }
+
+  .mineActive {
+    color: #5f9cff;
+  }
+
+  .skullActive {
+    color: #e06098;
+  }
+
+  .spause{
+    & > img {
+      vertical-align: middle;
+    }
   }
 }
 

@@ -1,9 +1,11 @@
 import { DependencyList, ReactNode, useMemo } from "react";
-import { filter, flat, map, pick, pipe } from "remeda";
+import { filter, flat, pick, pipe } from "remeda";
 import { Achievement } from "~frontend/gamesave/Achievements";
 import { Farmer } from "~frontend/gamesave/Farmer";
+import { mapCollectionToObj } from "~frontend/util/mapCollectionToObj";
 
 interface ObjectiveBase {
+  id: string;
   type: string;
   description: ReactNode;
   hint?: (objective: this) => ReactNode;
@@ -22,18 +24,13 @@ interface ProgressiveObjective extends ObjectiveBase {
 
 export type ObjectiveConfig = TriggerableObjective | ProgressiveObjective;
 
-export type ObjectiveSummary = ReturnType<
-  typeof sanitizeGoals
->["objectives"][number];
+export type ObjectiveSummary<
+  $result = ReturnType<typeof sanitizeGoals>["objectives"],
+> = $result[keyof $result];
 
 export interface GoalsConfig {
-  achievements?: Achievement[];
-  objectives?: ObjectiveConfig[];
-}
-
-export interface UseGoalsOptions {
-  global?: GoalsConfig;
-  individuals?: ({ farmer: Farmer } & GoalsConfig)[];
+  readonly achievements?: Achievement[];
+  readonly objectives?: ObjectiveConfig[];
 }
 
 function isObjectiveDone(config: ObjectiveConfig) {
@@ -47,21 +44,30 @@ function isObjectiveDone(config: ObjectiveConfig) {
   }
 }
 
-function sanitizeGoals(config: GoalsConfig) {
+function sanitizeGoals<const C extends GoalsConfig>(config: C) {
   return {
     achievements: config.achievements ?? [],
-    objectives: (config.objectives ?? []).map((objectiveConfig) => {
-      return {
-        done: isObjectiveDone(objectiveConfig),
-        config: objectiveConfig,
-        ...pick(objectiveConfig, ["description", "hint"]),
-      };
-    }),
+
+    objectives: mapCollectionToObj<NonNullable<C["objectives"]>[number], "id">(
+      config.objectives ?? [],
+      "id"
+    )((objectiveConfig) => ({
+      done: isObjectiveDone(objectiveConfig),
+      config: objectiveConfig,
+      description: objectiveConfig.description,
+      hint: objectiveConfig.hint,
+    })),
   };
 }
 
-export function useGoals<T extends UseGoalsOptions>(
-  factory: () => T,
+export function useGoals<
+  const CG extends GoalsConfig,
+  const CI extends GoalsConfig,
+>(
+  factory: () => {
+    global?: CG;
+    individuals?: ({ farmer: Farmer } & CI)[];
+  },
   depts: DependencyList = []
 ) {
   const goals = useMemo(factory, depts);
@@ -91,13 +97,13 @@ export function useGoals<T extends UseGoalsOptions>(
     achievementsDone,
     objectivesDone,
 
-    globalGoals: goals.global != null ? sanitizeGoals(goals.global) : undefined,
+    globalGoals: sanitizeGoals<CG>(goals.global ?? ({} as CG)),
 
     farmerGoals: (farmer: Farmer) => {
       const farmerGoals = goals.individuals?.find((g) => g.farmer === farmer);
       if (!farmerGoals)
         throw new Error("Given farmer does not have any goals registered");
-      return sanitizeGoals(farmerGoals);
+      return sanitizeGoals<CI>(farmerGoals);
     },
   };
 }

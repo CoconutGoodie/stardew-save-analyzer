@@ -1,28 +1,26 @@
-import { Currency } from "~frontend/component/Currency/Currency";
-import { GameDateDisplay } from "~frontend/component/GameDateDisplay/GameDateDisplay";
-import { Section } from "~frontend/component/Section/Section";
-import { FARM_TYPE_SPRITES, NPC_SPRITES } from "~frontend/const/Assets";
-import { GameSave } from "~frontend/gamesave/GameSave";
-import { StardewWiki } from "~frontend/util/StardewWiki";
 import { lowerCase } from "case-anything";
 import clsx from "clsx";
 import { Fragment } from "react/jsx-runtime";
+import { Currency } from "~frontend/component/Currency/Currency";
+import { FarmerTag } from "~frontend/component/FarmerTag/FarmerTag";
+import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
+import { GameDateDisplay } from "~frontend/component/GameDateDisplay/GameDateDisplay";
+import { Section } from "~frontend/component/Section/Section";
+import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
+import { FARM_TYPE_SPRITES, NPC_SPRITES } from "~frontend/const/Assets";
+import { GameSave } from "~frontend/gamesave/GameSave";
+import { StardewWiki } from "~frontend/util/StardewWiki";
 
 import clockPng from "~frontend/assets/icon/clock.png";
-import goldPng from "~frontend/assets/icon/gold.png";
 import favoritePng from "~frontend/assets/icon/favorite-thing.png";
-import femalePng from "~frontend/assets/icon/female.png";
-import malePng from "~frontend/assets/icon/male.png";
+import goldClockActivePng from "~frontend/assets/icon/gold-clock-active.png";
+import goldClockInactivePng from "~frontend/assets/icon/gold-clock-inactive.png";
+import goldPng from "~frontend/assets/icon/gold.png";
 import mermaidPendantPng from "~frontend/assets/icon/mermaid-pendant.png";
 import shrineOfChallengePng from "~frontend/assets/icon/shrine-of-challenge.png";
 import skullAltarPng from "~frontend/assets/icon/skull-altar.png";
-import goldClockActivePng from "~frontend/assets/icon/gold-clock-active.png";
-import goldClockInactivePng from "~frontend/assets/icon/gold-clock-inactive.png";
 
 import styles from "./OverviewSection.module.scss";
-import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
-import { FarmerTag } from "~frontend/component/FarmerTag/FarmerTag";
-import { FarmersRow } from "~frontend/component/FarmersRow/FarmersRow";
 
 interface Props {
   gameSave: GameSave;

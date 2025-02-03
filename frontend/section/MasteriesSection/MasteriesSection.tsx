@@ -28,6 +28,7 @@ export const MasteriesSection = (props: Props) => {
       farmer,
       objectives: [
         {
+          id: "accessMasteryCave",
           type: "triggerable",
           triggered: values(farmer.skills).every((skill) => skill.level >= 10),
           description: (
@@ -47,6 +48,7 @@ export const MasteriesSection = (props: Props) => {
           ),
         },
         {
+          id: "maxMasteryLevel",
           type: "progressive",
           current: farmer.masteries.currentLevel,
           goal: STARDEW_MASTERY_LEVEL_EXP.length - 1,
@@ -54,6 +56,7 @@ export const MasteriesSection = (props: Props) => {
           hint: ({ goal, current }) => <>{goal - current} more left.</>,
         },
         {
+          id: "claimEveryPerk",
           type: "progressive",
           current: values(farmer.masteries.perks).filter((claimed) => claimed)
             .length,

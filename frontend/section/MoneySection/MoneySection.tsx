@@ -1,13 +1,14 @@
 import { sum } from "remeda";
 import { Currency } from "~frontend/component/Currency/Currency";
-import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
 import { Section } from "~frontend/component/Section/Section";
+import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
 import { GameSave } from "~frontend/gamesave/GameSave";
+import { useGoals } from "~frontend/hook/useGoals";
 
 import goldPng from "~frontend/assets/icon/gold.png";
 
-import { useGoals } from "~frontend/hook/useGoals";
 import styles from "./MoneySection.module.scss";
+import { StardewWiki } from "~frontend/util/StardewWiki";
 
 interface Props {
   gameSave: GameSave;
@@ -20,9 +21,17 @@ export const MoneySection = (props: Props) => {
     global: {
       objectives: [
         {
+          id: "goldClock",
           type: "triggerable",
-          triggered: true, // TODO
-          description: "Gold Clock", //TODO
+          triggered: props.gameSave.goldClock.isBuilt,
+          description: (
+            <>
+              <a target="_blank" href={StardewWiki.getLink("Gold_Clock")}>
+                <strong>Gold Clock</strong>
+              </a>{" "}
+              has been built for <Currency amount={10000000} unit="gold" />.
+            </>
+          ),
         },
       ],
     },
@@ -76,9 +85,23 @@ export const MoneySection = (props: Props) => {
     >
       <SectionPart.Statistics>
         <>
-          <strong>{props.gameSave.farmName} Farm</strong> has earned{" "}
-          <Currency amount={totalMoneyEarned} /> in total.
+          Earnings are{" "}
+          <a target="_blank" href={StardewWiki.getLink("Multiplayer", "Money")}>
+            <strong>
+              {props.gameSave.separateWallets
+                ? "separated individually"
+                : "shared between Farmers"}
+            </strong>
+          </a>{" "}
+          in <strong>{props.gameSave.farmName} Farm</strong>
         </>
+
+        {!props.gameSave.separateWallets && (
+          <>
+            <strong>{props.gameSave.farmName} Farm</strong> has earned{" "}
+            <Currency amount={totalMoneyEarned} /> in total.
+          </>
+        )}
       </SectionPart.Statistics>
 
       <div className={styles.money}>
@@ -93,6 +116,8 @@ export const MoneySection = (props: Props) => {
       <SectionPart.Achievements
         achievements={goals.farmerGoals(props.gameSave.player).achievements}
       />
+
+      <SectionPart.Objectives objectives={goals.globalGoals.objectives} />
     </Section>
   );
 };

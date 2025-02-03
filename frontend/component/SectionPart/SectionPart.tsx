@@ -1,11 +1,12 @@
-import { Children, PropsWithChildren, ReactNode } from "react";
-import { Achievement } from "~frontend/gamesave/Achievements";
-
-import { AchievementDisplay } from "~frontend/component/AchievementDisplay/AchievementDisplay";
-import styles from "./SectionPart.module.scss";
 import clsx from "clsx";
-import { ObjectiveSummary } from "~frontend/hook/useGoals";
+import { Children, PropsWithChildren, ReactNode } from "react";
+import { AchievementDisplay } from "~frontend/component/AchievementDisplay/AchievementDisplay";
 import { Objective } from "~frontend/component/Objective/Objective";
+import { Achievement } from "~frontend/gamesave/Achievements";
+import { ObjectiveSummary } from "~frontend/hook/useGoals";
+
+import styles from "./SectionPart.module.scss";
+import { entries } from "remeda";
 
 export const SectionPart = {
   Statistics(
@@ -54,11 +55,11 @@ export const SectionPart = {
     );
   },
 
-  Objectives(props: { objectives: ObjectiveSummary[] }) {
+  Objectives(props: { objectives: Record<string, ObjectiveSummary> }) {
     return (
       <div className={styles.objectives}>
-        {props.objectives.map((objective, i) => (
-          <Objective key={i} objective={objective} />
+        {entries(props.objectives).map(([id, objective]) => (
+          <Objective key={id} objective={objective} />
         ))}
       </div>
     );

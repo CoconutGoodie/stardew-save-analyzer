@@ -1,17 +1,17 @@
+import clsx from "clsx";
 import boardPng from "~frontend/assets/sprite/special-order/special_order_board.png";
 import { GameDateDisplay } from "~frontend/component/GameDateDisplay/GameDateDisplay";
 import { ImageObjective } from "~frontend/component/ImageObjective/ImageObjective";
-import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import { Section } from "~frontend/component/Section/Section";
+import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
+import { Tooltip } from "~frontend/component/Tooltip/Tooltip";
 import { SPECIAL_ORDER_SPRITES } from "~frontend/const/Assets";
 import { GameSave } from "~frontend/gamesave/GameSave";
-import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
+import { useGoals } from "~frontend/hook/useGoals";
 import { GameDate, GameSeason } from "~frontend/util/GameDate";
 import { StardewWiki } from "~frontend/util/StardewWiki";
-import clsx from "clsx";
 
 import styles from "./SpecialOrdersSection.module.scss";
-import { Tooltip } from "~frontend/component/Tooltip/Tooltip";
 
 interface Props {
   gameSave: GameSave;
@@ -20,21 +20,39 @@ interface Props {
 const BOARD_BUILD_DATE = new GameDate(2, GameSeason.Fall, 1);
 
 export const SpecialOrdersSection = (props: Props) => {
-  const { goals, allDone } = useGoals_OLD({
+  const goals = useGoals(() => ({
     global: {
-      objectives: {
-        boardBuilt:
-          BOARD_BUILD_DATE.canonicalDay <=
-          props.gameSave.currentDate.canonicalDay,
-        orderCompletion: {
+      objectives: [
+        {
+          id: "boardBuilt",
+          type: "progressive",
+          current: props.gameSave.currentDate.canonicalDay,
+          goal: BOARD_BUILD_DATE.canonicalDay,
+          description: (
+            <>
+              "Special Orders Board" has been built. (On{" "}
+              <GameDateDisplay date={BOARD_BUILD_DATE} /> )
+            </>
+          ),
+          hint: ({ current, goal }) => <>{goal - current} day(s) left.</>,
+        },
+        {
+          id: "orderCompletion",
+          type: "progressive",
           current: props.gameSave.specialOrders.filter(
             (order) => order.completed
           ).length,
           goal: props.gameSave.specialOrders.length,
+          description: <>Every Special Order is completed.</>,
+          hint: ({ current, goal }) => (
+            <>
+              Completed {current} out of {goal}
+            </>
+          ),
         },
-      },
+      ],
     },
-  });
+  }));
 
   return (
     <Section
@@ -43,7 +61,7 @@ export const SpecialOrdersSection = (props: Props) => {
       sectionIcon={boardPng}
       versions={["v1.5 Introduced"]}
       collapsable
-      allDone={allDone}
+      allDone={goals.allDone}
     >
       <div className={styles.board}>
         <a
@@ -53,7 +71,8 @@ export const SpecialOrdersSection = (props: Props) => {
           <img
             height={108}
             className={clsx(
-              !goals.global.objectives.orderCompletion && styles.incomplete
+              !goals.globalGoals.objectives.orderCompletion && styles.incomplete
+              // !goals.globalGoals.objectives.orderCompletion && styles.incomplete
             )}
             src={boardPng}
             title="Click to open in Wiki"
@@ -87,27 +106,7 @@ export const SpecialOrdersSection = (props: Props) => {
         </div>
       </div>
 
-      <ObjectiveOLD
-        done={goals.global.objectives.boardBuilt}
-        className={styles.objective}
-      >
-        "Special Orders Board" has been built. (On{" "}
-        <GameDateDisplay date={BOARD_BUILD_DATE} /> )
-      </ObjectiveOLD>
-
-      <ObjectiveOLD
-        done={goals.global.objectiveStatus.orderCompletion === "done"}
-        className={styles.objective}
-      >
-        Every Special Order is completed.
-        {goals.global.objectiveStatus.orderCompletion !== "done" && (
-          <span>
-            {" "}
-            — Completed {goals.global.objectives.orderCompletion.current} out of{" "}
-            {goals.global.objectives.orderCompletion.goal}
-          </span>
-        )}
-      </ObjectiveOLD>
+      <SectionPart.Objectives objectives={goals.globalGoals.objectives} />
     </Section>
   );
 };

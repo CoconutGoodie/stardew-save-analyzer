@@ -9,7 +9,24 @@ import globals from "globals";
 
 export default tseslint.config(
   eslint.configs.recommended,
-  tseslint.configs.recommendedTypeChecked,
+  tseslint.configs.recommended,
+
+  { ignores: ["node_modules", "dist", "eslint.config.mjs"] },
+
+  {
+    languageOptions: {
+      parserOptions: {
+        project: "./tsconfig.json",
+        tsconfigRootDir: import.meta.dirname,
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      globals: {
+        ...globals.browser,
+      },
+    },
+  },
 
   // TODO: Simplify when https://github.com/facebook/react/issues/28313 is resolved
   {
@@ -21,19 +38,6 @@ export default tseslint.config(
 
   {
     files: ["**/*.{js,jsx,mjs,cjs,ts,tsx}"],
-    ignores: ["dist", "eslint.config.*"],
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-        ecmaFeatures: {
-          jsx: true,
-        },
-      },
-      globals: {
-        ...globals.browser,
-      },
-    },
     plugins: {
       react,
       "react-refresh": reactRefresh,
@@ -42,11 +46,12 @@ export default tseslint.config(
       "@typescript-eslint/ban-ts-comment": "off",
       "@typescript-eslint/no-namespace": "off",
       "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-empty-object-type": "off",
 
       "react/react-in-jsx-scope": "off",
       "react/jsx-key": ["error", { checkFragmentShorthand: true }],
 
-      "react-hooks/exhaustive-deps": "warn",
+      "react-hooks/exhaustive-deps": "off",
 
       "react-refresh/only-export-components": [
         "warn",

@@ -14,7 +14,7 @@ export class XMLNode {
         try {
           resolve(XMLNode.fromText(reader.result as string));
         } catch (error) {
-          reject(error);
+          reject(error as Error);
         }
       };
 

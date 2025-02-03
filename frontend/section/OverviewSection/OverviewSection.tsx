@@ -11,6 +11,8 @@ import { FARM_TYPE_SPRITES, NPC_SPRITES } from "~frontend/const/Assets";
 import { GameSave } from "~frontend/gamesave/GameSave";
 import { StardewWiki } from "~frontend/util/StardewWiki";
 
+import farmOwnerPng from "~frontend/assets/icon/farmer-owner.png";
+import farmhandPng from "~frontend/assets/icon/farmer-farmhand.png";
 import clockPng from "~frontend/assets/icon/clock.png";
 import favoritePng from "~frontend/assets/icon/favorite-thing.png";
 import goldClockActivePng from "~frontend/assets/icon/gold-clock-active.png";
@@ -54,11 +56,7 @@ function formatDuration(duration: number): string {
 
 export const OverviewSection = (props: Props) => {
   return (
-    <Section
-      id="overview"
-      sectionTitle="Overview"
-      sectionIcon={clockPng}
-    >
+    <Section id="overview" sectionTitle="Overview" sectionIcon={clockPng}>
       <div className={styles.content}>
         <a href={StardewWiki.getLink("Farm_Maps", "Map_Types")} target="_blank">
           <div className={styles.farmType}>
@@ -154,32 +152,37 @@ export const OverviewSection = (props: Props) => {
 
                 <SectionPart.Statistics>
                   <>
-                    {farmer === props.gameSave.player
-                      ? "Owner of the Farm"
-                      : "Farmhand"}
+                    <img width={18} src={farmer === props.gameSave.player
+                        ? farmOwnerPng
+                        : farmhandPng} />{" "}
+                    <strong>
+                      {farmer === props.gameSave.player
+                        ? "Owner of the Farm"
+                        : "Farmhand"}
+                    </strong>
                   </>
 
                   <>
-                    <img width={14} src={favoritePng} /> Favorite: "
+                    <img width={18} src={favoritePng} /> Favorite: "
                     <em>{farmer.favoriteThing}</em>"
                   </>
 
                   <>
-                    <img width={14} src={clockPng} />{" "}
+                    <img width={18} src={clockPng} />{" "}
                     <strong>{formatDuration(farmer.playtime)}</strong> has been
                     spent in this save.
                   </>
 
                   {farmer.spouse && (
                     <>
-                      <img width={14} src={mermaidPendantPng} />
+                      <img width={18} src={mermaidPendantPng} />
                       <span> Married to </span>
                       <a
                         className={styles.spause}
                         href={StardewWiki.getLink(farmer.spouse)}
                       >
                         <img
-                          width={14}
+                          width={18}
                           src={NPC_SPRITES.resolve(farmer.spouse.toLowerCase())}
                         />
                         <strong> {farmer.spouse}</strong>

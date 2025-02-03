@@ -7,9 +7,7 @@ import stackPng from "~frontend/assets/icon/stack.png";
 
 import styles from "./TableOfContents.module.scss";
 
-interface Props {}
-
-export const TableOfContents = (props: Props) => {
+export const TableOfContents = () => {
   const [sections, setSections] = useState<XMLNode[]>([]);
 
   const [drew, setDrew] = useState(false);
@@ -40,7 +38,7 @@ export const TableOfContents = (props: Props) => {
         </button>
 
         <h1>Table of Contents</h1>
-        
+
         <div className={styles.content}>
           <ul>
             {sections.map((section, i) => (

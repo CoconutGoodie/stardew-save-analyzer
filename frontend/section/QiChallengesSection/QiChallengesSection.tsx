@@ -1,14 +1,15 @@
-import boardPng from "~frontend/assets/sprite/special-order/qi/special_orders_board.png";
-import mrQiPng from "~frontend/assets/icon/mr-qi.png";
-import { ImageObjective } from "~frontend/component/ImageObjective/ImageObjective";
-import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
-import { Section } from "~frontend/component/Section/Section";
-import { QI_SPECIAL_ORDER_SPRITES } from "~frontend/const/Assets";
-import { GameSave } from "~frontend/gamesave/GameSave";
-import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
-import { StardewWiki } from "~frontend/util/StardewWiki";
 import { snakeCase } from "case-anything";
 import clsx from "clsx";
+import { ImageObjective } from "~frontend/component/ImageObjective/ImageObjective";
+import { Section } from "~frontend/component/Section/Section";
+import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
+import { QI_SPECIAL_ORDER_SPRITES } from "~frontend/const/Assets";
+import { GameSave } from "~frontend/gamesave/GameSave";
+import { useGoals } from "~frontend/hook/useGoals";
+import { StardewWiki } from "~frontend/util/StardewWiki";
+
+import mrQiPng from "~frontend/assets/icon/mr-qi.png";
+import boardPng from "~frontend/assets/sprite/special-order/qi/special_orders_board.png";
 
 import styles from "./QiChallengesSection.module.scss";
 
@@ -19,24 +20,38 @@ interface Props {
 export const QiChallengesSection = (props: Props) => {
   const { goldenWalnuts } = props.gameSave;
 
-  const { goals, allDone } = useGoals_OLD({
+  const goals = useGoals(() => ({
     global: {
-      objectives: {
-        gainAccessToQisWalnutRoom: {
+      objectives: [
+        {
+          id: "gainAccessToWalnutRoom",
+          type: "progressive",
           current: goldenWalnuts.parrotUsed
             ? 100
             : goldenWalnuts.calculatedTotal,
           goal: 100,
+          description: <>Gained access to "Mr. Qi's Walnut Room".</>,
+          hint: ({ goal, current }) => (
+            <>{goal - current} more Golden Walnut(s) needed</>
+          ),
         },
-        orderCompletion: {
+        {
+          id: "orderCompletion",
+          type: "progressive",
           current: props.gameSave.qiSpecialOrders.filter(
             (order) => order.completed
           ).length,
           goal: props.gameSave.qiSpecialOrders.length,
+          description: <>Every Challenge is completed.</>,
+          hint: ({ current, goal }) => (
+            <>
+              Completed {current} out of {goal}
+            </>
+          ),
         },
-      },
+      ],
     },
-  });
+  }));
 
   return (
     <Section
@@ -45,7 +60,7 @@ export const QiChallengesSection = (props: Props) => {
       sectionIcon={mrQiPng}
       collapsable
       versions={["v1.5 Introduced"]}
-      allDone={allDone}
+      allDone={goals.allDone}
     >
       <div className={styles.board}>
         <a
@@ -55,8 +70,8 @@ export const QiChallengesSection = (props: Props) => {
           <img
             height={108}
             className={clsx(
-              goals.global.objectiveStatus.gainAccessToQisWalnutRoom !=
-                "done" && styles.incomplete
+              !goals.globalGoals.objectives.gainAccessToWalnutRoom &&
+                styles.incomplete
             )}
             src={boardPng}
           />
@@ -80,9 +95,11 @@ export const QiChallengesSection = (props: Props) => {
         </div>
       </div>
 
-      <ObjectiveOLD
+      <SectionPart.Objectives objectives={goals.globalGoals.objectives} />
+
+      {/* <ObjectiveOLD
         className={styles.objective}
-        done={goals.global.objectiveStatus.gainAccessToQisWalnutRoom === "done"}
+        done={goals.globalGoals.objectives.gainAccessToWalnutRoom.done}
       >
         Gained access to "Mr. Qi's Walnut Room".{" "}
         {goals.global.objectiveStatus.gainAccessToQisWalnutRoom !== "done" && (
@@ -107,7 +124,7 @@ export const QiChallengesSection = (props: Props) => {
             {goals.global.objectives.orderCompletion.goal}
           </span>
         )}
-      </ObjectiveOLD>
+      </ObjectiveOLD> */}
     </Section>
   );
 };

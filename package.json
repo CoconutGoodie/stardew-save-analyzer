@@ -4,7 +4,8 @@
   "version": "0.7.1-alpha",
   "type": "module",
   "scripts": {
-    "dev": "vite optimize --force && vavite serve",
+    "dev": "vavite serve",
+    "dev:force": "vite optimize --force && vavite serve",
     "format": "prettier --loglevel warn --write \"{common,frontend,server,pages}/**/*.{tsx,ts,jsx,js}\"",
     "lint": "eslint .",
     "build": "pnpm i && vavite build",

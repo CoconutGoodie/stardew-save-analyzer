@@ -1,11 +1,6 @@
 @use "/frontend/style/base/mixin" as mixin;
 
-.objective {
-  margin-top: 8px;
-}
-
 .board {
-  margin-bottom: 15px;
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;

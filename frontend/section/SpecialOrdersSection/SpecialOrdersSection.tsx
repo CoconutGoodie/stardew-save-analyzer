@@ -1,5 +1,4 @@
 import clsx from "clsx";
-import boardPng from "~frontend/assets/sprite/special-order/special_order_board.png";
 import { GameDateDisplay } from "~frontend/component/GameDateDisplay/GameDateDisplay";
 import { ImageObjective } from "~frontend/component/ImageObjective/ImageObjective";
 import { Section } from "~frontend/component/Section/Section";
@@ -10,6 +9,8 @@ import { GameSave } from "~frontend/gamesave/GameSave";
 import { useGoals } from "~frontend/hook/useGoals";
 import { GameDate, GameSeason } from "~frontend/util/GameDate";
 import { StardewWiki } from "~frontend/util/StardewWiki";
+
+import boardPng from "~frontend/assets/sprite/special-order/special_order_board.png";
 
 import styles from "./SpecialOrdersSection.module.scss";
 

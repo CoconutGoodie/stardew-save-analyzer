@@ -1,6 +1,10 @@
 .skills {
+  width: fit-content;
   display: flex;
   flex-direction: column;
+  // padding: 18px 28px;
+  // background: linear-gradient(-10deg, #412516, #301107);
+  // border-radius: 10px;
 }
 
 .skillRow {

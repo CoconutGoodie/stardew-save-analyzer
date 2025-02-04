@@ -43,7 +43,7 @@ export const MasteriesSection = (props: Props) => {
           hint: () => (
             <>
               {values(farmer.skills).filter((skill) => skill.level < 10).length}{" "}
-              more Skills to max.
+              more Skills to max
             </>
           ),
         },
@@ -53,7 +53,7 @@ export const MasteriesSection = (props: Props) => {
           current: farmer.masteries.currentLevel,
           goal: STARDEW_MASTERY_LEVEL_EXP.length - 1,
           description: <>Reached maximum Mastery level.</>,
-          hint: ({ goal, current }) => <>{goal - current} more left.</>,
+          hint: ({ goal, current }) => <>{goal - current} more left</>,
         },
         {
           id: "claimEveryPerk",
@@ -62,7 +62,7 @@ export const MasteriesSection = (props: Props) => {
             .length,
           goal: values(farmer.masteries.perks).length,
           description: <>Every Mastery perk is claimed.</>,
-          hint: ({ goal, current }) => <>{goal - current} more left.</>,
+          hint: ({ goal, current }) => <>{goal - current} more left</>,
         },
       ],
     })),

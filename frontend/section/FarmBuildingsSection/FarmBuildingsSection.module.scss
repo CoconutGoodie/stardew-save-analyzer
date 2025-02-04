@@ -7,31 +7,30 @@
 .scrollbox {
   --height: 250px;
   margin: 10px 0;
-  padding: 20px;
-  background: linear-gradient(-10deg, #110c24, #060216);
+  // padding: 20px;
+  padding-right: 12px;
+  // background: linear-gradient(-10deg, #110c24, #060216);
   background-attachment: fixed;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
 }
 
 .buildings {
   display: grid;
   // grid-template-columns: 1fr 1fr;
-  gap: 24px 48px;
+  gap: 10px;
 }
 
 .building {
   display: grid;
+  padding: 18px;
   grid-template-columns: 100px 1fr;
   align-items: center;
   gap: 24px;
-
-  &:not(:last-child) {
-    padding-bottom: 20px;
-    border-bottom: 1px solid #1c1731;
-  }
+  background: linear-gradient(-10deg, #191431, #0f091d);
+  border-radius: 10px;
 
   & > :nth-child(1) {
     align-self: flex-start;

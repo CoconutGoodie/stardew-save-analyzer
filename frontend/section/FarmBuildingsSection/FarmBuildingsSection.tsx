@@ -47,6 +47,15 @@ export const FarmBuildingsSection = (props: Props) => {
               is built.
             </>
           ),
+          hint: () => (
+            <>
+              Visit{" "}
+              <a target="_blank" href={StardewWiki.getLink("Carpenter's Shop")}>
+                <strong>Robin's Shop</strong>
+              </a>{" "}
+              to build one
+            </>
+          ),
         },
       ],
     },
@@ -83,6 +92,7 @@ export const FarmBuildingsSection = (props: Props) => {
         name={"Slime Hutch"}
         capacity={20}
         iconSrc={FARM_BUILDING_SPRITES.resolve(snakeCase("Slime Hutch"))}
+        emptyIconSrc={SLIME_SPRITES.resolve(snakeCase("Green Slime"))}
         animals={hutch.slimes
           .sort((a, b) => a.name.localeCompare(b.name))
           .map((slime) => ({
@@ -95,6 +105,7 @@ export const FarmBuildingsSection = (props: Props) => {
 
     ...props.gameSave.fishPonds
       .sort((a, b) => b.capacity - a.capacity)
+      .sort((a, b) => a.fish.localeCompare(b.fish))
       .map((pond, index) => (
         <BuildingPart
           key={`pond-${index}`}
@@ -238,7 +249,7 @@ const BuildingPart = (props: {
                 className={clsx(styles.animal, styles.empty)}
               >
                 <img
-                  height={32}
+                  height={30}
                   src={
                     props.emptyIconSrc ?? FARM_ANIMALS_SPRITES.resolve("empty")
                   }

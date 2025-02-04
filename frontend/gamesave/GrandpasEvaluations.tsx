@@ -20,7 +20,10 @@ export class GrandpasEvaluations {
   public readonly candlesLit;
   public readonly scoreSubjects: ScoreSubject[] = [];
 
-  constructor(private gameSave: GameSave, private saveXml: XMLNode) {
+  constructor(
+    private gameSave: GameSave,
+    private saveXml: XMLNode
+  ) {
     this.candlesLit = this.calcCandlesLit();
 
     this.calcEarningScores();
@@ -62,12 +65,19 @@ export class GrandpasEvaluations {
     ];
 
     earningGoals.forEach(([score, earningGoal]) => {
+      const achiever = this.gameSave.separateWallets
+        ? this.gameSave
+            .getAllFarmers()
+            .find((farmer) => farmer.totalMoneyEarned >= earningGoal)?.name
+        : "";
+
       this.scoreSubjects.push({
-        earned: this.gameSave.totalGoldsEarned >= earningGoal,
+        earned: achiever != null,
         score,
         reason: (
           <>
-            earning at least <Currency amount={earningGoal} unit="gold" />
+            earning at least <Currency amount={earningGoal} unit="gold" />{" "}
+            {!!achiever && <>({achiever})</>}
           </>
         ),
       });
@@ -105,7 +115,7 @@ export class GrandpasEvaluations {
     const achievementGoals = [
       "masterAngler",
       "aCompleteCollection",
-      "fullShipment"
+      "fullShipment",
     ] as (keyof Achievements)[];
 
     achievementGoals.forEach((achievementGoal) => {

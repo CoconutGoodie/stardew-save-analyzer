@@ -1,4 +1,4 @@
-import { STARDEW_COOKING_RECIPES } from "~frontend/const/StardewCooking";
+import { STARDEW_BASE_COOKING_RECIPES } from "~frontend/const/StardewCooking";
 import { STARDEW_CRAFTING_RECIPES } from "~frontend/const/StardewCrafting";
 import { STARDEW_ACHIEVEMENT_FISHES } from "~frontend/const/StardewFishes";
 import { STARDEW_ERADICATION_GOALS } from "~frontend/const/StardewMonsters";
@@ -160,7 +160,7 @@ export class Achievements {
     this.gourmetChef = new DifferentCookingAchievement(
       farmer,
       "Gourmet Chef",
-      keys(STARDEW_COOKING_RECIPES).length
+      keys(STARDEW_BASE_COOKING_RECIPES).length
     );
 
     this.aNewFriend = new RelationAchievement(farmer, "A New Friend", 1, 5);
@@ -285,7 +285,7 @@ export class DifferentCookingAchievement extends Achievement {
     farmer: Farmer,
     title: string,
     public readonly goal: number,
-    public readonly crafted = values(farmer.cookedRecipes).filter((v) => v > 0)
+    public readonly crafted = values(farmer.cooking).filter((v) => v > 0)
       .length
   ) {
     super(title, <></>, crafted >= goal);

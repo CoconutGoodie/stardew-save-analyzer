@@ -1,4 +1,4 @@
-export const STARDEW_COOKING_RECIPES: Record<string, string> = {
+export const STARDEW_BASE_COOKING_RECIPES: Record<string, string> = {
   194: "Fried Egg",
   195: "Omelet",
   196: "Salad",

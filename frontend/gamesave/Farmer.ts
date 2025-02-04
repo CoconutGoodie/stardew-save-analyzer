@@ -1,4 +1,4 @@
-import { STARDEW_COOKING_RECIPES } from "~frontend/const/StardewCooking";
+import { STARDEW_BASE_COOKING_RECIPES } from "~frontend/const/StardewCooking";
 import { STARDEW_MASTERY_LEVEL_EXP } from "~frontend/const/StardewMasteryLevels";
 import { STARDEW_ERADICATION_GOALS } from "~frontend/const/StardewMonsters";
 import { STARDEW_PROFESSIONS } from "~frontend/const/StardewProfessions";
@@ -44,7 +44,7 @@ export class Farmer {
   public readonly billboardCompletedQuests;
 
   public readonly craftedRecipes;
-  public readonly cookedRecipes;
+  public readonly cooking;
 
   public readonly receivedMailFlags;
   public readonly caughtFish;
@@ -114,7 +114,7 @@ export class Farmer {
     this.billboardCompletedQuests = this.calcBillboardCompletedQuests();
 
     this.craftedRecipes = this.calcCraftedRecipes();
-    this.cookedRecipes = this.calcCookedRecipes();
+    this.cooking = this.calcCooking();
 
     this.receivedMailFlags = farmerXml
       .queryAll("mailReceived > *")
@@ -381,7 +381,7 @@ export class Farmer {
     );
   }
 
-  private calcCookedRecipes() {
+  private calcCooking() {
     const relocatedNames: Record<string, string> = {
       "Cheese Cauli.": "Cheese Cauliflower",
       Cookies: "Cookie",
@@ -391,32 +391,32 @@ export class Farmer {
       "Vegetable Stew": "Vegetable Medley",
     };
 
+    const knownRecipes = new Set(
+      this.farmerXml.queryAll("cookingRecipes > item").map((recipeXml) => {
+        const name = recipeXml.query("key > *").text();
+        return relocatedNames[name] ?? name;
+      })
+    );
+
     const cookedRecipes = fromEntries(
       this.farmerXml
         .queryAll("recipesCooked > item")
         .map((entry) => {
           const recipeId = entry.query("key > *").text();
           const cookedTimes = entry.query("value > *").number();
-          return [STARDEW_COOKING_RECIPES[recipeId], cookedTimes] as const;
+          return [STARDEW_BASE_COOKING_RECIPES[recipeId], cookedTimes] as const;
         })
         .filter(([key]) => key != null)
         .map(([key, value]) => [relocatedNames[key] ?? key, value])
     );
 
-    this.farmerXml.queryAll("cookingRecipes > item").forEach((entry) => {
-      const recipeName = thru(
-        entry.query("key > *").text(),
-        (name) => relocatedNames[name] ?? name
-      );
+    return {
+      /** Set of unlocked recipes by name (E.g "Fried Egg") */
+      knownRecipes,
 
-      if (!recipeName) return;
-
-      if (!(recipeName in cookedRecipes)) {
-        cookedRecipes[recipeName] = 0;
-      }
-    });
-
-    return cookedRecipes;
+      /** Map of cooked recipes by name (E.g "Fried Egg": 2) */
+      cookedRecipes,
+    };
   }
 
   private calcStardrops() {

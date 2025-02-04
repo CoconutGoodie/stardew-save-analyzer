@@ -1,5 +1,5 @@
 import { capitalCase, lowerCase } from "case-anything";
-import { clamp, entries, keys, mapToObj } from "remeda";
+import { clamp, entries, keys, mapToObj, values } from "remeda";
 import { STARDEW_FARM_TYPES } from "~frontend/const/StardewFarmTypes";
 import { STARDEW_FISHES } from "~frontend/const/StardewFishes";
 import { STARDEW_GOLDEN_WALNUTS_ALL } from "~frontend/const/StardewGoldenWalnuts";
@@ -16,6 +16,7 @@ import { GameDate, GameSeason } from "~frontend/util/GameDate";
 import { XMLNode } from "~frontend/util/XMLNode";
 import { isKeyOf } from "~frontend/util/utilities";
 import { Farmer } from "./Farmer";
+import { STARDEW_BASE_COOKING_RECIPES } from "~frontend/const/StardewCooking";
 
 export class GameSave {
   public static compatibleVersion = "1.6.8";

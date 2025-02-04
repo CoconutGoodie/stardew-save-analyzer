@@ -6,7 +6,7 @@ import { ImageObjective } from "~frontend/component/ImageObjective/ImageObjectiv
 import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import { Scrollbox } from "~frontend/component/Scrollbox/Scrollbox";
 import { Section } from "~frontend/component/Section/Section";
-import { STARDEW_COOKING_RECIPES } from "~frontend/const/StardewCooking";
+import { STARDEW_BASE_COOKING_RECIPES } from "~frontend/const/StardewCooking";
 import { STARDEW_CRAFTING_RECIPES } from "~frontend/const/StardewCrafting";
 import { GameSave } from "~frontend/gamesave/GameSave";
 import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
@@ -56,13 +56,17 @@ export const CookingSection = (props: Props) => {
         {farmers.map((farmer) => {
           const farmerAchievements = props.gameSave.achievements[farmer.name];
 
-          const totalUnlocked = values(STARDEW_COOKING_RECIPES).filter(
-            (recipeName) => recipeName in farmer.cookedRecipes
+          const totalUnlocked = values(STARDEW_BASE_COOKING_RECIPES).filter(
+            (recipeName) => recipeName in farmer.cooking
           ).length;
 
-          const totalCooked = values(STARDEW_COOKING_RECIPES).filter(
-            (recipeName) => farmer.cookedRecipes[recipeName] > 0
+          const totalCooked = values(STARDEW_BASE_COOKING_RECIPES).filter(
+            (recipeName) => farmer.cooking.cookedRecipes[recipeName] > 0
           ).length;
+
+          const moddedUnlocked = farmer.cooking.knownRecipes.difference(
+            new Set(values(STARDEW_BASE_COOKING_RECIPES))
+          ).size;
 
           return (
             <div key={farmer.name}>
@@ -71,15 +75,25 @@ export const CookingSection = (props: Props) => {
               <div className={styles.objectives}>
                 <ObjectiveOLD icon={<img height={16} src={cookingPng} />} done>
                   Unlocked <strong>{totalUnlocked}</strong> of{" "}
-                  <strong>{keys(STARDEW_COOKING_RECIPES).length}</strong>{" "}
+                  <strong>{keys(STARDEW_BASE_COOKING_RECIPES).length}</strong>{" "}
                   cooking recipes.
                 </ObjectiveOLD>
 
                 <ObjectiveOLD icon={<img height={16} src={cookingPng} />} done>
                   Cooked <strong>{totalCooked}</strong> of{" "}
-                  <strong>{keys(STARDEW_COOKING_RECIPES).length}</strong>{" "}
+                  <strong>{keys(STARDEW_BASE_COOKING_RECIPES).length}</strong>{" "}
                   different recipes.
                 </ObjectiveOLD>
+
+                {moddedUnlocked > 0 && (
+                  <ObjectiveOLD
+                    icon={<img height={16} src={cookingPng} />}
+                    done
+                  >
+                    <strong>EXTRA</strong>: {moddedUnlocked} modded recipes are
+                    also unlocked.
+                  </ObjectiveOLD>
+                )}
               </div>
 
               <Scrollbox
@@ -91,13 +105,15 @@ export const CookingSection = (props: Props) => {
                 <div
                   className={clsx(styles.recipes, expanded && styles.expanded)}
                 >
-                  {entries(STARDEW_COOKING_RECIPES).map(([_, recipe]) => (
+                  {entries(STARDEW_BASE_COOKING_RECIPES).map(([_, recipe]) => (
                     <div
                       key={recipe}
                       className={clsx(
                         styles.recipe,
-                        !(recipe in farmer.cookedRecipes) && styles.locked,
-                        farmer.cookedRecipes[recipe] === 0 && styles.notCrafted
+                        !farmer.cooking.knownRecipes.has(recipe) &&
+                          styles.locked,
+                        farmer.cooking.cookedRecipes[recipe] < 1 &&
+                          styles.notCrafted
                       )}
                     >
                       <a href={StardewWiki.getLink(recipe)} target="_blank">
@@ -108,7 +124,7 @@ export const CookingSection = (props: Props) => {
                             snakeCase(recipe.replace(/-/g, " "))
                           )}
                           title={recipe}
-                          done={farmer.cookedRecipes[recipe] > 0}
+                          done={farmer.cooking.cookedRecipes[recipe] > 0}
                         />
                       </a>
                     </div>
@@ -136,7 +152,9 @@ export const CookingSection = (props: Props) => {
                       <>
                         {" "}
                         — Cooked <strong>{totalCooked}</strong> of{" "}
-                        <strong>{STARDEW_CRAFTING_RECIPES.length}</strong>
+                        <strong>
+                          {keys(STARDEW_BASE_COOKING_RECIPES).length}
+                        </strong>
                       </>
                     )}
                   </AchievementDisplay>

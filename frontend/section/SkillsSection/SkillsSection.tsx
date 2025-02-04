@@ -112,7 +112,7 @@ export const SkillsSection = (props: Props) => {
             </div>
 
             <SectionPart.Achievements
-              achievements={goals.farmerGoals(farmer).achievements}
+              achievements={goals.getFarmerGoals(farmer).achievements}
             />
           </div>
         ))}

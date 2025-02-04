@@ -1,17 +1,16 @@
+import { sum, values } from "remeda";
 import scarecrowPng from "~frontend/assets/icon/scarecrow.png";
 import { ImageObjective } from "~frontend/component/ImageObjective/ImageObjective";
 import { InfoText } from "~frontend/component/InfoText/InfoText";
-import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
 import { Section } from "~frontend/component/Section/Section";
+import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
 import { RARECROW_SPRITES } from "~frontend/const/Assets";
 import { STARDEW_RARECROW_IDS } from "~frontend/const/StardewRarecrows";
 import { GameSave } from "~frontend/gamesave/GameSave";
-import { useGoals_OLD } from "~frontend/hook/useGoals_OLD";
+import { useGoals } from "~frontend/hook/useGoals";
 import { StardewWiki } from "~frontend/util/StardewWiki";
-import { mapToObj, sum, values } from "remeda";
 
 import styles from "./RarecrowsSection.module.scss";
-import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
 
 interface Props {
   gameSave: GameSave;
@@ -29,21 +28,58 @@ export const RarecrowSection = (props: Props) => {
 
   const totalPlaced = sum(values(props.gameSave.rarecrowsPlaced));
 
-  const { goals, allDone } = useGoals_OLD({
+  const goals = useGoals(() => ({
     global: {
-      objectives: {
-        allCollected,
-      },
-    },
-    individuals: mapToObj(farmers, (farmer) => [
-      farmer.name,
-      {
-        objectives: {
-          mailReceived: farmer.rarecrowSocietyMailed,
+      objectives: [
+        {
+          id: "allCollected",
+          type: "triggerable",
+          triggered: allCollected,
+          description: (
+            <>
+              Every{" "}
+              <a
+                target="_blank"
+                href={StardewWiki.getLink("Scarecrow", "Rarecrows")}
+              >
+                <strong>Rarecrow</strong>
+              </a>{" "}
+              is collected.
+            </>
+          ),
+          hint: () => (
+            <>
+              Completed{" "}
+              {values(props.gameSave.allRarecrows).filter((x) => x > 0).length}{" "}
+              out of {STARDEW_RARECROW_IDS.length}
+            </>
+          ),
         },
-      },
-    ]),
-  });
+      ],
+    },
+    individuals: props.gameSave.getAllFarmers().map((farmer) => ({
+      farmer,
+      objectives: [
+        {
+          id: "mailReceived",
+          type: "triggerable",
+          triggered: farmer.rarecrowSocietyMailed,
+          description: (
+            <>
+              <strong>{farmer.name}</strong> received the mail from{" "}
+              <a
+                target="_blank"
+                href={StardewWiki.getLink("Deluxe Scarecrow", "Letter")}
+              >
+                <strong>Z.C. Rarecrow Society</strong>
+              </a>
+              .
+            </>
+          ),
+        },
+      ],
+    })),
+  }));
 
   return (
     <Section
@@ -52,7 +88,7 @@ export const RarecrowSection = (props: Props) => {
       sectionIcon={scarecrowPng}
       collapsable
       versions={["v1.4 Introduced"]}
-      allDone={allDone}
+      allDone={goals.allDone}
     >
       <SectionPart.Statistics>
         <>
@@ -68,21 +104,6 @@ export const RarecrowSection = (props: Props) => {
           Rarecrow(s) all across the Valley.
         </>
       </SectionPart.Statistics>
-
-      {/* <div className={styles.objectives}>
-        <Objective done icon={<img src={scarecrowPng} />}>
-          In total, <strong>{totalPlaced}</strong> Rarecrow(s) are placed all
-          across the Valley.
-        </Objective>
-        <Objective done icon={<img src={scarecrowPng} />}>
-          Placed{" "}
-          <strong>
-            {values(props.gameSave.rarecrowsPlaced).filter((x) => x > 0).length}
-          </strong>{" "}
-          of <strong>{STARDEW_RARECROW_IDS.length}</strong> different
-          Rarecrow(s) all across the Valley.
-        </Objective>
-      </div> */}
 
       <div className={styles.rarecrows}>
         <a target="_blank" href={StardewWiki.getLink("Scarecrow")}>
@@ -117,8 +138,8 @@ export const RarecrowSection = (props: Props) => {
 
         <a target="_blank" href={StardewWiki.getLink("Scarecrow")}>
           <ImageObjective
-            done={values(goals.individuals).every(
-              (ind) => ind.objectives.mailReceived
+            done={goals.individualGoals.every(
+              (goal) => goal.objectives.mailReceived
             )}
             height={100}
             title="Deluxe Scarecrow"
@@ -149,43 +170,12 @@ export const RarecrowSection = (props: Props) => {
         recipe.
       </InfoText>
 
-      <div className={styles.objectives}>
-        <ObjectiveOLD done={allCollected}>
-          Every{" "}
-          <a
-            target="_blank"
-            href={StardewWiki.getLink("Scarecrow", "Rarecrows")}
-          >
-            <strong>Rarecrow</strong>
-          </a>{" "}
-          is collected.
-          {!allCollected && (
-            <>
-              {" "}
-              — Completed{" "}
-              {
-                values(props.gameSave.allRarecrows).filter((x) => x > 0).length
-              }{" "}
-              out of {STARDEW_RARECROW_IDS.length}
-            </>
-          )}
-        </ObjectiveOLD>
-        {props.gameSave.getAllFarmers().map((farmer) => (
-          <ObjectiveOLD
-            key={farmer.name}
-            done={goals.individuals[farmer.name].objectives.mailReceived}
-          >
-            <strong>{farmer.name}</strong> received the mail from{" "}
-            <a
-              target="_blank"
-              href={StardewWiki.getLink("Deluxe Scarecrow", "Letter")}
-            >
-              <strong>Z.C. Rarecrow Society</strong>
-            </a>
-            .
-          </ObjectiveOLD>
-        ))}
-      </div>
+      <SectionPart.Objectives
+        objectives={[
+          ...values(goals.globalGoals.objectives),
+          ...goals.individualGoals.flatMap((g) => values(g.objectives)),
+        ]}
+      />
     </Section>
   );
 };

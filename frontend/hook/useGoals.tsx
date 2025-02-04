@@ -60,13 +60,15 @@ function sanitizeGoals<const C extends GoalsConfig>(config: C) {
   };
 }
 
+type IndividualConfig<C extends GoalsConfig> = { farmer: Farmer } & Readonly<C>;
+
 export function useGoals<
   const CG extends GoalsConfig,
   const CI extends GoalsConfig,
 >(
   factory: () => {
     global?: CG;
-    individuals?: ({ farmer: Farmer } & CI)[];
+    individuals?: readonly IndividualConfig<CI>[];
   },
   depts: DependencyList = []
 ) {
@@ -92,14 +94,20 @@ export function useGoals<
     return done && isObjectiveDone(objective);
   }, true);
 
+  const individualGoals = (goals.individuals ?? []).map((g) => ({
+    farmer: g.farmer,
+    ...sanitizeGoals<CI>(g),
+  }));
+
   return {
     allDone: achievementsDone && objectivesDone,
     achievementsDone,
     objectivesDone,
 
     globalGoals: sanitizeGoals<CG>(goals.global ?? ({} as CG)),
+    individualGoals,
 
-    farmerGoals: (farmer: Farmer) => {
+    getFarmerGoals: (farmer: Farmer) => {
       const farmerGoals = goals.individuals?.find((g) => g.farmer === farmer);
       if (!farmerGoals)
         throw new Error("Given farmer does not have any goals registered");

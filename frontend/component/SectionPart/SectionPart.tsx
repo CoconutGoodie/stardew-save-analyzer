@@ -55,12 +55,18 @@ export const SectionPart = {
     );
   },
 
-  Objectives(props: { objectives: Record<string, ObjectiveSummary> }) {
+  Objectives(props: {
+    objectives: Record<string, ObjectiveSummary> | ObjectiveSummary[];
+  }) {
     return (
       <div className={styles.objectives}>
-        {entries(props.objectives).map(([id, objective]) => (
-          <Objective key={id} objective={objective} />
-        ))}
+        {Array.isArray(props.objectives)
+          ? props.objectives.map((objective, i) => (
+              <Objective key={i} objective={objective} />
+            ))
+          : entries(props.objectives).map(([id, objective]) => (
+              <Objective key={id} objective={objective} />
+            ))}
       </div>
     );
   },

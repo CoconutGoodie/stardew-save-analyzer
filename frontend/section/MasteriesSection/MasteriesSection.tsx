@@ -131,7 +131,7 @@ export const MasteriesSection = (props: Props) => {
               </div>
 
               <SectionPart.Objectives
-                objectives={goals.farmerGoals(farmer).objectives}
+                objectives={goals.getFarmerGoals(farmer).objectives}
               />
             </div>
           );

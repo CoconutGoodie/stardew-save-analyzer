@@ -85,7 +85,7 @@ export const HelpWantedSection = (props: Props) => {
               </InfoText>
 
               <SectionPart.Achievements
-                achievements={goals.farmerGoals(farmer).achievements}
+                achievements={goals.getFarmerGoals(farmer).achievements}
               />
 
               {/* <div className={styles.achievements}>

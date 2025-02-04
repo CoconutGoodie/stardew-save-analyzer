@@ -114,7 +114,7 @@ export const MoneySection = (props: Props) => {
       </div>
 
       <SectionPart.Achievements
-        achievements={goals.farmerGoals(props.gameSave.player).achievements}
+        achievements={goals.getFarmerGoals(props.gameSave.player).achievements}
       />
 
       <SectionPart.Objectives objectives={goals.globalGoals.objectives} />

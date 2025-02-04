@@ -57,6 +57,15 @@ export const FARM_ANIMALS_SPRITES = new AssetRepository({
   postfix: ".png",
 });
 
+export const SLIME_SPRITES = new AssetRepository({
+  repository: import.meta.glob<string>("../assets/sprite/slime/*.png", {
+    import: "default",
+    eager: true,
+  }),
+  prefix: "../assets/sprite/slime/",
+  postfix: ".png",
+});
+
 export const COOKING_RECIPE_SPRITES = new AssetRepository<string>({
   repository: import.meta.glob("../assets/sprite/cooking/*.png", {
     import: "default",

@@ -1,22 +1,24 @@
-import heartFilledPng from "~frontend/assets/icon/heart_filled.png";
-import chickenPng from "~frontend/assets/icon/chicken.png";
-import { Scrollbox } from "~frontend/component/Scrollbox/Scrollbox";
-import { Section } from "~frontend/component/Section/Section";
-import {
-  FARM_ANIMALS_SPRITES,
-  FARM_BUILDING_SPRITES,
-  FISH_SPRITES,
-} from "~frontend/const/Assets";
-import { GameSave } from "~frontend/gamesave/GameSave";
-import { StardewWiki } from "~frontend/util/StardewWiki";
 import { snakeCase } from "case-anything";
 import clsx from "clsx";
 import { useState } from "react";
 import { sum, times } from "remeda";
+import chickenPng from "~frontend/assets/icon/chicken.png";
+import heartFilledPng from "~frontend/assets/icon/heart_filled.png";
+import { Scrollbox } from "~frontend/component/Scrollbox/Scrollbox";
+import { Section } from "~frontend/component/Section/Section";
+import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
+import {
+  FARM_ANIMALS_SPRITES,
+  FARM_BUILDING_SPRITES,
+  FISH_SPRITES,
+  SLIME_SPRITES,
+} from "~frontend/const/Assets";
+import { GameSave } from "~frontend/gamesave/GameSave";
+import { useGoals } from "~frontend/hook/useGoals";
+import { StardewWiki } from "~frontend/util/StardewWiki";
 
 import styles from "./FarmBuildingsSection.module.scss";
-import { ObjectiveOLD } from "~frontend/component/Objective/Objective";
-import { SectionPart } from "~frontend/component/SectionPart/SectionPart";
+import { A } from "ts-toolbelt";
 
 interface Props {
   gameSave: GameSave;
@@ -24,6 +26,31 @@ interface Props {
 
 export const FarmBuildingsSection = (props: Props) => {
   const [expanded, setExpanded] = useState(false);
+
+  const goals = useGoals(() => ({
+    global: {
+      objectives: [
+        {
+          id: "builtAnimalBuilding",
+          type: "triggerable",
+          triggered: props.gameSave.animalBuildings.length >= 1,
+          description: (
+            <>
+              At least one{" "}
+              <a>
+                <strong>Coop</strong>
+              </a>{" "}
+              or{" "}
+              <a>
+                <strong>Barn</strong>
+              </a>{" "}
+              is built.
+            </>
+          ),
+        },
+      ],
+    },
+  }));
 
   const totalAnimalCount =
     props.gameSave.pets.length +
@@ -50,22 +77,40 @@ export const FarmBuildingsSection = (props: Props) => {
       />
     )),
 
-    ...props.gameSave.fishPonds.map((pond, index) => (
+    ...props.gameSave.slimeHutches.map((hutch, index) => (
       <BuildingPart
-        key={`pond-${index}`}
-        name={`${pond.fish ?? "Empty"} Pond`}
-        capacity={pond.capacity}
-        iconSrc={FARM_BUILDING_SPRITES.resolve("fish_pond")}
-        emptyIconSrc={
-          pond.fish == null ? "" : FISH_SPRITES.resolve(snakeCase(pond.fish))
-        }
-        animals={times(pond.count, () => ({
-          iconHeight: 40,
-          iconSrc: FISH_SPRITES.resolve(snakeCase(pond.fish)),
-          wikiUrl: StardewWiki.getLink(pond.fish),
-        }))}
+        key={`hutch-${index}`}
+        name={"Slime Hutch"}
+        capacity={20}
+        iconSrc={FARM_BUILDING_SPRITES.resolve(snakeCase("Slime Hutch"))}
+        animals={hutch.slimes
+          .sort((a, b) => a.name.localeCompare(b.name))
+          .map((slime) => ({
+            wikiUrl: StardewWiki.getLink("Slimes"),
+            iconSrc: SLIME_SPRITES.resolve(snakeCase(slime.name)),
+            iconHeight: 30,
+          }))}
       />
     )),
+
+    ...props.gameSave.fishPonds
+      .sort((a, b) => b.capacity - a.capacity)
+      .map((pond, index) => (
+        <BuildingPart
+          key={`pond-${index}`}
+          name={`${pond.fish ?? "Empty"} Pond`}
+          capacity={pond.capacity}
+          iconSrc={FARM_BUILDING_SPRITES.resolve("fish_pond")}
+          emptyIconSrc={
+            pond.fish == null ? "" : FISH_SPRITES.resolve(snakeCase(pond.fish))
+          }
+          animals={times(pond.count, () => ({
+            iconHeight: 40,
+            iconSrc: FISH_SPRITES.resolve(snakeCase(pond.fish)),
+            wikiUrl: StardewWiki.getLink(pond.fish),
+          }))}
+        />
+      )),
 
     props.gameSave.stables.length > 0 && (
       <BuildingPart
@@ -112,6 +157,7 @@ export const FarmBuildingsSection = (props: Props) => {
       sectionIcon={chickenPng}
       className={styles.section}
       collapsable
+      allDone={goals.allDone}
     >
       <SectionPart.Statistics>
         <>
@@ -123,6 +169,7 @@ export const FarmBuildingsSection = (props: Props) => {
           <strong>{totalAnimalCount}</strong> animal(s).
         </>
       </SectionPart.Statistics>
+
       <Scrollbox
         scrollClassName={styles.scrollbox}
         expanded={expanded}
@@ -130,6 +177,8 @@ export const FarmBuildingsSection = (props: Props) => {
       >
         <div className={styles.buildings}>{buildingJsx}</div>
       </Scrollbox>
+
+      <SectionPart.Objectives objectives={goals.globalGoals.objectives} />
     </Section>
   );
 };

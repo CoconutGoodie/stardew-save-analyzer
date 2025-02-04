@@ -1,7 +1,8 @@
 import { capitalCase, lowerCase } from "case-anything";
-
+import { clamp, entries, keys, mapToObj } from "remeda";
 import { STARDEW_FARM_TYPES } from "~frontend/const/StardewFarmTypes";
 import { STARDEW_FISHES } from "~frontend/const/StardewFishes";
+import { STARDEW_GOLDEN_WALNUTS_ALL } from "~frontend/const/StardewGoldenWalnuts";
 import {
   STARDEW_ARTIFACTS,
   STARDEW_MINERALS,
@@ -14,9 +15,7 @@ import { GrandpasEvaluations } from "~frontend/gamesave/GrandpasEvaluations";
 import { GameDate, GameSeason } from "~frontend/util/GameDate";
 import { XMLNode } from "~frontend/util/XMLNode";
 import { isKeyOf } from "~frontend/util/utilities";
-import { clamp, entries, fromEntries, keys, mapToObj } from "remeda";
 import { Farmer } from "./Farmer";
-import { STARDEW_GOLDEN_WALNUTS_ALL } from "~frontend/const/StardewGoldenWalnuts";
 
 export class GameSave {
   public static compatibleVersion = "1.6.8";
@@ -40,7 +39,7 @@ export class GameSave {
   public readonly stables;
   public readonly animalBuildings;
   public readonly fishPonds;
-  // TODO: public readonly slimeHutches;
+  public readonly slimeHutches;
 
   public readonly rarecrowsPlaced;
   public readonly allRarecrows;
@@ -84,6 +83,7 @@ export class GameSave {
     this.stables = this.calcStables();
     this.animalBuildings = this.calcAnimalBuildings();
     this.fishPonds = this.calcFishPonds();
+    this.slimeHutches = this.calcSlimeHutches();
 
     this.rarecrowsPlaced = this.calcRarecrowsPlaced();
     this.allRarecrows = this.calcAllRarecrows();
@@ -264,6 +264,33 @@ export class GameSave {
       goldenAnimalCracker: buildingNode
         .query("goldenAnimalCracker > *")
         .boolean(),
+    }));
+  }
+
+  private calcSlimeHutches() {
+    const farmLocationXml = this.saveXml.queryAllAndFind(
+      "locations > GameLocation",
+      (node) => node.element?.getAttribute("xsi:type") === "Farm"
+    );
+
+    const slimeHutchesXml = farmLocationXml
+      .queryAll("Building")
+      .filter((buildingNode) => {
+        const buildingType = buildingNode.query("buildingType").text();
+        return buildingType.toLowerCase() === "slime hutch";
+      });
+
+    slimeHutchesXml.forEach((x) => console.log(x.element));
+
+    return slimeHutchesXml.map((buildingNode) => ({
+      slimes: buildingNode
+        .queryAll("characters > NPC")
+        .filter(
+          (npcXml) => npcXml.element?.getAttribute("xsi:type") === "GreenSlime"
+        )
+        .map((slimeXml) => ({
+          name: slimeXml.query(":scope > name").text(),
+        })),
     }));
   }
 

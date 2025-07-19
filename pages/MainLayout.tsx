@@ -44,12 +44,7 @@ export function MainLayout(props: Props) {
               .{"\n"}It is an independent, open-source, fan-made tool crafted by{" "}
               <a target="_blank" href="https://github.com/iGoodie">
                 iGoodie
-              </a>{" "}
-              and{" "}
-              <a target="_blank" href="https://github.com/sedasen">
-                CoconutOrange
-              </a>
-              . Its aim is to provide players with helpful resources and
+              </a>. Its aim is to provide players with helpful resources and
               utilities, purely out of my passion for the game.
             </p>
           </div>
@@ -97,12 +92,6 @@ export function MainLayout(props: Props) {
               iGoodie
             </a>
           </span>
-          <span>
-            Designed with <span style={{ color: "#f76767" }}>♥</span> by{" "}
-            <a href="https://github.com/sedasen" target="_blank">
-              CoconutOrange
-            </a>
-          </span>
         </div>
 
         <div className={styles.siteInfo}>
@@ -125,7 +114,7 @@ export function MainLayout(props: Props) {
 
         <div className={styles.links}>
           <a
-            href="https://github.com/CoconutGoodie/stardew-save-analyzer"
+            href="https://github.com/iGoodie/stardew-save-analyzer"
             target="_blank"
           >
             <GithubSvg />

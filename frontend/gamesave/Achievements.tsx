@@ -285,8 +285,9 @@ export class DifferentCookingAchievement extends Achievement {
     farmer: Farmer,
     title: string,
     public readonly goal: number,
-    public readonly crafted = values(farmer.cooking).filter((v) => v > 0)
-      .length
+    public readonly crafted = values(farmer.cooking.cookedRecipes).filter(
+      (v) => v > 0
+    ).length
   ) {
     super(title, <></>, crafted >= goal);
   }

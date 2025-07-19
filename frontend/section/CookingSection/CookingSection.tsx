@@ -66,7 +66,7 @@ export const CookingSection = (props: Props) => {
 
           const moddedUnlocked = farmer.cooking.knownRecipes.difference(
             new Set(values(STARDEW_BASE_COOKING_RECIPES))
-          ).size;
+          );
 
           return (
             <div key={farmer.name}>
@@ -85,13 +85,13 @@ export const CookingSection = (props: Props) => {
                   different recipes.
                 </ObjectiveOLD>
 
-                {moddedUnlocked > 0 && (
+                {moddedUnlocked.size > 0 && (
                   <ObjectiveOLD
                     icon={<img height={16} src={cookingPng} />}
                     done
                   >
-                    <strong>EXTRA</strong>: {moddedUnlocked} modded recipes are
-                    also unlocked.
+                    <strong>EXTRA</strong>: {moddedUnlocked.size} modded recipes
+                    are also unlocked.
                   </ObjectiveOLD>
                 )}
               </div>
@@ -142,7 +142,7 @@ export const CookingSection = (props: Props) => {
                     key={achievement.title}
                     title={achievement.title}
                     description={
-                      achievement === farmerAchievements.craftMaster
+                      achievement === farmerAchievements.gourmetChef
                         ? "cook every recipe"
                         : `cook ${achievement.goal} different recipes`
                     }

@@ -175,6 +175,7 @@ export default function AnalyzePage() {
           <li>Support "Separate Wallets"</li>
           <li>Fix main app layout</li>
           <li>Add Tooltips to all sections</li>
+          <li>A brand new "Save Sharing" session to share with your Farmhands</li>
         </ul>
       </Section>
     </>
